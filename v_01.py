@@ -89,6 +89,8 @@ def game_loop():
             #print "COUNTTTT", COUNT
             if not COUNT == END_POINT - 1:
                 COUNT += 1
+            lead_x = track[COUNT][0]
+            lead_y = track[COUNT][1]
 
         # BACKGROUND
         gameDisplay.fill(black)

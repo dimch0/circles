@@ -21,5 +21,3 @@
 lead_x_change = 0
 lead_y_change = 0
 
-# lead_x = track[COUNT][0]
-# lead_y = track[COUNT][1]
