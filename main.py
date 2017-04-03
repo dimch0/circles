@@ -86,7 +86,7 @@ class Tale(object):
 
 
 grid = Grid.circle_dict(circle_radius)
-print grid
+print "Grid created:", grid
 
 
 def Tracks(point_A, Point_B, speed = SPEED):
@@ -114,6 +114,10 @@ def Tracks(point_A, Point_B, speed = SPEED):
     return track
 
 
+
+
+
+
 def game_loop():
     """
     main game loop
@@ -124,6 +128,7 @@ def game_loop():
     menu = False
     END_POINT = None
     COUNT = 0
+
 
     while not game_exit:
         # MOUSE POSITION X AND Y
@@ -174,7 +179,11 @@ def game_loop():
         # body
         pygame.draw.circle(gameDisplay, pink, (lead_x, lead_y), circle_radius, 0)
         # body range:
-        # pygame.draw.circle(gameDisplay, white, (lead_x, lead_y), circle_radius * 10, 1)
+        # x = 1
+        # while x < 5:
+        #     pygame.draw.circle(gameDisplay, white, (lead_x, lead_y), circle_radius * x, 1)
+        #     pygame.display.update()
+        #     x += 1
 
         pygame.display.update()
 
