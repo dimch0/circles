@@ -15,7 +15,9 @@ green = (210, 255, 191)
 FPS = 30
 SCALE = 4
 
+
 fi = 30 / SCALE
+SPEED = 7
 display_width = 600 / SCALE
 display_height = 600 / SCALE
 
@@ -30,17 +32,23 @@ pygame.display.set_caption('radius')
 clock = pygame.time.Clock()
 
 
+def in_circle(center, radius, mouse_pos):
+    center_x, center_y = center[0], center[1]
+    x, y = mouse_pos[0], mouse_pos[1]
+    square_dist = (center_x - x) ** 2 + (center_y - y) ** 2
+    return square_dist <= radius ** 2
+
+
 
 class Grid(object):
     """
     master class for the grid
     """
-
     def __init__(self):
         pass
 
     @staticmethod
-    def gen_dict(fi):
+    def circle_dict(fi):
         result = []
         katet = int(sqrt(((2 * fi) ** 2) - (fi ** 2)))
         for x in range(0, 12):
@@ -48,17 +56,29 @@ class Grid(object):
                 if x % 2 == y % 2:
                     centre_x = fi + (x * katet)
                     centre_y = y * fi
-                    centre = [centre_x, centre_y]
+                    centre = (centre_x, centre_y)
                     result.append(centre)
                     # pygame.draw.circle(gameDisplay, white, centre, fi, 1)
         return result
 
 
-grid = Grid.gen_dict(fi)
+    @staticmethod
+    def mouse_in_circle(fi, mouse_pos):
+        current_circle = None
+        grid = Grid.circle_dict(fi)
+        for circle in grid:
+            if in_circle(circle, fi, mouse_pos):
+                current_circle = circle
+        return current_circle
+
+
+
+
+grid = Grid.circle_dict(fi)
 print grid
 
 
-def Tracks(point_A, Point_B, speed = 5):
+def Tracks(point_A, Point_B, speed = SPEED):
     track = []
     ax = point_A[0]
     ay = point_A[1]
@@ -98,15 +118,19 @@ def game_loop():
                 game_exit = True
 
             if event.type == pygame.MOUSEBUTTONDOWN:
-                print("click", mouse_pos)
-                track = Tracks((lead_x, lead_y), mouse_pos)
-                print "trackes", track
-                END_POINT = len(track)
-                print "END_POINT", END_POINT
-                COUNT = 0
-                print "COUNT", COUNT
 
-                if in_circle(lead_x, lead_y, fi, mx, my) and not menu:
+                print "click:", mouse_pos
+                print "circle:", Grid.mouse_in_circle(fi, mouse_pos)
+                clicked_circle = Grid.mouse_in_circle(fi, mouse_pos)
+                if clicked_circle:
+                    track = Tracks((lead_x, lead_y), clicked_circle)
+                    print "trackes", track
+                    END_POINT = len(track)
+                    print "END_POINT", END_POINT
+                    COUNT = 0
+                    print "COUNT", COUNT
+
+                if in_circle((lead_x, lead_y), fi, mouse_pos) and not menu:
                     menu = True
                     print menu
                 else:
@@ -114,7 +138,6 @@ def game_loop():
                     print menu
 
         if END_POINT:
-            #print "COUNTTTT", COUNT
             if not COUNT == END_POINT - 1:
                 COUNT += 1
             lead_x = track[COUNT][0]
@@ -145,9 +168,6 @@ def game_loop():
     quit()
 
 
-def in_circle(center_x, center_y, radius, x, y):
-    square_dist = (center_x - x) ** 2 + (center_y - y) ** 2
-    return square_dist <= radius ** 2
 
 
 if __name__ == '__main__':
