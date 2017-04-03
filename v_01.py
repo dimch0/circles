@@ -28,17 +28,22 @@ pygame.display.set_caption('radius')
 
 clock = pygame.time.Clock()
 
-def Tracks(point_A,Point_B,steps_number = 15):
+def Tracks(point_A, Point_B, speed = 5):
     track = []
     ax = point_A[0]
     ay = point_A[1]
     bx = Point_B[0]
     by = Point_B[1]
     dx, dy = (bx - ax, by - ay)
-    stepx, stepy = int(dx / steps_number), int(dy / steps_number)
-    for i in range(steps_number+1):
-        step = [int(ax + stepx * i), int(ay + stepy * i)]
-        track.append(step)
+    distance = sqrt(dx**2 + dy**2)
+
+    steps_number = int(distance / speed)
+    if steps_number > 0:
+        stepx, stepy = int(dx / steps_number), int(dy / steps_number)
+        for i in range(steps_number+1):
+            step = [int(ax + stepx * i), int(ay + stepy * i)]
+            track.append(step)
+    # track.append(Point_B)
     return track
 
 
