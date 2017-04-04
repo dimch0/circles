@@ -79,10 +79,9 @@ class Tale(object):
     master class for tales
     """
     def __init__(self, empty):
-        self.empty = True
-        self.scanned = False
-        self.body = False
-        self.item = False
+        self.occupado= True
+        self.revealed = False
+
 
 
 grid = Grid.circle_dict(circle_radius)
