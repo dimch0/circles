@@ -47,6 +47,7 @@ class Body(object):
         :param SPEED: pixels moved for each step
         :return: a list of steps from point A to point B
         """
+        self.move_track = []
         ax = self.pos[0]
         ay = self.pos[1]
         bx = Point_B[0]

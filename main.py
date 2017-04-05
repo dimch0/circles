@@ -20,9 +20,10 @@ pink = (252, 217, 229)
 green = (210, 255, 191)
 
 # DEFAULT SCALE IS 1, INCREASE THE NUMBER FOR A SMALLER SIZE
-SCALE = 4
+SCALE = 1
 FPS = 30
 SPEED = 5
+SHOW_GRID = False
 
 print "INFO Loading..."
 circle_radius = 30 / SCALE
@@ -47,6 +48,7 @@ def game_loop():
     main game loop
     """
     print "INFO Game started"
+    pygame.mouse.set_visible(1)
     game_exit = False
     player.pos = (mid_x, mid_y)
     menu = False
@@ -83,21 +85,36 @@ def game_loop():
 
         # TODO blit stuff here
 
-        # GRID
-        # for centre in grid.tiles.values():
-        #     pygame.draw.circle(gameDisplay, white, centre, circle_radius, 1)
+        if SHOW_GRID:
+            for tile in grid.tiles.values():
+                pygame.draw.circle(gameDisplay, white, tile, circle_radius, 1)
 
         # MENU
         if menu:
             # pygame.draw.circle(gameDisplay, green, player.pos, circle_radius * 3, 0)
-            if radar < circle_radius * 3:
-                pygame.draw.circle(gameDisplay, white, player.pos, circle_radius + radar, 1)
+            if radar < circle_radius * 2:
+                if radar < 12:
+                    pygame.draw.circle(gameDisplay, green, player.pos, circle_radius + radar, 8)
+                elif radar < 24:
+                    pygame.draw.circle(gameDisplay, green, player.pos, circle_radius + radar, 6)
+                elif radar < 36:
+                    pygame.draw.circle(gameDisplay, green, player.pos, circle_radius + radar, 4)
+                elif radar < 48:
+                    pygame.draw.circle(gameDisplay, green, player.pos, circle_radius + radar, 2)
+                elif radar < 60:
+                    pygame.draw.circle(gameDisplay, green, player.pos, circle_radius + radar, 1)
+
                 radar += 1
             else:
                 radar = 0
 
         # BODY
         pygame.draw.circle(gameDisplay, pink, player.pos, circle_radius, 0)
+
+        # MOUSE IMG
+        for tile in grid.tiles.values():
+            if krg_utils.in_circle(tile, circle_radius, mouse_pos):
+                pygame.draw.circle(gameDisplay, white, tile, circle_radius, 1)
 
         # UPDATE DISPLAY
         pygame.display.update()
