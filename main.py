@@ -12,11 +12,11 @@ pink = (252, 217, 229)
 green = (210, 255, 191)
 
 # DEFAUL SCALE IS 1, INCREASE THE NUMBER FOR A SMALLER SIZE
-SCALE = 5
+SCALE = 1
 FPS = 30
 
 circle_radius = 30 / SCALE
-SPEED = 7
+SPEED = 5
 display_width = 600 / SCALE
 display_height = 600 / SCALE
 mid_x = int(display_width/2)
@@ -37,6 +37,7 @@ def in_circle(center, radius, mouse_pos):
     x, y = mouse_pos[0], mouse_pos[1]
     square_dist = (center_x - x) ** 2 + (center_y - y) ** 2
     return square_dist <= radius ** 2
+
 
 class Grid(object):
     """
@@ -67,7 +68,6 @@ class Grid(object):
                     # pygame.draw.circle(gameDisplay, white, centre, circle_radius, 1)
         return result
 
-
     @staticmethod
     def mouse_in_circle(circle_radius, mouse_pos):
         current_circle = None
@@ -76,8 +76,6 @@ class Grid(object):
             if in_circle(circle, circle_radius, mouse_pos):
                 current_circle = circle
         return current_circle
-
-
 
 
 
@@ -109,10 +107,6 @@ def Tracks(point_A, Point_B, speed = SPEED):
             track.append(step)
     track.append(Point_B)
     return track
-
-
-
-
 
 
 def game_loop():
@@ -165,36 +159,31 @@ def game_loop():
         # TODO blit stuff here
 
         # GRID
-        for centre in grid.tiles.values():
-            pygame.draw.circle(gameDisplay, white, centre, circle_radius, 1)
+        # for centre in grid.tiles.values():
+        #     pygame.draw.circle(gameDisplay, white, centre, circle_radius, 1)
 
         # MENU
         if menu:
             # pygame.draw.circle(gameDisplay, green, [lead_x, lead_y], circle_radius * 3, 0)
-            if radar < circle_radius * 5:
+            if radar < circle_radius * 3:
                 pygame.draw.circle(gameDisplay, green, [lead_x, lead_y], circle_radius + radar, 1)
                 radar += 1
+            else:
+                radar = 0
 
         # BODY
         pygame.draw.circle(gameDisplay, pink, (lead_x, lead_y), circle_radius, 0)
-        # body range:
-        # x = 1
-        # while x < 5:
-        #     pygame.draw.circle(gameDisplay, white, (lead_x, lead_y), circle_radius * x, 1)
-        #     pygame.display.update()
-        #     x += 1
 
+        # UPDATE DISPLAY
         pygame.display.update()
 
         # TODO: if change vars to blit
+
         clock.tick(FPS)
 
     pygame.quit()
     quit()
 
 
-
-
 if __name__ == '__main__':
     game_loop()
-
