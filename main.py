@@ -92,18 +92,13 @@ def game_loop():
         # MENU
         if menu:
             # pygame.draw.circle(gameDisplay, green, player.pos, circle_radius * 3, 0)
-            if radar < circle_radius * 2:
-                if radar < 12:
-                    pygame.draw.circle(gameDisplay, green, player.pos, circle_radius + radar, 8)
-                elif radar < 24:
-                    pygame.draw.circle(gameDisplay, green, player.pos, circle_radius + radar, 6)
-                elif radar < 36:
-                    pygame.draw.circle(gameDisplay, green, player.pos, circle_radius + radar, 4)
-                elif radar < 48:
-                    pygame.draw.circle(gameDisplay, green, player.pos, circle_radius + radar, 2)
-                elif radar < 60:
-                    pygame.draw.circle(gameDisplay, green, player.pos, circle_radius + radar, 1)
-
+            limit = circle_radius * 2
+            thikness = range(1,11)
+            thikness.reverse()
+            if radar < limit:
+                for thik in thikness:
+                    if radar < limit / thik:
+                        pygame.draw.circle(gameDisplay, green, player.pos, circle_radius + radar, thik)
                 radar += 1
             else:
                 radar = 0
