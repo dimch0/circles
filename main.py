@@ -15,7 +15,8 @@ pygame.init()
 # COLORS
 white = (255, 255, 255)
 black = (0, 0, 0)
-grey = (195, 195, 195)
+ungrey = (195, 195, 195)
+grey = (175, 165, 175)
 pink = (252, 217, 229)
 green = (210, 255, 191)
 
@@ -68,6 +69,7 @@ def game_loop():
                 print "click:", mouse_pos
                 print "circle:", krg_grid.Grid.mouse_in_tile(circle_radius, mouse_pos)
                 clicked_circle = krg_grid.Grid.mouse_in_tile(circle_radius, mouse_pos)
+                radar = 0
                 if clicked_circle:
                     # MOVEMENT populating tracks
                     track = player.tracks(clicked_circle)
@@ -82,6 +84,9 @@ def game_loop():
 
         # BACKGROUND
         gameDisplay.fill(grey)
+        # UNGREY
+        for rgrid in grid.revealed_radius:
+            pygame.draw.circle(gameDisplay, ungrey, rgrid[0], rgrid[1], 0)
 
         # TODO blit stuff here
 
@@ -89,17 +94,20 @@ def game_loop():
             for tile in grid.tiles.values():
                 pygame.draw.circle(gameDisplay, white, tile, circle_radius, 1)
 
-        # MENU
+        # MENU / RADAR
         if menu:
             # pygame.draw.circle(gameDisplay, green, player.pos, circle_radius * 3, 0)
-            limit = circle_radius * 2
-            thikness = range(1,11)
+            limit = circle_radius * 3
+            thikness = range(1,30)
             thikness.reverse()
             if radar < limit:
                 for thik in thikness:
                     if radar < limit / thik:
                         pygame.draw.circle(gameDisplay, green, player.pos, circle_radius + radar, thik)
                 radar += 1
+                # FILL TERRITORY UNGREY
+                if radar == limit:
+                    grid.revealed_radius.append((player.pos, (circle_radius + radar)))
             else:
                 radar = 0
 

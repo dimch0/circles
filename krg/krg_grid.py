@@ -16,6 +16,7 @@ class Grid(object):
         self.tiles = []
         self.occupado = []
         self.revealed = []
+        self.revealed_radius = []
 
     @staticmethod
     def grid_gen(circle_radius):
