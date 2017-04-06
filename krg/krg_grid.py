@@ -18,6 +18,8 @@ class Grid(object):
         self.revealed = []
         self.revealed_radius = []
         self.items = []
+        self.mouse_mode = None
+        self.mouse_img = None
 
     @staticmethod
     def grid_gen(circle_radius):
@@ -45,5 +47,4 @@ class Grid(object):
         for tile, circle in grid.items():
             if in_circle(circle, circle_radius, mouse_pos):
                 current_circle = circle
-                print tile
         return current_circle

@@ -26,21 +26,34 @@ class Item(object):
         """
         pass
 
-    def menu(self, grid):
+    def menu(self, clicked_circle, grid):
         """
         This method shows all options for the item and
         temporary disables the other items on the same positions.
         :param grid:
         :return:
         """
-        self.in_menu = True
-        backup_items = []
+        # TODO: Backup and restore items under options
+        # TODO: Set all options position correctly
+        # TODO: Show backgourd menu
+
+        if clicked_circle == self.pos:
+            if self.in_menu == False:
+                self.in_menu = True
+            else:
+                self.in_menu = False
+        else:
+            self.in_menu = False
+
+
         for option in self.options:
-            for item in grid.items:
-                if option.pos == item.pos:
-                    grid.items.remove(item)
+            if self.in_menu:
+                # TODO: set all options position correctly
+                option.pos = (self.pos[0], self.pos[1] + grid.tile_radius * 2)
+                if not option in grid.items:
                     grid.items.append(option)
-                    backup_items.append(item)
+            elif not self.in_menu and option in grid.items:
+                grid.items.remove(option)
 
     def tracks(self, Point_B):
         """

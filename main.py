@@ -24,7 +24,7 @@ green = (210, 255, 191)
 SCALE = 4
 FPS = 100
 SPEED = 5
-SHOW_GRID = False
+SHOW_GRID = 0
 
 # SETTINGS
 circle_radius = 30 / SCALE
@@ -38,16 +38,16 @@ clock = pygame.time.Clock()
 
 
 grid = krg_grid.Grid(circle_radius)
-grid.tiles = grid.grid_gen(circle_radius)
+grid.tiles = grid.grid_gen(grid.tile_radius)
 player = krg_body.Body()
 grid.items.append(player)
 
 
 
-print "Player born."
-print "Grid created."
-print "Grid tiles:", grid.tiles.keys()
-print "Number of tiles:", len(grid.tiles.keys())
+print "INFO Player born."
+print "INFO Grid created."
+print "INFO Grid tiles:", grid.tiles.keys()
+print "INFO Number of tiles:", len(grid.tiles.keys())
 
 def game_loop():
     """
@@ -56,7 +56,7 @@ def game_loop():
     print "INFO Game started"
     pygame.mouse.set_visible(1)
     game_exit = False
-    player.pos = (mid_x, mid_y)
+    player.pos = krg_grid.Grid.mouse_in_tile(grid.tile_radius, (mid_x, mid_y))
     menu = False
     radar = 0
 
@@ -72,93 +72,97 @@ def game_loop():
             # CLICK EVENTS
             if event.type == pygame.MOUSEBUTTONDOWN:
 
-                clicked_circle = krg_grid.Grid.mouse_in_tile(circle_radius, mouse_pos)
+                clicked_circle = krg_grid.Grid.mouse_in_tile(grid.tile_radius, mouse_pos)
 
-                print "-" * 30
-                print "click:", mouse_pos
-                print "circle:", clicked_circle
+                print ">>>> click:", mouse_pos, "circle:", clicked_circle
 
                 radar = 0
 
-
                 if clicked_circle:
 
-                    # CHECK CLICKED ITEMS
+                    # TODO: CHECK MODE
+                    # TODO: CHECK TILE
+                    # TODO: CHECK ITEM
+
+                    # ITEM MENU OPTIONS
                     for item in grid.items:
-                        if clicked_circle == item.pos:
-                            # item.menu(grid).
-                            item.in_menu = True
-                        else:
-                            item.in_menu = False
+                        item.menu(clicked_circle, grid)
 
-                        for option in item.options:
-                            if item.in_menu:
-                                option.pos = (player.pos[0], player.pos[1] + circle_radius * 2)
-                                grid.items.append(option)
-                            elif not item.in_menu and option in grid.items:
-                                grid.items.remove(option)
+                    # TODO: CHECK WHICH OPTION IS SELECTED
+                    # TODO: EXECUTED OPTION
 
-                    print "DEBUG items", grid.items
+                    # MOVEMENT TRACKS POPULATING
+                    player.tracks(clicked_circle)
+                    # print "track:", track
 
-
-
-                    # MOVEMENT populating tracks
-                    track = player.tracks(clicked_circle)
-                    print "track:", track
-                if krg_utils.in_circle(player.pos, circle_radius, mouse_pos) and not menu:
+                if krg_utils.in_circle(player.pos, grid.tile_radius, mouse_pos) and not menu:
                     menu = True
                 else:
                     menu = False
 
-        # MOVEMENT only moves if tracks are populated
-        player.move()
 
-        # BLIT BACKGROUND
+
+        # PLACE BACKGROUND
         gameDisplay.fill(grey)
-        # BLIT UNGREY
+        # PLACE REVEALED CIRCLES
         for rgrid in grid.revealed_radius:
             pygame.draw.circle(gameDisplay, ungrey, rgrid[0], rgrid[1], 0)
 
         # TODO blit stuff here
 
+        # PLACE GRID
         if SHOW_GRID:
             for tile in grid.tiles.values():
-                pygame.draw.circle(gameDisplay, white, tile, circle_radius, 1)
+                pygame.draw.circle(gameDisplay, white, tile, grid.tile_radius, 1)
 
+        # ANIMATION PLACEMENT
+        # MOVEMENT ONLY IF TRACKS POPULATED
+        player.move()
+        # PLACE BODY / ITEMS
+        for item in grid.items:
+            pygame.draw.circle(gameDisplay, pink, item.pos, grid.tile_radius, 0)
+        # MOUSE IMG
+        for tile in grid.tiles.values():
+            if krg_utils.in_circle(tile, grid.tile_radius, mouse_pos):
+                pygame.draw.circle(gameDisplay, white, tile, grid.tile_radius, 1)
         # MENU / RADAR
         if menu:
-            # pygame.draw.circle(gameDisplay, green, player.pos, circle_radius * 3, 0)
+            # pygame.draw.circle(gameDisplay, green, player.pos, grid.tile_radius * 3, 0)
             pass
 
             # # RADAR
-            # limit = circle_radius * 2
-            # thikness = range(1, circle_radius)
+            # limit = grid.tile_radius * 2
+            # thikness = range(1, grid.tile_radius)
             # thikness.reverse()
             # if radar < limit:
             #     for thik in thikness:
             #         if radar < limit / thik:
-            #             pygame.draw.circle(gameDisplay, green, player.pos, circle_radius + radar, thik)
+            #             pygame.draw.circle(gameDisplay, green, player.pos, grid.tile_radius + radar, thik)
             #     radar += 1
             #     # FILL TERRITORY UNGREY
             #     if radar == limit:
-            #         grid.revealed_radius.append((player.pos, (circle_radius + radar)))
+            #         grid.revealed_radius.append((player.pos, (grid.tile_radius + radar)))
             # # ongoing radar
             # # else:
             # #     radar = 0
 
-        # BLIT BODY / ITEMS
+        # ANIMATION PLACEMENT
+        # MOVEMENT ONLY IF TRACKS POPULATED
+        player.move()
+        # PLACE BODY / ITEMS
         for item in grid.items:
-            pygame.draw.circle(gameDisplay, pink, item.pos, circle_radius, 0)
-
+            pygame.draw.circle(gameDisplay, pink, item.pos, grid.tile_radius, 0)
         # MOUSE IMG
         for tile in grid.tiles.values():
-            if krg_utils.in_circle(tile, circle_radius, mouse_pos):
-                pygame.draw.circle(gameDisplay, white, tile, circle_radius, 1)
+            if krg_utils.in_circle(tile, grid.tile_radius, mouse_pos):
+                pygame.draw.circle(gameDisplay, white, tile, grid.tile_radius, 1)
+
+
 
         # UPDATE DISPLAY
         pygame.display.update()
 
-        # TODO: if change vars to blit
+        # TODO: check changed vars to blit stuff
 
         clock.tick(FPS)
     pygame.quit()
