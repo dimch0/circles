@@ -3,7 +3,7 @@
 """
 
 
-from krg_utils import in_circle as in_circle
+from krg_utils import in_circle
 from math import sqrt
 
 
@@ -17,6 +17,7 @@ class Grid(object):
         self.occupado = []
         self.revealed = []
         self.revealed_radius = []
+        self.items = []
 
     @staticmethod
     def grid_gen(circle_radius):

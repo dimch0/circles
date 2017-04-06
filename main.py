@@ -21,12 +21,12 @@ pink = (252, 217, 229)
 green = (210, 255, 191)
 
 # DEFAULT SCALE IS 1, INCREASE THE NUMBER FOR A SMALLER SIZE
-SCALE = 1
-FPS = 30
+SCALE = 4
+FPS = 100
 SPEED = 5
 SHOW_GRID = False
 
-print "INFO Loading..."
+# SETTINGS
 circle_radius = 30 / SCALE
 display_width = 600 / SCALE
 display_height = 600 / SCALE
@@ -36,9 +36,14 @@ gameDisplay = pygame.display.set_mode((display_width, display_height))
 pygame.display.set_caption('krg')
 clock = pygame.time.Clock()
 
-player = krg_body.Body()
+
 grid = krg_grid.Grid(circle_radius)
 grid.tiles = grid.grid_gen(circle_radius)
+player = krg_body.Body()
+grid.items.append(player)
+
+
+
 print "Player born."
 print "Grid created."
 print "Grid tiles:", grid.tiles.keys()
@@ -64,13 +69,39 @@ def game_loop():
             if event.type == pygame.QUIT:
                 game_exit = True
 
+            # CLICK EVENTS
             if event.type == pygame.MOUSEBUTTONDOWN:
+
+                clicked_circle = krg_grid.Grid.mouse_in_tile(circle_radius, mouse_pos)
+
                 print "-" * 30
                 print "click:", mouse_pos
-                print "circle:", krg_grid.Grid.mouse_in_tile(circle_radius, mouse_pos)
-                clicked_circle = krg_grid.Grid.mouse_in_tile(circle_radius, mouse_pos)
+                print "circle:", clicked_circle
+
                 radar = 0
+
+
                 if clicked_circle:
+
+                    # CHECK CLICKED ITEMS
+                    for item in grid.items:
+                        if clicked_circle == item.pos:
+                            # item.menu(grid).
+                            item.in_menu = True
+                        else:
+                            item.in_menu = False
+
+                        for option in item.options:
+                            if item.in_menu:
+                                option.pos = (player.pos[0], player.pos[1] + circle_radius * 2)
+                                grid.items.append(option)
+                            elif not item.in_menu and option in grid.items:
+                                grid.items.remove(option)
+
+                    print "DEBUG items", grid.items
+
+
+
                     # MOVEMENT populating tracks
                     track = player.tracks(clicked_circle)
                     print "track:", track
@@ -82,9 +113,9 @@ def game_loop():
         # MOVEMENT only moves if tracks are populated
         player.move()
 
-        # BACKGROUND
+        # BLIT BACKGROUND
         gameDisplay.fill(grey)
-        # UNGREY
+        # BLIT UNGREY
         for rgrid in grid.revealed_radius:
             pygame.draw.circle(gameDisplay, ungrey, rgrid[0], rgrid[1], 0)
 
@@ -97,22 +128,27 @@ def game_loop():
         # MENU / RADAR
         if menu:
             # pygame.draw.circle(gameDisplay, green, player.pos, circle_radius * 3, 0)
-            limit = circle_radius * 3
-            thikness = range(1,30)
-            thikness.reverse()
-            if radar < limit:
-                for thik in thikness:
-                    if radar < limit / thik:
-                        pygame.draw.circle(gameDisplay, green, player.pos, circle_radius + radar, thik)
-                radar += 1
-                # FILL TERRITORY UNGREY
-                if radar == limit:
-                    grid.revealed_radius.append((player.pos, (circle_radius + radar)))
-            else:
-                radar = 0
+            pass
 
-        # BODY
-        pygame.draw.circle(gameDisplay, pink, player.pos, circle_radius, 0)
+            # # RADAR
+            # limit = circle_radius * 2
+            # thikness = range(1, circle_radius)
+            # thikness.reverse()
+            # if radar < limit:
+            #     for thik in thikness:
+            #         if radar < limit / thik:
+            #             pygame.draw.circle(gameDisplay, green, player.pos, circle_radius + radar, thik)
+            #     radar += 1
+            #     # FILL TERRITORY UNGREY
+            #     if radar == limit:
+            #         grid.revealed_radius.append((player.pos, (circle_radius + radar)))
+            # # ongoing radar
+            # # else:
+            # #     radar = 0
+
+        # BLIT BODY / ITEMS
+        for item in grid.items:
+            pygame.draw.circle(gameDisplay, pink, item.pos, circle_radius, 0)
 
         # MOUSE IMG
         for tile in grid.tiles.values():

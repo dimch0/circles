@@ -1,48 +1,50 @@
 """
-================================== Body class ==================================
+================================== Item / Body class ==================================
 """
 
 
 from math import sqrt
+from krg_grid import Grid
 
 
-class Body(object):
+class Item(object):
+    """
+    This is the base class for all circle items
+    """
     def __init__(self):
-
-        self.current_img = None
-        self.color = None
-
-        self.range = 1
-        self.speed = 5
-        self.muscle = 1
-        self.mind = 0
-
-        self.ego = 0
-        self.charm = 1
-        self.lux = 1
-
-        self.vision = 1
-        self.audio = 0
-        self.smell = 0
-        self.touch = 0
-        self.eat = 0
-
-        self.spirit = 100
-        self.lifespan = 100
-        self.hygiene = 100
-        self.stress = 0
-
-        self.status = []
-
         self.pos = ()
         self.move_track = []
+        self.color = None
+        self.current_img = None
+        self.options = []
+        self.in_menu = False
+        # self.clicked = False
 
-    # @property
-    # def _pos(self):
-    #     self._pos = (self.lead_x, self.lead_y)
+    def clicked(self):
+        """
+        :return: True or False if clicked
+        """
+        pass
+
+    def menu(self, grid):
+        """
+        This method shows all options for the item and
+        temporary disables the other items on the same positions.
+        :param grid:
+        :return:
+        """
+        self.in_menu = True
+        backup_items = []
+        for option in self.options:
+            for item in grid.items:
+                if option.pos == item.pos:
+                    grid.items.remove(item)
+                    grid.items.append(option)
+                    backup_items.append(item)
 
     def tracks(self, Point_B):
         """
+        This method moves the item from the current position to Point_B.
         :param Point_B: coordinates of destination point B (x, y)
         :param SPEED: pixels moved for each step
         :return: a list of steps from point A to point B
@@ -67,3 +69,37 @@ class Body(object):
         if self.move_track:
             self.pos = self.move_track[0]
             self.move_track.pop(0)
+
+
+
+
+class Body(Item):
+    """
+    This class holds all attributes and metrics of the player
+    """
+    def __init__(self):
+        super(Body, self).__init__()
+        self.range = 1
+        self.speed = 5
+        self.muscle = 1
+        self.mind = 0
+
+        self.ego = 0
+        self.charm = 1
+        self.lux = 1
+
+        self.vision = 1
+        self.audio = 0
+        self.smell = 0
+        self.touch = 0
+        self.eat = 0
+
+        self.spirit_pool = 100
+        self.lifespan = 100
+        self.hygiene = 100
+        self.stress = 0
+
+        self.status = []
+
+        move_option = Item()
+        self.options.append(move_option)
