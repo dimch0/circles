@@ -119,16 +119,43 @@ class Body(Item):
 
 
 
-    def radar(self, grid, radar, pygame, gameDisplay, green):
-        limit = grid.tile_radius * 2
-        thikness = range(1, grid.tile_radius)
-        thikness.reverse()
-        if radar < limit:
-            for thik in thikness:
-                print thik
-                if radar < limit / thik:
-                    pygame.draw.circle(gameDisplay, green, self.pos, grid.tile_radius + radar, thik)
-            radar += 1
-            # FILL TERRITORY UNGREY
-            if radar == limit:
-                grid.revealed_radius.append((self.pos, (grid.tile_radius + radar)))
+
+        self.radar_limit = 0
+        self.radar_waves = 0
+        self.radar_thikness = 0
+
+    def radar(self, grid):
+        # TODO: MAKE ITEM RADAR WAVES
+        self.radar_limit = grid.tile_radius * self.range * 2
+        self.radar_thikness = range(1, grid.tile_radius)
+        self.radar_thikness.reverse()
+        radar_radius, thik = None, None
+        if not radar_radius and not thik:
+            if self.radar_waves < self.radar_limit:
+                for thik in self.radar_thikness:
+                    if self.radar_waves < self.radar_limit / thik:
+                        # pygame.draw.circle(gameDisplay, green, self.pos, grid.tile_radius + self.radar_waves, thik)
+                        radar_radius, thik = grid.tile_radius + self.radar_waves, thik
+                self.radar_waves += 1
+                # FILL TERRITORY UNGREY
+                if self.radar_waves == self.radar_limit:
+                    self.radar_waves = 0
+                    grid.revealed_radius.append((self.pos, (grid.tile_radius + self.radar_waves)))
+        return radar_radius, thik
+
+
+        # RADAR
+        # limit = grid.tile_radius * 2
+        # thikness = range(1, grid.tile_radius)
+        # thikness.reverse()
+        # if radar < limit:
+        #     for thik in thikness:
+        #         if radar < limit / thik:
+        #             pygame.draw.circle(gameDisplay, green, player.pos, grid.tile_radius + radar, thik)
+        #     radar += 1
+        #     # FILL TERRITORY UNGREY
+        #     if radar == limit:
+        #         grid.revealed_radius.append((player.pos, (grid.tile_radius + radar)))
+        # ongoing radar
+        # else:
+        #     radar = 0
