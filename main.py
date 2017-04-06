@@ -2,7 +2,7 @@
 ================================== Main file ==================================
 """
 
-
+import pdb
 import pygame
 import time
 import random
@@ -21,7 +21,7 @@ pink = (252, 217, 229)
 green = (210, 255, 191)
 
 # DEFAULT SCALE IS 1, INCREASE THE NUMBER FOR A SMALLER SIZE
-SCALE = 4
+SCALE = 1
 FPS = 100
 SPEED = 5
 SHOW_GRID = 0
@@ -49,6 +49,7 @@ print "INFO Grid created."
 print "INFO Grid tiles:", grid.tiles.keys()
 print "INFO Number of tiles:", len(grid.tiles.keys())
 
+
 def game_loop():
     """
     main game loop
@@ -56,7 +57,8 @@ def game_loop():
     print "INFO Game started"
     pygame.mouse.set_visible(1)
     game_exit = False
-    player.pos = krg_grid.Grid.mouse_in_tile(grid.tile_radius, (mid_x, mid_y))
+    player.pos = (285, 270)
+
     menu = False
     radar = 0
 
@@ -85,8 +87,8 @@ def game_loop():
                     # TODO: CHECK ITEM
 
                     # ITEM MENU OPTIONS
-                    for item in grid.items:
-                        item.menu(clicked_circle, grid)
+                    # for item in grid.items:
+                    #     item.menu(clicked_circle, grid)
 
                     # TODO: CHECK WHICH OPTION IS SELECTED
                     # TODO: EXECUTED OPTION
@@ -120,6 +122,7 @@ def game_loop():
         player.move()
         # PLACE BODY / ITEMS
         for item in grid.items:
+            # pdb.set_trace()
             pygame.draw.circle(gameDisplay, pink, item.pos, grid.tile_radius, 0)
         # MOUSE IMG
         for tile in grid.tiles.values():
@@ -128,9 +131,8 @@ def game_loop():
         # MENU / RADAR
         if menu:
             # pygame.draw.circle(gameDisplay, green, player.pos, grid.tile_radius * 3, 0)
-            pass
-
-            # # RADAR
+            player.radar(grid, radar, pygame, gameDisplay, green)
+            # RADAR
             # limit = grid.tile_radius * 2
             # thikness = range(1, grid.tile_radius)
             # thikness.reverse()
@@ -142,9 +144,9 @@ def game_loop():
             #     # FILL TERRITORY UNGREY
             #     if radar == limit:
             #         grid.revealed_radius.append((player.pos, (grid.tile_radius + radar)))
-            # # ongoing radar
-            # # else:
-            # #     radar = 0
+            # ongoing radar
+            # else:
+            #     radar = 0
 
         # ANIMATION PLACEMENT
         # MOVEMENT ONLY IF TRACKS POPULATED

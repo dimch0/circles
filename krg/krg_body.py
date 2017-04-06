@@ -116,3 +116,19 @@ class Body(Item):
 
         move_option = Item()
         self.options.append(move_option)
+
+
+
+    def radar(self, grid, radar, pygame, gameDisplay, green):
+        limit = grid.tile_radius * 2
+        thikness = range(1, grid.tile_radius)
+        thikness.reverse()
+        if radar < limit:
+            for thik in thikness:
+                print thik
+                if radar < limit / thik:
+                    pygame.draw.circle(gameDisplay, green, self.pos, grid.tile_radius + radar, thik)
+            radar += 1
+            # FILL TERRITORY UNGREY
+            if radar == limit:
+                grid.revealed_radius.append((self.pos, (grid.tile_radius + radar)))
