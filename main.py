@@ -21,17 +21,16 @@ pink = (252, 217, 229)
 green = (210, 255, 191)
 
 # DEFAULT SCALE IS 1, INCREASE THE NUMBER FOR A SMALLER SIZE
-SCALE = 1
-FPS = 100
-SPEED = 5
+SCALE = 4
+FPS = 30
 SHOW_GRID = 0
 
 # SETTINGS
 circle_radius = 30 / SCALE
 display_width = 600 / SCALE
 display_height = 600 / SCALE
-mid_x = int(display_width/2)
-mid_y = int(display_height/2)
+mid_x = int(display_width/2) - int (10 / SCALE)
+mid_y = int(display_height/2) - int (10 / SCALE)
 gameDisplay = pygame.display.set_mode((display_width, display_height))
 pygame.display.set_caption('krg')
 clock = pygame.time.Clock()
@@ -57,8 +56,11 @@ def game_loop():
     print "INFO Game started"
     pygame.mouse.set_visible(1)
     game_exit = False
-    player.pos = (285, 270)
+    for tile in grid.tiles.values():
+        if krg_utils.in_circle(tile, grid.tile_radius, (mid_y, mid_y)):
+            player.pos = tile
 
+    # TODO: make action on SPACEBAR
     action = False
     # radar = 0
 
