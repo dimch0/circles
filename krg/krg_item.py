@@ -2,7 +2,7 @@
 ================================== Item / Body class ==================================
 """
 
-
+import pdb
 from math import sqrt
 from krg_grid import Grid
 
@@ -12,6 +12,7 @@ class Item(object):
     This is the base class for all circle items
     """
     def __init__(self):
+        self.name = None
         self.pos = ()
         self.move_track = []
         self.color = None
@@ -20,11 +21,6 @@ class Item(object):
         self.in_menu = False
         # self.clicked = False
 
-    def clicked(self):
-        """
-        :return: True or False if clicked
-        """
-        pass
 
     def menu(self, clicked_circle, grid):
         """
@@ -36,7 +32,6 @@ class Item(object):
         # TODO: Backup and restore items under options
         # TODO: Set all options position correctly
         # TODO: Show backgourd menu
-
         if clicked_circle == self.pos:
             if self.in_menu == False:
                 self.in_menu = True
@@ -44,6 +39,7 @@ class Item(object):
                 self.in_menu = False
         else:
             self.in_menu = False
+
 
 
         for option in self.options:
@@ -92,6 +88,7 @@ class Body(Item):
     """
     def __init__(self):
         super(Body, self).__init__()
+        self.name = "body"
         self.range = 1
         self.speed = 5
         self.muscle = 1
@@ -115,10 +112,8 @@ class Body(Item):
         self.status = []
 
         move_option = Item()
+        move_option.name = "move"
         self.options.append(move_option)
-
-
-
 
         self.radar_limit = 0
         self.radar_waves = 0

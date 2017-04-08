@@ -20,6 +20,7 @@ class Grid(object):
         self.items = []
         self.mouse_mode = None
         self.mouse_img = None
+        self.mode = []
 
     @staticmethod
     def grid_gen(circle_radius):

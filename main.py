@@ -8,7 +8,7 @@ import time
 import random
 from pygame.locals import *
 
-from krg import krg_body, krg_grid, krg_utils
+from krg import krg_item, krg_grid, krg_utils
 pygame.init()
 
 
@@ -21,7 +21,7 @@ pink = (252, 217, 229)
 green = (210, 255, 191)
 
 # DEFAULT SCALE IS 1, INCREASE THE NUMBER FOR A SMALLER SIZE
-SCALE = 4
+SCALE = 2
 FPS = 30
 SHOW_GRID = 0
 
@@ -38,84 +38,68 @@ clock = pygame.time.Clock()
 
 grid = krg_grid.Grid(circle_radius)
 grid.tiles = grid.grid_gen(grid.tile_radius)
-player = krg_body.Body()
+player = krg_item.Body()
 grid.items.append(player)
 
-
-
-print "INFO Player born."
-print "INFO Grid created."
-print "INFO Grid tiles:", grid.tiles.keys()
-print "INFO Number of tiles:", len(grid.tiles.keys())
 
 
 def game_loop():
     """
     main game loop
     """
-    print "INFO Game started"
+
     pygame.mouse.set_visible(1)
     game_exit = False
+    # Starting position of body
     for tile in grid.tiles.values():
         if krg_utils.in_circle(tile, grid.tile_radius, (mid_y, mid_y)):
             player.pos = tile
 
-    # TODO: make action on SPACEBAR
-    action = False
-    # radar = 0
+    # TODO: change grid.mode on SPACEBAR
 
     while not game_exit:
-        # MOUSE POSITION X AND Y
         mouse_pos = pygame.mouse.get_pos()
-
         for event in pygame.event.get():
-            # print event
             if event.type == pygame.QUIT:
                 game_exit = True
 
-            # CLICK EVENTS
+            #------------------- CLICK EVENTS -------------------#
             if event.type == pygame.MOUSEBUTTONDOWN:
                 clicked_circle = krg_grid.Grid.mouse_in_tile(grid.tile_radius, mouse_pos)
-                print ">>>> click:", mouse_pos, "circle:", clicked_circle
-
-                player.radar_limit = 0
-
                 if clicked_circle:
 
-                    # TODO: CHECK MODE
-                    # TODO: CHECK TILE
-                    # TODO: CHECK ITEM
-
-                    # ITEM MENU OPTIONS
-                    # for item in grid.items:
-                    #     item.menu(clicked_circle, grid)
-
-                    # TODO: CHECK WHICH OPTION IS SELECTED
-                    # TODO: EXECUTED OPTION
-
                     # MOVEMENT TRACKS POPULATING
-                    player.tracks(clicked_circle)
-                    # print "track:", track
+                    if "move" in grid.mode and not player.in_menu:
+                        player.tracks(clicked_circle)
 
-                if krg_utils.in_circle(player.pos, grid.tile_radius, mouse_pos) and not action:
-                    action = True
-                else:
-                    action = False
+                    # SETTING THE MODE
+                    for item in grid.items:
+                        if clicked_circle == item.pos:
+                            if not item.name in grid.mode:
+                                grid.mode.append(item.name)
 
+                    # Check for item menu
+                    for item in grid.items:
+                        item.menu(clicked_circle, grid)
+
+
+
+                print "grid_items;", [item.name for item in grid.items]
+                print ">>>> click:", mouse_pos, "circle:", clicked_circle, "" "mode:", grid.mode
+            # ------------------- CLICK EVENTS -------------------#
 
 
         # PLACE BACKGROUND
         gameDisplay.fill(grey)
         # PLACE REVEALED CIRCLES
-        for rgrid in grid.revealed_radius:
-            pygame.draw.circle(gameDisplay, ungrey, rgrid[0], rgrid[1], 0)
+        for revealed in grid.revealed_radius:
+            pygame.draw.circle(gameDisplay, ungrey, revealed[0], revealed[1], 0)
         # PLACE GRID
         if SHOW_GRID:
             for tile in grid.tiles.values():
                 pygame.draw.circle(gameDisplay, white, tile, grid.tile_radius, 1)
         # PLACE ANIMATION
         # PLACE RADAR
-        # if action:
         if 0:
             radar_radius, thik = player.radar(grid)
             if radar_radius and thik:
