@@ -30,8 +30,8 @@ class Grid(object):
         """
         result = {}
         katet = int(sqrt(((2 * circle_radius) ** 2) - (circle_radius ** 2)))
-        for x in range(0, 12):
-            for y in range(1, 20):
+        for x in range(0, 11):
+            for y in range(1, 24):
                 if x % 2 == y % 2:
                     centre_x = circle_radius + (x * katet)
                     centre_y = y * circle_radius

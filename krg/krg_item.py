@@ -11,15 +11,15 @@ class Item(object):
     """
     This is the base class for all circle items
     """
-    def __init__(self):
-        self.name = None
+    def __init__(self, name):
+        self.name = name
         self.pos = ()
         self.move_track = []
+        self.radar_track = []
         self.color = None
         self.current_img = None
         self.options = []
         self.in_menu = False
-        # self.clicked = False
 
 
     def menu(self, clicked_circle, grid):
@@ -40,18 +40,22 @@ class Item(object):
         else:
             self.in_menu = False
 
-
-
         for option in self.options:
             if self.in_menu:
                 # TODO: set all options position correctly
-                option.pos = (self.pos[0], self.pos[1] + grid.tile_radius * 2)
-                if not option in grid.items:
-                    grid.items.append(option)
+                if option.name == "move":
+                    option.pos = (self.pos[0], self.pos[1] + grid.tile_radius * 2)
+                    if not option in grid.items:
+                        grid.items.append(option)
+                if option.name == "radar":
+                    option.pos = (self.pos[0], self.pos[1] - grid.tile_radius * 2)
+                    if not option in grid.items:
+                        grid.items.append(option)
+
             elif not self.in_menu and option in grid.items:
                 grid.items.remove(option)
 
-    def tracks(self, Point_B):
+    def gen_move_track(self, Point_B):
         """
         This method moves the item from the current position to Point_B.
         :param Point_B: coordinates of destination point B (x, y)
@@ -84,73 +88,67 @@ class Item(object):
 
 class Body(Item):
     """
-    This class holds all attributes and metrics of the player
+    This class holds all attributes and metrics of your body
     """
     def __init__(self):
-        super(Body, self).__init__()
-        self.name = "body"
-        self.range = 1
-        self.speed = 5
+        super(Body, self).__init__(name="my body")
+        self.range = 4
+        self.speed = 4
         self.muscle = 1
         self.mind = 0
-
         self.ego = 0
         self.charm = 1
         self.lux = 1
-
         self.vision = 1
         self.audio = 0
         self.smell = 0
         self.touch = 0
         self.eat = 0
-
         self.spirit_pool = 100
         self.lifespan = 100
         self.hygiene = 100
         self.stress = 0
-
         self.status = []
-
-        move_option = Item()
-        move_option.name = "move"
+        # TODO Separate menu items generation
+        move_option = Item(name="move")
+        radar_option = Item(name="radar")
         self.options.append(move_option)
+        self.options.append(radar_option)
 
-        self.radar_limit = 0
-        self.radar_waves = 0
-        self.radar_thikness = 0
+
+    def gen_radar_track(self, grid, SCALE):
+        """
+        :param grid: grid object
+        :param SCALE: SCALE size parameter
+        :return: a list of tuples for each radar circle iteration
+        with the radius, thickness:
+        (31, 10), (32, 10), (33, 10)
+        """
+
+        radar_thickness = range(1, (10 / SCALE) + 1)
+        radar_thickness.reverse()
+        radar_limit = (grid.tile_radius * 2 * self.range) + 1 + grid.tile_radius
+        radar_radius = range(grid.tile_radius + 1, radar_limit)
+        radar_delimiter = (radar_radius[-1] - radar_radius[0]) / radar_thickness[0]
+        result = []
+
+        for thick in radar_thickness:
+            for rad_delim in range(radar_delimiter + 1):
+                result.append(thick)
+
+        self.radar_track = zip(radar_radius, result)
+        return self.radar_track
 
     def radar(self, grid):
-        # TODO: MAKE ITEM RADAR WAVES
-        self.radar_limit = grid.tile_radius * self.range * 2
-        self.radar_thikness = range(1, grid.tile_radius)
-        self.radar_thikness.reverse()
-        radar_radius, thik = None, None
-        if not radar_radius and not thik:
-            if self.radar_waves < self.radar_limit:
-                for thik in self.radar_thikness:
-                    if self.radar_waves < self.radar_limit / thik:
-                        # pygame.draw.circle(gameDisplay, green, self.pos, grid.tile_radius + self.radar_waves, thik)
-                        radar_radius, thik = grid.tile_radius + self.radar_waves, thik
-                self.radar_waves += 1
-                # FILL TERRITORY UNGREY
-                if self.radar_waves == self.radar_limit:
-                    self.radar_waves = 0
-                    grid.revealed_radius.append((self.pos, (grid.tile_radius + self.radar_waves)))
-        return radar_radius, thik
+        """
+        :param grid: grid object
+        :return: the radius and thickness for each wave
+        from the radar_track list and removes after returning it
+        """
+        radar_radius, thick = None, None
+        if self.radar_track:
+            radar_radius, thick = self.radar_track[0]
+            self.radar_track.pop(0)
 
-
-        # RADAR
-        # limit = grid.tile_radius * 2
-        # thikness = range(1, grid.tile_radius)
-        # thikness.reverse()
-        # if radar < limit:
-        #     for thik in thikness:
-        #         if radar < limit / thik:
-        #             pygame.draw.circle(gameDisplay, green, player.pos, grid.tile_radius + radar, thik)
-        #     radar += 1
-        #     # FILL TERRITORY UNGREY
-        #     if radar == limit:
-        #         grid.revealed_radius.append((player.pos, (grid.tile_radius + radar)))
-        # ongoing radar
-        # else:
-        #     radar = 0
+        grid.revealed_radius.append(((self.pos), radar_radius))
+        return radar_radius, thick
