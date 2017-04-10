@@ -29,7 +29,7 @@ class Item(object):
         :param grid:
         :return:
         """
-        # TODO: Backup and restore items under options
+        # TODO: Backup and restore existing items under menu items
         # TODO: Set all options position correctly
         # TODO: Show backgourd menu
         if clicked_circle == self.pos:
@@ -42,7 +42,6 @@ class Item(object):
 
         for option in self.options:
             if self.in_menu:
-                # TODO: set all options position correctly
                 if option.name == "move":
                     option.pos = (self.pos[0], self.pos[1] + grid.tile_radius * 2)
                     if not option in grid.items:

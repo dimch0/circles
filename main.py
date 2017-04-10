@@ -137,7 +137,7 @@ def game_loop():
         # -------------------------------------- ANIMATIONS -------------------------------------- #
 
         pygame.display.update()
-        # TODO: check changed vars to blit stuff
+        # TODO: check changes for placement
         clock.tick(FPS)
     pygame.quit()
     quit()
