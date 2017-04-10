@@ -12,8 +12,8 @@ class Body(Item):
     """
     def __init__(self):
         super(Body, self).__init__(name="my body")
-        self.range = 1
-        self.speed = 3
+        self.range = 4
+        self.speed = 10
         self.muscle = 1
         self.mind = 0
         self.ego = 0
@@ -67,8 +67,8 @@ class Body(Item):
         """
         radar_radius, thick = None, None
         if self.radar_track:
+            # for track in self.radar_track:
             radar_radius, thick = self.radar_track[0]
             self.radar_track.pop(0)
-
-        grid.revealed_radius.append(((self.pos), radar_radius))
+            grid.revealed_radius.append(((self.pos), radar_radius))
         return radar_radius, thick
