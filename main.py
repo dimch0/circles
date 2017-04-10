@@ -9,7 +9,7 @@ import time
 import random
 from pygame.locals import *
 
-from krg import krg_item, krg_grid, krg_utils
+from krg import krg_item, krg_grid, krg_utils, krg_body
 pygame.init()
 
 
@@ -22,19 +22,19 @@ pink = (252, 217, 229)
 green = (210, 255, 191)
 
 # DEFAULT SCALE IS 1, INCREASE THE NUMBER FOR A SMALLER SIZE
-SCALE = 1
-FPS = 300
-SHOW_GRID = 1
+SCALE = 2
+FPS = 30
+SHOW_GRID = 0
 
 
 
 # SETTINGS
 circle_radius = 30 / SCALE
 katet = int(sqrt(((2 * circle_radius) ** 2) - (circle_radius ** 2)))
-display_width = katet * 10 + circle_radius * 2 / SCALE
-display_height = 24 * circle_radius / SCALE
-mid_x = int(display_width/2) - int (10 / SCALE)
-mid_y = int(display_height/2) - int (10 / SCALE)
+display_width = (katet * 10) + (circle_radius * 2)
+display_height = 24 * circle_radius
+
+
 gameDisplay = pygame.display.set_mode((display_width, display_height))
 pygame.display.set_caption('krg')
 clock = pygame.time.Clock()
@@ -42,7 +42,7 @@ clock = pygame.time.Clock()
 
 grid = krg_grid.Grid(circle_radius)
 grid.tiles = grid.grid_gen(grid.tile_radius)
-my_body = krg_item.Body()
+my_body = krg_body.Body()
 grid.items.append(my_body)
 
 
@@ -53,12 +53,9 @@ def game_loop():
     pygame.mouse.set_visible(1)
     game_exit = False
 
-    # TODO: integrate starting position to grid class
-    # TODO: change grid.mode on SPACEBAR
     # Starting position of body
-    for tile in grid.tiles.values():
-        if krg_utils.in_circle(tile, grid.tile_radius, (mid_y, mid_y)):
-            my_body.pos = tile
+    my_body.pos = grid.starting_pos(display_width, display_height)
+
 
     while not game_exit:
         mouse_pos = pygame.mouse.get_pos()
@@ -66,19 +63,18 @@ def game_loop():
             if event.type == pygame.QUIT:
                 game_exit = True
 
-            # ------------------- SPACEBAR EVENTS ------------------- #
             # TODO: K_ESCAPE screen
-
+            # -------------------------------------- SPACEBAR EVENTS -------------------------------------- #
             # Radar track populating
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     print ">>>> space"
                     if "radar" in grid.mode:
                         my_body.gen_radar_track(grid, SCALE)
-            # ------------------- SPACEBAR EVENTS ------------------- #
+            # -------------------------------------- SPACEBAR EVENTS -------------------------------------- #
 
 
-            # ------------------- CLICK EVENTS ------------------- #
+            # -------------------------------------- CLICK EVENTS -------------------------------------- #
             if event.type == pygame.MOUSEBUTTONDOWN:
                 clicked_circle = krg_grid.Grid.mouse_in_tile(grid.tile_radius, mouse_pos)
                 if clicked_circle:
@@ -103,9 +99,9 @@ def game_loop():
 
                 print("grid_items: {0}".format([item.name for item in grid.items]))
                 print(">>>> click: {0}, circle: {1}, mode: {2}".format(mouse_pos, clicked_circle, grid.mode))
-            # ------------------- CLICK EVENTS ------------------- #
+            # -------------------------------------- CLICK EVENTS -------------------------------------- #
 
-        # ------------------- BACKGROUND ------------------- #
+        # -------------------------------------- BACKGROUND -------------------------------------- #
         # Background
         gameDisplay.fill(grey)
         # Revealed radius
@@ -115,9 +111,10 @@ def game_loop():
         if SHOW_GRID:
             for tile in grid.tiles.values():
                 pygame.draw.circle(gameDisplay, white, tile, grid.tile_radius, 1)
-        # ------------------- BACKGROUND ------------------- #
+        # -------------------------------------- BACKGROUND -------------------------------------- #
 
-        # ------------------- ANIMATIONS ------------------- #
+
+        # -------------------------------------- ANIMATIONS -------------------------------------- #
         # Radar
         if my_body.radar_track:
             radar_radius, thick = my_body.radar(grid)
@@ -133,13 +130,11 @@ def game_loop():
         for item in grid.items:
             pygame.draw.circle(gameDisplay, pink, item.pos, grid.tile_radius, 0)
 
-
-
         # Mouse image
         for tile in grid.tiles.values():
             if krg_utils.in_circle(tile, grid.tile_radius, mouse_pos):
                 pygame.draw.circle(gameDisplay, white, tile, grid.tile_radius, 1)
-        # ------------------- ANIMATIONS ------------------- #
+        # -------------------------------------- ANIMATIONS -------------------------------------- #
 
         pygame.display.update()
         # TODO: check changed vars to blit stuff

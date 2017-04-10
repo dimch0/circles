@@ -13,7 +13,7 @@ class Grid(object):
     """
     def __init__(self, circle_radius):
         self.tile_radius = circle_radius
-        self.tiles = []
+        self.tiles = {}
         self.occupado = []
         self.revealed = []
         self.revealed_radius = []
@@ -38,7 +38,6 @@ class Grid(object):
                     centre = (centre_x, centre_y)
                     name = "{0}, {1}".format(x, y)
                     result[name] = centre
-                    # pygame.draw.circle(gameDisplay, white, centre, circle_radius, 1)
         return result
 
     @staticmethod
@@ -49,3 +48,18 @@ class Grid(object):
             if in_circle(circle, circle_radius, mouse_pos):
                 current_circle = circle
         return current_circle
+
+    def starting_pos(self, display_width, display_height):
+        """
+        :param display_width:
+        :param display_height:
+        :return: the tile (x, y) of the center tile
+        """
+        mid_x = int(display_width / 2)
+        mid_y = int(display_height / 2)
+        result = None
+        for tile in self.tiles.values():
+            if in_circle(tile, self.tile_radius, (mid_x, mid_y)):
+                result = tile
+                break
+        return result
