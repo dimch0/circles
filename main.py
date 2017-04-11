@@ -22,7 +22,7 @@ pink = (252, 217, 229)
 green = (210, 255, 191)
 
 # DEFAULT SCALE IS 1, INCREASE THE NUMBER FOR A SMALLER SIZE
-SCALE = 2
+SCALE = 4
 FPS = 30
 SHOW_GRID = 0
 
@@ -41,7 +41,7 @@ clock = pygame.time.Clock()
 
 
 grid = krg_grid.Grid(circle_radius)
-grid.tiles = grid.grid_gen(grid.tile_radius)
+grid.grid_gen()
 my_body = krg_body.Body()
 grid.items.append(my_body)
 
@@ -76,12 +76,13 @@ def game_loop():
 
             # -------------------------------------- CLICK EVENTS -------------------------------------- #
             if event.type == pygame.MOUSEBUTTONDOWN:
-                clicked_circle = krg_grid.Grid.mouse_in_tile(grid.tile_radius, mouse_pos)
+
+                clicked_circle = grid.mouse_in_tile(mouse_pos)
                 if clicked_circle:
 
                     # Movement track populating
                     if "move" in grid.mode and not my_body.in_menu:
-                        my_body.gen_move_track(clicked_circle)
+                        my_body.gen_move_track(clicked_circle, grid)
 
                     # Radar track populating
                     if "radar" in grid.mode:
@@ -97,7 +98,8 @@ def game_loop():
                     for item in grid.items:
                         item.menu(clicked_circle, grid)
 
-                print("grid_items: {0}".format([item.name for item in grid.items]))
+                print("grid items: {0}".format(grid.items))
+                # print("revealed tiles: {0}".format(grid.revealed_tiles))
                 print(">>>> click: {0}, circle: {1}, mode: {2}".format(mouse_pos, clicked_circle, grid.mode))
             # -------------------------------------- CLICK EVENTS -------------------------------------- #
 
@@ -109,7 +111,7 @@ def game_loop():
             pygame.draw.circle(gameDisplay, ungrey, revealed[0], revealed[1], 0)
         # Grid
         if SHOW_GRID:
-            for tile in grid.tiles.values():
+            for tile in grid.tiles:
                 pygame.draw.circle(gameDisplay, white, tile, grid.tile_radius, 1)
         # -------------------------------------- BACKGROUND -------------------------------------- #
 
@@ -131,7 +133,7 @@ def game_loop():
             pygame.draw.circle(gameDisplay, pink, item.pos, grid.tile_radius, 0)
 
         # Mouse image
-        for tile in grid.tiles.values():
+        for tile in grid.tiles:
             if krg_utils.in_circle(tile, grid.tile_radius, mouse_pos):
                 pygame.draw.circle(gameDisplay, white, tile, grid.tile_radius, 1)
         # -------------------------------------- ANIMATIONS -------------------------------------- #

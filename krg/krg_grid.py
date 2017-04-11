@@ -13,41 +13,41 @@ class Grid(object):
     """
     def __init__(self, circle_radius):
         self.tile_radius = circle_radius
-        self.tiles = {}
-        self.occupado = []
-        self.revealed = []
+        self.tiles = []
+        self.occupado_tiles = []
+        self.revealed_tiles = []
         self.revealed_radius = []
         self.items = []
         self.mouse_mode = None
         self.mouse_img = None
         self.mode = []
 
-    @staticmethod
-    def grid_gen(circle_radius):
+    def grid_gen(self):
         """
-        :param circle_radius:
-        :return:
+        :return: generating the grid tiles
         """
-        result = {}
-        katet = int(sqrt(((2 * circle_radius) ** 2) - (circle_radius ** 2)))
+        katet = int(sqrt(((2 * self.tile_radius) ** 2) - (self.tile_radius ** 2)))
         for x in range(0, 11):
             for y in range(1, 24):
                 if x % 2 == y % 2:
-                    centre_x = circle_radius + (x * katet)
-                    centre_y = y * circle_radius
+                    centre_x = self.tile_radius + (x * katet)
+                    centre_y = y * self.tile_radius
                     centre = (centre_x, centre_y)
-                    name = "{0}, {1}".format(x, y)
-                    result[name] = centre
-        return result
+                    if not centre in self.tiles:
+                        self.tiles.append(centre)
+        return self.tiles
 
-    @staticmethod
-    def mouse_in_tile(circle_radius, mouse_pos):
-        current_circle = None
-        grid = Grid.grid_gen(circle_radius)
-        for tile, circle in grid.items():
-            if in_circle(circle, circle_radius, mouse_pos):
-                current_circle = circle
-        return current_circle
+    def mouse_in_tile(self, mouse_pos):
+        """
+        :param mouse_pos: position of the mouse
+        :return: returns the current tile, the mouse is in
+         or None if there is no such
+        """
+        current_tile = None
+        for tile in self.tiles:
+            if in_circle(tile, self.tile_radius, mouse_pos):
+                current_tile = tile
+        return current_tile
 
     def starting_pos(self, display_width, display_height):
         """
@@ -58,7 +58,7 @@ class Grid(object):
         mid_x = int(display_width / 2)
         mid_y = int(display_height / 2)
         result = None
-        for tile in self.tiles.values():
+        for tile in self.tiles:
             if in_circle(tile, self.tile_radius, (mid_x, mid_y)):
                 result = tile
                 break

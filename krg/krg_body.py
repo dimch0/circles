@@ -4,7 +4,7 @@
 
 
 from krg_item import Item
-
+from krg_utils import in_circle
 
 class Body(Item):
     """
@@ -13,7 +13,7 @@ class Body(Item):
     def __init__(self):
         super(Body, self).__init__(name="my body")
         self.range = 1
-        self.speed = 3
+        self.speed = 2
         self.muscle = 1
         self.mind = 0
         self.ego = 0
@@ -64,11 +64,17 @@ class Body(Item):
         :param grid: grid object
         :return: the radius and thickness for each wave
         from the radar_track list and removes after returning it
+        Also defines the revealed tiles
         """
         radar_radius, thick = None, None
         if self.radar_track:
             radar_radius, thick = self.radar_track[0]
             self.radar_track.pop(0)
 
+        # Mark tiles as revealed
         grid.revealed_radius.append(((self.pos), radar_radius))
+        for tile in grid.tiles:
+            if in_circle(self.pos, radar_radius, tile) and tile not in grid.revealed_tiles:
+                grid.revealed_tiles.append(tile)
+
         return radar_radius, thick

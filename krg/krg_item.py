@@ -54,7 +54,7 @@ class Item(object):
             elif not self.in_menu and option in grid.items:
                 grid.items.remove(option)
 
-    def gen_move_track(self, Point_B):
+    def gen_move_track(self, Point_B, grid):
         """
         This method moves the item from the current position to Point_B.
         :param Point_B: coordinates of destination point B (x, y)
@@ -62,24 +62,23 @@ class Item(object):
         :return: a list of steps from point A to point B
         """
         self.move_track = []
-        ax = self.pos[0]
-        ay = self.pos[1]
-        bx = Point_B[0]
-        by = Point_B[1]
-        dx, dy = (bx - ax, by - ay)
-        distance = sqrt(dx ** 2 + dy ** 2)
-        steps_number = int(distance / self.speed)
-        if steps_number > 0:
-            stepx, stepy = int(dx / steps_number), int(dy / steps_number)
-            for i in range(steps_number + 1):
-                step = (int(ax + stepx * i), int(ay + stepy * i))
-                self.move_track.append(step)
-        self.move_track.append(Point_B)
+        if Point_B in grid.revealed_tiles:
+            ax = self.pos[0]
+            ay = self.pos[1]
+            bx = Point_B[0]
+            by = Point_B[1]
+            dx, dy = (bx - ax, by - ay)
+            distance = sqrt(dx ** 2 + dy ** 2)
+            steps_number = int(distance / self.speed)
+            if steps_number > 0:
+                stepx, stepy = int(dx / steps_number), int(dy / steps_number)
+                for i in range(steps_number + 1):
+                    step = (int(ax + stepx * i), int(ay + stepy * i))
+                    self.move_track.append(step)
+            self.move_track.append(Point_B)
         return self.move_track
 
     def move(self):
         if self.move_track:
             self.pos = self.move_track[0]
             self.move_track.pop(0)
-
-
