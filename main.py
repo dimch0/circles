@@ -1,6 +1,8 @@
-"""
-================================== Main file ==================================
-"""
+#######################################################################################################################
+#################                                                                                     #################
+#################                                 Main file                                           #################
+#################                                                                                     #################
+#######################################################################################################################
 
 import pdb
 from math import sqrt
@@ -42,7 +44,7 @@ clock = pygame.time.Clock()
 
 grid = krg_grid.Grid(circle_radius)
 grid.grid_gen()
-my_body = krg_body.Body()
+my_body = krg_body.BodyItem()
 grid.items.append(my_body)
 
 
@@ -74,7 +76,7 @@ def game_loop():
             # -------------------------------------- SPACEBAR EVENTS -------------------------------------- #
 
 
-            # -------------------------------------- CLICK EVENTS -------------------------------------- #
+            # -------------------------------------- CLICK EVENTS ----------------------------------------- #
             if event.type == pygame.MOUSEBUTTONDOWN:
 
                 clicked_circle = grid.mouse_in_tile(mouse_pos)
@@ -96,12 +98,12 @@ def game_loop():
 
                     # Check for item menu
                     for item in grid.items:
-                        item.menu(clicked_circle, grid)
+                        item.open_menu(clicked_circle, grid)
 
-                print("grid items: {0}".format(grid.items))
+                print("grid items: {0}".format([item.name for item in grid.items]))
                 # print("revealed tiles: {0}".format(grid.revealed_tiles))
                 print(">>>> click: {0}, circle: {1}, mode: {2}".format(mouse_pos, clicked_circle, grid.mode))
-            # -------------------------------------- CLICK EVENTS -------------------------------------- #
+            # ------------------------------------- CLICK EVENTS ----------------------------------------- #
 
         # -------------------------------------- BACKGROUND -------------------------------------- #
         # Background
@@ -137,6 +139,7 @@ def game_loop():
             if krg_utils.in_circle(tile, grid.tile_radius, mouse_pos):
                 pygame.draw.circle(gameDisplay, white, tile, grid.tile_radius, 1)
         # -------------------------------------- ANIMATIONS -------------------------------------- #
+
 
         pygame.display.update()
         # TODO: check changes for placement

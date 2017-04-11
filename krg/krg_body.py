@@ -1,19 +1,24 @@
-"""
-================================== Body class ==================================
-"""
+#######################################################################################################################
+#################                                                                                     #################
+#################                                 BodyItem class                                      #################
+#################                                                                                     #################
+#######################################################################################################################
 
 
-from krg_item import Item
+
+from krg_item import Item, MobileItem
 from krg_utils import in_circle
 
-class Body(Item):
+class BodyItem(MobileItem):
     """
     This class holds all attributes and metrics of your body
     """
     def __init__(self):
-        super(Body, self).__init__(name="my body")
+        super(BodyItem, self).__init__()
+        self.name = "my body"
         self.range = 1
-        self.speed = 2
+        self.radar_track = []
+
         self.muscle = 1
         self.mind = 0
         self.ego = 0

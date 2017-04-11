@@ -1,37 +1,40 @@
-"""
-================================== Item class ==================================
-"""
+#######################################################################################################################
+#################                                                                                     #################
+#################                     Item class / MobileItem class                                   #################
+#################                                                                                     #################
+#######################################################################################################################
 
 import pdb
 from math import sqrt
 from krg_grid import Grid
 
-
 class Item(object):
     """
     This is the base class for all circle items
+    It includes the open_menu method.
     """
     def __init__(self, name):
         self.name = name
         self.pos = ()
-        self.move_track = []
-        self.radar_track = []
         self.color = None
         self.current_img = None
         self.options = []
         self.in_menu = False
 
 
-    def menu(self, clicked_circle, grid):
+    def open_menu(self, clicked_circle, grid):
         """
-        This method shows all options for the item and
+        This method opens the menu with
+        all options for the item and
         temporary disables the other items on the same positions.
-        :param grid:
-        :return:
+        :param grid: the given grid instance
         """
         # TODO: Backup and restore existing items under menu items
         # TODO: Set all options position correctly
         # TODO: Show backgourd menu
+        # TODO: return option image and color
+        # TODO: make function to blit option
+
         if clicked_circle == self.pos:
             if self.in_menu == False:
                 self.in_menu = True
@@ -54,6 +57,18 @@ class Item(object):
             elif not self.in_menu and option in grid.items:
                 grid.items.remove(option)
 
+
+class MobileItem(Item):
+    """
+    This is the base class for all circle items
+    """
+    # TODO: change naming
+    def __init__(self):
+        super(MobileItem, self).__init__(name="Mobile Item")
+        self.speed = 2
+        self.pos = ()
+        self.move_track = []
+
     def gen_move_track(self, Point_B, grid):
         """
         This method moves the item from the current position to Point_B.
@@ -62,6 +77,7 @@ class Item(object):
         :return: a list of steps from point A to point B
         """
         self.move_track = []
+        # Movement forbidden outside revealed_tiles of the grid
         if Point_B in grid.revealed_tiles:
             ax = self.pos[0]
             ay = self.pos[1]
@@ -79,6 +95,9 @@ class Item(object):
         return self.move_track
 
     def move(self):
+        """
+        :return: move self.pos per point in move_track
+        """
         if self.move_track:
             self.pos = self.move_track[0]
             self.move_track.pop(0)
