@@ -6,7 +6,6 @@
 
 import pdb
 from math import sqrt
-from krg_grid import Grid
 
 class Item(object):
     """

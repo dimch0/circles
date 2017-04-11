@@ -10,12 +10,13 @@ import pygame
 import time
 import random
 from pygame.locals import *
+# TODO: Check all files for obsolete imports
 
-from krg import krg_item, krg_grid, krg_utils, krg_body
+from krg import krg_grid, krg_utils, krg_body
 pygame.init()
 
-
 # COLORS
+# TODO: move colors in a config file
 white = (255, 255, 255)
 black = (0, 0, 0)
 ungrey = (195, 195, 195)
@@ -24,24 +25,24 @@ pink = (252, 217, 229)
 green = (210, 255, 191)
 
 # DEFAULT SCALE IS 1, INCREASE THE NUMBER FOR A SMALLER SIZE
+# TODO: move flags in a config file
 SCALE = 4
 FPS = 30
 SHOW_GRID = 0
 
-
-
 # SETTINGS
+# TODO: move settings in a config file
 circle_radius = 30 / SCALE
 katet = int(sqrt(((2 * circle_radius) ** 2) - (circle_radius ** 2)))
 display_width = (katet * 10) + (circle_radius * 2)
 display_height = 24 * circle_radius
 
-
+# GAME SETTINGS
 gameDisplay = pygame.display.set_mode((display_width, display_height))
 pygame.display.set_caption('krg')
 clock = pygame.time.Clock()
 
-
+# INITIALIZING GRID AND PLAYER
 grid = krg_grid.Grid(circle_radius)
 grid.grid_gen()
 my_body = krg_body.BodyItem()
@@ -50,7 +51,7 @@ grid.items.append(my_body)
 
 def game_loop():
     """
-    Main game loop
+    The main game loop.
     """
     pygame.mouse.set_visible(1)
     game_exit = False
