@@ -6,8 +6,8 @@
 
 
 
-from krg_item import Item, MobileItem
-from krg_utils import in_circle
+from cir_item import Item, MobileItem
+from cir_utils import in_circle
 
 class BodyItem(MobileItem):
     """
@@ -41,16 +41,15 @@ class BodyItem(MobileItem):
         self.options.append(radar_option)
 
 
-    def gen_radar_track(self, grid, SCALE):
+    def gen_radar_track(self, grid):
         """
         :param grid: grid object
-        :param SCALE: SCALE size parameter
         :return: a list of tuples for each radar circle iteration
         with the radius, thickness:
         (31, 10), (32, 10), (33, 10)
         """
 
-        radar_thickness = range(1, (10 / SCALE) + 1)
+        radar_thickness = range(1, (10 / grid.scale) + 1)
         radar_thickness.reverse()
         radar_limit = (grid.tile_radius * 2 * self.range) + 1 + grid.tile_radius
         radar_radius = range(grid.tile_radius + 1, radar_limit)

@@ -1,0 +1,20 @@
+{
+  "settings":  {
+    "scale": 4,
+    "fps": 30,
+    "show_grid": 1,
+    "tile_radius": 30,
+    "rows": 24,
+    "cols": 12,
+    "caption": "cir"
+    },
+
+  "colors": {
+    "black": [0, 0, 0],
+    "white": [255, 255, 255],
+    "ungrey": [195, 195, 195],
+    "grey": [175, 165, 175],
+    "pink": [252, 217, 229],
+    "green": [210, 255, 191]
+    }
+}

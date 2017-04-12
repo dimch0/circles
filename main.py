@@ -12,52 +12,28 @@ import random
 from pygame.locals import *
 # TODO: Check all files for obsolete imports
 
-from krg import krg_grid, krg_utils, krg_body
+from cir import cir_grid, cir_utils, cir_body
 pygame.init()
 
-# COLORS
-# TODO: move colors in a config file
-white = (255, 255, 255)
-black = (0, 0, 0)
-ungrey = (195, 195, 195)
-grey = (175, 165, 175)
-pink = (252, 217, 229)
-green = (210, 255, 191)
 
-# DEFAULT SCALE IS 1, INCREASE THE NUMBER FOR A SMALLER SIZE
-# TODO: move flags in a config file
-SCALE = 4
-FPS = 30
-SHOW_GRID = 0
-
-# SETTINGS
-# TODO: move settings in a config file
-circle_radius = 30 / SCALE
-katet = int(sqrt(((2 * circle_radius) ** 2) - (circle_radius ** 2)))
-display_width = (katet * 10) + (circle_radius * 2)
-display_height = 24 * circle_radius
+# CREATING GRID, PLAYER, ITEMS
+grid = cir_grid.Grid()
+my_body = cir_body.BodyItem()
+my_body.pos = grid.middle_tile
+grid.items.append(my_body)
 
 # GAME SETTINGS
-gameDisplay = pygame.display.set_mode((display_width, display_height))
-pygame.display.set_caption('krg')
+gameDisplay = pygame.display.set_mode((grid.display_width, grid.display_height))
+pygame.display.set_caption(grid.caption)
 clock = pygame.time.Clock()
-
-# INITIALIZING GRID AND PLAYER
-grid = krg_grid.Grid(circle_radius)
-grid.grid_gen()
-my_body = krg_body.BodyItem()
-grid.items.append(my_body)
+pygame.mouse.set_visible(1)
 
 
 def game_loop():
     """
     The main game loop.
     """
-    pygame.mouse.set_visible(1)
     game_exit = False
-
-    # Starting position of body
-    my_body.pos = grid.starting_pos(display_width, display_height)
 
 
     while not game_exit:
@@ -73,7 +49,7 @@ def game_loop():
                 if event.key == pygame.K_SPACE:
                     print ">>>> space"
                     if "radar" in grid.mode:
-                        my_body.gen_radar_track(grid, SCALE)
+                        my_body.gen_radar_track(grid)
             # -------------------------------------- SPACEBAR EVENTS -------------------------------------- #
 
 
@@ -108,14 +84,14 @@ def game_loop():
 
         # -------------------------------------- BACKGROUND -------------------------------------- #
         # Background
-        gameDisplay.fill(grey)
+        gameDisplay.fill(grid.grey)
         # Revealed radius
         for revealed in grid.revealed_radius:
-            pygame.draw.circle(gameDisplay, ungrey, revealed[0], revealed[1], 0)
+            pygame.draw.circle(gameDisplay, grid.ungrey, revealed[0], revealed[1], 0)
         # Grid
-        if SHOW_GRID:
+        if grid.show_grid:
             for tile in grid.tiles:
-                pygame.draw.circle(gameDisplay, white, tile, grid.tile_radius, 1)
+                pygame.draw.circle(gameDisplay, grid.white, tile, grid.tile_radius, 1)
         # -------------------------------------- BACKGROUND -------------------------------------- #
 
 
@@ -124,27 +100,27 @@ def game_loop():
         if my_body.radar_track:
             radar_radius, thick = my_body.radar(grid)
             if radar_radius and thick:
-                pygame.draw.circle(gameDisplay, green, my_body.pos, radar_radius, thick)
+                pygame.draw.circle(gameDisplay, grid.green, my_body.pos, radar_radius, thick)
 
         # Movement
         if my_body.move_track:
             my_body.move()
 
         # Items and Body
-        # TODO: blit for item.color
+        # TODO: blit for item.color and image
         for item in grid.items:
-            pygame.draw.circle(gameDisplay, pink, item.pos, grid.tile_radius, 0)
+            pygame.draw.circle(gameDisplay, grid.pink, item.pos, grid.tile_radius, 0)
 
         # Mouse image
         for tile in grid.tiles:
-            if krg_utils.in_circle(tile, grid.tile_radius, mouse_pos):
-                pygame.draw.circle(gameDisplay, white, tile, grid.tile_radius, 1)
+            if cir_utils.in_circle(tile, grid.tile_radius, mouse_pos):
+                pygame.draw.circle(gameDisplay, grid.white, tile, grid.tile_radius, 1)
         # -------------------------------------- ANIMATIONS -------------------------------------- #
 
 
         pygame.display.update()
         # TODO: check changes for placement
-        clock.tick(FPS)
+        clock.tick(grid.fps)
     pygame.quit()
     quit()
 
