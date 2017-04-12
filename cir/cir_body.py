@@ -11,8 +11,8 @@ class BodyItem(MobileItem):
     """
     This class holds all attributes and metrics of your body
     """
-    def __init__(self, name, color):
-        super(BodyItem, self).__init__(name, color)
+    def __init__(self, **kwargs):
+        super(BodyItem, self).__init__(**kwargs)
         self.range = 1
         self.radar_track = []
 

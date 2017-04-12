@@ -1,5 +1,5 @@
 {
-  "settings":  {
+  "grid_settings":  {
     "scale": 4,
     "fps": 30,
     "show_grid": 1,

@@ -29,7 +29,7 @@ grid.items.append(my_body)
 
 # Creating bokluk
 bokluk = cir_body.MobileItem(name="bokluk", color=grid.green)
-bokluk.pos = grid.tiles[50]
+bokluk.pos = (79, 98)
 grid.items.append(bokluk)
 
 # GAME SETTINGS
@@ -41,17 +41,15 @@ pygame.mouse.set_visible(1)
 
 def debug_print(mouse_pos, clicked_circle):
     print("""
->>>>>>
-click: {0}, circle: {1}
-modes: {2}
-grid items: {3}
-revealed tiles: {4}
-occupado tiles: {5}
+>>>>>> click: {0}
+tile        : {1}
+modes       : {2}
+grid items  : {3}
+occupado    : {4}
 """.format(mouse_pos,
            clicked_circle,
            grid.mode,
            [item.name for item in grid.items],
-           grid.revealed_tiles,
            grid.occupado_tiles))
 
 
@@ -76,6 +74,7 @@ def game_loop():
                     print ">>>> space"
                     if "radar" in grid.mode:
                         my_body.gen_radar_track(grid)
+                        print "revealed tiles: {0}".format(grid.revealed_tiles)
             # -------------------------------------- SPACEBAR EVENTS -------------------------------------- #
 
 
@@ -110,9 +109,13 @@ def game_loop():
         # -------------------------------------- BACKGROUND -------------------------------------- #
         # Background
         gameDisplay.fill(grid.grey)
+
         # Revealed radius
         for revealed in grid.revealed_radius:
             pygame.draw.circle(gameDisplay, grid.ungrey, revealed[0], revealed[1], 0)
+
+        # TODO: place menu background
+
         # Grid
         if grid.show_grid:
             for tile in grid.tiles:

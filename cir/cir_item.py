@@ -17,6 +17,7 @@ class Item(object):
         self.color = color
         self.current_img = None
         self.options = []
+        self.items_to_restore = []
         self.in_menu = False
 
 
@@ -45,24 +46,33 @@ class Item(object):
             if self.in_menu:
                 if option.name == "move":
                     option.pos = (self.pos[0], self.pos[1] + grid.tile_radius * 2)
-                    if not option in grid.items:
-                        grid.items.append(option)
+
                 if option.name == "radar":
                     option.pos = (self.pos[0], self.pos[1] - grid.tile_radius * 2)
-                    if not option in grid.items:
-                        grid.items.append(option)
+
+                if not option in grid.items:
+                    for item in grid.items:
+                        if option.pos == item.pos:
+                            self.items_to_restore.append(item)
+                            grid.items.remove(item)
+                    grid.items.append(option)
+
 
             elif not self.in_menu and option in grid.items:
                 grid.items.remove(option)
+                for rest_item in self.items_to_restore:
+                    if not rest_item in self.items_to_restore:
+                        grid.items.append(rest_item)
+
+        print "Items to restore:", self.items_to_restore, self.name
 
 
 class MobileItem(Item):
     """
     This is the base class for all circle items
     """
-    # TODO: use kwargs for name, color
-    def __init__(self, name, color):
-        super(MobileItem, self).__init__(name, color)
+    def __init__(self, **kwargs):
+        super(MobileItem, self).__init__(**kwargs)
         self.speed = 2
         self.pos = ()
         self.move_track = []
