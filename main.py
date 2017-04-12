@@ -25,12 +25,8 @@ pink = (252, 217, 229)
 green = (210, 255, 191)
 
 # DEFAULT SCALE IS 1, INCREASE THE NUMBER FOR A SMALLER SIZE
-<<<<<<< HEAD
 # TODO: move flags in a config file
 SCALE = 4
-=======
-SCALE = 1
->>>>>>> 4c8782d9e53098b416dfceb63a22a71bd29fd903
 FPS = 30
 SHOW_GRID = 0
 

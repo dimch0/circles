@@ -14,17 +14,11 @@ class BodyItem(MobileItem):
     This class holds all attributes and metrics of your body
     """
     def __init__(self):
-<<<<<<< HEAD
         super(BodyItem, self).__init__()
         self.name = "my body"
         self.range = 1
         self.radar_track = []
 
-=======
-        super(Body, self).__init__(name="my body")
-        self.range = 4
-        self.speed = 10
->>>>>>> 4c8782d9e53098b416dfceb63a22a71bd29fd903
         self.muscle = 1
         self.mind = 0
         self.ego = 0
@@ -82,7 +76,6 @@ class BodyItem(MobileItem):
             # for track in self.radar_track:
             radar_radius, thick = self.radar_track[0]
             self.radar_track.pop(0)
-<<<<<<< HEAD
 
         # Mark tiles as revealed
         grid.revealed_radius.append(((self.pos), radar_radius))
@@ -90,7 +83,4 @@ class BodyItem(MobileItem):
             if in_circle(self.pos, radar_radius, tile) and tile not in grid.revealed_tiles:
                 grid.revealed_tiles.append(tile)
 
-=======
-            grid.revealed_radius.append(((self.pos), radar_radius))
->>>>>>> 4c8782d9e53098b416dfceb63a22a71bd29fd903
         return radar_radius, thick
