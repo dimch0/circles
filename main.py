@@ -17,19 +17,32 @@ pygame.init()
 grid = cir_grid.Grid()
 
 # Creating player
-my_body = cir_body.BodyItem(name="my body", color=grid.pink)
+my_body = cir_body.BodyItem(name="my body", color=grid.pink, speed=4)
 my_body.pos = grid.center_tile
-# TODO Create MenuItem class
+# TODO: Create MenuItem class
+# TODO: menu item .pos = 1, menu to my_body
+
 move_option = cir_item.Item(name="move", color=grid.gelb)
+move_option.pos = (my_body.pos[0], my_body.pos[1] + grid.tile_radius * 2)
 radar_option = cir_item.Item(name="radar", color=grid.gelb)
+radar_option.pos = (my_body.pos[0], my_body.pos[1] + grid.tile_radius * 2)
+menu_option_2 = cir_item.Item(name="option_2", color=grid.gelb)
+menu_option_2.pos = (my_body.pos[0], my_body.pos[1] + grid.tile_radius * 2)
+menu_option_3 = cir_item.Item(name="option_3", color=grid.gelb)
+menu_option_3.pos = (my_body.pos[0], my_body.pos[1] + grid.tile_radius * 2)
+menu_option_5 = cir_item.Item(name="option_5", color=grid.gelb)
+menu_option_5.pos = (my_body.pos[0], my_body.pos[1] + grid.tile_radius * 2)
+menu_option_6 = cir_item.Item(name="option_6", color=grid.gelb)
+menu_option_6.pos = (my_body.pos[0], my_body.pos[1] + grid.tile_radius * 2)
+
 my_body.options.append(move_option)
 my_body.options.append(radar_option)
 
 grid.items.append(my_body)
 
 # Creating bokluk
-bokluk = cir_body.MobileItem(name="bokluk", color=grid.green)
-bokluk.pos = (79, 98)
+bokluk = cir_body.MobileItem(name="bokluk", color=grid.green, speed = 0)
+bokluk.pos = (591, 270)
 grid.items.append(bokluk)
 
 # GAME SETTINGS

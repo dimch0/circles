@@ -19,6 +19,7 @@ class Item(object):
         self.options = []
         self.items_to_restore = []
         self.in_menu = False
+        self.available = True
 
 
     def open_menu(self, clicked_circle, grid):
@@ -71,9 +72,9 @@ class MobileItem(Item):
     """
     This is the base class for all circle items
     """
-    def __init__(self, **kwargs):
+    def __init__(self, speed, **kwargs):
         super(MobileItem, self).__init__(**kwargs)
-        self.speed = 2
+        self.speed = speed
         self.pos = ()
         self.move_track = []
 

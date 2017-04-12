@@ -8,8 +8,8 @@ import json
 from cir_utils import in_circle
 from math import sqrt
 
-# TODO: find config path automatically
-CONFIG_JSON_FILE = "/home/dimcho/PycharmProjects/dzhrt/KRG/krugcheta/cir/cir_config.json"
+
+CONFIG_JSON_FILE = "cir/cir_config.json"
 
 class Grid(object):
     """
