@@ -3,30 +3,56 @@
 #################                                 Main file                                           #################
 #################                                                                                     #################
 #######################################################################################################################
-
 import pdb
-from math import sqrt
 import pygame
-import time
-import random
+# import time
+# import random
 from pygame.locals import *
-# TODO: Check all files for obsolete imports
 
-from cir import cir_grid, cir_utils, cir_body
+from cir import cir_body, cir_grid, cir_item, cir_utils
 pygame.init()
 
 
-# CREATING GRID, PLAYER, ITEMS
+# Creating grid
 grid = cir_grid.Grid()
-my_body = cir_body.BodyItem()
-my_body.pos = grid.middle_tile
+
+# Creating player
+my_body = cir_body.BodyItem(name="my body", color=grid.pink)
+my_body.pos = grid.center_tile
+# TODO Create MenuItem class
+move_option = cir_item.Item(name="move", color=grid.gelb)
+radar_option = cir_item.Item(name="radar", color=grid.gelb)
+my_body.options.append(move_option)
+my_body.options.append(radar_option)
+
 grid.items.append(my_body)
+
+# Creating bokluk
+bokluk = cir_body.MobileItem(name="bokluk", color=grid.green)
+bokluk.pos = grid.tiles[50]
+grid.items.append(bokluk)
 
 # GAME SETTINGS
 gameDisplay = pygame.display.set_mode((grid.display_width, grid.display_height))
 pygame.display.set_caption(grid.caption)
 clock = pygame.time.Clock()
 pygame.mouse.set_visible(1)
+
+
+def debug_print(mouse_pos, clicked_circle):
+    print("""
+>>>>>>
+click: {0}, circle: {1}
+modes: {2}
+grid items: {3}
+revealed tiles: {4}
+occupado tiles: {5}
+""".format(mouse_pos,
+           clicked_circle,
+           grid.mode,
+           [item.name for item in grid.items],
+           grid.revealed_tiles,
+           grid.occupado_tiles))
 
 
 def game_loop():
@@ -77,9 +103,8 @@ def game_loop():
                     for item in grid.items:
                         item.open_menu(clicked_circle, grid)
 
-                print("grid items: {0}".format([item.name for item in grid.items]))
-                # print("revealed tiles: {0}".format(grid.revealed_tiles))
-                print(">>>> click: {0}, circle: {1}, mode: {2}".format(mouse_pos, clicked_circle, grid.mode))
+                debug_print(mouse_pos, clicked_circle)
+
             # ------------------------------------- CLICK EVENTS ----------------------------------------- #
 
         # -------------------------------------- BACKGROUND -------------------------------------- #
@@ -107,9 +132,8 @@ def game_loop():
             my_body.move()
 
         # Items and Body
-        # TODO: blit for item.color and image
         for item in grid.items:
-            pygame.draw.circle(gameDisplay, grid.pink, item.pos, grid.tile_radius, 0)
+            pygame.draw.circle(gameDisplay, item.color, item.pos, grid.tile_radius, 0)
 
         # Mouse image
         for tile in grid.tiles:

@@ -3,7 +3,6 @@
 #################                     Item class / MobileItem class                                   #################
 #################                                                                                     #################
 #######################################################################################################################
-
 import pdb
 from math import sqrt
 
@@ -12,10 +11,10 @@ class Item(object):
     This is the base class for all circle items
     It includes the open_menu method.
     """
-    def __init__(self, name):
+    def __init__(self, name, color):
         self.name = name
         self.pos = ()
-        self.color = None
+        self.color = color
         self.current_img = None
         self.options = []
         self.in_menu = False
@@ -61,9 +60,9 @@ class MobileItem(Item):
     """
     This is the base class for all circle items
     """
-    # TODO: change naming
-    def __init__(self):
-        super(MobileItem, self).__init__(name="Mobile Item")
+    # TODO: use kwargs for name, color
+    def __init__(self, name, color):
+        super(MobileItem, self).__init__(name, color)
         self.speed = 2
         self.pos = ()
         self.move_track = []
@@ -76,8 +75,8 @@ class MobileItem(Item):
         :return: a list of steps from point A to point B
         """
         self.move_track = []
-        # Movement forbidden outside revealed_tiles of the grid
-        if Point_B in grid.revealed_tiles:
+        # Movement only allowed in revealed_tiles and not occupado_tiles
+        if Point_B in grid.revealed_tiles and Point_B not in grid.occupado_tiles:
             ax = self.pos[0]
             ay = self.pos[1]
             bx = Point_B[0]

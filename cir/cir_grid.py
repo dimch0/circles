@@ -3,7 +3,7 @@
 #################                                 Grid class                                          #################
 #################                                                                                     #################
 #######################################################################################################################
-
+import pdb
 import json
 from cir_utils import in_circle
 from math import sqrt
@@ -19,10 +19,10 @@ class Grid(object):
         self.cathetus = 0
         self.display_width = 0
         self.display_height = 0
-        self._middle_tile = None
+        self._center_tile = None
         self.set_config()
         self._tiles = []
-        self.occupado_tiles = []
+        self._occupado_tiles = []
         self.revealed_tiles = []
         self.revealed_radius = []
         self.items = []
@@ -31,7 +31,10 @@ class Grid(object):
         self.mode = []
 
     def set_config(self):
-        "Setting attributes from the cir_config.json file"
+        """
+        Setting attributes from the cir_config.json file
+        and calculating the display metrics
+        """
         try:
             with open(CONFIG_JSON_FILE) as jsonfile:
                 conf = json.load(jsonfile)
@@ -49,7 +52,7 @@ class Grid(object):
     @property
     def tiles(self):
         """
-        :return: generating the grid tiles
+        Generating the grid tiles
         """
         # TODO: define the playing board
         for x in range(0, self.cols + 1):
@@ -75,16 +78,24 @@ class Grid(object):
         return current_tile
 
     @property
-    def middle_tile(self):
+    def occupado_tiles(self):
+        """
+        Marking the occupado grid tiles
+        """
+        self._occupado_tiles = [item.pos for item in self.items]
+        return self._occupado_tiles
+
+    @property
+    def center_tile(self):
         """
         :param display_width:
         :param display_height:
-        :return: the tile (x, y) of the center tile
+        :return: the center tile (x, y) of the grid
         """
         mid_x = int(self.display_width / 2)
         mid_y = int(self.display_height / 2)
         for tile in self.tiles:
             if in_circle(tile, self.tile_radius, (mid_x, mid_y)):
-                self._middle_tile = tile
+                self._center_tile = tile
                 break
-        return self._middle_tile
+        return self._center_tile

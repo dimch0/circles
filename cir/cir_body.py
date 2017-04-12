@@ -3,9 +3,7 @@
 #################                                 BodyItem class                                      #################
 #################                                                                                     #################
 #######################################################################################################################
-
-
-
+import pdb
 from cir_item import Item, MobileItem
 from cir_utils import in_circle
 
@@ -13,9 +11,8 @@ class BodyItem(MobileItem):
     """
     This class holds all attributes and metrics of your body
     """
-    def __init__(self):
-        super(BodyItem, self).__init__()
-        self.name = "my body"
+    def __init__(self, name, color):
+        super(BodyItem, self).__init__(name, color)
         self.range = 1
         self.radar_track = []
 
@@ -34,11 +31,6 @@ class BodyItem(MobileItem):
         self.hygiene = 100
         self.stress = 0
         self.status = []
-        # TODO Separate menu items generation
-        move_option = Item(name="move")
-        radar_option = Item(name="radar")
-        self.options.append(move_option)
-        self.options.append(radar_option)
 
 
     def gen_radar_track(self, grid):
