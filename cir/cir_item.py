@@ -4,7 +4,9 @@
 #################                                                                                     #################
 #######################################################################################################################
 import pdb
+import time
 from math import sqrt
+# TODO: pass grid object here
 
 class Item(object):
     """
@@ -22,18 +24,34 @@ class Item(object):
         self.available = True
 
 
+    def options_pos(self, grid):
+        """
+        Returns a list of the 6 adjacent tiles to the self.object" \
+        """
+        self_x = self.pos[0]
+        self_y = self.pos[1]
+        return [
+                [self_x, self_y - 2 * grid.tile_radius],
+                [self_x + grid.cathetus, self_y - grid.tile_radius],
+                [self_x + grid.cathetus, self_y + grid.tile_radius],
+                [self_x, self_y + 2 * grid.tile_radius],
+                [self_x - grid.cathetus, self_y + grid.tile_radius],
+                [self_x - grid.cathetus, self_y - grid.tile_radius]
+               ]
+
     def open_menu(self, clicked_circle, grid):
         """
         This method opens the menu with
         all options for the item and
         temporary disables the other items on the same positions.
+        :clicked_circle: the tile clicked on
         :param grid: the given grid instance
         """
         # TODO: Backup and restore existing items under menu items
-        # TODO: Set all options position correctly
         # TODO: Show backgourd menu
         # TODO: return option image and color
         # TODO: make function to blit option
+        # TODO: execute adding and removing to grid.items here
 
         if clicked_circle == self.pos:
             if self.in_menu == False:
@@ -43,29 +61,28 @@ class Item(object):
         else:
             self.in_menu = False
 
-        for option in self.options:
+        for idx, option in enumerate(self.options):
             if self.in_menu:
-                if option.name == "move":
-                    option.pos = (self.pos[0], self.pos[1] + grid.tile_radius * 2)
-
-                if option.name == "radar":
-                    option.pos = (self.pos[0], self.pos[1] - grid.tile_radius * 2)
+                # if option.name == "move":
+                #     option.pos = (self.pos[0], self.pos[1] + grid.tile_radius * 2)
+                # if option.name == "radar":
+                #     option.pos = (self.pos[0], self.pos[1] - grid.tile_radius * 2)
+                option.pos = self.options_pos(grid)[idx]
 
                 if not option in grid.items:
-                    for item in grid.items:
-                        if option.pos == item.pos:
-                            self.items_to_restore.append(item)
-                            grid.items.remove(item)
                     grid.items.append(option)
-
+                    # for item in grid.items:
+                    #     if option.pos == item.pos:
+                    #         self.items_to_restore.append(item)
+                    #         grid.items.remove(item)
 
             elif not self.in_menu and option in grid.items:
                 grid.items.remove(option)
-                for rest_item in self.items_to_restore:
-                    if not rest_item in self.items_to_restore:
-                        grid.items.append(rest_item)
+                # for rest_item in self.items_to_restore:
+                #     if not rest_item in self.items_to_restore:
+                #         grid.items.append(rest_item)
 
-        print "Items to restore:", self.items_to_restore, self.name
+        # print "Items to restore:", self.items_to_restore, self.name
 
 
 class MobileItem(Item):

@@ -20,30 +20,30 @@ grid = cir_grid.Grid()
 my_body = cir_body.BodyItem(name="my body", color=grid.pink, speed=4)
 my_body.pos = grid.center_tile
 # TODO: Create MenuItem class
-# TODO: menu item .pos = 1, menu to my_body
+# TODO: Define body to assign options
 
 move_option = cir_item.Item(name="move", color=grid.gelb)
-move_option.pos = (my_body.pos[0], my_body.pos[1] + grid.tile_radius * 2)
-radar_option = cir_item.Item(name="radar", color=grid.gelb)
-radar_option.pos = (my_body.pos[0], my_body.pos[1] + grid.tile_radius * 2)
 menu_option_2 = cir_item.Item(name="option_2", color=grid.gelb)
-menu_option_2.pos = (my_body.pos[0], my_body.pos[1] + grid.tile_radius * 2)
 menu_option_3 = cir_item.Item(name="option_3", color=grid.gelb)
-menu_option_3.pos = (my_body.pos[0], my_body.pos[1] + grid.tile_radius * 2)
+radar_option = cir_item.Item(name="radar", color=grid.gelb)
 menu_option_5 = cir_item.Item(name="option_5", color=grid.gelb)
-menu_option_5.pos = (my_body.pos[0], my_body.pos[1] + grid.tile_radius * 2)
 menu_option_6 = cir_item.Item(name="option_6", color=grid.gelb)
-menu_option_6.pos = (my_body.pos[0], my_body.pos[1] + grid.tile_radius * 2)
+
 
 my_body.options.append(move_option)
+my_body.options.append(menu_option_2)
+my_body.options.append(menu_option_3)
 my_body.options.append(radar_option)
+my_body.options.append(menu_option_5)
+my_body.options.append(menu_option_6)
+
 
 grid.items.append(my_body)
 
 # Creating bokluk
-bokluk = cir_body.MobileItem(name="bokluk", color=grid.green, speed = 0)
-bokluk.pos = (591, 270)
-grid.items.append(bokluk)
+# bokluk = cir_body.MobileItem(name="bokluk", color=grid.green, speed = 0)
+# bokluk.pos = (591, 270)
+# grid.items.append(bokluk)
 
 # GAME SETTINGS
 gameDisplay = pygame.display.set_mode((grid.display_width, grid.display_height))
@@ -101,19 +101,16 @@ def game_loop():
                     if "move" in grid.mode and not my_body.in_menu:
                         my_body.gen_move_track(clicked_circle, grid)
 
-                    # Radar track populating
-                    if "radar" in grid.mode:
-                        pass
+                    # Check for item menu
+                    for item in grid.items:
+                        item.open_menu(clicked_circle, grid)
 
                     # Setting the mode
                     for item in grid.items:
                         if clicked_circle == item.pos:
+                            print "item.name", item.name
                             if not item.name in grid.mode:
                                 grid.mode.append(item.name)
-
-                    # Check for item menu
-                    for item in grid.items:
-                        item.open_menu(clicked_circle, grid)
 
                 debug_print(mouse_pos, clicked_circle)
 
