@@ -1,8 +1,8 @@
 {
   "grid_settings":  {
-    "scale": 5,
-    "fps": 30,
-    "show_grid": 0,
+    "scale": 1,
+    "fps": 60,
+    "show_grid": 1,
     "tile_radius": 30,
     "rows": 22,
     "cols": 23,

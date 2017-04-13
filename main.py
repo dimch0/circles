@@ -66,6 +66,9 @@ occupado    : {4}
            grid.occupado_tiles))
 
 
+# grid.mode.append("move")
+# grid.mode.append("radar")
+
 def game_loop():
     """
     The main game loop.
@@ -112,8 +115,9 @@ def game_loop():
                             if not item.name in grid.mode:
                                 grid.mode.append(item.name)
 
-                debug_print(mouse_pos, clicked_circle)
 
+
+                debug_print(mouse_pos, clicked_circle)
             # ------------------------------------- CLICK EVENTS ----------------------------------------- #
 
         # -------------------------------------- BACKGROUND -------------------------------------- #
