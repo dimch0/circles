@@ -54,8 +54,7 @@ pygame.mouse.set_visible(1)
 
 def debug_print(mouse_pos, clicked_circle):
     print("""
->>>>>> click: {0}
-tile        : {1}
+>>>>>> click: {0}, tile: {1}
 modes       : {2}
 grid items  : {3}
 occupado    : {4}
@@ -104,18 +103,18 @@ def game_loop():
                     if "move" in grid.mode and not my_body.in_menu:
                         my_body.gen_move_track(clicked_circle, grid)
 
-                    # Check for item menu
-                    for item in grid.items:
-                        item.open_menu(clicked_circle, grid)
+
 
                     # Setting the mode
                     for item in grid.items:
                         if clicked_circle == item.pos:
-                            print "item.name", item.name
+                            print "ITEM_CLICKED:", item.name
                             if not item.name in grid.mode:
                                 grid.mode.append(item.name)
 
-
+                    # Check for item menu
+                    for item in grid.items:
+                        item.open_menu(clicked_circle, grid)
 
                 debug_print(mouse_pos, clicked_circle)
             # ------------------------------------- CLICK EVENTS ----------------------------------------- #

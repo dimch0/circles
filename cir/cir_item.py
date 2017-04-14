@@ -31,12 +31,12 @@ class Item(object):
         self_x = self.pos[0]
         self_y = self.pos[1]
         return [
-                [self_x, self_y - 2 * grid.tile_radius],
-                [self_x + grid.cathetus, self_y - grid.tile_radius],
-                [self_x + grid.cathetus, self_y + grid.tile_radius],
-                [self_x, self_y + 2 * grid.tile_radius],
-                [self_x - grid.cathetus, self_y + grid.tile_radius],
-                [self_x - grid.cathetus, self_y - grid.tile_radius]
+                (self_x, self_y - 2 * grid.tile_radius),
+                (self_x + grid.cathetus, self_y - grid.tile_radius),
+                (self_x + grid.cathetus, self_y + grid.tile_radius),
+                (self_x, self_y + 2 * grid.tile_radius),
+                (self_x - grid.cathetus, self_y + grid.tile_radius),
+                (self_x - grid.cathetus, self_y - grid.tile_radius)
                ]
 
     def open_menu(self, clicked_circle, grid):
@@ -63,24 +63,36 @@ class Item(object):
 
         for idx, option in enumerate(self.options):
             if self.in_menu:
-                # if option.name == "move":
-                #     option.pos = (self.pos[0], self.pos[1] + grid.tile_radius * 2)
-                # if option.name == "radar":
-                #     option.pos = (self.pos[0], self.pos[1] - grid.tile_radius * 2)
                 option.pos = self.options_pos(grid)[idx]
-
                 if not option in grid.items:
                     grid.items.append(option)
-                    # for item in grid.items:
-                    #     if option.pos == item.pos:
-                    #         self.items_to_restore.append(item)
-                    #         grid.items.remove(item)
-
             elif not self.in_menu and option in grid.items:
                 grid.items.remove(option)
-                # for rest_item in self.items_to_restore:
-                #     if not rest_item in self.items_to_restore:
-                #         grid.items.append(rest_item)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         # print "Items to restore:", self.items_to_restore, self.name
 
