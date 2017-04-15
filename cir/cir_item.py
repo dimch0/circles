@@ -22,6 +22,7 @@ class Item(object):
         self.items_to_restore = []
         self.in_menu = False
         self.available = True
+        self.mode = None
 
 
     def options_pos(self, grid):

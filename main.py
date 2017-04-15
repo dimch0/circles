@@ -62,18 +62,15 @@ pygame.mouse.set_visible(1)
 def debug_print(mouse_pos, clicked_circle):
     print("""
 >>>>>> click: {0}, tile: {1}
-modes       : {2}
+body mode   : {2}
 grid items  : {3}
 occupado    : {4}
 """.format(mouse_pos,
            clicked_circle,
-           grid.mode,
+           my_body.mode,
            [item.name for item in grid.items],
            grid.occupado_tiles))
 
-
-# grid.mode.append("move")
-# grid.mode.append("radar")
 
 def game_loop():
     """
@@ -107,7 +104,7 @@ def game_loop():
                 if clicked_circle:
 
                     # Movement track populating
-                    if "move" in grid.mode and not my_body.in_menu and not my_body.radar_track:
+                    if my_body.mode is "move" and not my_body.in_menu and not my_body.radar_track:
                         my_body.gen_move_track(clicked_circle, grid)
 
 
@@ -115,9 +112,8 @@ def game_loop():
                     # Setting the mode
                     for item in grid.items:
                         if clicked_circle == item.pos:
-                            print "ITEM_CLICKED:", item.name
-                            if not item.name in grid.mode:
-                                grid.mode.append(item.name)
+                            if not item.name is my_body.mode:
+                                my_body.mode = item.name
 
                     # Check for item menu
                     for item in grid.items:
