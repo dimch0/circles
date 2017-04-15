@@ -22,22 +22,29 @@ my_body.pos = grid.center_tile
 # TODO: Create MenuItem class
 # TODO: Define body to assign options
 
-move_option = cir_item.Item(name="move", color=grid.gelb)
-menu_option_2 = cir_item.Item(name="option_2", color=grid.gelb)
-menu_option_3 = cir_item.Item(name="option_3", color=grid.gelb)
-radar_option = cir_item.Item(name="radar", color=grid.gelb)
-menu_option_5 = cir_item.Item(name="option_5", color=grid.gelb)
-menu_option_6 = cir_item.Item(name="option_6", color=grid.gelb)
+body_options = [
+    cir_item.Item(name="option 1", color=grid.gelb),
+    cir_item.Item(name="option 2", color=grid.gelb),
+    cir_item.Item(name="option 3", color=grid.gelb),
+    cir_item.Item(name="move", color=grid.white),
+    cir_item.Item(name="option 5", color=grid.gelb),
+    cir_item.Item(name="option 6", color=grid.gelb),
+]
 
+move_options = [
+    cir_item.Item(name="direction 1", color=grid.white),
+    cir_item.Item(name="direction 2", color=grid.white),
+    cir_item.Item(name="direction 3", color=grid.white),
+    cir_item.Item(name="direction 4", color=grid.white),
+    cir_item.Item(name="direction 5", color=grid.white),
+    cir_item.Item(name="direction 6", color=grid.white)
+]
 
-my_body.options.append(move_option)
-my_body.options.append(menu_option_2)
-my_body.options.append(menu_option_3)
-my_body.options.append(radar_option)
-my_body.options.append(menu_option_5)
-my_body.options.append(menu_option_6)
+for body_option in body_options:
+    if body_option.name == "move":
+        body_option.options = move_options
 
-
+my_body.options = body_options
 grid.items.append(my_body)
 
 # Creating bokluk
@@ -86,9 +93,9 @@ def game_loop():
             # Radar track populating
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
-                    print ">>>> space"
-                    if "radar" in grid.mode:
+                    if not my_body.move_track and not my_body.in_menu:
                         my_body.gen_radar_track(grid)
+                        print ">>>> space"
                         print "revealed tiles: {0}".format(grid.revealed_tiles)
             # -------------------------------------- SPACEBAR EVENTS -------------------------------------- #
 
@@ -100,7 +107,7 @@ def game_loop():
                 if clicked_circle:
 
                     # Movement track populating
-                    if "move" in grid.mode and not my_body.in_menu:
+                    if "move" in grid.mode and not my_body.in_menu and not my_body.radar_track:
                         my_body.gen_move_track(clicked_circle, grid)
 
 
