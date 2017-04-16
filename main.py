@@ -60,16 +60,18 @@ pygame.mouse.set_visible(1)
 
 
 def debug_print(mouse_pos, clicked_circle):
-    print("""
->>>>>> click: {0}, tile: {1}
-body mode   : {2}
-grid items  : {3}
-occupado    : {4}
+    print(""">>>>>> click: {0}, tile: {1}
+mode        : {2}
+menu        : {3}
+grid items  : {4}
 """.format(mouse_pos,
            clicked_circle,
            my_body.mode,
+           my_body.in_menu,
            [item.name for item in grid.items],
-           grid.occupado_tiles))
+           grid.occupado_tiles
+           )
+          )
 
 
 def game_loop():
@@ -87,10 +89,11 @@ def game_loop():
 
             # TODO: K_ESCAPE screen
             # -------------------------------------- SPACEBAR EVENTS -------------------------------------- #
-            # Radar track populating
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
-                    if not my_body.move_track and not my_body.in_menu:
+
+                    # Radar track populating
+                    if not my_body.move_track and not my_body.in_menu and not my_body.radar_track:
                         my_body.gen_radar_track(grid)
                         print ">>>> space"
                         print "revealed tiles: {0}".format(grid.revealed_tiles)
@@ -107,17 +110,36 @@ def game_loop():
                     if my_body.mode is "move" and not my_body.in_menu and not my_body.radar_track:
                         my_body.gen_move_track(clicked_circle, grid)
 
-
-
-                    # Setting the mode
-                    for item in grid.items:
-                        if clicked_circle == item.pos:
-                            if not item.name is my_body.mode:
-                                my_body.mode = item.name
-
                     # Check for item menu
                     for item in grid.items:
-                        item.open_menu(clicked_circle, grid)
+                        # If body is clicked
+                        if clicked_circle == item.pos:
+                            if item.in_menu == False:
+                                item.in_menu = True
+                            elif item.in_menu and item.mode is item.name:
+                                item.in_menu = False
+                            # Resetting the mode and options
+                            elif item.mode is not item.name and item.in_menu:
+                                item.mode = item.name
+                                item.options = body_options
+
+                        # Setting option positions
+                        # TODO: integrate to a method
+                        item.set_option_pos(grid)
+
+                        # If option is clicked
+                        for option in item.options:
+                            if clicked_circle == option.pos:
+                                if option.name is "move":
+                                    item.mode = option.name
+                                    item.options = move_options
+                                    item.set_option_pos(grid)
+
+                                if option in move_options:
+                                    print "Move option:", option.name
+                                    item.in_menu = False
+
+                        # item.open_menu(clicked_circle, grid)
 
                 debug_print(mouse_pos, clicked_circle)
             # ------------------------------------- CLICK EVENTS ----------------------------------------- #
@@ -153,6 +175,10 @@ def game_loop():
         # Items and Body
         for item in grid.items:
             pygame.draw.circle(gameDisplay, item.color, item.pos, grid.tile_radius, 0)
+            # Item options
+            if item.in_menu:
+                for item_option in item.options:
+                    pygame.draw.circle(gameDisplay, item_option.color, item_option.pos, grid.tile_radius, 0)
 
         # Mouse image
         for tile in grid.tiles:

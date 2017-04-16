@@ -25,9 +25,10 @@ class Item(object):
         self.mode = None
 
 
-    def options_pos(self, grid):
+    def adj_tiles(self, grid):
         """
-        Returns a list of the 6 adjacent tiles to the self.object" \
+        :param grid: the grid instance
+        :return: a list of the 6 adjacent to self.pos tiles
         """
         self_x = self.pos[0]
         self_y = self.pos[1]
@@ -40,41 +41,18 @@ class Item(object):
                 (self_x - grid.cathetus, self_y - grid.tile_radius)
                ]
 
-    def open_menu(self, clicked_circle, grid):
-        """
-        This method opens the menu with
-        all options for the item and
-        temporary disables the other items on the same positions.
-        :clicked_circle: the tile clicked on
-        :param grid: the given grid instance
-        """
-        # TODO: Backup and restore existing items under menu items
-        # TODO: Show backgourd menu
-        # TODO: return option image and color
-        # TODO: make function to blit option
-        # TODO: execute adding and removing to grid.items here
+    # TODO: Backup and restore existing items under menu items
+    # TODO: Show backgourd menu
+    # TODO: return option image and color
+    # TODO: make function to blit option
+    # TODO: execute adding and removing to grid.items here
 
-        if clicked_circle == self.pos:
-            if self.in_menu == False:
-                self.in_menu = True
-            else:
-                self.in_menu = False
-        else:
-            self.in_menu = False
-
+    def set_option_pos(self, grid):
+        # Returning the options only
         for idx, option in enumerate(self.options):
             if self.in_menu:
-                option.pos = self.options_pos(grid)[idx]
-                if not option in grid.items:
-                    grid.items.append(option)
-            elif not self.in_menu and option in grid.items:
-                grid.items.remove(option)
+                option.pos = self.adj_tiles(grid)[idx]
 
-
-
-
-
-        # print "Items to restore:", self.items_to_restore, self.name
 
 
 class MobileItem(Item):
