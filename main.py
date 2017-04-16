@@ -22,15 +22,14 @@ my_body.pos = grid.center_tile
 # TODO: Create MenuItem class
 # TODO: Define body to assign options
 
-body_options = [
+my_body.default_options = [
     cir_item.Item(name="option 1", color=grid.gelb),
     cir_item.Item(name="option 2", color=grid.gelb),
     cir_item.Item(name="option 3", color=grid.gelb),
     cir_item.Item(name="move", color=grid.white),
     cir_item.Item(name="option 5", color=grid.gelb),
-    cir_item.Item(name="option 6", color=grid.gelb),
+    cir_item.Item(name="sensory", color=grid.azure),
 ]
-
 move_options = [
     cir_item.Item(name="direction 1", color=grid.white),
     cir_item.Item(name="direction 2", color=grid.white),
@@ -39,18 +38,29 @@ move_options = [
     cir_item.Item(name="direction 5", color=grid.white),
     cir_item.Item(name="direction 6", color=grid.white)
 ]
+sense_options = [
+    cir_item.Item(name="eat", color=grid.blue),
+    cir_item.Item(name="audio", color=grid.blue),
+    cir_item.Item(name="smel", color=grid.blue),
+    cir_item.Item(name="touch", color=grid.blue),
+    cir_item.Item(name="see", color=grid.blue),
+    cir_item.Item(name="medi", color=grid.blue)
+]
 
-for body_option in body_options:
-    if body_option.name == "move":
-        body_option.options = move_options
+move_option = [option for option in my_body.default_options if option.name is "move"][0]
+move_option.default_options = move_options
 
-my_body.options = body_options
+sense_option = [option for option in my_body.default_options if option.name is "sensory"][0]
+sense_option.default_options = sense_options
+
+# Creating my body
+my_body.options = my_body.default_options
 grid.items.append(my_body)
 
 # Creating bokluk
-# bokluk = cir_body.MobileItem(name="bokluk", color=grid.green, speed = 0)
-# bokluk.pos = (591, 270)
-# grid.items.append(bokluk)
+bokluk = cir_body.MobileItem(name="bokluk", color=grid.green, speed = 0)
+bokluk.pos = (my_body.pos[0], my_body.pos[1] - 2 * grid.tile_radius)
+grid.items.append(bokluk)
 
 # GAME SETTINGS
 gameDisplay = pygame.display.set_mode((grid.display_width, grid.display_height))
@@ -80,7 +90,6 @@ def game_loop():
     """
     game_exit = False
 
-
     while not game_exit:
         mouse_pos = pygame.mouse.get_pos()
         for event in pygame.event.get():
@@ -91,7 +100,6 @@ def game_loop():
             # -------------------------------------- SPACEBAR EVENTS -------------------------------------- #
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
-
                     # Radar track populating
                     if not my_body.move_track and not my_body.in_menu and not my_body.radar_track:
                         my_body.gen_radar_track(grid)
@@ -102,49 +110,64 @@ def game_loop():
 
             # -------------------------------------- CLICK EVENTS ----------------------------------------- #
             if event.type == pygame.MOUSEBUTTONDOWN:
-
                 clicked_circle = grid.mouse_in_tile(mouse_pos)
                 if clicked_circle:
+
 
                     # Movement track populating
                     if my_body.mode is "move" and not my_body.in_menu and not my_body.radar_track:
                         my_body.gen_move_track(clicked_circle, grid)
 
+
                     # Check for item menu
                     for item in grid.items:
                         # If body is clicked
-                        if clicked_circle == item.pos:
-                            if item.in_menu == False:
-                                item.in_menu = True
-                            elif item.in_menu and item.mode is item.name:
+                        if item is my_body:
+                            if clicked_circle == item.pos:
+                                if item.in_menu == False:
+                                    print "TUKA STAVA TRUE"
+                                    item.in_menu = True
+                                elif item.in_menu and item.mode is item.name:
+                                    item.in_menu = False
+                                # Resetting the mode and options
+                                elif item.mode is not item.name and item.in_menu:
+                                    item.mode = item.name
+                                    item.options = item.default_options
+                            elif clicked_circle is not item.pos and clicked_circle not in item.adj_tiles(grid):
                                 item.in_menu = False
-                            # Resetting the mode and options
-                            elif item.mode is not item.name and item.in_menu:
-                                item.mode = item.name
-                                item.options = body_options
 
-                        # Setting option positions
-                        # TODO: integrate to a method
                         item.set_option_pos(grid)
-
                         # If option is clicked
                         for option in item.options:
-                            if clicked_circle == option.pos:
-                                if option.name is "move":
-                                    item.mode = option.name
-                                    item.options = move_options
-                                    item.set_option_pos(grid)
+                            print "ZASHTO SUM TUK?", item.in_menu
+                            if item.in_menu:
+                                if clicked_circle == option.pos:
+                                    # Move opt
+                                    if option.name is "move":
+                                        item.mode = option.name
+                                        item.options = option.default_options
+                                        item.set_option_pos(grid)
+                                    # Check for move options
+                                    elif option in move_option.default_options:
 
-                                if option in move_options:
-                                    print "Move option:", option.name
-                                    item.in_menu = False
+                                        item.in_menu = False
 
-                        # item.open_menu(clicked_circle, grid)
+                                    elif option.name is "sensory":
+                                        item.mode = option.name
+                                        item.options = option.default_options
+                                        item.set_option_pos(grid)
+                                    # Check for sensory options
+                                    elif option in sense_option.default_options:
+                                        print "Sensory option:", option.name
+                                        item.in_menu = False
+
 
                 debug_print(mouse_pos, clicked_circle)
             # ------------------------------------- CLICK EVENTS ----------------------------------------- #
 
-        # -------------------------------------- BACKGROUND -------------------------------------- #
+        # -------------------------------------- PLACEMENT --------------------------------------- #
+
+        # -------------------------------------- Background -------------------------------------- #
         # Background
         gameDisplay.fill(grid.grey)
 
@@ -158,10 +181,10 @@ def game_loop():
         if grid.show_grid:
             for tile in grid.tiles:
                 pygame.draw.circle(gameDisplay, grid.white, tile, grid.tile_radius, 1)
-        # -------------------------------------- BACKGROUND -------------------------------------- #
+        # -------------------------------------- Background -------------------------------------- #
 
 
-        # -------------------------------------- ANIMATIONS -------------------------------------- #
+        # -------------------------------------- Animations -------------------------------------- #
         # Radar
         if my_body.radar_track:
             radar_radius, thick = my_body.radar(grid)
@@ -174,6 +197,13 @@ def game_loop():
 
         # Items and Body
         for item in grid.items:
+            # TODO: check color for mode specifics
+            if my_body.mode is "move":
+                my_body.color = grid.white
+            elif my_body.mode is "sensory":
+                my_body.color = grid.azure
+            else:
+                my_body.color = grid.pink
             pygame.draw.circle(gameDisplay, item.color, item.pos, grid.tile_radius, 0)
             # Item options
             if item.in_menu:
@@ -184,8 +214,9 @@ def game_loop():
         for tile in grid.tiles:
             if cir_utils.in_circle(tile, grid.tile_radius, mouse_pos):
                 pygame.draw.circle(gameDisplay, grid.white, tile, grid.tile_radius, 1)
-        # -------------------------------------- ANIMATIONS -------------------------------------- #
+        # -------------------------------------- Animations -------------------------------------- #
 
+        # -------------------------------------- PLACEMENT --------------------------------------- #
 
         pygame.display.update()
         # TODO: check changes for placement

@@ -18,11 +18,12 @@ class Item(object):
         self.pos = ()
         self.color = color
         self.current_img = None
+        self.default_options = []
         self.options = []
         self.items_to_restore = []
         self.in_menu = False
         self.available = True
-        self.mode = None
+        self.mode = self.name
 
 
     def adj_tiles(self, grid):
