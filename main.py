@@ -136,6 +136,7 @@ def game_loop():
                             elif clicked_circle is not item.pos and clicked_circle not in item.adj_tiles(grid):
                                 item.in_menu = False
 
+                        # Setting menu items position
                         item.set_option_pos(grid)
                         # If option is clicked
                         for option in item.options:
