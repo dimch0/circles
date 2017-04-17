@@ -3,18 +3,25 @@
 #################                                 Main file                                           #################
 #################                                                                                     #################
 #######################################################################################################################
+
 import pdb
 import pygame
 # import time
 # import random
 from pygame.locals import *
 
-from cir import cir_body, cir_grid, cir_item, cir_utils
+from cir import cir_body, cir_grid, cir_item, cir_utils, cir_img
 pygame.init()
 
 
-# Creating grid
+
+
+# Loading grid
 grid = cir_grid.Grid()
+
+# Loading images
+images = cir_img.Images(grid)
+
 
 # Creating player
 my_body = cir_body.BodyItem(name="my body", color=grid.pink, speed=4)
@@ -22,23 +29,14 @@ my_body.pos = grid.center_tile
 # TODO: Create MenuItem class
 # TODO: Define body to assign options
 
-# IMAMGE LOADER
-def imgLoader(imagefile):
-    return pygame.image.load("img/"+imagefile)
-
-feet_img = imgLoader('./feet.png')
-
-
-
-
 
 my_body.default_options = [
     cir_item.Item(name="option 1", color=my_body.default_color),
     cir_item.Item(name="option 2", color=my_body.default_color),
     cir_item.Item(name="option 3", color=my_body.default_color),
-    cir_item.Item(name="move", color=my_body.default_color),
+    cir_item.Item(name="move", color=my_body.default_color, image=images.feet),
     cir_item.Item(name="option 5", color=my_body.default_color),
-    cir_item.Item(name="sensory", color=grid.azure),
+    cir_item.Item(name="sensory", color=grid.azure, image=images.brain),
 ]
 move_options = [
     cir_item.Item(name="direction 1", color=grid.white),
@@ -49,18 +47,17 @@ move_options = [
     cir_item.Item(name="direction 6", color=grid.white)
 ]
 sense_options = [
-    cir_item.Item(name="eat", color=grid.blue),
-    cir_item.Item(name="audio", color=grid.blue),
-    cir_item.Item(name="smel", color=grid.blue),
-    cir_item.Item(name="touch", color=grid.blue),
-    cir_item.Item(name="see", color=grid.blue),
-    cir_item.Item(name="medi", color=grid.blue)
+    cir_item.Item(name="eat", color=grid.azure, image=images.lips_y),
+    cir_item.Item(name="audio", color=grid.azure, image=images.ear_y),
+    cir_item.Item(name="smel", color=grid.azure, image=images.nose_y),
+    cir_item.Item(name="medi", color=grid.azure, image=images.yoga),
+    cir_item.Item(name="touch", color=grid.azure, image=images.touch_y),
+    cir_item.Item(name="see", color=grid.azure, image=images.eye_y)
+
 ]
 
 move_option = [option for option in my_body.default_options if option.name is "move"][0]
 move_option.default_options = move_options
-move_option.img = feet_img
-move_option.img = pygame.transform.scale(move_option.img, (grid.tile_radius, grid.tile_radius))
 
 sense_option = [option for option in my_body.default_options if option.name is "sensory"][0]
 sense_option.default_options = sense_options
@@ -73,9 +70,10 @@ my_body.options = my_body.default_options
 grid.items.append(my_body)
 
 # Creating bokluk
-bokluk = cir_body.MobileItem(name="bokluk", color=grid.green, speed = 0)
-bokluk.pos = (my_body.pos[0], my_body.pos[1] - 2 * grid.tile_radius)
-grid.items.append(bokluk)
+if 0:
+    bokluk = cir_body.MobileItem(name="bokluk", color=grid.green, speed = 0)
+    bokluk.pos = (my_body.pos[0], my_body.pos[1] - 2 * grid.tile_radius)
+    grid.items.append(bokluk)
 
 # GAME SETTINGS
 gameDisplay = pygame.display.set_mode((grid.display_width, grid.display_height))
@@ -133,8 +131,12 @@ def game_loop():
 
                         # Movement track
                         if item.mode is "move" and not item.in_menu and not item.radar_track:
-                            item.gen_move_track(clicked_circle, grid)
+                            item.simple_move_track(clicked_circle, grid)
 
+
+                        # =============================================================================================
+                        # =============================================================================================
+                        # TODO: parametrized function
                         # If body is clicked check for menu
                         if item is my_body:
                             if clicked_circle == item.pos:
@@ -147,9 +149,9 @@ def game_loop():
                                     item.mode = item.name
                                     item.options = item.default_options
                                     item.color = item.default_color
+                                    item.img = item.default_img
                             elif clicked_circle is not item.pos and clicked_circle not in item.adj_tiles(grid):
                                 item.in_menu = False
-
                         # If option is clicked
                         # Setting menu items position
                         item.set_option_pos(grid)
@@ -160,6 +162,7 @@ def game_loop():
                                     if option.name is "move":
                                         item.mode = option.name
                                         item.color = option.color
+                                        item.img = option.img
                                         item.options = option.default_options
                                         item.set_option_pos(grid)
                                     # Check for move options
@@ -169,13 +172,15 @@ def game_loop():
                                     elif option.name is "sensory":
                                         item.mode = option.name
                                         item.color = option.color
+                                        item.img = option.img
+                                        print "OPTION IMAGE", option.name, option.img
                                         item.options = option.default_options
                                         item.set_option_pos(grid)
                                     # Check for sensory options
                                     elif option in sense_option.default_options:
                                         item.in_menu = False
-
-
+                        # =============================================================================================
+                        # =============================================================================================
 
                 debug_print(mouse_pos, clicked_circle)
             # ------------------------------------- CLICK EVENTS ----------------------------------------- #
@@ -226,6 +231,9 @@ def game_loop():
 
             # Body
             pygame.draw.circle(gameDisplay, item.color, item.pos, grid.tile_radius, 0)
+            if item.img:
+                gameDisplay.blit(item.img,
+                                 (item.pos[0] - grid.tile_radius / 2, item.pos[1] - grid.tile_radius / 2))
 
         # Mouse image
         for tile in grid.tiles:

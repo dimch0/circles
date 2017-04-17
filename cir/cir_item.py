@@ -13,15 +13,15 @@ class Item(object):
     This is the base class for all circle items
     It includes the open_menu method.
     """
-    def __init__(self, name, color):
+    def __init__(self, name, color, image=None):
         self.name = name
         self.pos = ()
         self.color = color
-        self.default_color = self.color
-        self.current_img = None
-        self.img = None
-        self.default_options = []
+        self.img = image
         self.options = []
+        self.default_color = self.color
+        self.default_img = self.img
+        self.default_options = []
         self.items_to_restore = []
         self.in_menu = False
         self.available = True
@@ -70,7 +70,7 @@ class MobileItem(Item):
         self.speed = speed
 
 
-    def gen_move_track(self, Point_B, grid):
+    def simple_move_track(self, Point_B, grid):
         """
         This method moves the item from the current position to Point_B.
         :param Point_B: coordinates of destination point B (x, y)

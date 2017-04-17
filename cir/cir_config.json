@@ -1,12 +1,13 @@
 {
   "grid_settings":  {
     "scale": 1,
-    "fps": 200,
+    "fps": 60,
     "show_grid": 0,
     "tile_radius": 30,
     "rows": 24,
     "cols": 14,
-    "caption": "cir"
+    "caption": "cir",
+    "img_dir": "img"
     },
 
   "colors": {
