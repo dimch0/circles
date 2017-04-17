@@ -14,8 +14,6 @@ class BodyItem(MobileItem):
     def __init__(self, **kwargs):
         super(BodyItem, self).__init__(**kwargs)
         self.range = 1
-        self.radar_track = []
-
         self.muscle = 1
         self.mind = 0
         self.ego = 0
@@ -69,9 +67,13 @@ class BodyItem(MobileItem):
             self.radar_track.pop(0)
 
         # Mark tiles as revealed
-        grid.revealed_radius.append(((self.pos), radar_radius))
+        revealed = ((self.pos), radar_radius)
+        if not revealed in grid.revealed_radius:
+            grid.revealed_radius.append(revealed)
+
         for tile in grid.tiles:
             if in_circle(self.pos, radar_radius, tile) and tile not in grid.revealed_tiles:
-                grid.revealed_tiles.append(tile)
+                if not tile in grid.revealed_tiles:
+                    grid.revealed_tiles.append(tile)
 
         return radar_radius, thick

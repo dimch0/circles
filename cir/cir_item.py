@@ -17,13 +17,18 @@ class Item(object):
         self.name = name
         self.pos = ()
         self.color = color
+        self.default_color = self.color
         self.current_img = None
+        self.img = None
         self.default_options = []
         self.options = []
         self.items_to_restore = []
         self.in_menu = False
         self.available = True
         self.mode = self.name
+
+        self.move_track = []
+        self.radar_track = []
 
 
     def adj_tiles(self, grid):
@@ -63,8 +68,7 @@ class MobileItem(Item):
     def __init__(self, speed, **kwargs):
         super(MobileItem, self).__init__(**kwargs)
         self.speed = speed
-        self.pos = ()
-        self.move_track = []
+
 
     def gen_move_track(self, Point_B, grid):
         """

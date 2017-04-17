@@ -19,10 +19,13 @@ class Grid(object):
         self.cathetus = 0
         self.display_width = 0
         self.display_height = 0
-        self._center_tile = None
+
         self.set_config()
         self._tiles = []
+        self.center_tile = None
+        self.find_center_tile()
         self._occupado_tiles = []
+        self.playing_tiles = []
         self.revealed_tiles = []
         self.revealed_radius = []
         self.items = []
@@ -85,17 +88,15 @@ class Grid(object):
         self._occupado_tiles = [item.pos for item in self.items]
         return self._occupado_tiles
 
-    @property
-    def center_tile(self):
+
+    def find_center_tile(self):
         """
-        :param display_width:
-        :param display_height:
         :return: the center tile (x, y) of the grid
         """
         mid_x = int(self.display_width / 2)
         mid_y = int(self.display_height / 2)
         for tile in self.tiles:
             if in_circle(tile, self.tile_radius, (mid_x, mid_y)):
-                self._center_tile = tile
+                self.center_tile = tile
                 break
-        return self._center_tile
+        return self.center_tile
