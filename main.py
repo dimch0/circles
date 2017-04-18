@@ -16,60 +16,18 @@ pygame.init()
 
 
 
+
+
+
 # Loading grid
 grid = cir_grid.Grid()
 
 # Loading images
 images = cir_img.Images(grid)
 
-
-# Creating player
+# Creating bodies
 my_body = cir_body.BodyItem(name="my body", color=grid.pink, speed=4)
 my_body.pos = grid.center_tile
-# TODO: Create MenuItem class
-# TODO: Define body to assign options
-
-
-my_body.default_options = [
-    cir_item.Item(name="option 1", color=my_body.default_color),
-    cir_item.Item(name="option 2", color=my_body.default_color),
-    cir_item.Item(name="option 3", color=my_body.default_color),
-    cir_item.Item(name="move", color=my_body.default_color, image=images.feet),
-    cir_item.Item(name="option 5", color=my_body.default_color),
-    cir_item.Item(name="sensory", color=grid.azure, image=images.brain),
-]
-move_options = [
-    cir_item.Item(name="North", color=grid.white, border=2),
-    cir_item.Item(name="Northeast", color=grid.white, border=2),
-    cir_item.Item(name="Southeast", color=grid.white, border=2),
-    cir_item.Item(name="South", color=grid.white, border=2),
-    cir_item.Item(name="Southwest", color=grid.white, border=2),
-    cir_item.Item(name="Northwest", color=grid.white, border=2)
-]
-sense_options = [
-    cir_item.Item(name="eat", color=grid.azure, image=images.lips_y),
-    cir_item.Item(name="audio", color=grid.azure, image=images.ear_y),
-    cir_item.Item(name="smel", color=grid.azure, image=images.nose_y),
-    cir_item.Item(name="medi", color=grid.azure, image=images.yoga),
-    cir_item.Item(name="touch", color=grid.azure, image=images.touch_y),
-    cir_item.Item(name="see", color=grid.azure, image=images.eye_y)
-
-]
-
-for option in my_body.default_options:
-    if option.name is "move":
-        move_option = option
-        option.default_options = move_options
-    elif option.name is "sensory":
-        sense_option = option
-        option.default_options = sense_options
-
-
-
-
-
-# Creating my body
-my_body.options = my_body.default_options
 grid.items.append(my_body)
 
 # Creating bokluk
@@ -77,6 +35,46 @@ if 0:
     bokluk = cir_body.MobileItem(name="bokluk", color=grid.green, speed = 0)
     bokluk.pos = (my_body.pos[0], my_body.pos[1] - 2 * grid.tile_radius)
     grid.items.append(bokluk)
+
+
+# TODO: Create MenuItem class
+# TODO: Set menu item attr position in menu
+# TODO: Generate items from external file
+mode_vs_options = {
+    "my body": [
+        cir_item.Item(name="option 1", color=my_body.default_color),
+        cir_item.Item(name="option 2", color=my_body.default_color),
+        cir_item.Item(name="option 3", color=my_body.default_color),
+        cir_item.Item(name="move", color=my_body.default_color, image=images.feet),
+        cir_item.Item(name="option 5", color=my_body.default_color),
+        cir_item.Item(name="sensory", color=grid.azure, image=images.brain),
+    ],
+    "move" : [
+        cir_item.Item(name="North", color=grid.white, border=2),
+        cir_item.Item(name="Northeast", color=grid.white, border=2),
+        cir_item.Item(name="Southeast", color=grid.white, border=2),
+        cir_item.Item(name="South", color=grid.white, border=2),
+        cir_item.Item(name="Southwest", color=grid.white, border=2),
+        cir_item.Item(name="Northwest", color=grid.white, border=2)
+    ],
+    "sensory": [
+        cir_item.Item(name="eat", color=grid.azure, image=images.lips_y),
+        cir_item.Item(name="audio", color=grid.azure, image=images.ear_y),
+        cir_item.Item(name="smel", color=grid.azure, image=images.nose_y),
+        cir_item.Item(name="medi", color=grid.azure, image=images.yoga),
+        cir_item.Item(name="touch", color=grid.azure, image=images.touch_y),
+        cir_item.Item(name="see", color=grid.azure, image=images.eye_y)
+    ]
+}
+
+# Setting default options
+for item in grid.items:
+    for mode_name, mode_options in mode_vs_options.items():
+        if item.name is mode_name:
+            item.default_options = mode_options
+            item.options = item.default_options
+
+
 
 # GAME SETTINGS
 gameDisplay = pygame.display.set_mode((grid.display_width, grid.display_height))
@@ -169,19 +167,17 @@ def game_loop():
 
                                         # If a default option -> set mode
                                         if option in item.default_options:
-                                            item.set_mode(option, grid)
+                                            item.set_mode(option, grid, mode_vs_options)
 
-                                        # Check for move options
-                                        elif item.mode is "move" and option in move_option.default_options:
+                                        # Close menu if option selected
+                                        elif option in mode_vs_options[item.mode]:
                                             # TODO: make directions appear next to body when hovered
-                                            item.in_menu = False
 
-                                        # Check for sensory options
-                                        elif item.mode is "sensory" and option in sense_option.default_options:
-                                            item.in_menu = False
+                                            # Check option "see"
                                             if option.name is "see":
                                                 item.range += 1
                                                 item.mode = "seen"
+                                            item.in_menu = False
                         # =============================================================================================
                         # =============================================================================================
 

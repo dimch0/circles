@@ -13,9 +13,9 @@ class Item(object):
     This is the base class for all circle items
     It includes the open_menu method.
     """
-    def __init__(self, name, color, image=None, border=0):
+    def __init__(self, name, pos=(), color=None, image=None, border=0):
         self.name = name
-        self.pos = ()
+        self.pos = pos
         self.color = color
         self.img = image
         self.border = border
@@ -72,7 +72,7 @@ class Item(object):
                 option.pos = self.adj_tiles(grid)[idx]
 
 
-    def set_mode(self, option, grid):
+    def set_mode(self, option, grid, mode_vs_option):
         """
         Changes the mode of an item to a given options
         :param option: an option item of a menu
@@ -81,7 +81,7 @@ class Item(object):
         self.mode = option.name
         self.color = option.color
         self.img = option.img
-        self.options = option.default_options
+        self.options = mode_vs_option[option.name]
         self.set_option_pos(grid)
 
 
