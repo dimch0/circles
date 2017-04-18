@@ -139,22 +139,25 @@ def game_loop():
                         # TODO: parametrized function
                         # If body is clicked check for menu
                         if item is my_body:
+
                             if clicked_circle == item.pos:
+                                # Check default mode:
                                 if item.in_menu == False:
                                     item.in_menu = True
-                                elif item.in_menu and item.mode is item.name:
+                                    item.set_option_pos(grid)
+                                elif item.mode is item.name and item.in_menu:
                                     item.in_menu = False
                                 # Resetting the mode and options
                                 elif item.mode is not item.name and item.in_menu:
                                     item.mode = item.name
-                                    item.options = item.default_options
                                     item.color = item.default_color
                                     item.img = item.default_img
+                                    item.options = item.default_options
+                                    item.set_option_pos(grid)
                             elif clicked_circle is not item.pos and clicked_circle not in item.adj_tiles(grid):
                                 item.in_menu = False
+
                         # If option is clicked
-                        # Setting menu items position
-                        item.set_option_pos(grid)
                         for option in item.options:
                             if item.in_menu:
                                 if clicked_circle == option.pos:
@@ -166,18 +169,17 @@ def game_loop():
                                         item.options = option.default_options
                                         item.set_option_pos(grid)
                                     # Check for move options
-                                    elif option in move_option.default_options:
+                                    elif item.mode is "move" and option in move_option.default_options:
                                         item.in_menu = False
 
                                     elif option.name is "sensory":
                                         item.mode = option.name
                                         item.color = option.color
                                         item.img = option.img
-                                        print "OPTION IMAGE", option.name, option.img
                                         item.options = option.default_options
                                         item.set_option_pos(grid)
                                     # Check for sensory options
-                                    elif option in sense_option.default_options:
+                                    elif item.mode is "sensory" and option in sense_option.default_options:
                                         item.in_menu = False
                         # =============================================================================================
                         # =============================================================================================

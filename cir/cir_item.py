@@ -60,6 +60,9 @@ class Item(object):
                 option.pos = self.adj_tiles(grid)[idx]
 
 
+    def change_mode(self):
+        pass
+
 
 class MobileItem(Item):
     """
