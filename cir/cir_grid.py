@@ -29,6 +29,8 @@ class Grid(object):
         self.revealed_tiles = []
         self.revealed_radius = []
         self.items = []
+        # TODO: use below for overlap
+        self.overlapped_items = []
         self.mouse_mode = None
         self.mouse_img = None
         self.mode = []

@@ -39,12 +39,12 @@ my_body.default_options = [
     cir_item.Item(name="sensory", color=grid.azure, image=images.brain),
 ]
 move_options = [
-    cir_item.Item(name="direction 1", color=grid.white),
-    cir_item.Item(name="direction 2", color=grid.white),
-    cir_item.Item(name="direction 3", color=grid.white),
-    cir_item.Item(name="direction 4", color=grid.white),
-    cir_item.Item(name="direction 5", color=grid.white),
-    cir_item.Item(name="direction 6", color=grid.white)
+    cir_item.Item(name="North", color=grid.white, border=2),
+    cir_item.Item(name="Northeast", color=grid.white, border=2),
+    cir_item.Item(name="Southeast", color=grid.white, border=2),
+    cir_item.Item(name="South", color=grid.white, border=2),
+    cir_item.Item(name="Southwest", color=grid.white, border=2),
+    cir_item.Item(name="Northwest", color=grid.white, border=2)
 ]
 sense_options = [
     cir_item.Item(name="eat", color=grid.azure, image=images.lips_y),
@@ -56,11 +56,14 @@ sense_options = [
 
 ]
 
-move_option = [option for option in my_body.default_options if option.name is "move"][0]
-move_option.default_options = move_options
+for option in my_body.default_options:
+    if option.name is "move":
+        move_option = option
+        option.default_options = move_options
+    elif option.name is "sensory":
+        sense_option = option
+        option.default_options = sense_options
 
-sense_option = [option for option in my_body.default_options if option.name is "sensory"][0]
-sense_option.default_options = sense_options
 
 
 
@@ -79,7 +82,7 @@ if 0:
 gameDisplay = pygame.display.set_mode((grid.display_width, grid.display_height))
 pygame.display.set_caption(grid.caption)
 clock = pygame.time.Clock()
-pygame.mouse.set_visible(1)
+pygame.mouse.set_visible(False)
 
 
 def debug_print(mouse_pos, clicked_circle):
@@ -133,54 +136,52 @@ def game_loop():
                         if item.mode is "move" and not item.in_menu and not item.radar_track:
                             item.simple_move_track(clicked_circle, grid)
 
-
                         # =============================================================================================
                         # =============================================================================================
                         # TODO: parametrized function
                         # If body is clicked check for menu
                         if item is my_body:
-
+                            # Clicked on item
                             if clicked_circle == item.pos:
-                                # Check default mode:
-                                if item.in_menu == False:
-                                    item.in_menu = True
-                                    item.set_option_pos(grid)
-                                elif item.mode is item.name and item.in_menu:
-                                    item.in_menu = False
-                                # Resetting the mode and options
-                                elif item.mode is not item.name and item.in_menu:
-                                    item.mode = item.name
-                                    item.color = item.default_color
-                                    item.img = item.default_img
-                                    item.options = item.default_options
-                                    item.set_option_pos(grid)
+                                # If default mode:
+                                if item.mode is item.name:
+                                    if not item.in_menu:
+                                        item.in_menu = True
+                                    elif item.in_menu:
+                                        item.in_menu = False
+                                # If not default - reset
+                                elif item.mode is not item.name:
+                                    if item.in_menu:
+                                        item.reset_mode()
+                                    elif not item.in_menu:
+                                        item.in_menu = True
+                            # Clicked outside
                             elif clicked_circle is not item.pos and clicked_circle not in item.adj_tiles(grid):
                                 item.in_menu = False
+                        # Setting option position
+                        item.set_option_pos(grid)
 
-                        # If option is clicked
-                        for option in item.options:
-                            if item.in_menu:
-                                if clicked_circle == option.pos:
+                        # CLICKED ON MENU OPTION
+                        if item.in_menu:
+                            if item.options:
+                                for option in item.options:
+                                    if clicked_circle == option.pos:
 
-                                    if option.name is "move":
-                                        item.mode = option.name
-                                        item.color = option.color
-                                        item.img = option.img
-                                        item.options = option.default_options
-                                        item.set_option_pos(grid)
-                                    # Check for move options
-                                    elif item.mode is "move" and option in move_option.default_options:
-                                        item.in_menu = False
+                                        # If a default option -> set mode
+                                        if option in item.default_options:
+                                            item.set_mode(option, grid)
 
-                                    elif option.name is "sensory":
-                                        item.mode = option.name
-                                        item.color = option.color
-                                        item.img = option.img
-                                        item.options = option.default_options
-                                        item.set_option_pos(grid)
-                                    # Check for sensory options
-                                    elif item.mode is "sensory" and option in sense_option.default_options:
-                                        item.in_menu = False
+                                        # Check for move options
+                                        elif item.mode is "move" and option in move_option.default_options:
+                                            # TODO: make directions appear next to body when hovered
+                                            item.in_menu = False
+
+                                        # Check for sensory options
+                                        elif item.mode is "sensory" and option in sense_option.default_options:
+                                            item.in_menu = False
+                                            if option.name is "see":
+                                                item.range += 1
+                                                item.mode = "seen"
                         # =============================================================================================
                         # =============================================================================================
 
@@ -225,19 +226,21 @@ def game_loop():
             # Item options
             # TODO: place menu background
             if item.in_menu:
+                pygame.draw.circle(gameDisplay, item.color, item.pos, grid.tile_radius * 3, 0)
                 for item_option in item.options:
-                    pygame.draw.circle(gameDisplay, item_option.color, item_option.pos, grid.tile_radius, 0)
+                    pygame.draw.circle(gameDisplay, item_option.color, item_option.pos, grid.tile_radius, item_option.border)
                     if item_option.img:
-                        gameDisplay.blit(item_option.img,
-                                         (item_option.pos[0] - grid.tile_radius / 2, item_option.pos[1] - grid.tile_radius / 2))
+                        gameDisplay.blit(item_option.img, item_option.set_img_pos(grid))
 
             # Body
-            pygame.draw.circle(gameDisplay, item.color, item.pos, grid.tile_radius, 0)
+            pygame.draw.circle(gameDisplay, item.color, item.pos, grid.tile_radius, item.border)
             if item.img:
-                gameDisplay.blit(item.img,
-                                 (item.pos[0] - grid.tile_radius / 2, item.pos[1] - grid.tile_radius / 2))
+                gameDisplay.blit(item.img, item.set_img_pos(grid))
 
-        # Mouse image
+        # Mouse Item
+        # TODO: Create MouseItem
+        pygame.draw.circle(gameDisplay, grid.white, mouse_pos, 1, 0)
+        pygame.draw.circle(gameDisplay, grid.black, mouse_pos, 2, 1)
         for tile in grid.tiles:
             if cir_utils.in_circle(tile, grid.tile_radius, mouse_pos):
                 pygame.draw.circle(gameDisplay, grid.white, tile, grid.tile_radius, 1)

@@ -13,11 +13,12 @@ class Item(object):
     This is the base class for all circle items
     It includes the open_menu method.
     """
-    def __init__(self, name, color, image=None):
+    def __init__(self, name, color, image=None, border=0):
         self.name = name
         self.pos = ()
         self.color = color
         self.img = image
+        self.border = border
         self.options = []
         self.default_color = self.color
         self.default_img = self.img
@@ -29,6 +30,17 @@ class Item(object):
 
         self.move_track = []
         self.radar_track = []
+
+
+    def set_img_pos(self, grid):
+        """
+        Centers the image posotion
+        :param grid:  grid object
+        :return: coordinates of the centered image
+        """
+        img_x = self.pos[0] - grid.tile_radius / 2
+        img_y = self.pos[1] - grid.tile_radius / 2
+        return (img_x, img_y)
 
 
     def adj_tiles(self, grid):
@@ -60,8 +72,27 @@ class Item(object):
                 option.pos = self.adj_tiles(grid)[idx]
 
 
-    def change_mode(self):
-        pass
+    def set_mode(self, option, grid):
+        """
+        Changes the mode of an item to a given options
+        :param option: an option item of a menu
+        :param grid: grid instance
+        """
+        self.mode = option.name
+        self.color = option.color
+        self.img = option.img
+        self.options = option.default_options
+        self.set_option_pos(grid)
+
+
+    def reset_mode(self):
+        """
+        Resets the item to default mode
+        """
+        self.mode = self.name
+        self.color = self.default_color
+        self.img = self.default_img
+        self.options = self.default_options
 
 
 class MobileItem(Item):
