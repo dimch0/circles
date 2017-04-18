@@ -26,14 +26,15 @@ grid = cir_grid.Grid()
 images = cir_img.Images(grid)
 
 # Creating bodies
-my_body = cir_body.BodyItem(name="my body", color=grid.pink, speed=4)
+my_body = cir_body.BodyItem(name="my body", color=grid.pink, speed=1)
 my_body.pos = grid.center_tile
 grid.items.append(my_body)
 
 # Creating bokluk
-if 0:
+if 1:
     bokluk = cir_body.MobileItem(name="bokluk", color=grid.green, speed = 0)
-    bokluk.pos = (my_body.pos[0], my_body.pos[1] - 2 * grid.tile_radius)
+    # bokluk.pos = (my_body.pos[0], my_body.pos[1] - 2 * grid.tile_radius)
+    bokluk.pos = (79, 140)
     grid.items.append(bokluk)
 
 
@@ -131,8 +132,8 @@ def game_loop():
                     for item in grid.items:
 
                         # Movement track
-                        if item.mode is "move" and not item.in_menu and not item.radar_track:
-                            item.simple_move_track(clicked_circle, grid)
+                        # if item.mode is "move" and not item.in_menu and not item.radar_track:
+                        #     item.simple_move_track(clicked_circle, grid)
 
                         # =============================================================================================
                         # =============================================================================================
@@ -169,14 +170,24 @@ def game_loop():
                                         if option in item.default_options:
                                             item.set_mode(option, grid, mode_vs_options)
 
-                                        # Close menu if option selected
+                                        # Check option specifics
                                         elif option in mode_vs_options[item.mode]:
                                             # TODO: make directions appear next to body when hovered
+                                            # TODO: moving south:
+                                            if option.name is "South":
+                                                end_point = item.move_south(grid)[-1]
+                                                # Movement track
+                                                if item.mode is "move" and not item.radar_track:
+                                                    print "here"
+                                                    print "end_point", end_point
+                                                    print item.simple_move_track(end_point, grid)
+
 
                                             # Check option "see"
-                                            if option.name is "see":
+                                            elif option.name is "see":
                                                 item.range += 1
-                                                item.mode = "seen"
+                                                # item.mode = "seen"
+                                            # Close menu if option selected
                                             item.in_menu = False
                         # =============================================================================================
                         # =============================================================================================
@@ -220,8 +231,8 @@ def game_loop():
                     pygame.draw.circle(gameDisplay, grid.green, item.pos, radar_radius, thick)
 
             # Item options
-            # TODO: place menu background
             if item.in_menu:
+                # TODO: place menu background
                 pygame.draw.circle(gameDisplay, item.color, item.pos, grid.tile_radius * 3, 0)
                 for item_option in item.options:
                     pygame.draw.circle(gameDisplay, item_option.color, item_option.pos, grid.tile_radius, item_option.border)

@@ -1,6 +1,6 @@
 #######################################################################################################################
 #################                                                                                     #################
-#################                     Item class / MobileItem class                                   #################
+#################                           Item class, MobileItem class                              #################
 #################                                                                                     #################
 #######################################################################################################################
 import pdb
@@ -118,6 +118,7 @@ class MobileItem(Item):
             ay = self.pos[1]
             bx = Point_B[0]
             by = Point_B[1]
+            print "DEBUG coor", ax, bx, ay, by
             dx, dy = (bx - ax, by - ay)
             distance = sqrt(dx ** 2 + dy ** 2)
             steps_number = int(distance / self.speed)
@@ -128,6 +129,20 @@ class MobileItem(Item):
                     self.move_track.append(step)
             self.move_track.append(Point_B)
         return self.move_track
+
+
+    def move_south(self, grid):
+        result = []
+        for tile in grid.tiles:
+            even_coef = range(2, 20, 2)
+            for even_c in even_coef:
+                if tile[0] == self.pos[0]:
+                    if tile[1] == self.pos[1] + (even_c * grid.tile_radius):
+                        if tile not in grid.occupado_tiles:
+                            result.append(tile)
+                        else:
+                            return result
+        return result
 
     def move(self):
         """
