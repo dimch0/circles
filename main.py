@@ -51,12 +51,12 @@ mode_vs_options = {
         cir_item.Item(name="sensory", color=grid.azure, image=images.brain),
     ],
     "move" : [
-        cir_item.Item(name="North", color=grid.white, border=2),
-        cir_item.Item(name="Northeast", color=grid.white, border=2),
-        cir_item.Item(name="Southeast", color=grid.white, border=2),
-        cir_item.Item(name="South", color=grid.white, border=2),
-        cir_item.Item(name="Southwest", color=grid.white, border=2),
-        cir_item.Item(name="Northwest", color=grid.white, border=2)
+        cir_item.Item(name="north", border=1, image=images.north),
+        cir_item.Item(name="northeast", border=1, image=images.northeast),
+        cir_item.Item(name="southeast", border=1, image=images.southeast),
+        cir_item.Item(name="south", border=1, image=images.south),
+        cir_item.Item(name="southwest", border=1, image=images.southwest),
+        cir_item.Item(name="northwest", border=1, image=images.northwest)
     ],
     "sensory": [
         cir_item.Item(name="eat", color=grid.azure, image=images.lips_y),
@@ -174,7 +174,7 @@ def game_loop():
                                         elif option in mode_vs_options[item.mode]:
                                             # TODO: make directions appear next to body when hovered
                                             # TODO: moving south:
-                                            if option.name is "South":
+                                            if option.name is "south":
                                                 end_point = item.move_south(grid)[-1]
                                                 # Movement track
                                                 if item.mode is "move" and not item.radar_track:
@@ -233,9 +233,10 @@ def game_loop():
             # Item options
             if item.in_menu:
                 # TODO: place menu background
-                pygame.draw.circle(gameDisplay, item.color, item.pos, grid.tile_radius * 3, 0)
+                # pygame.draw.circle(gameDisplay, item.color, item.pos, grid.tile_radius * 3, 0)
                 for item_option in item.options:
-                    pygame.draw.circle(gameDisplay, item_option.color, item_option.pos, grid.tile_radius, item_option.border)
+                    if item_option.color:
+                        pygame.draw.circle(gameDisplay, item_option.color, item_option.pos, grid.tile_radius, item_option.border)
                     if item_option.img:
                         gameDisplay.blit(item_option.img, item_option.set_img_pos(grid))
 
@@ -246,8 +247,8 @@ def game_loop():
 
         # Mouse Item
         # TODO: Create MouseItem
-        pygame.draw.circle(gameDisplay, grid.white, mouse_pos, 1, 0)
-        pygame.draw.circle(gameDisplay, grid.black, mouse_pos, 2, 1)
+        pygame.draw.circle(gameDisplay, grid.white, mouse_pos, 2, 0)
+        pygame.draw.circle(gameDisplay, grid.black, mouse_pos, 3, 2)
         for tile in grid.tiles:
             if cir_utils.in_circle(tile, grid.tile_radius, mouse_pos):
                 pygame.draw.circle(gameDisplay, grid.white, tile, grid.tile_radius, 1)
