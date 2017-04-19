@@ -102,3 +102,26 @@ class Grid(object):
                 self.center_tile = tile
                 break
         return self.center_tile
+
+    def adj_tiles(self, center):
+        """
+        :param grid: the center tile
+        :return: a list of 6 adjacent to the center tiles
+        """
+        self_x = center[0]
+        self_y = center[1]
+        return [
+                (self_x, self_y - 2 * self.tile_radius),
+                (self_x + self.cathetus, self_y - self.tile_radius),
+                (self_x + self.cathetus, self_y + self.tile_radius),
+                (self_x, self_y + 2 * self.tile_radius),
+                (self_x - self.cathetus, self_y + self.tile_radius),
+                (self_x - self.cathetus, self_y - self.tile_radius)
+               ]
+
+    def set_mode_vs_options(self, mode_vs_options):
+        for item in self.items:
+            for mode_name, mode_options in mode_vs_options.items():
+                if item.name is mode_name:
+                    item.default_options = mode_options
+                    item.options = item.default_options

@@ -5,7 +5,7 @@
 #######################################################################################################################
 import pdb
 import time
-from math import sqrt
+from math import sqrt, ceil
 # TODO: pass grid object here
 
 class Item(object):
@@ -44,22 +44,6 @@ class Item(object):
         return (img_x, img_y)
 
 
-    def adj_tiles(self, grid):
-        """
-        :param grid: the grid instance
-        :return: a list of the 6 adjacent to self.pos tiles
-        """
-        self_x = self.pos[0]
-        self_y = self.pos[1]
-        return [
-                (self_x, self_y - 2 * grid.tile_radius),
-                (self_x + grid.cathetus, self_y - grid.tile_radius),
-                (self_x + grid.cathetus, self_y + grid.tile_radius),
-                (self_x, self_y + 2 * grid.tile_radius),
-                (self_x - grid.cathetus, self_y + grid.tile_radius),
-                (self_x - grid.cathetus, self_y - grid.tile_radius)
-               ]
-
     # TODO: Backup and restore existing items under menu items
     # TODO: Show backgourd menu
     # TODO: return option image and color
@@ -70,7 +54,7 @@ class Item(object):
         # Returning the options only
         for idx, option in enumerate(self.options):
             if self.in_menu:
-                option.pos = self.adj_tiles(grid)[idx]
+                option.pos = grid.adj_tiles(self.pos)[idx]
 
 
     def set_mode(self, option, grid, mode_vs_option):
@@ -84,7 +68,8 @@ class Item(object):
         if option.uncolor:
             self.uncolor = option.uncolor
         self.img = option.img
-        self.options = mode_vs_option[option.name]
+        if option.name in mode_vs_option.keys():
+            self.options = mode_vs_option[option.name]
         self.set_option_pos(grid)
 
 
@@ -107,45 +92,95 @@ class MobileItem(Item):
         self.speed = speed
 
 
-    def simple_move_track(self, Point_B, grid):
+    def free_move_track(self, Point_B, grid):
         """
         This method moves the item from the current position to Point_B.
         :param Point_B: coordinates of destination point B (x, y)
-        :param SPEED: pixels moved for each step
         :return: a list of steps from point A to point B
+        number of steps depends on the speed and the distance
         """
-        self.move_track = []
+        # TODO: fix the steps generation
+        result = []
         # Movement only allowed in revealed_tiles and not occupado_tiles
         if Point_B in grid.revealed_tiles and Point_B not in grid.occupado_tiles:
             ax = self.pos[0]
             ay = self.pos[1]
             bx = Point_B[0]
             by = Point_B[1]
-            print "DEBUG coor", ax, bx, ay, by
             dx, dy = (bx - ax, by - ay)
-            distance = sqrt(dx ** 2 + dy ** 2)
-            steps_number = int(distance / self.speed)
+            distance = int(sqrt(dx ** 2 + dy ** 2))
+            steps_number = int(ceil(distance / (2 * self.speed)))
+            print "STEPS NUMBER", steps_number
+            print "RADIUS DISTANCE", distance, grid.tile_radius
             if steps_number > 0:
                 stepx, stepy = int(dx / steps_number), int(dy / steps_number)
                 for i in range(steps_number + 1):
                     step = (int(ax + stepx * i), int(ay + stepy * i))
-                    self.move_track.append(step)
-            self.move_track.append(Point_B)
-        return self.move_track
-
-
-    def move_south(self, grid):
-        result = []
-        for tile in grid.tiles:
-            even_coef = range(2, 20, 2)
-            for even_c in even_coef:
-                if tile[0] == self.pos[0]:
-                    if tile[1] == self.pos[1] + (even_c * grid.tile_radius):
-                        if tile not in grid.occupado_tiles:
-                            result.append(tile)
-                        else:
-                            return result
+                    result.append(step)
+            result.append(Point_B)
         return result
+
+
+    def direct_move_track(self, grid, direction):
+        """
+        :param grid: grid instance
+        :return: a list of all available tiles in northeast direction
+        """
+
+        # TODO: parametrize
+        dir = None
+        if direction is "north":
+            dir = 0
+        elif direction is "northeast":
+            dir = 1
+        elif direction is "southeast":
+            dir = 2
+        elif direction is "south":
+            dir = 3
+        elif direction is "southwest":
+            dir = 4
+        elif direction is "northwest":
+            dir = 5
+
+        result = []
+        new_track = grid.adj_tiles(self.pos)[dir]
+        for fields in range(1,11):
+            if new_track in grid.revealed_tiles:
+                if new_track not in grid.occupado_tiles:
+                    for new_steps in self.free_move_track(new_track, grid):
+                        if not new_steps in result:
+                            result.append(new_steps)
+                else:
+                    self.move_track = result
+                    return result
+            new_track = grid.adj_tiles(new_track)[dir]
+
+        self.move_track = result
+        return result
+
+
+    def move_northeast(self, grid):
+        """
+        :param grid: grid instance
+        :return: a list of all available tiles in northeast direction
+        """
+        result = []
+        new_track = grid.adj_tiles(self.pos)[1]
+        for fields in range(1,11):
+            if new_track in grid.revealed_tiles:
+                if new_track not in grid.occupado_tiles:
+                    for new_steps in self.free_move_track(new_track, grid):
+                        if not new_steps in result:
+                            result.append(new_steps)
+                else:
+                    self.move_track = result
+                    return result
+            new_track = grid.adj_tiles(new_track)[1]
+
+        self.move_track = result
+        return result
+
+
 
     def move(self):
         """

@@ -14,11 +14,6 @@ from cir import cir_body, cir_grid, cir_item, cir_utils, cir_img
 pygame.init()
 
 
-
-
-
-
-
 # Loading grid
 grid = cir_grid.Grid()
 
@@ -31,10 +26,10 @@ my_body.pos = grid.center_tile
 grid.items.append(my_body)
 
 # Creating bokluk
-if 1:
+if 0:
     bokluk = cir_body.MobileItem(name="bokluk", color=grid.green, speed = 0)
     # bokluk.pos = (my_body.pos[0], my_body.pos[1] - 2 * grid.tile_radius)
-    bokluk.pos = (79, 140)
+    bokluk.pos = (my_body.pos[0] + grid.cathetus, my_body.pos[1] - grid.tile_radius)
     grid.items.append(bokluk)
 
 
@@ -68,13 +63,8 @@ mode_vs_options = {
     ]
 }
 
-# Setting default options
-for item in grid.items:
-    for mode_name, mode_options in mode_vs_options.items():
-        if item.name is mode_name:
-            item.default_options = mode_options
-            item.options = item.default_options
-
+# Setting mode options
+grid.set_mode_vs_options(mode_vs_options)
 
 
 # GAME SETTINGS
@@ -133,7 +123,7 @@ def game_loop():
 
                         # Movement track
                         # if item.mode is "move" and not item.in_menu and not item.radar_track:
-                        #     item.simple_move_track(clicked_circle, grid)
+                        #     item.free_move_track(clicked_circle, grid)
 
                         # =============================================================================================
                         # =============================================================================================
@@ -155,7 +145,7 @@ def game_loop():
                                     elif not item.in_menu:
                                         item.in_menu = True
                             # Clicked outside
-                            elif clicked_circle is not item.pos and clicked_circle not in item.adj_tiles(grid):
+                            elif clicked_circle is not item.pos and clicked_circle not in grid.adj_tiles(item.pos):
                                 item.in_menu = False
                         # Setting option position
                         item.set_option_pos(grid)
@@ -173,15 +163,8 @@ def game_loop():
                                         # Check option specifics
                                         elif option in mode_vs_options[item.mode]:
                                             # TODO: make directions appear next to body when hovered
-                                            # TODO: moving south:
-                                            if option.name is "south":
-                                                end_point = item.move_south(grid)[-1]
-                                                # Movement track
-                                                if item.mode is "move" and not item.radar_track:
-                                                    print "here"
-                                                    print "end_point", end_point
-                                                    print item.simple_move_track(end_point, grid)
-
+                                            if item.mode is "move":
+                                                item.direct_move_track(grid, option.name)
 
                                             # Check option "see"
                                             elif option.name is "see":

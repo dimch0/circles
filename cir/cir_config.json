@@ -1,11 +1,11 @@
 {
   "grid_settings":  {
-    "scale": 1,
+    "scale": 2,
     "fps": 60,
     "show_grid": 0,
-    "tile_radius": 12,
-    "rows": 18,
-    "cols": 8,
+    "tile_radius": 30,
+    "rows": 10,
+    "cols": 6,
     "caption": "cir",
     "img_dir": "img"
     },
