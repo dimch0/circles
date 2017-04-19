@@ -3,7 +3,8 @@
 #################                                 Main file                                           #################
 #################                                                                                     #################
 #######################################################################################################################
-
+import os
+import sys
 import pdb
 import pygame
 # import time
@@ -14,19 +15,19 @@ from cir import cir_body, cir_grid, cir_item, cir_utils, cir_img
 pygame.init()
 
 
-# Loading grid
+# Creating grid
 grid = cir_grid.Grid()
 
 # Loading images
 images = cir_img.Images(grid)
 
-# Creating bodies
+# Creating my_body
 my_body = cir_body.BodyItem(name="my body", color=grid.pink, speed=1)
 my_body.pos = grid.center_tile
 grid.items.append(my_body)
 
 # Creating bokluk
-if 0:
+if 1:
     bokluk = cir_body.MobileItem(name="bokluk", color=grid.green, speed = 0)
     # bokluk.pos = (my_body.pos[0], my_body.pos[1] - 2 * grid.tile_radius)
     bokluk.pos = (my_body.pos[0] + grid.cathetus, my_body.pos[1] - grid.tile_radius)
@@ -34,7 +35,6 @@ if 0:
 
 
 # TODO: Create MenuItem class
-# TODO: Set menu item attr position in menu
 # TODO: Generate items from external file
 mode_vs_options = {
     "my body": [
@@ -89,9 +89,15 @@ grid items  : {4}
           )
 
 
+
+
+
+
+
+
 def game_loop():
     """
-    The main game loop.
+    Main game loop.
     """
     game_exit = False
 
@@ -101,18 +107,24 @@ def game_loop():
             if event.type == pygame.QUIT:
                 game_exit = True
 
-            # TODO: K_ESCAPE screen
-            # -------------------------------------- SPACEBAR EVENTS -------------------------------------- #
             if event.type == pygame.KEYDOWN:
+                # ------------------------------------------ ESCAPE EVENTS ------------------------------------------ #
+                if event.key is pygame.K_ESCAPE:
+                    # TODO: K_ESCAPE screen loop here
+                    path_to_self = os.path.realpath(__file__)
+                    python = sys.executable
+                    os.execl(path_to_self, '')
+
+                # ------------------------------------------ ESCAPE EVENTS ------------------------------------------ #
+
+                # ---------------------------------------- SPACE BAR EVENTS ----------------------------------------- #
                 if event.key == pygame.K_SPACE:
                     # Radar track populating
                     if not my_body.move_track and not my_body.in_menu and not my_body.radar_track:
                         my_body.gen_radar_track(grid)
                         print ">>>> space"
                         print "revealed tiles: {0}".format(grid.revealed_tiles)
-                        print "revealed radius: {0}".format(grid.revealed_radius)
-                        print "REVEALED LEN: {0}".format(len(grid.revealed_radius))
-            # -------------------------------------- SPACEBAR EVENTS -------------------------------------- #
+                # ---------------------------------------- SPACE BAR EVENTS ----------------------------------------- #
 
 
             # -------------------------------------- CLICK EVENTS ----------------------------------------- #
@@ -121,17 +133,12 @@ def game_loop():
                 if clicked_circle:
                     for item in grid.items:
 
-                        # Movement track
-                        # if item.mode is "move" and not item.in_menu and not item.radar_track:
-                        #     item.free_move_track(clicked_circle, grid)
 
-                        # =============================================================================================
-                        # =============================================================================================
-                        # if item is my_body:
+                        # Set in_menu for the items with meny (my_body)
                         item.set_in_menu(clicked_circle, grid)
                         # Setting option position
                         item.set_option_pos(grid)
-
+                        # =============================================================================================
                         # Option clicked
                         if item.in_menu:
                             if item.options:
@@ -155,8 +162,6 @@ def game_loop():
                                             # Close menu if option selected
                                             item.in_menu = False
                         # =============================================================================================
-                        # =============================================================================================
-
                 debug_print(mouse_pos, clicked_circle)
             # ------------------------------------- CLICK EVENTS ----------------------------------------- #
 
@@ -186,8 +191,8 @@ def game_loop():
         # -------------------------------------- Animations -------------------------------------- #
         for item in grid.items:
             # Movement
-            # if item.move_track:
-            #     item.move()
+            if item.move_track:
+                item.move()
 
             # Radar
             if item.radar_track:
@@ -199,18 +204,19 @@ def game_loop():
             if item.in_menu:
                 # TODO: place menu background
                 # pygame.draw.circle(gameDisplay, item.color, item.pos, grid.tile_radius * 3, 0)
-                for item_option in item.options:
-                    if item_option.color:
-                        pygame.draw.circle(gameDisplay, item_option.color, item_option.pos, grid.tile_radius, item_option.border)
-                    if item_option.img:
-                        gameDisplay.blit(item_option.img, item_option.set_img_pos(grid))
+                for option in item.options:
+                    if option.color:
+                        pygame.draw.circle(gameDisplay, option.color, option.pos, grid.tile_radius, option.border)
+                    if option.img:
+                        gameDisplay.blit(option.img, option.set_img_pos(grid))
 
             # Body
             pygame.draw.circle(gameDisplay, item.color, item.pos, grid.tile_radius, item.border)
             if item.img:
                 gameDisplay.blit(item.img, item.set_img_pos(grid))
             if len(item.move_track) > 1:
-                pygame.draw.lines(gameDisplay, grid.red, False, item.move_track, 1)
+                pygame.draw.lines(gameDisplay, grid.azure, False, item.move_track, 1)
+                pygame.draw.line(gameDisplay, grid.red, item.move_track[0], item.move_track[-1], 1)
 
         # Mouse Item
         # TODO: Create MouseItem

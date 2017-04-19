@@ -5,7 +5,7 @@
 #######################################################################################################################
 import pdb
 import time
-from math import sqrt, ceil
+from math import sqrt, ceil, hypot
 # TODO: pass grid object here
 
 class Item(object):
@@ -161,8 +161,8 @@ class MobileItem(Item):
             dx, dy = (bx - ax, by - ay)
             distance = 2 * grid.tile_radius
             steps_number = int(ceil(distance / (2 * self.speed)))
-            print "STEPS NUMBER", steps_number
-            print "RADIUS DISTANCE", distance, grid.tile_radius
+            print "DEBUG dx is dy?", dx is dy
+            # print "DEBUG RADIUS DISTANCE", distance, grid.tile_radius
             if steps_number > 0:
                 stepx, stepy = int(dx / steps_number), int(dy / steps_number)
                 for i in range(steps_number + 1):
