@@ -127,36 +127,18 @@ def game_loop():
 
                         # =============================================================================================
                         # =============================================================================================
-                        # TODO: parametrized function
-                        # If body is clicked check for menu
-                        if item is my_body:
-                            # Clicked on item
-                            if clicked_circle == item.pos:
-                                # If default mode:
-                                if item.mode is item.name:
-                                    if not item.in_menu:
-                                        item.in_menu = True
-                                    elif item.in_menu:
-                                        item.in_menu = False
-                                # If not default - reset
-                                elif item.mode is not item.name:
-                                    if item.in_menu:
-                                        item.reset_mode()
-                                    elif not item.in_menu:
-                                        item.in_menu = True
-                            # Clicked outside
-                            elif clicked_circle is not item.pos and clicked_circle not in grid.adj_tiles(item.pos):
-                                item.in_menu = False
+                        # if item is my_body:
+                        item.set_in_menu(clicked_circle, grid)
                         # Setting option position
                         item.set_option_pos(grid)
 
-                        # CLICKED ON MENU OPTION
+                        # Option clicked
                         if item.in_menu:
                             if item.options:
                                 for option in item.options:
                                     if clicked_circle == option.pos:
 
-                                        # If a default option -> set mode
+                                        # If default option -> set mode
                                         if option in item.default_options:
                                             item.set_mode(option, grid, mode_vs_options)
 
@@ -166,10 +148,10 @@ def game_loop():
                                             if item.mode is "move":
                                                 item.direct_move_track(grid, option.name)
 
-                                            # Check option "see"
                                             elif option.name is "see":
                                                 item.range += 1
                                                 # item.mode = "seen"
+
                                             # Close menu if option selected
                                             item.in_menu = False
                         # =============================================================================================
@@ -204,8 +186,8 @@ def game_loop():
         # -------------------------------------- Animations -------------------------------------- #
         for item in grid.items:
             # Movement
-            if item.move_track:
-                item.move()
+            # if item.move_track:
+            #     item.move()
 
             # Radar
             if item.radar_track:
@@ -227,6 +209,8 @@ def game_loop():
             pygame.draw.circle(gameDisplay, item.color, item.pos, grid.tile_radius, item.border)
             if item.img:
                 gameDisplay.blit(item.img, item.set_img_pos(grid))
+            if len(item.move_track) > 1:
+                pygame.draw.lines(gameDisplay, grid.red, False, item.move_track, 1)
 
         # Mouse Item
         # TODO: Create MouseItem

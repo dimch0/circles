@@ -83,6 +83,30 @@ class Item(object):
         self.options = self.default_options
 
 
+    def set_in_menu(self, clicked_circle, grid):
+        # Clicked on item
+        if clicked_circle == self.pos:
+            # If default mode:
+            if self.mode is self.name:
+                if not self.in_menu:
+                    self.in_menu = True
+                elif self.in_menu:
+                    self.in_menu = False
+            # If not default - reset
+            elif self.mode is not self.name:
+                if self.in_menu:
+                    self.reset_mode()
+                elif not self.in_menu:
+                    self.in_menu = True
+        # Clicked outside
+        elif clicked_circle is not self.pos and clicked_circle not in grid.adj_tiles(self.pos):
+            self.in_menu = False
+        # Setting option position
+        # self.set_option_pos(grid)
+
+
+
+
 class MobileItem(Item):
     """
     This is the base class for all circle items
@@ -110,8 +134,6 @@ class MobileItem(Item):
             dx, dy = (bx - ax, by - ay)
             distance = int(sqrt(dx ** 2 + dy ** 2))
             steps_number = int(ceil(distance / (2 * self.speed)))
-            print "STEPS NUMBER", steps_number
-            print "RADIUS DISTANCE", distance, grid.tile_radius
             if steps_number > 0:
                 stepx, stepy = int(dx / steps_number), int(dy / steps_number)
                 for i in range(steps_number + 1):
@@ -121,13 +143,43 @@ class MobileItem(Item):
         return result
 
 
+    def tile_move_track(self, Point_B, grid):
+        """
+        This method moves the item from the current position to Point_B.
+        :param Point_B: coordinates of destination point B (x, y)
+        :return: a list of steps from point A to point B
+        number of steps depends on the speed and the distance
+        """
+        print "DEBUG Point B", Point_B
+        result = []
+        # Movement only allowed in revealed_tiles and not occupado_tiles
+        if Point_B in grid.revealed_tiles and Point_B not in grid.occupado_tiles:
+            ax = self.pos[0]
+            ay = self.pos[1]
+            bx = Point_B[0]
+            by = Point_B[1]
+            dx, dy = (bx - ax, by - ay)
+            distance = 2 * grid.tile_radius
+            steps_number = int(ceil(distance / (2 * self.speed)))
+            print "STEPS NUMBER", steps_number
+            print "RADIUS DISTANCE", distance, grid.tile_radius
+            if steps_number > 0:
+                stepx, stepy = int(dx / steps_number), int(dy / steps_number)
+                for i in range(steps_number + 1):
+                    step = (int(ax + stepx * i), int(ay + stepy * i))
+                    if step not in result:
+                        result.append(step)
+            result.append(Point_B)
+        return result
+
+
+
     def direct_move_track(self, grid, direction):
         """
         :param grid: grid instance
         :return: a list of all available tiles in northeast direction
         """
-
-        # TODO: parametrize
+        # TODO: parametrize / automize / optimize
         dir = None
         if direction is "north":
             dir = 0
@@ -147,7 +199,7 @@ class MobileItem(Item):
         for fields in range(1,11):
             if new_track in grid.revealed_tiles:
                 if new_track not in grid.occupado_tiles:
-                    for new_steps in self.free_move_track(new_track, grid):
+                    for new_steps in self.tile_move_track(new_track, grid):
                         if not new_steps in result:
                             result.append(new_steps)
                 else:
@@ -158,27 +210,6 @@ class MobileItem(Item):
         self.move_track = result
         return result
 
-
-    def move_northeast(self, grid):
-        """
-        :param grid: grid instance
-        :return: a list of all available tiles in northeast direction
-        """
-        result = []
-        new_track = grid.adj_tiles(self.pos)[1]
-        for fields in range(1,11):
-            if new_track in grid.revealed_tiles:
-                if new_track not in grid.occupado_tiles:
-                    for new_steps in self.free_move_track(new_track, grid):
-                        if not new_steps in result:
-                            result.append(new_steps)
-                else:
-                    self.move_track = result
-                    return result
-            new_track = grid.adj_tiles(new_track)[1]
-
-        self.move_track = result
-        return result
 
 
 
