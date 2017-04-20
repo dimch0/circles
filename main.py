@@ -75,18 +75,19 @@ pygame.mouse.set_visible(False)
 
 
 def debug_print(mouse_pos, clicked_circle):
-    print(""">>>>>> click: {0}, tile: {1}
-mode        : {2}
-menu        : {3}
-grid items  : {4}
-""".format(mouse_pos,
-           clicked_circle,
-           my_body.mode,
-           my_body.in_menu,
-           [item.name for item in grid.items],
-           grid.occupado_tiles
-           )
-          )
+    pass
+#     print(""">>>>>> click: {0}, tile: {1}
+# mode        : {2}
+# menu        : {3}
+# grid items  : {4}
+# """.format(mouse_pos,
+#            clicked_circle,
+#            my_body.mode,
+#            my_body.in_menu,
+#            [item.name for item in grid.items],
+#            grid.occupado_tiles
+#            )
+#           )
 
 
 def game_loop():

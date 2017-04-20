@@ -155,14 +155,19 @@ class MobileItem(Item):
         result = []
 
         distance = 2 * grid.tile_radius
-        steps_number = int(ceil(distance / (4 * self.speed)))
-        # step = (distance / steps_number)
+        steps_number = int(ceil(distance / (1 * self.speed)))
+        print "distance", distance
+        print "steps_number", steps_number
+        print "dir", dir
+        step = (distance / steps_number)
 
         if steps_number > 0:
-            for i in range(steps_number + 1):
-                stepx, stepy = int(dx / steps_number), int(dy / steps_number)
+            for i in range(1, steps_number + 1):
+                print "i:", i
+                stepx, stepy = step, step
+                # stepx, stepy = stepx * i, stepy * i
                 if dir == 0:
-                    new_track = (int(ax), int(ay + stepy))
+                    new_track = (int(ax), int(ay + 2 * stepy))
                 elif dir == 1:
                     new_track = (int(ax) + stepx, int(ay) - stepy)
                 elif dir == 2:
@@ -175,9 +180,12 @@ class MobileItem(Item):
                     new_track = (int(ax) - stepx, int(ay) - stepy)
 
                 if new_track not in result:
+                    ax, ay = new_track[0], new_track[1]
                     result.append(new_track)
 
         result.append(Point_B)
+        print "result: ", result
+        print "len result", len(result)
         return result
 
     def direct_move_track(self, grid, direction):
@@ -215,8 +223,6 @@ class MobileItem(Item):
 
         self.move_track = result
         return result
-
-
 
 
     def move(self):
