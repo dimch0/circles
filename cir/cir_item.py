@@ -143,36 +143,42 @@ class MobileItem(Item):
         return result
 
 
-    def tile_move_track(self, Point_B, grid):
-        """
-        This method moves the item from the current position to Point_B.
-        :param Point_B: coordinates of destination point B (x, y)
-        :return: a list of steps from point A to point B
-        number of steps depends on the speed and the distance
-        """
-        print "DEBUG Point B", Point_B
+
+
+    def new_track(self, grid, dir, Point_B):
+
+        ax = self.pos[0]
+        ay = self.pos[1]
+        bx = Point_B[0]
+        by = Point_B[1]
+        dx, dy = ax - bx, ay - by
         result = []
-        # Movement only allowed in revealed_tiles and not occupado_tiles
-        if Point_B in grid.revealed_tiles and Point_B not in grid.occupado_tiles:
-            ax = self.pos[0]
-            ay = self.pos[1]
-            bx = Point_B[0]
-            by = Point_B[1]
-            dx, dy = (bx - ax, by - ay)
-            distance = 2 * grid.tile_radius
-            steps_number = int(ceil(distance / (2 * self.speed)))
-            print "DEBUG dx is dy?", dx is dy
-            # print "DEBUG RADIUS DISTANCE", distance, grid.tile_radius
-            if steps_number > 0:
+
+        distance = 2 * grid.tile_radius
+        steps_number = int(ceil(distance / (4 * self.speed)))
+        # step = (distance / steps_number)
+
+        if steps_number > 0:
+            for i in range(steps_number + 1):
                 stepx, stepy = int(dx / steps_number), int(dy / steps_number)
-                for i in range(steps_number + 1):
-                    step = (int(ax + stepx * i), int(ay + stepy * i))
-                    if step not in result:
-                        result.append(step)
-            result.append(Point_B)
+                if dir == 0:
+                    new_track = (int(ax), int(ay + stepy))
+                elif dir == 1:
+                    new_track = (int(ax) + stepx, int(ay) - stepy)
+                elif dir == 2:
+                    new_track = (int(ax) + stepx, int(ay) + stepy)
+                elif dir == 3:
+                    new_track = (int(ax), int(ay) + 2 * stepy)
+                elif dir == 4:
+                    new_track = (int(ax) - stepx, int(ay) + stepy)
+                elif dir == 5:
+                    new_track = (int(ax) - stepx, int(ay) - stepy)
+
+                if new_track not in result:
+                    result.append(new_track)
+
+        result.append(Point_B)
         return result
-
-
 
     def direct_move_track(self, grid, direction):
         """
@@ -196,10 +202,10 @@ class MobileItem(Item):
 
         result = []
         new_track = grid.adj_tiles(self.pos)[dir]
-        for fields in range(1,11):
+        for fields in range(1,len(grid.tiles)):
             if new_track in grid.revealed_tiles:
                 if new_track not in grid.occupado_tiles:
-                    for new_steps in self.tile_move_track(new_track, grid):
+                    for new_steps in self.new_track(grid, dir, new_track):
                         if not new_steps in result:
                             result.append(new_steps)
                 else:

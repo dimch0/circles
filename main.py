@@ -89,12 +89,6 @@ grid items  : {4}
           )
 
 
-
-
-
-
-
-
 def game_loop():
     """
     Main game loop.
