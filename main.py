@@ -27,7 +27,7 @@ my_body.pos = grid.center_tile
 grid.items.append(my_body)
 
 # Creating bokluk
-if 1:
+if 0:
     bokluk = cir_body.MobileItem(name="bokluk", color=grid.green, speed = 0)
     # bokluk.pos = (my_body.pos[0], my_body.pos[1] - 2 * grid.tile_radius)
     bokluk.pos = (my_body.pos[0] + grid.cathetus, my_body.pos[1] - grid.tile_radius)
@@ -210,7 +210,7 @@ def game_loop():
             if len(item.move_track) > 1:
                 pygame.draw.line(gameDisplay, grid.red, item.move_track[0], item.move_track[-1], 1)
                 for o in item.move_track:
-                    pygame.draw.circle(gameDisplay, grid.azure, o, 1, 0)
+                    pygame.draw.circle(gameDisplay, grid.azure, o, 3, 1)
 
 
         # Mouse Item

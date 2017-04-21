@@ -106,7 +106,6 @@ class Item(object):
 
 
 
-
 class MobileItem(Item):
     """
     This is the base class for all circle items
@@ -122,7 +121,7 @@ class MobileItem(Item):
         :return: a list of steps from point A to point B
         number of steps depends on the speed and the distance
         """
-        # TODO: fix the steps generation
+
         result = []
         # Movement only allowed in revealed_tiles and not occupado_tiles
         if Tile_B in grid.revealed_tiles and Tile_B not in grid.occupado_tiles:
@@ -135,8 +134,10 @@ class MobileItem(Item):
             distance = 2 * grid.tile_radius
             steps_number = int(ceil(distance / (2 * self.speed)))
             if steps_number > 0:
+                # TODO: define step x
                 stepx, stepy = int(dx / steps_number), int(dy / steps_number)
                 for i in range(steps_number + 1):
+
                     step = (int(ax + (stepx * i)), int(ay + (stepy * i)))
                     result.append(step)
             result.append(Tile_B)
@@ -230,6 +231,7 @@ class MobileItem(Item):
             Point_A = Point_B
             Point_B = grid.adj_tiles(Point_A)[dir]
         self.move_track = result
+        print "result:", result
         return result
 
     def move(self):
