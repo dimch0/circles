@@ -114,6 +114,39 @@ class MobileItem(Item):
         super(MobileItem, self).__init__(**kwargs)
         self.speed = speed
 
+
+
+    # def move_to_tile(self, Tile_A, Tile_B, grid):
+    #     """
+    #     This method moves the item from the current position to Tile_B.
+    #     :param Tile_B: coordinates of destination point B (x, y)
+    #     :return: a list of steps from point A to point B
+    #     number of steps depends on the speed and the distance
+    #     """
+    #     result = []
+    #     # Movement only allowed in revealed_tiles and not occupado_tiles
+    #     if Tile_B in grid.revealed_tiles and Tile_B not in grid.occupado_tiles:
+    #         ax = Tile_A[0]
+    #         ay = Tile_A[1]
+    #         bx = Tile_B[0]
+    #         by = Tile_B[1]
+    #         # TODO: define accurate distances
+    #         dx, dy = (bx - ax, by - ay)
+    #         # distance = int(sqrt(dx ** 2 + dy ** 2))
+    #         distance = 2 * grid.tile_radius
+    #         steps_number = int(ceil(distance / (2 * self.speed)))
+    #         if steps_number > 0:
+    #             # TODO: define step x
+    #             stepx, stepy = int(dx / steps_number), int(dy / steps_number)
+    #             for i in range(steps_number + 1):
+    #                 # TODO: define correct step
+    #                 step = (int(ax + (stepx * i)), int(ay + (stepy * i)))
+    #                 result.append(step)
+    #         result.append(Tile_B)
+    #     return result
+
+
+
     def move_to_tile(self, Tile_A, Tile_B, grid):
         """
         This method moves the item from the current position to Tile_B.
@@ -121,7 +154,6 @@ class MobileItem(Item):
         :return: a list of steps from point A to point B
         number of steps depends on the speed and the distance
         """
-
         result = []
         # Movement only allowed in revealed_tiles and not occupado_tiles
         if Tile_B in grid.revealed_tiles and Tile_B not in grid.occupado_tiles:
@@ -129,6 +161,7 @@ class MobileItem(Item):
             ay = Tile_A[1]
             bx = Tile_B[0]
             by = Tile_B[1]
+            # TODO: define accurate distances
             dx, dy = (bx - ax, by - ay)
             # distance = int(sqrt(dx ** 2 + dy ** 2))
             distance = 2 * grid.tile_radius
@@ -137,14 +170,14 @@ class MobileItem(Item):
                 # TODO: define step x
                 stepx, stepy = int(dx / steps_number), int(dy / steps_number)
                 for i in range(steps_number + 1):
-
+                    # TODO: define correct step
                     step = (int(ax + (stepx * i)), int(ay + (stepy * i)))
                     result.append(step)
             result.append(Tile_B)
         return result
 
+
     # def new_track(self, grid, dir, Point_B):
-    #
     #     ax = self.pos[0]
     #     ay = self.pos[1]
     #     bx = Point_B[0]
