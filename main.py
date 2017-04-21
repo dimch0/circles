@@ -184,8 +184,8 @@ def game_loop():
         # -------------------------------------- Animations -------------------------------------- #
         for item in grid.items:
             # Movement
-            if item.move_track:
-                item.move()
+            # if item.move_track:
+            #     item.move()
 
             # Radar
             if item.radar_track:
@@ -208,8 +208,10 @@ def game_loop():
             if item.img:
                 gameDisplay.blit(item.img, item.set_img_pos(grid))
             if len(item.move_track) > 1:
-                pygame.draw.lines(gameDisplay, grid.azure, False, item.move_track, 1)
                 pygame.draw.line(gameDisplay, grid.red, item.move_track[0], item.move_track[-1], 1)
+                for o in item.move_track:
+                    pygame.draw.circle(gameDisplay, grid.azure, o, 1, 0)
+
 
         # Mouse Item
         # TODO: Create MouseItem

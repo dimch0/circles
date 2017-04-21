@@ -115,92 +115,83 @@ class MobileItem(Item):
         super(MobileItem, self).__init__(**kwargs)
         self.speed = speed
 
-    # def free_move_track(self, Point_B, grid):
-    #     """
-    #     This method moves the item from the current position to Point_B.
-    #     :param Point_B: coordinates of destination point B (x, y)
-    #     :return: a list of steps from point A to point B
-    #     number of steps depends on the speed and the distance
-    #     """
-    #     # TODO: fix the steps generation
-    #     result = []
-    #     # Movement only allowed in revealed_tiles and not occupado_tiles
-    #     if Point_B in grid.revealed_tiles and Point_B not in grid.occupado_tiles:
-    #         ax = self.pos[0]
-    #         ay = self.pos[1]
-    #         bx = Point_B[0]
-    #         by = Point_B[1]
-    #         dx, dy = (bx - ax, by - ay)
-    #         distance = int(sqrt(dx ** 2 + dy ** 2))
-    #         steps_number = int(ceil(distance / (2 * self.speed)))
-    #         if steps_number > 0:
-    #             stepx, stepy = int(dx / steps_number), int(dy / steps_number)
-    #             for i in range(steps_number + 1):
-    #                 step = (int(ax + stepx * i), int(ay + stepy * i))
-    #                 result.append(step)
-    #         result.append(Point_B)
-    #     return result
-
-
-
-
-    def new_track(self, grid, dir, Point_B):
-
-        ax = self.pos[0]
-        ay = self.pos[1]
-        bx = Point_B[0]
-        by = Point_B[1]
-        dx, dy = ax - bx, ay - by
+    def move_to_tile(self, Tile_A, Tile_B, grid):
+        """
+        This method moves the item from the current position to Tile_B.
+        :param Tile_B: coordinates of destination point B (x, y)
+        :return: a list of steps from point A to point B
+        number of steps depends on the speed and the distance
+        """
+        # TODO: fix the steps generation
         result = []
-
-        distance = 2 * grid.tile_radius
-        steps_number = int(ceil(distance / (1 * self.speed)))
-        print "distance", distance
-        print "steps_number", steps_number
-        print "dir", dir
-        step = (distance / steps_number)
-        step_radius = int(distance / steps_number)
-        step_cathetus = int(grid.cathetus / steps_number)
-
-
-        if steps_number > 0:
-            for i in range(1, steps_number + 1):
-                # stepx, stepy = step, step
-                # step_radius = int(step_radius * i)
-                # step_cathetus = int(step_cathetus * i)
-
-                if dir == 0:
-                    new_track = (int(ax), int(ay + 2 * step_radius))
-                elif dir == 1:
-                    new_track = (int(ax) + step_cathetus, int(ay) - step_radius)
-                elif dir == 2:
-                    new_track = (int(ax) + step_cathetus, int(ay) + step_radius)
-                elif dir == 3:
-                    print "OP TUKA"
-                    new_track = (int(ax), int(ay) + 2 * step_radius)
-                    print "new_track 1", new_track
-                elif dir == 4:
-                    new_track = (int(ax) - step_cathetus, int(ay) + step_radius)
-                elif dir == 5:
-                    new_track = (int(ax) - step_cathetus, int(ay) - step_radius)
-
-                # print "new_track", new_track
-                if new_track not in result:
-                    result.append(new_track)
-                    ax, ay = new_track[0], new_track[1]
-
-        result.append(Point_B)
-        print "RESULT: ", result
-        print "len result", len(result)
-        print "Point B", Point_B
+        # Movement only allowed in revealed_tiles and not occupado_tiles
+        if Tile_B in grid.revealed_tiles and Tile_B not in grid.occupado_tiles:
+            ax = Tile_A[0]
+            ay = Tile_A[1]
+            bx = Tile_B[0]
+            by = Tile_B[1]
+            dx, dy = (bx - ax, by - ay)
+            # distance = int(sqrt(dx ** 2 + dy ** 2))
+            distance = 2 * grid.tile_radius
+            steps_number = int(ceil(distance / (2 * self.speed)))
+            if steps_number > 0:
+                stepx, stepy = int(dx / steps_number), int(dy / steps_number)
+                for i in range(steps_number + 1):
+                    step = (int(ax + (stepx * i)), int(ay + (stepy * i)))
+                    result.append(step)
+            result.append(Tile_B)
         return result
 
-
-
-
-
-
-
+    # def new_track(self, grid, dir, Point_B):
+    #
+    #     ax = self.pos[0]
+    #     ay = self.pos[1]
+    #     bx = Point_B[0]
+    #     by = Point_B[1]
+    #     dx, dy = ax - bx, ay - by
+    #     result = []
+    #
+    #     distance = 2 * grid.tile_radius
+    #     steps_number = int(ceil(distance / (1 * self.speed)))
+    #     print "distance", distance
+    #     print "steps_number", steps_number
+    #     print "dir", dir
+    #     step = (distance / steps_number)
+    #     step_radius = int(distance / steps_number)
+    #     step_cathetus = int(grid.cathetus / steps_number)
+    #
+    #
+    #     if steps_number > 0:
+    #         for i in range(1, steps_number + 1):
+    #             # stepx, stepy = step, step
+    #             # step_radius = int(step_radius * i)
+    #             # step_cathetus = int(step_cathetus * i)
+    #
+    #             if dir == 0:
+    #                 new_track = (int(ax), int(ay + 2 * step_radius))
+    #             elif dir == 1:
+    #                 new_track = (int(ax) + step_cathetus, int(ay) - step_radius)
+    #             elif dir == 2:
+    #                 new_track = (int(ax) + step_cathetus, int(ay) + step_radius)
+    #             elif dir == 3:
+    #                 print "OP TUKA"
+    #                 new_track = (int(ax), int(ay) + 2 * step_radius)
+    #                 print "new_track 1", new_track
+    #             elif dir == 4:
+    #                 new_track = (int(ax) - step_cathetus, int(ay) + step_radius)
+    #             elif dir == 5:
+    #                 new_track = (int(ax) - step_cathetus, int(ay) - step_radius)
+    #
+    #             # print "new_track", new_track
+    #             if new_track not in result:
+    #                 result.append(new_track)
+    #                 ax, ay = new_track[0], new_track[1]
+    #
+    #     result.append(Point_B)
+    #     print "RESULT: ", result
+    #     print "len result", len(result)
+    #     print "Point B", Point_B
+    #     return result
 
     def direct_move_track(self, grid, direction):
         """
@@ -223,18 +214,21 @@ class MobileItem(Item):
             dir = 5
 
         result = []
-        new_track = grid.adj_tiles(self.pos)[dir]
+        Point_A = self.pos
+        Point_B = grid.adj_tiles(self.pos)[dir]
+
         for fields in range(1,len(grid.tiles)):
-            if new_track in grid.revealed_tiles:
-                if new_track not in grid.occupado_tiles:
-                    for new_steps in self.new_track(grid, dir, new_track):
+            if Point_B in grid.revealed_tiles:
+                if Point_B not in grid.occupado_tiles:
+
+                    for new_steps in self.move_to_tile(Point_A, Point_B, grid):
                         if not new_steps in result:
                             result.append(new_steps)
                 else:
                     self.move_track = result
                     return result
-            new_track = grid.adj_tiles(new_track)[dir]
-
+            Point_A = Point_B
+            Point_B = grid.adj_tiles(Point_A)[dir]
         self.move_track = result
         return result
 
