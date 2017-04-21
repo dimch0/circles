@@ -22,7 +22,7 @@ grid = cir_grid.Grid()
 images = cir_img.Images(grid)
 
 # Creating my_body
-my_body = cir_body.BodyItem(name="my body", color=grid.pink, speed=1)
+my_body = cir_body.BodyItem(name="my body", color=grid.pink, speed=2)
 my_body.pos = grid.center_tile
 grid.items.append(my_body)
 
@@ -33,7 +33,7 @@ if 0:
     bokluk.pos = (my_body.pos[0] + grid.cathetus, my_body.pos[1] - grid.tile_radius)
     grid.items.append(bokluk)
 
-
+print "CAT", grid.cathetus
 # TODO: Create MenuItem class
 # TODO: Generate items from external file
 mode_vs_options = {
@@ -184,8 +184,8 @@ def game_loop():
         # -------------------------------------- Animations -------------------------------------- #
         for item in grid.items:
             # Movement
-            # if item.move_track:
-            #     item.move()
+            if item.move_track:
+                item.move()
 
             # Radar
             if item.radar_track:

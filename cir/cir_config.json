@@ -3,7 +3,7 @@
     "scale": 1,
     "fps": 60,
     "show_grid": 0,
-    "tile_radius": 12,
+    "tile_radius": 10,
     "rows": 10,
     "cols": 6,
     "caption": "cir",

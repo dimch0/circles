@@ -5,6 +5,7 @@
 #######################################################################################################################
 import pdb
 import time
+import math
 from math import sqrt, ceil, hypot
 # TODO: pass grid object here
 
@@ -165,7 +166,8 @@ class MobileItem(Item):
             dx, dy = (bx - ax, by - ay)
             # distance = int(sqrt(dx ** 2 + dy ** 2))
             distance = 2 * grid.tile_radius
-            steps_number = int(ceil(distance / (2 * self.speed)))
+            steps_number = int(ceil(2 * distance / (2 * self.speed)))
+            step_size = int(distance / steps_number)
             if steps_number > 0:
                 # TODO: define step x
                 stepx, stepy = int(dx / steps_number), int(dy / steps_number)
@@ -176,6 +178,33 @@ class MobileItem(Item):
             result.append(Tile_B)
         return result
 
+
+
+    def move_to_tile_be(self, Point_A, Point_B):
+        # CONSTANTS -- modify these
+        POINT1 = Point_A
+        POINT2 = Point_B
+        STEP_SIZE = 2
+
+        dx = POINT2[0] - POINT1[0]
+        dy = POINT2[1] - POINT1[1]
+
+        bearing = math.atan2(dy, dx)
+        print "Bearing: {b}".format(b=bearing)
+        # Use pythagoras to work out the distance
+        distance_between_points = math.sqrt(dx ** 2 + dy ** 2)
+
+        for p in range(0, int(round(distance_between_points, 0)), STEP_SIZE):
+            x = POINT1[0] + p * math.cos(bearing)
+            y = POINT1[1] + p * math.sin(bearing)
+            print "Intermediate point {x},{y}".format(x=x, y=y)
+
+        # points = []
+        # for i in range(1, n):
+        #     a = float(i) / n  # rescale 0 < i < n --> 0 < a < 1
+        #     x = (1 - a) * x1 + a * x2  # interpolate x coordinate
+        #     y = (1 - a) * y1 + a * y2  # interpolate y coordinate
+        #     points.append((x, y))
 
     # def new_track(self, grid, dir, Point_B):
     #     ax = self.pos[0]
@@ -265,6 +294,7 @@ class MobileItem(Item):
             Point_B = grid.adj_tiles(Point_A)[dir]
         self.move_track = result
         print "result:", result
+        print "result_be:", self.move_to_tile_be(Point_A, Point_B)
         return result
 
     def move(self):
