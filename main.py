@@ -27,14 +27,14 @@ my_body.pos = grid.center_tile
 grid.items.append(my_body)
 
 # Creating bokluk
-if 0:
+if 1:
     bokluk = cir_body.MobileItem(grid=grid, name="bokluk", color=grid.green, speed = 0)
     # bokluk.pos = (my_body.pos[0], my_body.pos[1] - 2 * grid.tile_radius)
     bokluk.pos = (my_body.pos[0] + grid.cathetus, my_body.pos[1] - grid.tile_radius)
     grid.items.append(bokluk)
 
 print "CAT", grid.cathetus
-# TODO: Create MenuItem class
+
 # TODO: Generate items from external file
 mode_vs_options = {
     "my body": [
@@ -79,12 +79,15 @@ def debug_print(mouse_pos, clicked_circle):
 mode        : {2}
 menu        : {3}
 grid items  : {4}
+occupado:   : {5}
+board       : {6}
 """.format(mouse_pos,
            clicked_circle,
            my_body.mode,
            my_body.in_menu,
            [item.name for item in grid.items],
-           grid.occupado_tiles
+           grid.occupado_tiles,
+           grid.playing_tiles
            )
           )
 
@@ -126,7 +129,6 @@ def game_loop():
                 if clicked_circle:
                     for item in grid.items:
 
-
                         # Set in_menu for the items with meny (my_body)
                         item.set_in_menu(clicked_circle)
                         # Setting option position
@@ -146,7 +148,7 @@ def game_loop():
                                         elif option in mode_vs_options[item.mode]:
                                             # TODO: make directions appear next to body when hovered
                                             if item.mode is "move":
-                                                item.direct_move_track(option.name, mode_vs_options[item.mode])
+                                                item.gen_move_track(option.name, mode_vs_options[item.mode])
 
                                             elif option.name is "see":
                                                 item.range += 1
@@ -154,6 +156,7 @@ def game_loop():
 
                                             # Close menu if option selected
                                             item.in_menu = False
+                                            item.overlap()
                         # =============================================================================================
                 debug_print(mouse_pos, clicked_circle)
             # ------------------------------------- CLICK EVENTS ----------------------------------------- #
@@ -177,6 +180,10 @@ def game_loop():
         # Grid
         if grid.show_grid:
             for tile in grid.tiles:
+                pygame.draw.circle(gameDisplay, grid.white, tile, grid.tile_radius, 1)
+        # Playing board:
+        if 1:
+            for tile in grid.playing_tiles:
                 pygame.draw.circle(gameDisplay, grid.white, tile, grid.tile_radius, 1)
         # -------------------------------------- Background -------------------------------------- #
 
@@ -225,7 +232,7 @@ def game_loop():
         # -------------------------------------- PLACEMENT --------------------------------------- #
 
         pygame.display.update()
-        # TODO: check changes for placement
+        # check changes for placement
         clock.tick(grid.fps)
     pygame.quit()
     quit()

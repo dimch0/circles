@@ -34,7 +34,6 @@ class Item(object):
         self.move_track = []
         self.radar_track = []
 
-
     def set_img_pos(self):
         """
         Centers the image posotion
@@ -45,16 +44,11 @@ class Item(object):
         img_y = self.pos[1] - self.grid.tile_radius / 2
         return (img_x, img_y)
 
-
-    # TODO: Backup and restore existing items under menu items
-    # TODO: Show backgourd menu
-
     def set_option_pos(self):
         # Returning the options only
         for idx, option in enumerate(self.options):
             if self.in_menu:
                 option.pos = self.grid.adj_tiles(self.pos)[idx]
-
 
     def set_mode(self, option, mode_vs_option):
         """
@@ -71,7 +65,6 @@ class Item(object):
             self.options = mode_vs_option[option.name]
         self.set_option_pos()
 
-
     def reset_mode(self):
         """
         Resets the item to default mode
@@ -81,6 +74,23 @@ class Item(object):
         self.img = self.default_img
         self.options = self.default_options
 
+    def overlap(self):
+        """
+        Checks for overlapping items
+        if in menu: creates a backup in grid.overlapped_items
+        if not in menu: restores from grid.overlapped_items
+        :return:
+        """
+        if self.in_menu:
+            for overlapping_item in self.grid.items:
+                if overlapping_item.pos in self.grid.adj_tiles(self.pos):
+                    self.grid.overlapped_items.append(overlapping_item)
+                    self.grid.items.remove(overlapping_item)
+        else:
+            if self.grid.overlapped_items:
+                for overlapping_item in self.grid.overlapped_items:
+                    self.grid.items.append(overlapping_item)
+                    self.grid.overlapped_items.remove(overlapping_item)
 
     def set_in_menu(self, clicked_circle):
         # Clicked on item
@@ -89,20 +99,21 @@ class Item(object):
             if self.mode is self.name:
                 if not self.in_menu:
                     self.in_menu = True
+                    self.overlap()
                 elif self.in_menu:
                     self.in_menu = False
+                    self.overlap()
             # If not default - reset
             elif self.mode is not self.name:
                 if self.in_menu:
                     self.reset_mode()
                 elif not self.in_menu:
                     self.in_menu = True
+                    self.overlap()
         # Clicked outside
         elif clicked_circle is not self.pos and clicked_circle not in self.grid.adj_tiles(self.pos):
             self.in_menu = False
-        # Setting option position
-        # self.set_option_pos(self.grid)
-
+            self.overlap()
 
 
 class MobileItem(Item):
@@ -142,28 +153,7 @@ class MobileItem(Item):
             result.append(Tile_B)
         return result
 
-
-    def move_to_tile_be(self, Point_A, Point_B):
-        # CONSTANTS -- modify these
-        POINT1 = Point_A
-        POINT2 = Point_B
-        STEP_SIZE = 2
-
-        dx = POINT2[0] - POINT1[0]
-        dy = POINT2[1] - POINT1[1]
-
-        bearing = math.atan2(dy, dx)
-        print "Bearing: {b}".format(b=bearing)
-        # Use pythagoras to work out the distance
-        distance_between_points = math.sqrt(dx ** 2 + dy ** 2)
-
-        for p in range(0, int(round(distance_between_points, 0)), STEP_SIZE):
-            x = POINT1[0] + p * math.cos(bearing)
-            y = POINT1[1] + p * math.sin(bearing)
-            print "Intermediate point {x},{y}".format(x=x, y=y)
-
-
-    def direct_move_track(self, direction, direction_items):
+    def gen_move_track(self, direction, direction_items):
         """
         :param self.grid: self.grid instance
         :return: a list of all available tiles in northeast direction
@@ -177,9 +167,8 @@ class MobileItem(Item):
         Point_B = self.grid.adj_tiles(self.pos)[dir]
 
         for fields in range(1,len(self.grid.tiles)):
-            if Point_B in self.grid.revealed_tiles:
+            if Point_B in self.grid.revealed_tiles and Point_B in self.grid.playing_tiles:
                 if Point_B not in self.grid.occupado_tiles:
-
                     for new_steps in self.move_to_tile(Point_A, Point_B):
                         if not new_steps in result:
                             result.append(new_steps)
@@ -190,7 +179,6 @@ class MobileItem(Item):
             Point_B = self.grid.adj_tiles(Point_A)[dir]
         self.move_track = result
         print "result:", result
-        print "result_be:", self.move_to_tile_be(Point_A, Point_B)
         return result
 
     def move(self):

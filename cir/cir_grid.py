@@ -25,15 +25,14 @@ class Grid(object):
         self.center_tile = None
         self.find_center_tile()
         self._occupado_tiles = []
-        self.playing_tiles = []
+        self._playing_tiles = []
         self.revealed_tiles = []
         self.revealed_radius = []
         self.items = []
-        # TODO: use below for overlap
         self.overlapped_items = []
-        self.mouse_mode = None
-        self.mouse_img = None
-        self.mode = []
+        # self.mouse_mode = None
+        # self.mouse_img = None
+        # self.mode = []
 
     def set_config(self):
         """
@@ -59,7 +58,6 @@ class Grid(object):
         """
         Generating the grid tiles
         """
-        # TODO: define the playing board
         for x in range(0, self.cols + 1):
             for y in range(1, self.rows):
                 if x % 2 == y % 2:
@@ -69,6 +67,7 @@ class Grid(object):
                     if not centre in self._tiles:
                         self._tiles.append(centre)
         return self._tiles
+
 
     def mouse_in_tile(self, mouse_pos):
         """
@@ -102,6 +101,19 @@ class Grid(object):
                 self.center_tile = tile
                 break
         return self.center_tile
+
+    @property
+    def playing_tiles(self):
+        """
+        Defining the playing tiles
+        """
+        playing_radius = self.tile_radius * 9
+        center_tile = self.find_center_tile()
+        for tile in self.tiles:
+            if in_circle(center_tile, playing_radius, tile):
+                self._playing_tiles.append(tile)
+        return self._playing_tiles
+
 
     def adj_tiles(self, center):
         """

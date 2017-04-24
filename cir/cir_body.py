@@ -14,21 +14,21 @@ class BodyItem(MobileItem):
     def __init__(self, **kwargs):
         super(BodyItem, self).__init__(**kwargs)
         self.range = 1
-        self.muscle = 1
-        self.mind = 0
-        self.ego = 0
-        self.charm = 1
-        self.lux = 1
-        self.vision = 1
-        self.audio = 0
-        self.smell = 0
-        self.touch = 0
-        self.eat = 0
-        self.spirit_pool = 100
-        self.lifespan = 100
-        self.hygiene = 100
-        self.stress = 0
-        self.status = []
+        # self.muscle = 1
+        # self.mind = 0
+        # self.ego = 0
+        # self.charm = 1
+        # self.lux = 1
+        # self.vision = 1
+        # self.audio = 0
+        # self.smell = 0
+        # self.touch = 0
+        # self.eat = 0
+        # self.spirit_pool = 100
+        # self.lifespan = 100
+        # self.hygiene = 100
+        # self.stress = 0
+        # self.status = []
 
 
     def gen_radar_track(self):
@@ -38,7 +38,6 @@ class BodyItem(MobileItem):
         with the radius, thickness:
         (31, 10), (32, 10), (33, 10)
         """
-
         radar_thickness = range(1, (10 / self.grid.scale) + 1)
         radar_thickness.reverse()
         radar_limit = (self.grid.tile_radius * 2 * self.range) + 1 + self.grid.tile_radius
