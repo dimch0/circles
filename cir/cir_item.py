@@ -7,14 +7,15 @@ import pdb
 import time
 import math
 from math import sqrt, ceil, hypot
-# TODO: pass grid object here
+
 
 class Item(object):
     """
     This is the base class for all circle items
     It includes the open_menu method.
     """
-    def __init__(self, name, pos=(), color=None, uncolor=None, image=None, border=0):
+    def __init__(self, grid, name, pos=(), color=None, uncolor=None, image=None, border=0):
+        self.grid = grid
         self.name = name
         self.pos = pos
         self.color = color
@@ -34,31 +35,28 @@ class Item(object):
         self.radar_track = []
 
 
-    def set_img_pos(self, grid):
+    def set_img_pos(self):
         """
         Centers the image posotion
         :param grid:  grid object
         :return: coordinates of the centered image
         """
-        img_x = self.pos[0] - grid.tile_radius / 2
-        img_y = self.pos[1] - grid.tile_radius / 2
+        img_x = self.pos[0] - self.grid.tile_radius / 2
+        img_y = self.pos[1] - self.grid.tile_radius / 2
         return (img_x, img_y)
 
 
     # TODO: Backup and restore existing items under menu items
     # TODO: Show backgourd menu
-    # TODO: return option image and color
-    # TODO: make function to blit option
-    # TODO: execute adding and removing to grid.items here
 
-    def set_option_pos(self, grid):
+    def set_option_pos(self):
         # Returning the options only
         for idx, option in enumerate(self.options):
             if self.in_menu:
-                option.pos = grid.adj_tiles(self.pos)[idx]
+                option.pos = self.grid.adj_tiles(self.pos)[idx]
 
 
-    def set_mode(self, option, grid, mode_vs_option):
+    def set_mode(self, option, mode_vs_option):
         """
         Changes the mode of an item to a given options
         :param option: an option item of a menu
@@ -71,7 +69,7 @@ class Item(object):
         self.img = option.img
         if option.name in mode_vs_option.keys():
             self.options = mode_vs_option[option.name]
-        self.set_option_pos(grid)
+        self.set_option_pos()
 
 
     def reset_mode(self):
@@ -84,7 +82,7 @@ class Item(object):
         self.options = self.default_options
 
 
-    def set_in_menu(self, clicked_circle, grid):
+    def set_in_menu(self, clicked_circle):
         # Clicked on item
         if clicked_circle == self.pos:
             # If default mode:
@@ -100,10 +98,10 @@ class Item(object):
                 elif not self.in_menu:
                     self.in_menu = True
         # Clicked outside
-        elif clicked_circle is not self.pos and clicked_circle not in grid.adj_tiles(self.pos):
+        elif clicked_circle is not self.pos and clicked_circle not in self.grid.adj_tiles(self.pos):
             self.in_menu = False
         # Setting option position
-        # self.set_option_pos(grid)
+        # self.set_option_pos(self.grid)
 
 
 
@@ -116,39 +114,7 @@ class MobileItem(Item):
         self.speed = speed
 
 
-
-    # def move_to_tile(self, Tile_A, Tile_B, grid):
-    #     """
-    #     This method moves the item from the current position to Tile_B.
-    #     :param Tile_B: coordinates of destination point B (x, y)
-    #     :return: a list of steps from point A to point B
-    #     number of steps depends on the speed and the distance
-    #     """
-    #     result = []
-    #     # Movement only allowed in revealed_tiles and not occupado_tiles
-    #     if Tile_B in grid.revealed_tiles and Tile_B not in grid.occupado_tiles:
-    #         ax = Tile_A[0]
-    #         ay = Tile_A[1]
-    #         bx = Tile_B[0]
-    #         by = Tile_B[1]
-    #         # TODO: define accurate distances
-    #         dx, dy = (bx - ax, by - ay)
-    #         # distance = int(sqrt(dx ** 2 + dy ** 2))
-    #         distance = 2 * grid.tile_radius
-    #         steps_number = int(ceil(distance / (2 * self.speed)))
-    #         if steps_number > 0:
-    #             # TODO: define step x
-    #             stepx, stepy = int(dx / steps_number), int(dy / steps_number)
-    #             for i in range(steps_number + 1):
-    #                 # TODO: define correct step
-    #                 step = (int(ax + (stepx * i)), int(ay + (stepy * i)))
-    #                 result.append(step)
-    #         result.append(Tile_B)
-    #     return result
-
-
-
-    def move_to_tile(self, Tile_A, Tile_B, grid):
+    def move_to_tile(self, Tile_A, Tile_B):
         """
         This method moves the item from the current position to Tile_B.
         :param Tile_B: coordinates of destination point B (x, y)
@@ -157,27 +123,24 @@ class MobileItem(Item):
         """
         result = []
         # Movement only allowed in revealed_tiles and not occupado_tiles
-        if Tile_B in grid.revealed_tiles and Tile_B not in grid.occupado_tiles:
+        if Tile_B in self.grid.revealed_tiles and Tile_B not in self.grid.occupado_tiles:
             ax = Tile_A[0]
             ay = Tile_A[1]
             bx = Tile_B[0]
             by = Tile_B[1]
-            # TODO: define accurate distances
+            # TODO: debug step generation
             dx, dy = (bx - ax, by - ay)
             # distance = int(sqrt(dx ** 2 + dy ** 2))
-            distance = 2 * grid.tile_radius
+            distance = 2 * self.grid.tile_radius
             steps_number = int(ceil(2 * distance / (2 * self.speed)))
             step_size = int(distance / steps_number)
             if steps_number > 0:
-                # TODO: define step x
                 stepx, stepy = int(dx / steps_number), int(dy / steps_number)
                 for i in range(steps_number + 1):
-                    # TODO: define correct step
                     step = (int(ax + (stepx * i)), int(ay + (stepy * i)))
                     result.append(step)
             result.append(Tile_B)
         return result
-
 
 
     def move_to_tile_be(self, Point_A, Point_B):
@@ -199,99 +162,32 @@ class MobileItem(Item):
             y = POINT1[1] + p * math.sin(bearing)
             print "Intermediate point {x},{y}".format(x=x, y=y)
 
-        # points = []
-        # for i in range(1, n):
-        #     a = float(i) / n  # rescale 0 < i < n --> 0 < a < 1
-        #     x = (1 - a) * x1 + a * x2  # interpolate x coordinate
-        #     y = (1 - a) * y1 + a * y2  # interpolate y coordinate
-        #     points.append((x, y))
 
-    # def new_track(self, grid, dir, Point_B):
-    #     ax = self.pos[0]
-    #     ay = self.pos[1]
-    #     bx = Point_B[0]
-    #     by = Point_B[1]
-    #     dx, dy = ax - bx, ay - by
-    #     result = []
-    #
-    #     distance = 2 * grid.tile_radius
-    #     steps_number = int(ceil(distance / (1 * self.speed)))
-    #     print "distance", distance
-    #     print "steps_number", steps_number
-    #     print "dir", dir
-    #     step = (distance / steps_number)
-    #     step_radius = int(distance / steps_number)
-    #     step_cathetus = int(grid.cathetus / steps_number)
-    #
-    #
-    #     if steps_number > 0:
-    #         for i in range(1, steps_number + 1):
-    #             # stepx, stepy = step, step
-    #             # step_radius = int(step_radius * i)
-    #             # step_cathetus = int(step_cathetus * i)
-    #
-    #             if dir == 0:
-    #                 new_track = (int(ax), int(ay + 2 * step_radius))
-    #             elif dir == 1:
-    #                 new_track = (int(ax) + step_cathetus, int(ay) - step_radius)
-    #             elif dir == 2:
-    #                 new_track = (int(ax) + step_cathetus, int(ay) + step_radius)
-    #             elif dir == 3:
-    #                 print "OP TUKA"
-    #                 new_track = (int(ax), int(ay) + 2 * step_radius)
-    #                 print "new_track 1", new_track
-    #             elif dir == 4:
-    #                 new_track = (int(ax) - step_cathetus, int(ay) + step_radius)
-    #             elif dir == 5:
-    #                 new_track = (int(ax) - step_cathetus, int(ay) - step_radius)
-    #
-    #             # print "new_track", new_track
-    #             if new_track not in result:
-    #                 result.append(new_track)
-    #                 ax, ay = new_track[0], new_track[1]
-    #
-    #     result.append(Point_B)
-    #     print "RESULT: ", result
-    #     print "len result", len(result)
-    #     print "Point B", Point_B
-    #     return result
-
-    def direct_move_track(self, grid, direction):
+    def direct_move_track(self, direction, direction_items):
         """
-        :param grid: grid instance
+        :param self.grid: self.grid instance
         :return: a list of all available tiles in northeast direction
         """
-        # TODO: parametrize / automize / optimize
         dir = None
-        if direction is "north":
-            dir = 0
-        elif direction is "northeast":
-            dir = 1
-        elif direction is "southeast":
-            dir = 2
-        elif direction is "south":
-            dir = 3
-        elif direction is "southwest":
-            dir = 4
-        elif direction is "northwest":
-            dir = 5
-
+        for idx, direction_item in enumerate(direction_items):
+            if direction == direction_item.name:
+                dir = idx
         result = []
         Point_A = self.pos
-        Point_B = grid.adj_tiles(self.pos)[dir]
+        Point_B = self.grid.adj_tiles(self.pos)[dir]
 
-        for fields in range(1,len(grid.tiles)):
-            if Point_B in grid.revealed_tiles:
-                if Point_B not in grid.occupado_tiles:
+        for fields in range(1,len(self.grid.tiles)):
+            if Point_B in self.grid.revealed_tiles:
+                if Point_B not in self.grid.occupado_tiles:
 
-                    for new_steps in self.move_to_tile(Point_A, Point_B, grid):
+                    for new_steps in self.move_to_tile(Point_A, Point_B):
                         if not new_steps in result:
                             result.append(new_steps)
                 else:
                     self.move_track = result
                     return result
             Point_A = Point_B
-            Point_B = grid.adj_tiles(Point_A)[dir]
+            Point_B = self.grid.adj_tiles(Point_A)[dir]
         self.move_track = result
         print "result:", result
         print "result_be:", self.move_to_tile_be(Point_A, Point_B)

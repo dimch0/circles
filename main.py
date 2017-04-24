@@ -22,13 +22,13 @@ grid = cir_grid.Grid()
 images = cir_img.Images(grid)
 
 # Creating my_body
-my_body = cir_body.BodyItem(name="my body", color=grid.pink, speed=2)
+my_body = cir_body.BodyItem(grid=grid, name="my body", color=grid.pink, speed=2)
 my_body.pos = grid.center_tile
 grid.items.append(my_body)
 
 # Creating bokluk
 if 0:
-    bokluk = cir_body.MobileItem(name="bokluk", color=grid.green, speed = 0)
+    bokluk = cir_body.MobileItem(grid=grid, name="bokluk", color=grid.green, speed = 0)
     # bokluk.pos = (my_body.pos[0], my_body.pos[1] - 2 * grid.tile_radius)
     bokluk.pos = (my_body.pos[0] + grid.cathetus, my_body.pos[1] - grid.tile_radius)
     grid.items.append(bokluk)
@@ -38,28 +38,28 @@ print "CAT", grid.cathetus
 # TODO: Generate items from external file
 mode_vs_options = {
     "my body": [
-        cir_item.Item(name="option 1", color=my_body.default_color),
-        cir_item.Item(name="option 2", color=my_body.default_color),
-        cir_item.Item(name="option 3", color=my_body.default_color),
-        cir_item.Item(name="move", color=my_body.default_color, image=images.feet),
-        cir_item.Item(name="option 5", color=my_body.default_color),
-        cir_item.Item(name="sensory", color=grid.azure, image=images.brain),
+        cir_item.Item(grid=grid, name="option 1", color=my_body.default_color),
+        cir_item.Item(grid=grid, name="option 2", color=my_body.default_color),
+        cir_item.Item(grid=grid, name="option 3", color=my_body.default_color),
+        cir_item.Item(grid=grid, name="move", color=my_body.default_color, image=images.feet),
+        cir_item.Item(grid=grid, name="option 5", color=my_body.default_color),
+        cir_item.Item(grid=grid, name="sensory", color=grid.azure, image=images.brain),
     ],
     "move" : [
-        cir_item.Item(name="north", border=1, image=images.north),
-        cir_item.Item(name="northeast", border=1, image=images.northeast),
-        cir_item.Item(name="southeast", border=1, image=images.southeast),
-        cir_item.Item(name="south", border=1, image=images.south),
-        cir_item.Item(name="southwest", border=1, image=images.southwest),
-        cir_item.Item(name="northwest", border=1, image=images.northwest)
+        cir_item.Item(grid=grid, name="north", border=1, image=images.north),
+        cir_item.Item(grid=grid, name="northeast", border=1, image=images.northeast),
+        cir_item.Item(grid=grid, name="southeast", border=1, image=images.southeast),
+        cir_item.Item(grid=grid, name="south", border=1, image=images.south),
+        cir_item.Item(grid=grid, name="southwest", border=1, image=images.southwest),
+        cir_item.Item(grid=grid, name="northwest", border=1, image=images.northwest)
     ],
     "sensory": [
-        cir_item.Item(name="eat", color=grid.azure, image=images.lips_y),
-        cir_item.Item(name="audio", color=grid.azure, image=images.ear_y),
-        cir_item.Item(name="smel", color=grid.azure, image=images.nose_y),
-        cir_item.Item(name="medi", color=grid.azure, image=images.yoga),
-        cir_item.Item(name="touch", color=grid.azure, image=images.touch_y),
-        cir_item.Item(name="see", color=grid.azure, image=images.eye_y)
+        cir_item.Item(grid=grid, name="eat", color=grid.azure, image=images.lips_y),
+        cir_item.Item(grid=grid, name="audio", color=grid.azure, image=images.ear_y),
+        cir_item.Item(grid=grid, name="smel", color=grid.azure, image=images.nose_y),
+        cir_item.Item(grid=grid, name="medi", color=grid.azure, image=images.yoga),
+        cir_item.Item(grid=grid, name="touch", color=grid.azure, image=images.touch_y),
+        cir_item.Item(grid=grid, name="see", color=grid.azure, image=images.eye_y)
     ]
 }
 
@@ -114,7 +114,7 @@ def game_loop():
                 if event.key == pygame.K_SPACE:
                     # Radar track populating
                     if not my_body.move_track and not my_body.in_menu and not my_body.radar_track:
-                        my_body.gen_radar_track(grid)
+                        my_body.gen_radar_track()
                         print ">>>> space"
                         print "revealed tiles: {0}".format(grid.revealed_tiles)
                 # ---------------------------------------- SPACE BAR EVENTS ----------------------------------------- #
@@ -128,9 +128,9 @@ def game_loop():
 
 
                         # Set in_menu for the items with meny (my_body)
-                        item.set_in_menu(clicked_circle, grid)
+                        item.set_in_menu(clicked_circle)
                         # Setting option position
-                        item.set_option_pos(grid)
+                        item.set_option_pos()
                         # =============================================================================================
                         # Option clicked
                         if item.in_menu:
@@ -140,13 +140,13 @@ def game_loop():
 
                                         # If default option -> set mode
                                         if option in item.default_options:
-                                            item.set_mode(option, grid, mode_vs_options)
+                                            item.set_mode(option, mode_vs_options)
 
                                         # Check option specifics
                                         elif option in mode_vs_options[item.mode]:
                                             # TODO: make directions appear next to body when hovered
                                             if item.mode is "move":
-                                                item.direct_move_track(grid, option.name)
+                                                item.direct_move_track(option.name, mode_vs_options[item.mode])
 
                                             elif option.name is "see":
                                                 item.range += 1
@@ -189,7 +189,7 @@ def game_loop():
 
             # Radar
             if item.radar_track:
-                radar_radius, thick = item.radar(grid)
+                radar_radius, thick = item.radar()
                 if radar_radius and thick:
                     pygame.draw.circle(gameDisplay, grid.green, item.pos, radar_radius, thick)
 
@@ -201,12 +201,12 @@ def game_loop():
                     if option.color:
                         pygame.draw.circle(gameDisplay, option.color, option.pos, grid.tile_radius, option.border)
                     if option.img:
-                        gameDisplay.blit(option.img, option.set_img_pos(grid))
+                        gameDisplay.blit(option.img, option.set_img_pos())
 
             # Body
             pygame.draw.circle(gameDisplay, item.color, item.pos, grid.tile_radius, item.border)
             if item.img:
-                gameDisplay.blit(item.img, item.set_img_pos(grid))
+                gameDisplay.blit(item.img, item.set_img_pos())
             if len(item.move_track) > 1:
                 pygame.draw.line(gameDisplay, grid.red, item.move_track[0], item.move_track[-1], 1)
                 for o in item.move_track:
