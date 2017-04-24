@@ -92,9 +92,9 @@ class Item(object):
                     self.grid.items.append(overlapping_item)
                     self.grid.overlapped_items.remove(overlapping_item)
 
-    def set_in_menu(self, clicked_circle):
+    def set_in_menu(self, clicked_circle, mode_vs_options):
         # Clicked on item
-        if clicked_circle == self.pos:
+        if clicked_circle == self.pos and self.name in mode_vs_options.keys():
             # If default mode:
             if self.mode is self.name:
                 if not self.in_menu:

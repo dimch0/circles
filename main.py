@@ -35,7 +35,7 @@ if 1:
 
 print "CAT", grid.cathetus
 
-# TODO: Generate items from external file
+# TODO: Generate items and load from external file
 mode_vs_options = {
     "my body": [
         cir_item.Item(grid=grid, name="option 1", color=my_body.default_color),
@@ -130,11 +130,11 @@ def game_loop():
                     for item in grid.items:
 
                         # Set in_menu for the items with meny (my_body)
-                        item.set_in_menu(clicked_circle)
+                        item.set_in_menu(clicked_circle, mode_vs_options)
                         # Setting option position
                         item.set_option_pos()
-                        # =============================================================================================
-                        # Option clicked
+                        # ---------------------------------- Option clicked ----------------------------------------- #
+                        #
                         if item.in_menu:
                             if item.options:
                                 for option in item.options:
@@ -157,7 +157,8 @@ def game_loop():
                                             # Close menu if option selected
                                             item.in_menu = False
                                             item.overlap()
-                        # =============================================================================================
+                        # ---------------------------------- Option clicked ----------------------------------------- #
+
                 debug_print(mouse_pos, clicked_circle)
             # ------------------------------------- CLICK EVENTS ----------------------------------------- #
 
