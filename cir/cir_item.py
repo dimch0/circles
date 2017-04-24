@@ -92,24 +92,38 @@ class Item(object):
                     self.grid.items.append(overlapping_item)
                     self.grid.overlapped_items.remove(overlapping_item)
 
-    def set_in_menu(self, clicked_circle, mode_vs_options):
+    def set_in_menu(self, FLAG):
+        """ Setting the in_menu attribute
+        :param FLAG: boolean -True or False
+        """
+        if FLAG:
+            self.in_menu = True
+        else:
+            self.in_menu = False
+        self.overlap()
+        return self.in_menu
+
+    def check_in_menu(self, clicked_circle, mode_vs_options):
         # Clicked on item
         if clicked_circle == self.pos and self.name in mode_vs_options.keys():
             # If default mode:
             if self.mode is self.name:
                 if not self.in_menu:
-                    self.in_menu = True
-                    self.overlap()
+                    self.set_in_menu(True)
+                    # self.in_menu = True
+                    # self.overlap()
                 elif self.in_menu:
-                    self.in_menu = False
-                    self.overlap()
+                    self.set_in_menu(False)
+                    # self.in_menu = False
+                    # self.overlap()
             # If not default - reset
             elif self.mode is not self.name:
                 if self.in_menu:
                     self.reset_mode()
                 elif not self.in_menu:
-                    self.in_menu = True
-                    self.overlap()
+                    self.set_in_menu(True)
+                    # self.in_menu = True
+                    # self.overlap()
         # Clicked outside
         elif clicked_circle is not self.pos and clicked_circle not in self.grid.adj_tiles(self.pos):
             self.in_menu = False
@@ -168,7 +182,7 @@ class MobileItem(Item):
         Point_A = self.pos
         Point_B = self.grid.adj_tiles(self.pos)[dir]
 
-        for fields in range(1,len(self.grid.tiles)):
+        for fields in range(1,13):
             if Point_B in self.grid.playing_tiles:
                 if Point_B not in self.grid.occupado_tiles and Point_B in self.grid.revealed_tiles:
                     for new_steps in self.move_to_tile(Point_A, Point_B):

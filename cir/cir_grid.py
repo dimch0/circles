@@ -111,7 +111,8 @@ class Grid(object):
         center_tile = self.find_center_tile()
         for tile in self.tiles:
             if in_circle(center_tile, playing_radius, tile):
-                self._playing_tiles.append(tile)
+                if not tile in self._playing_tiles:
+                    self._playing_tiles.append(tile)
         return self._playing_tiles
 
 

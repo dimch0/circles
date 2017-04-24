@@ -79,16 +79,18 @@ mode        : {2}
 menu        : {3}
 grid items  : {4}
 occupado:   : {5}
-board       : {6}
+playing     : {6}
 move track  : {7}
+all tiles   : {8}
 """.format(mouse_pos,
            clicked_circle,
            my_body.mode,
            my_body.in_menu,
            [item.name for item in grid.items],
            grid.occupado_tiles,
-           grid.playing_tiles,
-           my_body.move_track
+           len(grid.playing_tiles),
+           my_body.move_track,
+           len(grid.tiles)
            )
           )
 
@@ -121,7 +123,7 @@ def game_loop():
                         my_body.gen_radar_track()
                         print ">>>> space"
                         print "revealed tiles: {0}".format(len(grid.revealed_tiles))
-                        print "revealed_radius: {0}".format(grid.revealed_radius)
+                        print "revealed_radius: {0}".format(len(grid.revealed_radius))
                 # ---------------------------------------- SPACE BAR EVENTS ----------------------------------------- #
 
 
@@ -141,7 +143,7 @@ def game_loop():
                 elif event.key is pygame.K_q:
                     direction = mode_vs_options["move"][5].name
 
-                if direction and not my_body.move_track:
+                if direction and not my_body.move_track and not my_body.radar_track:
                     my_body.gen_move_track(direction, mode_vs_options["move"])
                 # ---------------------------------------- SPACE BAR EVENTS ----------------------------------------- #
 
@@ -153,7 +155,7 @@ def game_loop():
                     for item in grid.items:
 
                         # Set in_menu for the items with meny (my_body)
-                        item.set_in_menu(clicked_circle, mode_vs_options)
+                        item.check_in_menu(clicked_circle, mode_vs_options)
                         # Setting option position
                         item.set_option_pos()
                         # ---------------------------------- Option clicked ----------------------------------------- #
@@ -177,10 +179,10 @@ def game_loop():
                                                 item.range += 1
                                                 # item.mode = "seen"
 
-
                                             # Close menu if option selected
-                                            item.in_menu = False
-                                            item.overlap()
+                                            item.set_in_menu(False)
+                                            # item.in_menu = False
+                                            # item.overlap()
                         # ---------------------------------- Option clicked ----------------------------------------- #
 
                 debug_print(mouse_pos, clicked_circle)
@@ -239,6 +241,7 @@ def game_loop():
             pygame.draw.circle(gameDisplay, item.color, item.pos, grid.tile_radius, item.border)
             if item.img:
                 gameDisplay.blit(item.img, item.set_img_pos())
+            # Show movement track in color
             # if len(item.move_track) > 1:
             #     pygame.draw.line(gameDisplay, grid.red, item.move_track[0], item.move_track[-1], 1)
                 # for o in item.move_track:
