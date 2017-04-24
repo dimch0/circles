@@ -110,24 +110,17 @@ class Item(object):
             if self.mode is self.name:
                 if not self.in_menu:
                     self.set_in_menu(True)
-                    # self.in_menu = True
-                    # self.overlap()
                 elif self.in_menu:
                     self.set_in_menu(False)
-                    # self.in_menu = False
-                    # self.overlap()
-            # If not default - reset
+            # If not default mode
             elif self.mode is not self.name:
                 if self.in_menu:
                     self.reset_mode()
                 elif not self.in_menu:
                     self.set_in_menu(True)
-                    # self.in_menu = True
-                    # self.overlap()
         # Clicked outside
         elif clicked_circle is not self.pos and clicked_circle not in self.grid.adj_tiles(self.pos):
-            self.in_menu = False
-            self.overlap()
+            self.set_in_menu(False)
 
 
 class MobileItem(Item):
@@ -138,7 +131,6 @@ class MobileItem(Item):
         super(MobileItem, self).__init__(**kwargs)
         self.speed = speed
 
-    # TODO Debug one of the below methods
     def move_to_tile(self, Tile_A, Tile_B):
         """
         This method moves the item from the current position to Tile_B.

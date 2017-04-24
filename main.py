@@ -128,7 +128,6 @@ def game_loop():
 
 
                 # ---------------------------------------- SPACE BAR EVENTS ----------------------------------------- #
-                # TODO: DEBUG slowdown
                 direction = None
                 if event.key is pygame.K_w:
                     direction = mode_vs_options["move"][0].name
@@ -181,8 +180,6 @@ def game_loop():
 
                                             # Close menu if option selected
                                             item.set_in_menu(False)
-                                            # item.in_menu = False
-                                            # item.overlap()
                         # ---------------------------------- Option clicked ----------------------------------------- #
 
                 debug_print(mouse_pos, clicked_circle)
