@@ -33,7 +33,6 @@ if 1:
     bokluk.pos = (my_body.pos[0] + grid.cathetus, my_body.pos[1] - grid.tile_radius)
     grid.items.append(bokluk)
 
-print "CAT", grid.cathetus
 
 # TODO: Generate items and load from external file
 mode_vs_options = {
@@ -71,7 +70,7 @@ grid.set_mode_vs_options(mode_vs_options)
 gameDisplay = pygame.display.set_mode((grid.display_width, grid.display_height))
 pygame.display.set_caption(grid.caption)
 clock = pygame.time.Clock()
-pygame.mouse.set_visible(False)
+pygame.mouse.set_visible(True)
 
 
 def debug_print(mouse_pos, clicked_circle):
@@ -81,13 +80,15 @@ menu        : {3}
 grid items  : {4}
 occupado:   : {5}
 board       : {6}
+move track  : {7}
 """.format(mouse_pos,
            clicked_circle,
            my_body.mode,
            my_body.in_menu,
            [item.name for item in grid.items],
            grid.occupado_tiles,
-           grid.playing_tiles
+           grid.playing_tiles,
+           my_body.move_track
            )
           )
 
@@ -119,7 +120,29 @@ def game_loop():
                     if not my_body.move_track and not my_body.in_menu and not my_body.radar_track:
                         my_body.gen_radar_track()
                         print ">>>> space"
-                        print "revealed tiles: {0}".format(grid.revealed_tiles)
+                        print "revealed tiles: {0}".format(len(grid.revealed_tiles))
+                        print "revealed_radius: {0}".format(grid.revealed_radius)
+                # ---------------------------------------- SPACE BAR EVENTS ----------------------------------------- #
+
+
+                # ---------------------------------------- SPACE BAR EVENTS ----------------------------------------- #
+                # TODO: DEBUG slowdown
+                direction = None
+                if event.key is pygame.K_w:
+                    direction = mode_vs_options["move"][0].name
+                elif event.key is pygame.K_e:
+                    direction = mode_vs_options["move"][1].name
+                elif event.key is pygame.K_d:
+                    direction = mode_vs_options["move"][2].name
+                elif event.key is pygame.K_s:
+                    direction = mode_vs_options["move"][3].name
+                elif event.key is pygame.K_a:
+                    direction = mode_vs_options["move"][4].name
+                elif event.key is pygame.K_q:
+                    direction = mode_vs_options["move"][5].name
+
+                if direction and not my_body.move_track:
+                    my_body.gen_move_track(direction, mode_vs_options["move"])
                 # ---------------------------------------- SPACE BAR EVENTS ----------------------------------------- #
 
 
@@ -154,6 +177,7 @@ def game_loop():
                                                 item.range += 1
                                                 # item.mode = "seen"
 
+
                                             # Close menu if option selected
                                             item.in_menu = False
                                             item.overlap()
@@ -183,7 +207,7 @@ def game_loop():
             for tile in grid.tiles:
                 pygame.draw.circle(gameDisplay, grid.white, tile, grid.tile_radius, 1)
         # Playing board:
-        if 1:
+        if 0:
             for tile in grid.playing_tiles:
                 pygame.draw.circle(gameDisplay, grid.white, tile, grid.tile_radius, 1)
         # -------------------------------------- Background -------------------------------------- #
@@ -215,16 +239,16 @@ def game_loop():
             pygame.draw.circle(gameDisplay, item.color, item.pos, grid.tile_radius, item.border)
             if item.img:
                 gameDisplay.blit(item.img, item.set_img_pos())
-            if len(item.move_track) > 1:
-                pygame.draw.line(gameDisplay, grid.red, item.move_track[0], item.move_track[-1], 1)
-                for o in item.move_track:
-                    pygame.draw.circle(gameDisplay, grid.azure, o, 3, 1)
+            # if len(item.move_track) > 1:
+            #     pygame.draw.line(gameDisplay, grid.red, item.move_track[0], item.move_track[-1], 1)
+                # for o in item.move_track:
+                #     pygame.draw.circle(gameDisplay, grid.azure, o, 3, 1)
 
 
         # Mouse Item
         # TODO: Create MouseItem
-        pygame.draw.circle(gameDisplay, grid.white, mouse_pos, 2, 0)
-        pygame.draw.circle(gameDisplay, grid.black, mouse_pos, 3, 2)
+        # pygame.draw.circle(gameDisplay, grid.white, mouse_pos, 2, 0)
+        # pygame.draw.circle(gameDisplay, grid.black, mouse_pos, 3, 2)
         for tile in grid.tiles:
             if cir_utils.in_circle(tile, grid.tile_radius, mouse_pos):
                 pygame.draw.circle(gameDisplay, grid.white, tile, grid.tile_radius, 1)
