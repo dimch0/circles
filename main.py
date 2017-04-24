@@ -108,15 +108,15 @@ def game_loop():
                 game_exit = True
 
             if event.type == pygame.KEYDOWN:
-                # ------------------------------------------ ESCAPE EVENTS ------------------------------------------ #
+                # ========================================= ESCAPE LOOP ============================================= #
                 if event.key is pygame.K_ESCAPE:
                     # TODO: K_ESCAPE screen loop here
                     # Restart
                     os.execv(sys.executable, [sys.executable] + sys.argv)
 
-                # ------------------------------------------ ESCAPE EVENTS ------------------------------------------ #
+                # ========================================= ESCAPE LOOP ============================================= #
 
-                # ---------------------------------------- SPACE BAR EVENTS ----------------------------------------- #
+                # ========================================= SPACE BAR EVENTS ======================================== #
                 if event.key == pygame.K_SPACE:
                     # Radar track populating
                     if not my_body.move_track and not my_body.in_menu and not my_body.radar_track:
@@ -124,10 +124,10 @@ def game_loop():
                         print ">>>> space"
                         print "revealed tiles: {0}".format(len(grid.revealed_tiles))
                         print "revealed_radius: {0}".format(len(grid.revealed_radius))
-                # ---------------------------------------- SPACE BAR EVENTS ----------------------------------------- #
+                # ========================================= SPACE BAR EVENTS ======================================== #
 
 
-                # ---------------------------------------- SPACE BAR EVENTS ----------------------------------------- #
+                # ========================================= MOVEMENT ================================================ #
                 direction = None
                 if event.key is pygame.K_w:
                     direction = mode_vs_options["move"][0].name
@@ -144,21 +144,19 @@ def game_loop():
 
                 if direction and not my_body.move_track and not my_body.radar_track:
                     my_body.gen_move_track(direction, mode_vs_options["move"])
-                # ---------------------------------------- SPACE BAR EVENTS ----------------------------------------- #
+                # ========================================= MOVEMENT ================================================ #
 
 
-            # -------------------------------------- CLICK EVENTS ----------------------------------------- #
+            # ============================================= CLICK EVENTS ============================================ #
             if event.type == pygame.MOUSEBUTTONDOWN:
                 clicked_circle = grid.mouse_in_tile(mouse_pos)
                 if clicked_circle:
                     for item in grid.items:
-
                         # Set in_menu for the items with meny (my_body)
                         item.check_in_menu(clicked_circle, mode_vs_options)
                         # Setting option position
                         item.set_option_pos()
                         # ---------------------------------- Option clicked ----------------------------------------- #
-                        #
                         if item.in_menu:
                             if item.options:
                                 for option in item.options:
@@ -183,10 +181,9 @@ def game_loop():
                         # ---------------------------------- Option clicked ----------------------------------------- #
 
                 debug_print(mouse_pos, clicked_circle)
-            # ------------------------------------- CLICK EVENTS ----------------------------------------- #
+            # ============================================= CLICK EVENTS ============================================ #
 
-        # -------------------------------------- PLACEMENT --------------------------------------- #
-
+        # ================================================= PLACEMENT =============================================== #
         # -------------------------------------- Background -------------------------------------- #
         # Background
         gameDisplay.fill(grid.grey)
@@ -211,12 +208,11 @@ def game_loop():
                 pygame.draw.circle(gameDisplay, grid.white, tile, grid.tile_radius, 1)
         # -------------------------------------- Background -------------------------------------- #
 
-
         # -------------------------------------- Animations -------------------------------------- #
         for item in grid.items:
             # Movement
-            if item.move_track:
-                item.move()
+            # if item.move_track:
+            #     item.move()
 
             # Radar
             if item.radar_track:
@@ -253,10 +249,13 @@ def game_loop():
             if cir_utils.in_circle(tile, grid.tile_radius, mouse_pos):
                 pygame.draw.circle(gameDisplay, grid.white, tile, grid.tile_radius, 1)
         # -------------------------------------- Animations -------------------------------------- #
-
-        # -------------------------------------- PLACEMENT --------------------------------------- #
+        # ================================================= PLACEMENT =============================================== #
 
         pygame.display.update()
+        for item in grid.items:
+            # Movement
+            if item.move_track:
+                item.move()
         # check changes for placement
         clock.tick(grid.fps)
     pygame.quit()
