@@ -123,6 +123,14 @@ class Item(object):
             self.set_in_menu(False)
 
 
+class TimerItem(Item):
+    """
+    This is the base class for all timer items
+    """
+    def __init__(self, speed, **kwargs):
+        super(TimerItem, self).__init__(**kwargs)
+        self.speed = speed
+
 class MobileItem(Item):
     """
     This is the base class for all circle items
@@ -197,7 +205,7 @@ class MobileItem(Item):
                 Point_A = Point_B
                 Point_B = self.grid.adj_tiles(Point_A)[dir]
             self.move_track = result
-        print "result:", result
+        print "steps:", len(result)
         return result
 
     def move(self):

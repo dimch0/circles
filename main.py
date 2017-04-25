@@ -7,6 +7,7 @@ import os
 import sys
 import pdb
 import pygame
+import math
 # import time
 # import random
 from pygame.locals import *
@@ -27,11 +28,17 @@ my_body.pos = grid.center_tile
 grid.items.append(my_body)
 
 # Creating bokluk
-if 1:
+if 0:
     bokluk = cir_body.MobileItem(grid=grid, name="bokluk", color=grid.green, speed = 0)
     # bokluk.pos = (my_body.pos[0], my_body.pos[1] - 2 * grid.tile_radius)
     bokluk.pos = (my_body.pos[0] + grid.cathetus, my_body.pos[1] - grid.tile_radius)
     grid.items.append(bokluk)
+
+
+if 1:
+    test_timer = cir_body.MobileItem(grid=grid, name="test timer", color=grid.green, speed = 0)
+    test_timer.pos = (my_body.pos[0], my_body.pos[1] - 2 * grid.tile_radius)
+    grid.items.append(test_timer)
 
 
 # TODO: Generate items and load from external file
@@ -59,6 +66,22 @@ mode_vs_options = {
         cir_item.Item(grid=grid, name="medi", color=grid.azure, image=images.yoga),
         cir_item.Item(grid=grid, name="touch", color=grid.azure, image=images.touch_y),
         cir_item.Item(grid=grid, name="see", color=grid.azure, image=images.eye_y)
+    ],
+    "bokluk": [
+        cir_item.Item(grid=grid, name="govna", color=grid.black),
+        cir_item.Item(grid=grid, name="laina", color=grid.green),
+        cir_item.Item(grid=grid, name="otvrat", color=grid.green),
+        cir_item.Item(grid=grid, name="smrad", color=grid.green),
+        cir_item.Item(grid=grid, name="gadost", color=grid.green),
+        cir_item.Item(grid=grid, name="gnus", color=grid.green)
+    ],
+    "govna": [
+        cir_item.Item(grid=grid, name="shuplesto", color=grid.blue),
+        cir_item.Item(grid=grid, name="luskavo", color=grid.blue),
+        cir_item.Item(grid=grid, name="cherno", color=grid.black),
+        cir_item.Item(grid=grid, name="mirizlivo", color=grid.blue),
+        cir_item.Item(grid=grid, name="techno", color=grid.blue),
+        cir_item.Item(grid=grid, name="mazno", color=grid.blue)
     ]
 }
 
@@ -162,7 +185,7 @@ def game_loop():
 
                                         # Check option specifics
                                         elif option in mode_vs_options[item.mode]:
-                                            # TODO: make directions appear next to body when hovered
+                                            # TODO: make directions appear next to body
                                             if item.mode is "move":
                                                 item.gen_move_track(option.name, mode_vs_options[item.mode])
 
@@ -236,10 +259,35 @@ def game_loop():
                         gameDisplay.blit(option.img, option.set_img_pos())
 
             # Body
-            if (item.pos in grid.revealed_tiles) or (item is my_body):
-                pygame.draw.circle(gameDisplay, item.color, item.pos, grid.tile_radius, item.border)
-                if item.img:
-                    gameDisplay.blit(item.img, item.set_img_pos())
+            if 0:
+                if (item.pos in grid.revealed_tiles) or (item is my_body):
+                    pygame.draw.circle(gameDisplay, item.color, item.pos, grid.tile_radius, item.border)
+                    if item.img:
+                        gameDisplay.blit(item.img, item.set_img_pos())
+
+            # Timer
+            if item is test_timer:
+                pygame.draw.circle(gameDisplay, item.color, item.pos, grid.tile_radius, 1)
+                pi = math.pi
+                # pygame.draw.arc(gameDisplay, grid.red, (100, 100, 200, 200), math.pi/2, math.pi, 1)
+                # TODO: get coordinates of a square around the item.pos
+                recttt = [
+                    item.pos[0] - grid.tile_radius,
+                    item.pos[1] - grid.tile_radius,
+                    item.pos[0] + grid.tile_radius,
+                    item.pos[1] + grid.tile_radius
+                ]
+
+                pygame.draw.circle(gameDisplay, grid.red, (item.pos[0] - grid.tile_radius, item.pos[1] - grid.tile_radius), 3, 0)
+                pygame.draw.circle(gameDisplay, grid.red, (item.pos[0] + grid.tile_radius, item.pos[1] + grid.tile_radius), 3, 0)
+                pygame.draw.circle(gameDisplay, grid.red, item.pos, 3, 0)
+                pygame.draw.circle(gameDisplay, grid.red, item.pos, 3, 0)
+
+
+                pygame.draw.arc(gameDisplay, grid.black, recttt, 0, pi / 3, 2)
+                pygame.draw.arc(gameDisplay, grid.azure, recttt, pi / 2, pi, 2)
+                pygame.draw.arc(gameDisplay, grid.blue, recttt, pi, 3 * pi / 2, 2)
+                pygame.draw.arc(gameDisplay, grid.red, recttt, 3 * pi / 2, 2 * pi, 2)
             # Show movement track in color
             # if len(item.move_track) > 1:
             #     pygame.draw.line(gameDisplay, grid.red, item.move_track[0], item.move_track[-1], 1)
