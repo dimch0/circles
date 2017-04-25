@@ -22,7 +22,7 @@ grid = cir_grid.Grid()
 images = cir_img.Images(grid)
 
 # Creating my_body
-my_body = cir_body.BodyItem(grid=grid, name="my body", color=grid.pink, speed=0)
+my_body = cir_body.BodyItem(grid=grid, name="my body", color=grid.pink, speed=2)
 my_body.pos = grid.center_tile
 grid.items.append(my_body)
 
@@ -82,6 +82,7 @@ occupado:   : {5}
 playing     : {6}
 move track  : {7}
 all tiles   : {8}
+speed       : {9}
 """.format(mouse_pos,
            clicked_circle,
            my_body.mode,
@@ -90,7 +91,8 @@ all tiles   : {8}
            grid.occupado_tiles,
            len(grid.playing_tiles),
            my_body.move_track,
-           len(grid.tiles)
+           len(grid.tiles),
+           my_body.speed
            )
           )
 
@@ -234,9 +236,10 @@ def game_loop():
                         gameDisplay.blit(option.img, option.set_img_pos())
 
             # Body
-            pygame.draw.circle(gameDisplay, item.color, item.pos, grid.tile_radius, item.border)
-            if item.img:
-                gameDisplay.blit(item.img, item.set_img_pos())
+            if (item.pos in grid.revealed_tiles) or (item is my_body):
+                pygame.draw.circle(gameDisplay, item.color, item.pos, grid.tile_radius, item.border)
+                if item.img:
+                    gameDisplay.blit(item.img, item.set_img_pos())
             # Show movement track in color
             # if len(item.move_track) > 1:
             #     pygame.draw.line(gameDisplay, grid.red, item.move_track[0], item.move_track[-1], 1)

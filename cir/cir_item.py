@@ -149,7 +149,7 @@ class MobileItem(Item):
         :return: a list of steps from point A to point B
         number of steps depends on the speed and the distance
         """
-        print "Inside move to tile"
+        # print "Inside move to tile"
         result = []
         # Movement only allowed in revealed_tiles and not occupado_tiles
         if Tile_B in self.grid.revealed_tiles and Tile_B not in self.grid.occupado_tiles and self.speed > 0:
@@ -176,7 +176,7 @@ class MobileItem(Item):
         :param self.grid: self.grid instance
         :return: a list of all available tiles in northeast direction
         """
-        print "Inside gen move track"
+        # print "Inside gen move track"
         dir = None
         for idx, option in enumerate(options):
             if direction == option.name:
