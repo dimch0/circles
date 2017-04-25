@@ -22,7 +22,7 @@ grid = cir_grid.Grid()
 images = cir_img.Images(grid)
 
 # Creating my_body
-my_body = cir_body.BodyItem(grid=grid, name="my body", color=grid.pink, speed=2)
+my_body = cir_body.BodyItem(grid=grid, name="my body", color=grid.pink, speed=0)
 my_body.pos = grid.center_tile
 grid.items.append(my_body)
 
@@ -129,21 +129,13 @@ def game_loop():
 
                 # ========================================= MOVEMENT ================================================ #
                 direction = None
-                if event.key is pygame.K_w:
-                    direction = mode_vs_options["move"][0].name
-                elif event.key is pygame.K_e:
-                    direction = mode_vs_options["move"][1].name
-                elif event.key is pygame.K_d:
-                    direction = mode_vs_options["move"][2].name
-                elif event.key is pygame.K_s:
-                    direction = mode_vs_options["move"][3].name
-                elif event.key is pygame.K_a:
-                    direction = mode_vs_options["move"][4].name
-                elif event.key is pygame.K_q:
-                    direction = mode_vs_options["move"][5].name
-
+                move_options = mode_vs_options["move"]
+                arrows = [pygame.K_w, pygame.K_e, pygame.K_d, pygame.K_s, pygame.K_a, pygame.K_q]
+                for idx, dir in enumerate(arrows):
+                    if event.key is dir:
+                        direction = move_options[idx].name
                 if direction and not my_body.move_track and not my_body.radar_track:
-                    my_body.gen_move_track(direction, mode_vs_options["move"])
+                    my_body.gen_move_track(direction, move_options)
                 # ========================================= MOVEMENT ================================================ #
 
 
@@ -176,6 +168,17 @@ def game_loop():
                                                 item.range += 1
                                                 # item.mode = "seen"
 
+                                            elif option.name is "smel":
+                                                item.change_speed(1)
+
+                                            elif option.name is "medi":
+                                                item.range += 10
+
+                                            elif option.name is "audio":
+                                                item.change_speed(10)
+
+                                            elif option.name is "eat":
+                                                item.change_speed(-1)
                                             # Close menu if option selected
                                             item.set_in_menu(False)
                         # ---------------------------------- Option clicked ----------------------------------------- #
@@ -186,7 +189,7 @@ def game_loop():
         # ================================================= PLACEMENT =============================================== #
         # -------------------------------------- Background -------------------------------------- #
         # Background
-        gameDisplay.fill(grid.grey)
+        gameDisplay.fill(grid.white)
 
         # Revealed radius
         for revealed in grid.revealed_radius:

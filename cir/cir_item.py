@@ -131,6 +131,17 @@ class MobileItem(Item):
         super(MobileItem, self).__init__(**kwargs)
         self.speed = speed
 
+    def change_speed(self, increment):
+        self.speed += increment
+        if self.speed < 0:
+            self.speed = 0
+        if self.speed is 1:
+            self.speed = 2
+        if self.speed is 2 and increment < 0:
+            self.speed = 0
+        if self.speed > 8:
+            self.speed = 8
+
     def move_to_tile(self, Tile_A, Tile_B):
         """
         This method moves the item from the current position to Tile_B.
@@ -141,7 +152,7 @@ class MobileItem(Item):
         print "Inside move to tile"
         result = []
         # Movement only allowed in revealed_tiles and not occupado_tiles
-        if Tile_B in self.grid.revealed_tiles and Tile_B not in self.grid.occupado_tiles:
+        if Tile_B in self.grid.revealed_tiles and Tile_B not in self.grid.occupado_tiles and self.speed > 0:
             ax = Tile_A[0]
             ay = Tile_A[1]
             bx = Tile_B[0]
@@ -160,32 +171,32 @@ class MobileItem(Item):
             result.append(Tile_B)
         return result
 
-    def gen_move_track(self, direction, direction_items):
+    def gen_move_track(self, direction, options):
         """
         :param self.grid: self.grid instance
         :return: a list of all available tiles in northeast direction
         """
         print "Inside gen move track"
         dir = None
-        for idx, direction_item in enumerate(direction_items):
-            if direction == direction_item.name:
+        for idx, option in enumerate(options):
+            if direction == option.name:
                 dir = idx
         result = []
         Point_A = self.pos
         Point_B = self.grid.adj_tiles(self.pos)[dir]
-
-        for fields in range(1,13):
-            if Point_B in self.grid.playing_tiles:
-                if Point_B not in self.grid.occupado_tiles and Point_B in self.grid.revealed_tiles:
-                    for new_steps in self.move_to_tile(Point_A, Point_B):
-                        if not new_steps in result:
-                            result.append(new_steps)
-                else:
-                    self.move_track = result
-                    return result
-            Point_A = Point_B
-            Point_B = self.grid.adj_tiles(Point_A)[dir]
-        self.move_track = result
+        if self.speed > 0:
+            for fields in range(1,13):
+                if Point_B in self.grid.playing_tiles:
+                    if Point_B not in self.grid.occupado_tiles and Point_B in self.grid.revealed_tiles:
+                        for new_steps in self.move_to_tile(Point_A, Point_B):
+                            if not new_steps in result:
+                                result.append(new_steps)
+                    else:
+                        self.move_track = result
+                        return result
+                Point_A = Point_B
+                Point_B = self.grid.adj_tiles(Point_A)[dir]
+            self.move_track = result
         print "result:", result
         return result
 
