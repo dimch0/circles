@@ -8,7 +8,8 @@ import sys
 import pdb
 import pygame
 import math
-# import time
+import datetime
+import time
 # import random
 from pygame.locals import *
 
@@ -27,6 +28,8 @@ my_body = cir_body.BodyItem(grid=grid, name="my body", color=grid.pink, speed=2)
 my_body.pos = grid.center_tile
 grid.items.append(my_body)
 
+
+
 # Creating bokluk
 if 0:
     bokluk = cir_body.MobileItem(grid=grid, name="bokluk", color=grid.green, speed = 0)
@@ -39,6 +42,11 @@ if 1:
     test_timer = cir_body.MobileItem(grid=grid, name="test timer", color=grid.green, speed = 0)
     test_timer.pos = (my_body.pos[0], my_body.pos[1] - 2 * grid.tile_radius)
     grid.items.append(test_timer)
+
+
+
+
+
 
 
 # TODO: Generate items and load from external file
@@ -121,13 +129,29 @@ speed       : {9}
 
 
 def game_loop():
-    """
-    Main game loop.
-    """
+    """    Main game loop.    """
     game_exit = False
+
+    # Timer
+    start_time = round(time.time(), 1)
+    sekunda = 1
+    deseta = 0.1
+    OPA = 90
 
     while not game_exit:
         mouse_pos = pygame.mouse.get_pos()
+
+        # TIMER.
+        if round(time.time(), 1) == round((start_time + sekunda), 1):
+            # second = round((time.time() - start_time), 1)
+            print "second:", sekunda
+            sekunda += 1
+
+        if round(time.time(), 1) == round((start_time + deseta), 1):
+            deseta += 0.1
+            OPA += -4 / 10
+
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 game_exit = True
@@ -214,7 +238,7 @@ def game_loop():
         # ================================================= PLACEMENT =============================================== #
         # -------------------------------------- Background -------------------------------------- #
         # Background
-        gameDisplay.fill(grid.white)
+        gameDisplay.fill(grid.grey)
 
         # Revealed radius
         for revealed in grid.revealed_radius:
@@ -239,8 +263,8 @@ def game_loop():
         # -------------------------------------- Animations -------------------------------------- #
         for item in grid.items:
             # Movement
-            # if item.move_track:
-            #     item.move()
+            if item.move_track:
+                item.move()
 
             # Radar
             if item.radar_track:
@@ -267,27 +291,20 @@ def game_loop():
 
             # Timer
             if item is test_timer:
-                pygame.draw.circle(gameDisplay, item.color, item.pos, grid.tile_radius, 1)
+                pygame.draw.circle(gameDisplay, item.color, item.pos, grid.tile_radius, 0)
                 pi = math.pi
-                # pygame.draw.arc(gameDisplay, grid.red, (100, 100, 200, 200), math.pi/2, math.pi, 1)
-                # TODO: get coordinates of a square around the item.pos
                 recttt = [
                     item.pos[0] - grid.tile_radius,
                     item.pos[1] - grid.tile_radius,
-                    item.pos[0] + grid.tile_radius,
-                    item.pos[1] + grid.tile_radius
+                    2 * grid.tile_radius,
+                    2 * grid.tile_radius
                 ]
-
-                pygame.draw.circle(gameDisplay, grid.red, (item.pos[0] - grid.tile_radius, item.pos[1] - grid.tile_radius), 3, 0)
-                pygame.draw.circle(gameDisplay, grid.red, (item.pos[0] + grid.tile_radius, item.pos[1] + grid.tile_radius), 3, 0)
-                pygame.draw.circle(gameDisplay, grid.red, item.pos, 3, 0)
-                pygame.draw.circle(gameDisplay, grid.red, item.pos, 3, 0)
+                # OPA = math.radians(90)
+                # OPA = math.radians(-270)
+                pygame.draw.arc(gameDisplay, grid.black, recttt, math.radians(OPA), pi / 2, 2)
 
 
-                pygame.draw.arc(gameDisplay, grid.black, recttt, 0, pi / 3, 2)
-                pygame.draw.arc(gameDisplay, grid.azure, recttt, pi / 2, pi, 2)
-                pygame.draw.arc(gameDisplay, grid.blue, recttt, pi, 3 * pi / 2, 2)
-                pygame.draw.arc(gameDisplay, grid.red, recttt, 3 * pi / 2, 2 * pi, 2)
+
             # Show movement track in color
             # if len(item.move_track) > 1:
             #     pygame.draw.line(gameDisplay, grid.red, item.move_track[0], item.move_track[-1], 1)
@@ -311,6 +328,9 @@ def game_loop():
             if item.move_track:
                 item.move()
         # check changes for placement
+        if sekunda == 30:
+            game_exit = True
+
         clock.tick(grid.fps)
     pygame.quit()
     quit()

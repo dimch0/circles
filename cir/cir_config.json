@@ -4,8 +4,8 @@
     "fps": 60,
     "show_grid": 0,
     "tile_radius": 30,
-    "rows": 24,
-    "cols": 12,
+    "rows": 9,
+    "cols": 2,
     "caption": "cir",
     "img_dir": "img"
     },
