@@ -3,9 +3,10 @@
     "scale": 1,
     "fps": 60,
     "show_grid": 0,
+    "full_screen": 1,
     "tile_radius": 30,
-    "rows": 9,
-    "cols": 2,
+    "rows": 24,
+    "cols": 25,
     "caption": "cir",
     "img_dir": "img"
     },

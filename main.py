@@ -36,7 +36,7 @@ if 0:
 
 # Creating timer item
 if 1:
-    lifespan = cir_timer.TimerItem(duration=5, time_color=grid.black, grid=grid, name="test timer", color=grid.pink, speed = 0)
+    lifespan = cir_timer.TimerItem(duration=30, time_color=grid.black, grid=grid, name="test timer", color=grid.pink, speed = 0)
     # lifespan.pos = (grid.center_tile[0], grid.center_tile[1] + 2 * grid.tile_radius)
     lifespan.pos = my_body.pos
     # TODO: make grid.timers attribute
@@ -124,8 +124,12 @@ speed       : {9}
           )
 
 
+
+
 def game_loop():
     """    Main game loop.    """
+    if grid.full_screen:
+        pygame.display.toggle_fullscreen()
     game_exit = False
 
     # Timer: seconds in game
@@ -155,7 +159,8 @@ def game_loop():
                 if event.key is pygame.K_ESCAPE:
                     # TODO: K_ESCAPE screen loop here
                     # Restart
-                    os.execv(sys.executable, [sys.executable] + sys.argv)
+                    # os.execv(sys.executable, [sys.executable] + sys.argv)
+                    game_exit = True
 
                 # ========================================= ESCAPE LOOP ============================================= #
 
@@ -288,7 +293,7 @@ def game_loop():
             # Timer lifespan
             if item is lifespan:
                 pygame.draw.circle(gameDisplay, item.color, item.pos, grid.tile_radius, 0)
-                pygame.draw.arc(gameDisplay, item.time_color, item.rect, item.tick, item.start_point, 3)
+                pygame.draw.arc(gameDisplay, item.time_color, item.rect, item.filled_angle, item.start_point, 3)
 
 
             # Show movement track in color

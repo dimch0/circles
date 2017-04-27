@@ -21,18 +21,18 @@ class TimerItem(MobileItem):
         self.start_point = math.radians(90)
         self.start_time = start_time
         self.duration = duration
-        self.initial_step = 0.022
+        self.initial_step = 0.02
         self.timer_step = self.initial_step
-        self._change = -round((360 / (self.duration / self.timer_step)), 1)
+        self._increase_filled_angle = 0
         self._rect = []
         self.timer_tick = 90
-        self._tick = None
+        self._filled_angle = None
         self._is_over = False
 
     @property
-    def change(self):
-        self._change = -round((360 / (self.duration / self.timer_step)), 1)
-        return self._change
+    def increase_filled_angle(self):
+        self._increase_filled_angle = -round((360 / (self.duration / self.initial_step)), 1)
+        return self._increase_filled_angle
 
     def start_timer(self):
         if not self.start_time:
@@ -40,16 +40,16 @@ class TimerItem(MobileItem):
         if self.start_time:
             if round(time.time(), 1) >= round((self.start_time + self.timer_step), 1):
                 self.timer_step += self.initial_step
-                self.timer_tick += self._change
+                self.timer_tick += self._increase_filled_angle
 
     @property
-    def tick(self):
+    def filled_angle(self):
         """ The radian for the arc drawing of timer """
         # start_radian = math.radians(90)
         # stop_radian = math.radians(-270)
 
-        self._tick = math.radians(self.timer_tick)
-        return self._tick
+        self._filled_angle = math.radians(self.timer_tick)
+        return self._filled_angle
 
     @property
     def rect(self):
