@@ -36,8 +36,7 @@ if 0:
 
 # Creating timer item
 if 1:
-    lifespan = cir_timer.TimerItem(duration=30, time_color=grid.black, grid=grid, name="test timer", color=grid.pink, speed = 0)
-    # lifespan.pos = (grid.center_tile[0], grid.center_tile[1] + 2 * grid.tile_radius)
+    lifespan = cir_timer.TimerItem(duration=5, time_color=grid.black, grid=grid, name="test timer", color=grid.pink, speed = 0)
     lifespan.pos = my_body.pos
     # TODO: make grid.timers attribute
     grid.items.append(lifespan)

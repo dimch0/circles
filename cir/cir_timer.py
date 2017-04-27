@@ -21,7 +21,7 @@ class TimerItem(MobileItem):
         self.start_point = math.radians(90)
         self.start_time = start_time
         self.duration = duration
-        self.initial_step = 0.02
+        self.initial_step = 0.22
         self.timer_step = self.initial_step
         self._increase_filled_angle = 0
         self._rect = []
