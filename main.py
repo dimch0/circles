@@ -8,12 +8,11 @@ import sys
 import pdb
 import pygame
 import math
-import datetime
 import time
 # import random
 from pygame.locals import *
 
-from cir import cir_body, cir_grid, cir_item, cir_utils, cir_img
+from cir import cir_body, cir_grid, cir_item, cir_utils, cir_img, cir_timer, cir_mobile
 pygame.init()
 
 
@@ -23,28 +22,25 @@ grid = cir_grid.Grid()
 # Loading images
 images = cir_img.Images(grid)
 
-# Creating my_body
-my_body = cir_body.BodyItem(grid=grid, name="my body", color=grid.pink, speed=2)
-my_body.pos = grid.center_tile
-grid.items.append(my_body)
+# Creating my body item
+if 1:
+    my_body = cir_body.BodyItem(grid=grid, name="my body", color=grid.pink, speed=2)
+    my_body.pos = grid.center_tile
+    grid.items.append(my_body)
 
-
-
-# Creating bokluk
+# Creating bokluk item
 if 0:
-    bokluk = cir_body.MobileItem(grid=grid, name="bokluk", color=grid.green, speed = 0)
-    # bokluk.pos = (my_body.pos[0], my_body.pos[1] - 2 * grid.tile_radius)
-    bokluk.pos = (my_body.pos[0] + grid.cathetus, my_body.pos[1] - grid.tile_radius)
+    bokluk = cir_mobile.MobileItem(grid=grid, name="bokluk", color=grid.green, speed = 0)
+    bokluk.pos = (grid.center_tile[0] + grid.cathetus, grid.center_tile[1] - grid.tile_radius)
     grid.items.append(bokluk)
 
-
+# Creating timer item
 if 1:
-    test_timer = cir_body.MobileItem(grid=grid, name="test timer", color=grid.green, speed = 0)
-    test_timer.pos = (my_body.pos[0], my_body.pos[1] - 2 * grid.tile_radius)
-    grid.items.append(test_timer)
-
-
-
+    lifespan = cir_timer.TimerItem(duration=5, time_color=grid.black, grid=grid, name="test timer", color=grid.pink, speed = 0)
+    # lifespan.pos = (grid.center_tile[0], grid.center_tile[1] + 2 * grid.tile_radius)
+    lifespan.pos = my_body.pos
+    # TODO: make grid.timers attribute
+    grid.items.append(lifespan)
 
 
 
@@ -132,24 +128,22 @@ def game_loop():
     """    Main game loop.    """
     game_exit = False
 
-    # Timer
-    start_time = round(time.time(), 1)
-    sekunda = 1
-    deseta = 0.1
-    OPA = 90
+    # Timer: seconds in game
+    # TODO: set as grid attribute
+    START_TIME = round(time.time(), 1)
+    seconds = 1
+
+
 
     while not game_exit:
         mouse_pos = pygame.mouse.get_pos()
 
-        # TIMER.
-        if round(time.time(), 1) == round((start_time + sekunda), 1):
-            # second = round((time.time() - start_time), 1)
-            print "second:", sekunda
-            sekunda += 1
+        # Timer: seconds in game
+        if round(time.time(), 1) >= round((START_TIME + seconds), 1):
+            print "second:", seconds
+            seconds += 1
 
-        if round(time.time(), 1) == round((start_time + deseta), 1):
-            deseta += 0.1
-            OPA += -4 / 10
+        lifespan.start_timer()
 
 
         for event in pygame.event.get():
@@ -235,12 +229,13 @@ def game_loop():
                 debug_print(mouse_pos, clicked_circle)
             # ============================================= CLICK EVENTS ============================================ #
 
-        # ================================================= PLACEMENT =============================================== #
+        # ================================================= DRAWING ================================================ #
         # -------------------------------------- Background -------------------------------------- #
         # Background
         gameDisplay.fill(grid.grey)
 
         # Revealed radius
+        # TODO: make a revealed method
         for revealed in grid.revealed_radius:
             pygame.draw.circle(gameDisplay, grid.ungrey, revealed[0], revealed[1], 0)
             printed = revealed
@@ -251,10 +246,13 @@ def game_loop():
                             grid.revealed_radius.remove(printed)
 
         # Grid
+        # TODO: make a grid method
         if grid.show_grid:
             for tile in grid.tiles:
                 pygame.draw.circle(gameDisplay, grid.white, tile, grid.tile_radius, 1)
+
         # Playing board:
+        # TODO: redefine playing board
         if 0:
             for tile in grid.playing_tiles:
                 pygame.draw.circle(gameDisplay, grid.white, tile, grid.tile_radius, 1)
@@ -262,11 +260,10 @@ def game_loop():
 
         # -------------------------------------- Animations -------------------------------------- #
         for item in grid.items:
-            # Movement
-            if item.move_track:
-                item.move()
+            # Movement old
 
             # Radar
+            # TODO: make a radar method
             if item.radar_track:
                 radar_radius, thick = item.radar()
                 if radar_radius and thick:
@@ -283,26 +280,15 @@ def game_loop():
                         gameDisplay.blit(option.img, option.set_img_pos())
 
             # Body
-            if 0:
-                if (item.pos in grid.revealed_tiles) or (item is my_body):
-                    pygame.draw.circle(gameDisplay, item.color, item.pos, grid.tile_radius, item.border)
-                    if item.img:
-                        gameDisplay.blit(item.img, item.set_img_pos())
+            if (item.pos in grid.revealed_tiles) or (item is my_body):
+                pygame.draw.circle(gameDisplay, item.color, item.pos, grid.tile_radius, item.border)
+                if item.img:
+                    gameDisplay.blit(item.img, item.set_img_pos())
 
-            # Timer
-            if item is test_timer:
+            # Timer lifespan
+            if item is lifespan:
                 pygame.draw.circle(gameDisplay, item.color, item.pos, grid.tile_radius, 0)
-                pi = math.pi
-                recttt = [
-                    item.pos[0] - grid.tile_radius,
-                    item.pos[1] - grid.tile_radius,
-                    2 * grid.tile_radius,
-                    2 * grid.tile_radius
-                ]
-                # OPA = math.radians(90)
-                # OPA = math.radians(-270)
-                pygame.draw.arc(gameDisplay, grid.black, recttt, math.radians(OPA), pi / 2, 2)
-
+                pygame.draw.arc(gameDisplay, item.time_color, item.rect, item.tick, item.start_point, 3)
 
 
             # Show movement track in color
@@ -315,20 +301,24 @@ def game_loop():
         # Mouse Item
         # TODO: Create MouseItem
         # pygame.draw.circle(gameDisplay, grid.white, mouse_pos, 2, 0)
-        # pygame.draw.circle(gameDisplay, grid.black, mouse_pos, 3, 2)
         for tile in grid.tiles:
             if cir_utils.in_circle(tile, grid.tile_radius, mouse_pos):
-                pygame.draw.circle(gameDisplay, grid.white, tile, grid.tile_radius, 1)
+                pygame.draw.circle(gameDisplay, grid.white, tile, grid.tile_radius + 1, 1)
         # -------------------------------------- Animations -------------------------------------- #
-        # ================================================= PLACEMENT =============================================== #
+        # ================================================== DRAWING ================================================ #
 
         pygame.display.update()
+
+        # Change vars
+        # Movement
         for item in grid.items:
             # Movement
             if item.move_track:
                 item.move()
-        # check changes for placement
-        if sekunda == 30:
+
+        # TODO: Create is_over property
+        # if test_timer.is_over:
+        if seconds >= lifespan.duration + 1:
             game_exit = True
 
         clock.tick(grid.fps)
