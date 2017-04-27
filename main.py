@@ -292,6 +292,8 @@ def game_loop():
             # Timer lifespan
             if item is lifespan:
                 pygame.draw.circle(gameDisplay, item.color, item.pos, grid.tile_radius, 0)
+                print item.filled_angle
+                print item.start_point
                 pygame.draw.arc(gameDisplay, item.time_color, item.rect, item.filled_angle, item.start_point, 3)
 
 

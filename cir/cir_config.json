@@ -3,7 +3,7 @@
     "scale": 1,
     "fps": 60,
     "show_grid": 0,
-    "full_screen": 1,
+    "full_screen": 0,
     "tile_radius": 30,
     "rows": 24,
     "cols": 25,
