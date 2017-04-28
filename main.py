@@ -36,7 +36,7 @@ if 0:
 
 # Creating timer item
 if 1:
-    lifespan = cir_timer.TimerItem(duration=5, time_color=grid.black, grid=grid, name="test timer", color=grid.pink, speed = 0)
+    lifespan = cir_timer.TimerItem(duration=30, time_color=grid.black, grid=grid, name="test timer", color=grid.pink, speed = 0)
     lifespan.pos = my_body.pos
     # TODO: make grid.timers attribute
     grid.items.append(lifespan)
@@ -292,8 +292,6 @@ def game_loop():
             # Timer lifespan
             if item is lifespan:
                 pygame.draw.circle(gameDisplay, item.color, item.pos, grid.tile_radius, 0)
-                print item.filled_angle
-                print item.start_point
                 pygame.draw.arc(gameDisplay, item.time_color, item.rect, item.filled_angle, item.start_point, 3)
 
 
