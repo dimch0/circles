@@ -30,6 +30,9 @@ class Grid(object):
         self.revealed_radius = []
         self.items = []
         self.overlapped_items = []
+
+        self.seconds_in_game = 0
+
         # self.mouse_mode = None
         # self.mouse_img = None
         # self.mode = []

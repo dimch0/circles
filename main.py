@@ -3,16 +3,11 @@
 #################                                 Main file                                           #################
 #################                                                                                     #################
 #######################################################################################################################
-import os
-import sys
-import pdb
-import pygame
-import math
 import time
-# import random
-from pygame.locals import *
+import pygame
 
 from cir import cir_body, cir_grid, cir_item, cir_utils, cir_img, cir_timer, cir_mobile
+
 pygame.init()
 
 
@@ -36,7 +31,7 @@ if 0:
 
 # Creating timer item
 if 1:
-    lifespan = cir_timer.TimerItem(duration=60, time_color=grid.black, grid=grid, name="test timer", color=grid.pink, speed = 0)
+    lifespan = cir_timer.TimerItem(duration=30, time_color=grid.ungrey , grid=grid, name="test timer", color=grid.pink, speed=1)
     lifespan.pos = my_body.pos
     # TODO: make grid.timers list attribute
     grid.items.append(lifespan)
@@ -99,6 +94,65 @@ clock = pygame.time.Clock()
 pygame.mouse.set_visible(True)
 
 
+
+
+def seconds_in_game(START_TIME):
+    """ Counts the seconds in the game """
+    if time.time() > (START_TIME + grid.seconds_in_game):
+        print "second: {0}".format(grid.seconds_in_game)
+        grid.seconds_in_game += 1
+
+
+def draw_radar(item):
+    """ Radar animation """
+    radar_radius, thick = item.radar()
+    if radar_radius and thick:
+        pygame.draw.circle(gameDisplay, item.grid.green, item.pos, radar_radius, thick)
+
+
+def draw_revealed_radius():
+    """ Drawing the revealed areas """
+    for revealed in grid.revealed_radius:
+        pygame.draw.circle(gameDisplay, grid.ungrey, revealed[0], revealed[1], 0)
+        printed = revealed
+        if printed:
+            for to_be_printed in grid.revealed_radius:
+                if printed[0] == to_be_printed[0]:
+                    if printed[1] < to_be_printed[1]:
+                        grid.revealed_radius.remove(printed)
+
+
+def draw_item_options(item):
+    """ Draws the item menu options """
+    # TODO: menu background
+    # pygame.draw.circle(gameDisplay, item.color, item.pos, grid.tile_radius * 3, 0)
+    for option in item.options:
+        if option.color:
+            pygame.draw.circle(gameDisplay, option.color, option.pos, grid.tile_radius, option.border)
+        if option.img:
+            gameDisplay.blit(option.img, option.set_img_pos())
+
+
+def draw_grid():
+    """ Shows the grid tiles in white """
+    for tile in grid.tiles:
+        pygame.draw.circle(gameDisplay, grid.ungrey, tile, grid.tile_radius, 1)
+
+
+def draw_movement(item):
+    """ Shows the movement in cyan and the correct track in red """
+    pygame.draw.line(gameDisplay, grid.red, item.move_track[0], item.move_track[-1], 1)
+    for o in item.move_track:
+        pygame.draw.circle(gameDisplay, grid.azure, o, 2, 1)
+
+
+def draw_playing_tiles():
+    """ Shows all tiles of the playing board in yellow """
+    # TODO: define different playing board
+    # TODO: show limits of the playing board
+    for tile in grid.playing_tiles:
+        pygame.draw.circle(gameDisplay, grid.gelb, tile, grid.tile_radius, 1)
+
 def debug_print(mouse_pos, clicked_circle):
     print(""">>>>>> click: {0}, tile: {1}
 mode        : {2}
@@ -123,35 +177,29 @@ speed       : {9}
           )
 
 
-
-
 def game_loop():
     """    Main game loop.    """
     if grid.full_screen:
         pygame.display.toggle_fullscreen()
-    game_exit = False
 
-    # Timer: seconds in game
-    # TODO: set as grid attribute
+    GAME_EXIT = False
     START_TIME = time.time()
-    seconds = 1
 
 
-    while not game_exit:
+    while not GAME_EXIT:
         mouse_pos = pygame.mouse.get_pos()
 
-        # Timer: seconds in game
 
-        if time.time() > (START_TIME + seconds):
-            print "second:", seconds
-            seconds += 1
-
+        # lifespan timer
         lifespan.start_timer()
+
+        # Timer - seconds in game
+        seconds_in_game(START_TIME)
 
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                game_exit = True
+                GAME_EXIT = True
 
             if event.type == pygame.KEYDOWN:
                 # ========================================= ESCAPE LOOP ============================================= #
@@ -159,7 +207,7 @@ def game_loop():
                     # TODO: K_ESCAPE screen loop here
                     # Restart
                     # os.execv(sys.executable, [sys.executable] + sys.argv)
-                    game_exit = True
+                    GAME_EXIT = True
 
                 # ========================================= ESCAPE LOOP ============================================= #
 
@@ -191,9 +239,9 @@ def game_loop():
                 clicked_circle = grid.mouse_in_tile(mouse_pos)
                 if clicked_circle:
                     for item in grid.items:
-                        # Set in_menu for the items with meny (my_body)
+                        # Set in_menu for the items with menu (my_body)
                         item.check_in_menu(clicked_circle, mode_vs_options)
-                        # Setting option position
+                        # Setting option positions
                         item.set_option_pos()
                         # ---------------------------------- Option clicked ----------------------------------------- #
                         if item.in_menu:
@@ -207,7 +255,7 @@ def game_loop():
 
                                         # Check option specifics
                                         elif option in mode_vs_options[item.mode]:
-                                            # TODO: make directions appear next to body
+
                                             if item.mode is "move":
                                                 item.gen_move_track(option.name, mode_vs_options[item.mode])
 
@@ -239,49 +287,28 @@ def game_loop():
         gameDisplay.fill(grid.grey)
 
         # Revealed radius
-        # TODO: make a revealed method
-        for revealed in grid.revealed_radius:
-            pygame.draw.circle(gameDisplay, grid.ungrey, revealed[0], revealed[1], 0)
-            printed = revealed
-            if printed:
-                for to_be_printed in grid.revealed_radius:
-                    if printed[0] == to_be_printed[0]:
-                        if printed[1] < to_be_printed[1]:
-                            grid.revealed_radius.remove(printed)
+        if grid.revealed_radius:
+            draw_revealed_radius()
 
         # Grid
-        # TODO: make a grid method
         if grid.show_grid:
-            for tile in grid.tiles:
-                pygame.draw.circle(gameDisplay, grid.white, tile, grid.tile_radius, 1)
+            draw_grid()
 
         # Playing board:
-        # TODO: redefine playing board
-        if 0:
-            for tile in grid.playing_tiles:
-                pygame.draw.circle(gameDisplay, grid.white, tile, grid.tile_radius, 1)
+        if grid.show_playing_tiles:
+            draw_playing_tiles()
         # -------------------------------------- Background -------------------------------------- #
 
         # -------------------------------------- Animations -------------------------------------- #
         for item in grid.items:
-            # Movement old
 
             # Radar
-            # TODO: make a radar method
             if item.radar_track:
-                radar_radius, thick = item.radar()
-                if radar_radius and thick:
-                    pygame.draw.circle(gameDisplay, grid.green, item.pos, radar_radius, thick)
+                draw_radar(item)
 
             # Item options
             if item.in_menu:
-                # TODO: place menu background
-                # pygame.draw.circle(gameDisplay, item.color, item.pos, grid.tile_radius * 3, 0)
-                for option in item.options:
-                    if option.color:
-                        pygame.draw.circle(gameDisplay, option.color, option.pos, grid.tile_radius, option.border)
-                    if option.img:
-                        gameDisplay.blit(option.img, option.set_img_pos())
+                draw_item_options(item)
 
             # Body
             if (item.pos in grid.revealed_tiles) or (item is my_body):
@@ -292,15 +319,11 @@ def game_loop():
             # Timer lifespan
             if item is lifespan:
                 pygame.draw.circle(gameDisplay, item.color, item.pos, grid.tile_radius, 0)
-                pygame.draw.arc(gameDisplay, item.time_color, item.rect, item.filled_angle, item.start_point, 3)
-
+                pygame.draw.arc(gameDisplay, item.time_color, item.rect, item.filled_angle, item.start_point, 5)
 
             # Show movement track in color
-            # if len(item.move_track) > 1:
-            #     pygame.draw.line(gameDisplay, grid.red, item.move_track[0], item.move_track[-1], 1)
-                # for o in item.move_track:
-                #     pygame.draw.circle(gameDisplay, grid.azure, o, 3, 1)
-
+            if grid.show_movement and len(item.move_track) > 1:
+                draw_movement(item)
 
         # Mouse Item
         # TODO: Create MouseItem
@@ -313,17 +336,19 @@ def game_loop():
 
         pygame.display.update()
 
-        # Change vars
-        # Movement
+        # ================================================ CHANGE VARS ============================================== #
         for item in grid.items:
             # Movement
             if item.move_track:
                 item.move()
 
+        # Lifespan over
         if lifespan.is_over:
-            game_exit = True
+            GAME_EXIT = True
 
+        # FPS
         clock.tick(grid.fps)
+        # ================================================ CHANGE VARS ============================================== #
     pygame.quit()
     quit()
 

@@ -3,17 +3,13 @@
 #################                                 TimerItem class                                      #################
 #################                                                                                     #################
 #######################################################################################################################
-import pdb
 import math
 import time
 from cir_mobile import MobileItem
 
 
 class TimerItem(MobileItem):
-    """
-    This is the base class for all timer items
-    """
-
+    """ This is the base class for all timer items """
     def __init__(self, duration, time_color, start_time=None, **kwargs):
         super(TimerItem, self).__init__(**kwargs)
 
@@ -31,8 +27,8 @@ class TimerItem(MobileItem):
         self.step = 1
         self._is_over = False
 
-
     def start_timer(self):
+        """ Starts the timer, increasing the step and filled_steps """
         if not self.start_time:
             self.start_time = time.time()
         if self.start_time and not self.step == self.number_of_steps:
@@ -42,6 +38,7 @@ class TimerItem(MobileItem):
 
     @property
     def is_over(self):
+        """ Returns a boolean if the timer is over """
         if self.start_time:
             if self.step == self.number_of_steps:
                 self._is_over = True
@@ -49,12 +46,11 @@ class TimerItem(MobileItem):
 
     @property
     def filled_angle(self):
-        """ This defines the first radian argument for the arc drawing of timer """
-        # start_radian = math.radians(90)
-        # stop_radian = math.radians(-270)
-
+        """
+        This defines the first radian argument for the arc drawing of timer
+        stop_radian is at math.radians(-270)
+        """
         self._filled_angle = math.radians(self.filled_steps)
-        # print math.radians(self.filled_steps)
         return self._filled_angle
 
     @property
