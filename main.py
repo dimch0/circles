@@ -36,9 +36,9 @@ if 0:
 
 # Creating timer item
 if 1:
-    lifespan = cir_timer.TimerItem(duration=30, time_color=grid.black, grid=grid, name="test timer", color=grid.pink, speed = 0)
+    lifespan = cir_timer.TimerItem(duration=60, time_color=grid.black, grid=grid, name="test timer", color=grid.pink, speed = 0)
     lifespan.pos = my_body.pos
-    # TODO: make grid.timers attribute
+    # TODO: make grid.timers list attribute
     grid.items.append(lifespan)
 
 
@@ -133,16 +133,16 @@ def game_loop():
 
     # Timer: seconds in game
     # TODO: set as grid attribute
-    START_TIME = round(time.time(), 1)
+    START_TIME = time.time()
     seconds = 1
-
 
 
     while not game_exit:
         mouse_pos = pygame.mouse.get_pos()
 
         # Timer: seconds in game
-        if round(time.time(), 1) >= round((START_TIME + seconds), 1):
+
+        if time.time() > (START_TIME + seconds):
             print "second:", seconds
             seconds += 1
 
@@ -320,9 +320,7 @@ def game_loop():
             if item.move_track:
                 item.move()
 
-        # TODO: Create is_over property
-        # if test_timer.is_over:
-        if seconds >= lifespan.duration + 1:
+        if lifespan.is_over:
             game_exit = True
 
         clock.tick(grid.fps)

@@ -18,30 +18,34 @@ class TimerItem(MobileItem):
         super(TimerItem, self).__init__(**kwargs)
 
         self.time_color = time_color
-        self.start_point = math.radians(90)
         self.start_time = start_time
         self.duration = duration
-        # self.initial_time_step = 0.022
-        self.time_step = 0.022
-        self.number_of_steps = int(self.duration / self.time_step)
-        self._increase_filled_angle = -round((360 / (self.duration / self.initial_time_step)), 1)
         self._rect = []
-        self.timer_tick = 90
+        self.filled_steps = 90
+        self.start_point = math.radians(self.filled_steps)
         self._filled_angle = None
-        # self._is_over = False
 
-    @property
-    def increase_filled_angle(self):
-        self._increase_filled_angle = -round((360 / (self.duration / self.time_step)), 1)
-        return self._increase_filled_angle
+        self.time_step = 0.0157
+        self.number_of_steps = int(self.duration / self.time_step)
+        self.len_step = -float(360) / self.number_of_steps
+        self.step = 1
+        self._is_over = False
+
 
     def start_timer(self):
         if not self.start_time:
-            self.start_time = round(time.time(), 1)
+            self.start_time = time.time()
+        if self.start_time and not self.step == self.number_of_steps:
+            if time.time() > (self.start_time + (self.time_step * self.step)):
+                self.filled_steps += self.len_step
+                self.step += 1
+
+    @property
+    def is_over(self):
         if self.start_time:
-            if round(time.time(), 1) >= round((self.start_time + self.time_step), 1):
-                self.time_step += self.initial_time_step
-                self.timer_tick += self._increase_filled_angle
+            if self.step == self.number_of_steps:
+                self._is_over = True
+        return self._is_over
 
     @property
     def filled_angle(self):
@@ -49,7 +53,8 @@ class TimerItem(MobileItem):
         # start_radian = math.radians(90)
         # stop_radian = math.radians(-270)
 
-        self._filled_angle = math.radians(self.timer_tick)
+        self._filled_angle = math.radians(self.filled_steps)
+        # print math.radians(self.filled_steps)
         return self._filled_angle
 
     @property
@@ -60,3 +65,5 @@ class TimerItem(MobileItem):
                 2 * self.grid.tile_radius,
                 2 * self.grid.tile_radius]
         return self._rect
+
+
