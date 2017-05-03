@@ -3,7 +3,6 @@
 #################                              MobileItem class                                       #################
 #################                                                                                     #################
 #######################################################################################################################
-import pdb
 import math
 from cir_item import Item
 from math import sqrt, ceil, hypot
@@ -16,6 +15,7 @@ class MobileItem(Item):
     def __init__(self, speed, **kwargs):
         super(MobileItem, self).__init__(**kwargs)
         self.speed = speed
+        self.direction = None
 
     def change_speed(self, increment):
         self.speed += increment
@@ -47,7 +47,8 @@ class MobileItem(Item):
             dx, dy = (bx - ax, by - ay)
             # distance = int(sqrt(dx ** 2 + dy ** 2))
             distance = 2 * self.grid.tile_radius
-            steps_number = int(ceil(2 * distance / (2 * self.speed)))
+            # steps_number = int(ceil(2 * distance / (2 * self.speed)))
+            steps_number = 2 * distance / (2 * self.speed)
             step_size = int(distance / steps_number)
             if steps_number > 0:
                 stepx, stepy = int(dx / steps_number), int(dy / steps_number)

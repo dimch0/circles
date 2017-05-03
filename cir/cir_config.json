@@ -6,7 +6,7 @@
     "show_movement": true,
     "full_screen": false,
     "show_playing_tiles": true,
-    "tile_radius": 30,
+    "tile_radius": 40,
     "rows": 24,
     "cols": 24,
     "caption": "cir",
@@ -19,6 +19,7 @@
     "ungrey": [195, 195, 195],
     "grey": [175, 165, 175],
     "pink": [254, 215, 252],
+    "pastel_pink": [255, 209, 220],
     "unpink": [255, 236, 235],
     "green": [210, 255, 191],
     "blue": [188, 255, 254],
@@ -26,6 +27,7 @@
     "purp": [244, 195, 253],
     "orange": [255, 277, 183],
     "azure": [23, 251, 244],
-    "red": [243, 93, 115]
+    "red": [243, 93, 115],
+    "cyclama": [255, 107, 155]
     }
 }

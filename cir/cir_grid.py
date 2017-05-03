@@ -32,6 +32,8 @@ class Grid(object):
         self.overlapped_items = []
 
         self.seconds_in_game = 0
+        self.game_menu = True
+        self.game_menu_buttons = []
 
         # self.mouse_mode = None
         # self.mouse_img = None

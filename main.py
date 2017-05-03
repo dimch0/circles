@@ -6,7 +6,7 @@
 import time
 import pygame
 
-from cir import cir_body, cir_grid, cir_item, cir_utils, cir_img, cir_timer, cir_mobile
+from cir import cir_body, cir_grid, cir_item, cir_utils, cir_img, cir_timer, cir_mobile, cir_button
 
 pygame.init()
 
@@ -17,10 +17,23 @@ grid = cir_grid.Grid()
 # Loading images
 images = cir_img.Images(grid)
 
+# Fonts
+tile_font = pygame.font.SysFont("terminal", grid.tile_radius)
+font_s = pygame.font.SysFont("Ubuntu Mono", 19)
+font_m = pygame.font.SysFont("terminal", 50)
+font_l = pygame.font.SysFont("terminal", 80)
+
+
+def button_text(msg, color, tile, size = "small"):
+    pass
+    # textSurf, textRect = text_objects(msg,color, size)
+    # textRect.center = (display_width / 2), (display_height / 2)+y_displace
+    # gameDisplay.blit(textSurf, textRect)
+
+
 # Creating my body item
 if 1:
-    my_body = cir_body.BodyItem(grid=grid, name="my body", color=grid.pink, speed=2)
-    my_body.pos = grid.center_tile
+    my_body = cir_body.BodyItem(grid=grid, name="my body", pos=grid.center_tile, color=grid.pink, speed=2)
     grid.items.append(my_body)
 
 # Creating bokluk item
@@ -31,15 +44,22 @@ if 0:
 
 # Creating timer item
 if 1:
-    lifespan = cir_timer.TimerItem(duration=30, time_color=grid.ungrey , grid=grid, name="test timer", color=grid.pink, speed=1)
-    lifespan.pos = my_body.pos
+    lifespan = cir_timer.TimerItem(grid=grid, name="test timer", pos=grid.center_tile, duration=10, time_color=grid.black ,  color=grid.pink, speed=1)
     # TODO: make grid.timers list attribute
     grid.items.append(lifespan)
 
+# Creating button items
+if 1:
+    start_button = cir_button.ButtonItem(grid=grid, name="start", font=tile_font, text_color=grid.white, pos=grid.adj_tiles(grid.center_tile)[0], color=grid.ungrey)
+    grid.game_menu_buttons.append(start_button)
+
+    quit_button = cir_button.ButtonItem(grid=grid, name="quit", font=tile_font, text_color=grid.white, pos=grid.adj_tiles(grid.center_tile)[3], color=grid.ungrey)
+    grid.game_menu_buttons.append(quit_button)
 
 
 
 # TODO: Generate items and load from external file
+# TODO: Check if string is attrubute hasattr
 mode_vs_options = {
     "my body": [
         cir_item.Item(grid=grid, name="option 1", color=my_body.default_color),
@@ -83,7 +103,7 @@ mode_vs_options = {
     ]
 }
 
-# Setting mode options
+# Setting the above mode options
 grid.set_mode_vs_options(mode_vs_options)
 
 
@@ -92,8 +112,8 @@ gameDisplay = pygame.display.set_mode((grid.display_width, grid.display_height))
 pygame.display.set_caption(grid.caption)
 clock = pygame.time.Clock()
 pygame.mouse.set_visible(True)
-
-
+if grid.full_screen:
+    pygame.display.toggle_fullscreen()
 
 
 def seconds_in_game(START_TIME):
@@ -124,13 +144,37 @@ def draw_revealed_radius():
 
 def draw_item_options(item):
     """ Draws the item menu options """
-    # TODO: menu background
+    # menu background
     # pygame.draw.circle(gameDisplay, item.color, item.pos, grid.tile_radius * 3, 0)
     for option in item.options:
         if option.color:
             pygame.draw.circle(gameDisplay, option.color, option.pos, grid.tile_radius, option.border)
         if option.img:
             gameDisplay.blit(option.img, option.set_img_pos())
+
+def draw_menu_buttons():
+    """ Drawing the buttons in the game menu """
+    for button in grid.game_menu_buttons:
+        if button.color:
+            pygame.draw.circle(gameDisplay, button.color, button.pos, grid.tile_radius, button.border)
+        if button.img:
+            gameDisplay.blit(button.img, button.set_img_pos())
+        if button.text:
+            gameDisplay.blit(button.text, button.text_rect)
+
+
+def draw_body(item):
+    """ Draws each body and it's image if available """
+    pygame.draw.circle(gameDisplay, item.color, item.pos, grid.tile_radius, item.border)
+    if item.img:
+        gameDisplay.blit(item.img, item.set_img_pos())
+
+
+def draw_timer(item):
+    """ Draws current state of a timer """
+    pygame.draw.circle(gameDisplay, item.color, item.pos, grid.tile_radius, 0)
+    pygame.draw.arc(gameDisplay, item.time_color, item.rect, item.filled_angle, item.start_point, 2)
+
 
 
 def draw_grid():
@@ -141,19 +185,34 @@ def draw_grid():
 
 def draw_movement(item):
     """ Shows the movement in cyan and the correct track in red """
-    pygame.draw.line(gameDisplay, grid.red, item.move_track[0], item.move_track[-1], 1)
+    pygame.draw.line(gameDisplay, grid.azure, item.move_track[0], item.move_track[-1], 1)
     for o in item.move_track:
-        pygame.draw.circle(gameDisplay, grid.azure, o, 2, 1)
+        pygame.draw.circle(gameDisplay, grid.white, o, 2, 1)
 
 
 def draw_playing_tiles():
     """ Shows all tiles of the playing board in yellow """
-    # TODO: define different playing board
+    # TODO: define different playing boards
     # TODO: show limits of the playing board
     for tile in grid.playing_tiles:
         pygame.draw.circle(gameDisplay, grid.gelb, tile, grid.tile_radius, 1)
 
-def debug_print(mouse_pos, clicked_circle):
+
+def gen_movement_my_body(event):
+    """ Generates steps to move my body - gen_move_track() """
+    move_options = mode_vs_options["move"]
+    arrows = [pygame.K_w, pygame.K_e, pygame.K_d, pygame.K_s, pygame.K_a, pygame.K_q]
+    for idx, arrow in enumerate(arrows):
+        if event.key is arrow:
+            my_body.direction = move_options[idx].name
+
+    if my_body.direction and not my_body.move_track and not my_body.radar_track:
+        my_body.gen_move_track(my_body.direction, move_options)
+
+
+
+def debug_print_click(MOUSE_POS, clicked_circle):
+    """  Debug print on click event  """
     print(""">>>>>> click: {0}, tile: {1}
 mode        : {2}
 menu        : {3}
@@ -163,7 +222,7 @@ playing     : {6}
 move track  : {7}
 all tiles   : {8}
 speed       : {9}
-""".format(mouse_pos,
+""".format(MOUSE_POS,
            clicked_circle,
            my_body.mode,
            my_body.in_menu,
@@ -177,25 +236,77 @@ speed       : {9}
           )
 
 
+def debug_print_space():
+    """  Debug print on space bar event  """
+    print(""">>>> space
+revealed tiles: {0}
+revealed_radius: {0}
+""".format(len(grid.revealed_tiles),
+           len(grid.revealed_radius),
+          )
+         )
+
+
+
+
+
+def game_menu():
+
+    # Restart
+    # os.execv(sys.executable, [sys.executable] + sys.argv)
+    # GAME_EXIT = True
+
+
+
+    while grid.game_menu:
+        MOUSE_POS = pygame.mouse.get_pos()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    grid.game_menu = False
+                elif event.key == pygame.K_q:
+                    pygame.quit()
+                    quit()
+
+
+        gameDisplay.fill(grid.grey)
+
+        # Draw buttons
+        draw_menu_buttons()
+
+        # Update display - end drawing
+        pygame.display.update()
+
+    clock.tick(grid.fps)
+
+
+
+
+
 def game_loop():
-    """    Main game loop.    """
-    if grid.full_screen:
-        pygame.display.toggle_fullscreen()
+    """ Main game loop. """
 
     GAME_EXIT = False
-    START_TIME = time.time()
 
-
+    # Start
     while not GAME_EXIT:
-        mouse_pos = pygame.mouse.get_pos()
+        MOUSE_POS = pygame.mouse.get_pos()
 
-
-        # lifespan timer
-        lifespan.start_timer()
+        # Menu
+        # if grid.game_menu:
+        #     game_menu()
 
         # Timer - seconds in game
+        START_TIME = time.time()
         seconds_in_game(START_TIME)
 
+        # lifespan timer
+        lifespan.tick()
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -204,46 +315,36 @@ def game_loop():
             if event.type == pygame.KEYDOWN:
                 # ========================================= ESCAPE LOOP ============================================= #
                 if event.key is pygame.K_ESCAPE:
-                    # TODO: K_ESCAPE screen loop here
-                    # Restart
-                    # os.execv(sys.executable, [sys.executable] + sys.argv)
-                    GAME_EXIT = True
-
-                # ========================================= ESCAPE LOOP ============================================= #
+                    grid.game_menu = True
 
                 # ========================================= SPACE BAR EVENTS ======================================== #
                 if event.key == pygame.K_SPACE:
                     # Radar track populating
                     if not my_body.move_track and not my_body.in_menu and not my_body.radar_track:
                         my_body.gen_radar_track()
-                        print ">>>> space"
-                        print "revealed tiles: {0}".format(len(grid.revealed_tiles))
-                        print "revealed_radius: {0}".format(len(grid.revealed_radius))
-                # ========================================= SPACE BAR EVENTS ======================================== #
 
+                    # Test lifespan modify
+                    # lifespan.len_step += (lifespan.len_step / 100) * 10
+                    # lifespan.step += 15
+                    # print "steps:", lifespan.number_of_steps
 
-                # ========================================= MOVEMENT ================================================ #
-                direction = None
-                move_options = mode_vs_options["move"]
-                arrows = [pygame.K_w, pygame.K_e, pygame.K_d, pygame.K_s, pygame.K_a, pygame.K_q]
-                for idx, dir in enumerate(arrows):
-                    if event.key is dir:
-                        direction = move_options[idx].name
-                if direction and not my_body.move_track and not my_body.radar_track:
-                    my_body.gen_move_track(direction, move_options)
-                # ========================================= MOVEMENT ================================================ #
+                    # Debug
+                    debug_print_space()
+
+                # ========================================= GENERATE MOVEMENT ======================================= #
+                gen_movement_my_body(event)
 
 
             # ============================================= CLICK EVENTS ============================================ #
             if event.type == pygame.MOUSEBUTTONDOWN:
-                clicked_circle = grid.mouse_in_tile(mouse_pos)
+                clicked_circle = grid.mouse_in_tile(MOUSE_POS)
                 if clicked_circle:
                     for item in grid.items:
                         # Set in_menu for the items with menu (my_body)
                         item.check_in_menu(clicked_circle, mode_vs_options)
                         # Setting option positions
                         item.set_option_pos()
-                        # ---------------------------------- Option clicked ----------------------------------------- #
+                        # Option clicked
                         if item.in_menu:
                             if item.options:
                                 for option in item.options:
@@ -276,13 +377,10 @@ def game_loop():
                                                 item.change_speed(-1)
                                             # Close menu if option selected
                                             item.set_in_menu(False)
-                        # ---------------------------------- Option clicked ----------------------------------------- #
+                # Debug
+                debug_print_click(MOUSE_POS, clicked_circle)
 
-                debug_print(mouse_pos, clicked_circle)
-            # ============================================= CLICK EVENTS ============================================ #
-
-        # ================================================= DRAWING ================================================ #
-        # -------------------------------------- Background -------------------------------------- #
+        # ======================== DRAWING BACKGROUND ======================= #
         # Background
         gameDisplay.fill(grid.grey)
 
@@ -297,9 +395,8 @@ def game_loop():
         # Playing board:
         if grid.show_playing_tiles:
             draw_playing_tiles()
-        # -------------------------------------- Background -------------------------------------- #
 
-        # -------------------------------------- Animations -------------------------------------- #
+        # ======================== DRAWING ANIMATIONS ======================= #
         for item in grid.items:
 
             # Radar
@@ -310,16 +407,13 @@ def game_loop():
             if item.in_menu:
                 draw_item_options(item)
 
-            # Body
+            # Bodies
             if (item.pos in grid.revealed_tiles) or (item is my_body):
-                pygame.draw.circle(gameDisplay, item.color, item.pos, grid.tile_radius, item.border)
-                if item.img:
-                    gameDisplay.blit(item.img, item.set_img_pos())
+                draw_body(item)
 
             # Timer lifespan
             if item is lifespan:
-                pygame.draw.circle(gameDisplay, item.color, item.pos, grid.tile_radius, 0)
-                pygame.draw.arc(gameDisplay, item.time_color, item.rect, item.filled_angle, item.start_point, 5)
+                draw_timer(item)
 
             # Show movement track in color
             if grid.show_movement and len(item.move_track) > 1:
@@ -327,13 +421,12 @@ def game_loop():
 
         # Mouse Item
         # TODO: Create MouseItem
-        # pygame.draw.circle(gameDisplay, grid.white, mouse_pos, 2, 0)
+        # pygame.draw.circle(gameDisplay, grid.white, MOUSE_POS, 2, 0)
         for tile in grid.tiles:
-            if cir_utils.in_circle(tile, grid.tile_radius, mouse_pos):
+            if cir_utils.in_circle(tile, grid.tile_radius, MOUSE_POS):
                 pygame.draw.circle(gameDisplay, grid.white, tile, grid.tile_radius + 1, 1)
-        # -------------------------------------- Animations -------------------------------------- #
-        # ================================================== DRAWING ================================================ #
 
+        # Update display - end drawing
         pygame.display.update()
 
         # ================================================ CHANGE VARS ============================================== #
@@ -348,9 +441,11 @@ def game_loop():
 
         # FPS
         clock.tick(grid.fps)
-        # ================================================ CHANGE VARS ============================================== #
+
+    # == END == #
     pygame.quit()
     quit()
+
 
 if __name__ == '__main__':
     game_loop()
