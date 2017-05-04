@@ -5,7 +5,7 @@
 #######################################################################################################################
 import pdb
 import json
-from cir_utils import in_circle
+from cir_utils import in_circle, inside_polygon
 from math import sqrt
 
 
@@ -32,6 +32,7 @@ class Grid(object):
         self.overlapped_items = []
 
         self.seconds_in_game = 0
+        self.seconds_in_pause = 0
         self.game_menu = True
         self.game_menu_buttons = []
 
@@ -112,10 +113,19 @@ class Grid(object):
         """
         Defining the playing tiles
         """
-        playing_radius = self.tile_radius * 9
-        center_tile = self.find_center_tile()
+        # TODO: define different playing boards
+        # TODO: show limits of the playing board
+
+        hex_board = [
+            (self.center_tile[0], self.center_tile[1] - (9 * self.tile_radius)),
+            (self.center_tile[0] + (5 * self.cathetus), self.center_tile[1] - (4 * self.tile_radius)),
+            (self.center_tile[0] + (4 * self.cathetus), self.center_tile[1] + (5 * self.tile_radius)),
+            (self.center_tile[0], self.center_tile[1] + (9 * self.tile_radius) + 1),
+            (self.center_tile[0] - (4 * self.cathetus) - 1, self.center_tile[1] + (4 * self.tile_radius)),
+            (self.center_tile[0] - (4 * self.cathetus) - 1, self.center_tile[1] - (4 * self.tile_radius))
+        ]
         for tile in self.tiles:
-            if in_circle(center_tile, playing_radius, tile):
+            if inside_polygon(hex_board, tile):
                 if not tile in self._playing_tiles:
                     self._playing_tiles.append(tile)
         return self._playing_tiles

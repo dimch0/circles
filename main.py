@@ -48,7 +48,7 @@ if 1:
     quit_button = cir_button.ButtonItem(grid=grid, name="quit", font=fonts.small, text_color=grid.white, pos=grid.adj_tiles(grid.center_tile)[3], color=grid.ungrey)
     grid.game_menu_buttons.append(quit_button)
 
-    restart_button = cir_button.ButtonItem(grid=grid, name="replay", font=fonts.small, text_color=grid.white, pos=grid.center_tile, color=grid.ungrey)
+    # restart_button = cir_button.ButtonItem(grid=grid, name="replay", font=fonts.small, text_color=grid.white, pos=grid.center_tile, color=grid.ungrey)
     # resume_button = cir_button.ButtonItem(grid=grid, name="resume", font=fonts.small, text_color=grid.white, pos=grid.adj_tiles(grid.center_tile)[0], color=grid.ungrey)
 
 
@@ -111,9 +111,11 @@ if grid.full_screen:
 
 def seconds_in_game(START_TIME):
     """ Counts the seconds in the game """
-    if time.time() > (START_TIME + grid.seconds_in_game):
-        print "second: {0}".format(grid.seconds_in_game)
-        grid.seconds_in_game += 1
+    # TODO: FIX START TIME AND PAUSE SECONDS
+    if not grid.game_menu:
+        if time.time() + grid.seconds_in_pause > (START_TIME + grid.seconds_in_game) - grid.seconds_in_pause:
+            print "second: {0}".format(grid.seconds_in_game)
+            grid.seconds_in_game += 1
 
 
 def draw_radar(item):
@@ -148,8 +150,8 @@ def draw_item_options(item):
 def draw_menu_buttons():
     """ Drawing the buttons in the game menu """
 
-    if grid.seconds_in_game > 1:
-        grid.game_menu_buttons.append(restart_button)
+    # if grid.seconds_in_game > 1:
+    #     grid.game_menu_buttons.append(restart_button)
 
 
     for button in grid.game_menu_buttons:
@@ -181,8 +183,14 @@ def draw_grid():
         pygame.draw.circle(gameDisplay, grid.ungrey, tile, grid.tile_radius, 1)
 
 
+def draw_hover(tile, MOUSE_POS):
+    """ Highlights the hovered tile """
+    if cir_utils.in_circle(tile, grid.tile_radius, MOUSE_POS):
+        pygame.draw.circle(gameDisplay, grid.white, tile, grid.tile_radius + 1, 1)
+
+
 def draw_movement(item):
-    """ Shows the movement in cyan and the correct track in red """
+    """ DEBUG: Shows the movement in cyan and the correct track in red """
     pygame.draw.line(gameDisplay, grid.azure, item.move_track[0], item.move_track[-1], 1)
     for o in item.move_track:
         pygame.draw.circle(gameDisplay, grid.white, o, 2, 1)
@@ -190,10 +198,9 @@ def draw_movement(item):
 
 def draw_playing_tiles():
     """ Shows all tiles of the playing board in yellow """
-    # TODO: define different playing boards
-    # TODO: show limits of the playing board
-    for tile in grid.playing_tiles:
-        pygame.draw.circle(gameDisplay, grid.gelb, tile, grid.tile_radius, 1)
+    if grid.playing_tiles:
+        for tile in grid.playing_tiles:
+            pygame.draw.circle(gameDisplay, grid.gelb, tile, grid.tile_radius, 1)
 
 
 def gen_movement_my_body(event):
@@ -246,13 +253,12 @@ revealed_radius: {0}
 
 
 
-
-
 def game_menu():
     """ Game menu loop """
+
+
     while grid.game_menu:
         MOUSE_POS = pygame.mouse.get_pos()
-
 
 
 
@@ -261,23 +267,30 @@ def game_menu():
                 pygame.quit()
                 quit()
 
-
-
+            # Click events
             if event.type == pygame.MOUSEBUTTONDOWN:
                 clicked_circle = grid.mouse_in_tile(MOUSE_POS)
                 if clicked_circle:
                     for button in grid.game_menu_buttons:
                         if clicked_circle == button.pos:
 
-                            if button == start_button:
+                            if button.name == "play":
                                 grid.game_menu = False
 
-                            elif button == restart_button:
+                            elif button.name == "replay":
                                 os.execv(sys.executable, [sys.executable] + sys.argv)
 
-                            elif button == quit_button:
+                            elif button.name == "quit":
                                 pygame.quit()
                                 quit()
+
+
+            if grid.seconds_in_game > 0:
+                # Key events
+                if event.type == pygame.KEYDOWN:
+                    if event.key is pygame.K_ESCAPE:
+                        grid.game_menu = False
+
         # Background
         gameDisplay.fill(grid.grey)
 
@@ -287,8 +300,7 @@ def game_menu():
         # Highlight hovered buttons
         # TODO: make a function
         for button in grid.game_menu_buttons:
-            if cir_utils.in_circle(button.pos, grid.tile_radius, MOUSE_POS):
-                pygame.draw.circle(gameDisplay, grid.white, button.pos, grid.tile_radius + 1, 1)
+            draw_hover(button.pos, MOUSE_POS)
 
         # Update display - end drawing
         pygame.display.update()
@@ -301,20 +313,23 @@ def game_loop():
     """ Main game loop. """
 
     GAME_EXIT = False
-    START_TIME = time.time()
+
 
     # Start
     while not GAME_EXIT:
+
         MOUSE_POS = pygame.mouse.get_pos()
 
         # Menu
         if grid.game_menu:
             game_menu()
 
-        # Timer - seconds in game
+
+        START_TIME = time.time()
+        # Seconds in game
         seconds_in_game(START_TIME)
 
-        # lifespan timer
+        # Lifespan timer
         lifespan.tick()
 
         for event in pygame.event.get():
@@ -432,8 +447,7 @@ def game_loop():
         # TODO: Create MouseItem
         # pygame.draw.circle(gameDisplay, grid.white, MOUSE_POS, 2, 0)
         for tile in grid.tiles:
-            if cir_utils.in_circle(tile, grid.tile_radius, MOUSE_POS):
-                pygame.draw.circle(gameDisplay, grid.white, tile, grid.tile_radius + 1, 1)
+            draw_hover(tile, MOUSE_POS)
 
         # Update display - end drawing
         pygame.display.update()
