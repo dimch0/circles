@@ -7,10 +7,20 @@
 import os
 import pygame
 
+FONT_FILE = "./fonts/HelveticaNeueMed.ttf"
+class Fonts(object):
+    """
+    a class containing all the fonts
+    """
+    def __init__(self, grid):
+        self.small = pygame.font.Font(FONT_FILE, int(grid.tile_radius * 0.60))
+        self.medium = pygame.font.Font(FONT_FILE, int(grid.tile_radius * 1))
+        self.large = pygame.font.Font(FONT_FILE, grid.tile_radius * 2)
+
 
 class Images(object):
     """
-    a class containing all the images
+    a class containing all images
     """
     def __init__(self, grid):
         self.set_images(grid)
@@ -30,3 +40,5 @@ class Images(object):
                     setattr(self, name, image)
         except Exception as e:
             print "ERROR, could not set image as attribute:", e
+
+

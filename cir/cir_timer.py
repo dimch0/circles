@@ -22,22 +22,16 @@ class TimerItem(MobileItem):
         self._filled_angle = None
 
         self.time_step = 0.0157
-        self._number_of_steps = int(self.duration / self.time_step)
+        self.number_of_steps = int(self.duration / self.time_step)
         self.len_step = -float(360) / self.number_of_steps
         self.step = 1
         self._is_over = False
-
-    @property
-    def number_of_steps(self):
-        self._number_of_steps = int(self.duration / self.time_step)
-        return self._number_of_steps
-
 
     def tick(self):
         """ Starts the timer, increasing the step and filled_steps """
         if not self.start_time:
             self.start_time = time.time()
-        if self.start_time and not self.step == self._number_of_steps:
+        if self.start_time and not self.step == self.number_of_steps:
             if time.time() > (self.start_time + (self.time_step * self.step)):
                 self.filled_steps += self.len_step
                 self.step += 1
@@ -46,7 +40,7 @@ class TimerItem(MobileItem):
     def is_over(self):
         """ Returns a boolean if the timer is over """
         if self.start_time:
-            if self.step == self._number_of_steps:
+            if self.step == self.number_of_steps:
                 self._is_over = True
         return self._is_over
 

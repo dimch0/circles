@@ -3,10 +3,12 @@
 #################                                 Main file                                           #################
 #################                                                                                     #################
 #######################################################################################################################
+import os
+import sys
 import time
 import pygame
 
-from cir import cir_body, cir_grid, cir_item, cir_utils, cir_img, cir_timer, cir_mobile, cir_button
+from cir import cir_body, cir_grid, cir_item, cir_utils, cir_cosmetic, cir_timer, cir_mobile, cir_button
 
 pygame.init()
 
@@ -15,22 +17,12 @@ pygame.init()
 grid = cir_grid.Grid()
 
 # Loading images
-images = cir_img.Images(grid)
-
-# Fonts
-tile_font = pygame.font.SysFont("terminal", grid.tile_radius)
-font_s = pygame.font.SysFont("Ubuntu Mono", 19)
-font_m = pygame.font.SysFont("terminal", 50)
-font_l = pygame.font.SysFont("terminal", 80)
+# TODO: load from grid class
+images = cir_cosmetic.Images(grid)
+fonts = cir_cosmetic.Fonts(grid)
 
 
-def button_text(msg, color, tile, size = "small"):
-    pass
-    # textSurf, textRect = text_objects(msg,color, size)
-    # textRect.center = (display_width / 2), (display_height / 2)+y_displace
-    # gameDisplay.blit(textSurf, textRect)
-
-
+# TODO: Generate items and load from external file "hasattr"
 # Creating my body item
 if 1:
     my_body = cir_body.BodyItem(grid=grid, name="my body", pos=grid.center_tile, color=grid.pink, speed=2)
@@ -44,22 +36,23 @@ if 0:
 
 # Creating timer item
 if 1:
-    lifespan = cir_timer.TimerItem(grid=grid, name="test timer", pos=grid.center_tile, duration=10, time_color=grid.black ,  color=grid.pink, speed=1)
+    lifespan = cir_timer.TimerItem(grid=grid, name="test timer", pos=grid.center_tile, duration=180, time_color=grid.black ,  color=grid.pink, speed=1)
     # TODO: make grid.timers list attribute
     grid.items.append(lifespan)
 
 # Creating button items
 if 1:
-    start_button = cir_button.ButtonItem(grid=grid, name="start", font=tile_font, text_color=grid.white, pos=grid.adj_tiles(grid.center_tile)[0], color=grid.ungrey)
+    start_button = cir_button.ButtonItem(grid=grid, name="play", font=fonts.small, text_color=grid.white, pos=grid.adj_tiles(grid.center_tile)[0], color=grid.ungrey)
     grid.game_menu_buttons.append(start_button)
 
-    quit_button = cir_button.ButtonItem(grid=grid, name="quit", font=tile_font, text_color=grid.white, pos=grid.adj_tiles(grid.center_tile)[3], color=grid.ungrey)
+    quit_button = cir_button.ButtonItem(grid=grid, name="quit", font=fonts.small, text_color=grid.white, pos=grid.adj_tiles(grid.center_tile)[3], color=grid.ungrey)
     grid.game_menu_buttons.append(quit_button)
 
+    restart_button = cir_button.ButtonItem(grid=grid, name="replay", font=fonts.small, text_color=grid.white, pos=grid.center_tile, color=grid.ungrey)
+    # resume_button = cir_button.ButtonItem(grid=grid, name="resume", font=fonts.small, text_color=grid.white, pos=grid.adj_tiles(grid.center_tile)[0], color=grid.ungrey)
 
 
-# TODO: Generate items and load from external file
-# TODO: Check if string is attrubute hasattr
+
 mode_vs_options = {
     "my body": [
         cir_item.Item(grid=grid, name="option 1", color=my_body.default_color),
@@ -154,6 +147,11 @@ def draw_item_options(item):
 
 def draw_menu_buttons():
     """ Drawing the buttons in the game menu """
+
+    if grid.seconds_in_game > 1:
+        grid.game_menu_buttons.append(restart_button)
+
+
     for button in grid.game_menu_buttons:
         if button.color:
             pygame.draw.circle(gameDisplay, button.color, button.pos, grid.tile_radius, button.border)
@@ -251,33 +249,46 @@ revealed_radius: {0}
 
 
 def game_menu():
-
-    # Restart
-    # os.execv(sys.executable, [sys.executable] + sys.argv)
-    # GAME_EXIT = True
-
-
-
+    """ Game menu loop """
     while grid.game_menu:
         MOUSE_POS = pygame.mouse.get_pos()
+
+
+
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
 
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE:
-                    grid.game_menu = False
-                elif event.key == pygame.K_q:
-                    pygame.quit()
-                    quit()
 
 
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                clicked_circle = grid.mouse_in_tile(MOUSE_POS)
+                if clicked_circle:
+                    for button in grid.game_menu_buttons:
+                        if clicked_circle == button.pos:
+
+                            if button == start_button:
+                                grid.game_menu = False
+
+                            elif button == restart_button:
+                                os.execv(sys.executable, [sys.executable] + sys.argv)
+
+                            elif button == quit_button:
+                                pygame.quit()
+                                quit()
+        # Background
         gameDisplay.fill(grid.grey)
 
         # Draw buttons
         draw_menu_buttons()
+
+        # Highlight hovered buttons
+        # TODO: make a function
+        for button in grid.game_menu_buttons:
+            if cir_utils.in_circle(button.pos, grid.tile_radius, MOUSE_POS):
+                pygame.draw.circle(gameDisplay, grid.white, button.pos, grid.tile_radius + 1, 1)
 
         # Update display - end drawing
         pygame.display.update()
@@ -286,23 +297,21 @@ def game_menu():
 
 
 
-
-
 def game_loop():
     """ Main game loop. """
 
     GAME_EXIT = False
+    START_TIME = time.time()
 
     # Start
     while not GAME_EXIT:
         MOUSE_POS = pygame.mouse.get_pos()
 
         # Menu
-        # if grid.game_menu:
-        #     game_menu()
+        if grid.game_menu:
+            game_menu()
 
         # Timer - seconds in game
-        START_TIME = time.time()
         seconds_in_game(START_TIME)
 
         # lifespan timer
@@ -323,7 +332,7 @@ def game_loop():
                     if not my_body.move_track and not my_body.in_menu and not my_body.radar_track:
                         my_body.gen_radar_track()
 
-                    # Test lifespan modify
+                    # TODO: time modyfier
                     # lifespan.len_step += (lifespan.len_step / 100) * 10
                     # lifespan.step += 15
                     # print "steps:", lifespan.number_of_steps

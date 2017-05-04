@@ -14,14 +14,28 @@ class ButtonItem(Item):
     """
     def __init__(self, font, text_color, text=None, **kwargs):
         super(ButtonItem, self).__init__(**kwargs)
+
+        self.font = font
+        self.text_color = text_color
+
         if text:
-            self.text = font.render("start", True, text_color)
+            self.text = self.font.render(text, True, self.text_color)
         else:
-            self.text = font.render(self.name, True, text_color)
+            self.text = self.font.render(self.name, True, self.text_color)
         self.text_rect = self.text.get_rect()
         self.text_rect.center = self.pos
 
+
+    # @property
+    # def text_rect(self):
+    #     self._text_rect = self.text.get_rect()
+    #     return self._text_rect
     #
+    # @property
+    # def text_rect(self):
+    #     self._text_rect.center = self.pos
+    #     return self._text_rect.center
+
     # def change_speed(self, increment):
     #     self.speed += increment
     #     if self.speed < 0:
