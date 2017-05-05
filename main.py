@@ -75,7 +75,7 @@ def draw_revealed_radius():
                         grid.revealed_radius.remove(printed)
 
 
-def draw_item_options(item):
+def draw_item_options(item, MOUSE_POS):
     """ Draws the item menu options """
 
     for option in item.options:
@@ -83,6 +83,7 @@ def draw_item_options(item):
             pygame.draw.circle(gameDisplay, option.color, option.pos, grid.tile_radius, option.border)
         if option.img:
             gameDisplay.blit(option.img, option.set_img_pos())
+        draw_hover(option.pos, MOUSE_POS)
 
 def draw_menu_buttons(MOUSE_POS):
     """ Drawing the buttons in the game menu """
@@ -97,18 +98,18 @@ def draw_menu_buttons(MOUSE_POS):
         draw_hover(button.pos, MOUSE_POS)
 
 
-def draw_body(item):
+def draw_body(item, MOUSE_POS):
     """ Draws each body and it's image if available """
     pygame.draw.circle(gameDisplay, item.color, item.pos, grid.tile_radius, item.border)
     if item.img:
         gameDisplay.blit(item.img, item.set_img_pos())
-
+    draw_hover(item.pos, MOUSE_POS)
 
 def draw_timers():
     """ Draws current state of a timer """
     # pygame.draw.circle(gameDisplay, timer.color, timer.pos, grid.tile_radius, 0)
     for timer in grid.timers:
-        if timer.name is "lifespan":
+        if timer.name == "lifespan":
             timer.pos = my_body.pos
         pygame.draw.arc(gameDisplay, timer.time_color, timer.rect, timer.filled_angle, timer.start_point, 2)
 
@@ -121,7 +122,6 @@ def draw_grid():
 
 def draw_hover(tile, MOUSE_POS):
     """ Highlights the hovered tile """
-    # TODO: Implement for all items
     if cir_utils.in_circle(tile, grid.tile_radius, MOUSE_POS):
         pygame.draw.circle(gameDisplay, grid.white, tile, grid.tile_radius + 1, 2)
 
@@ -145,7 +145,7 @@ def gen_movement_my_body(event):
     move_options = MODE_VS_OPTIONS["move"]
     arrows = [pygame.K_w, pygame.K_e, pygame.K_d, pygame.K_s, pygame.K_a, pygame.K_q]
     for idx, arrow in enumerate(arrows):
-        if event.key is arrow:
+        if event.key == arrow:
             my_body.direction = move_options[idx].name
 
     if my_body.direction and not my_body.move_track and not my_body.radar_track:
@@ -212,7 +212,7 @@ def game_loop():
 
             if event.type == pygame.KEYDOWN:
                 # ========================================= ESCAPE LOOP ============================================= #
-                if event.key is pygame.K_ESCAPE:
+                if event.key == pygame.K_ESCAPE:
                     if not grid.game_menu:
                         grid.game_menu = True
 
@@ -278,23 +278,23 @@ def game_loop():
                                             # Check option specifics
                                             elif option in MODE_VS_OPTIONS[item.mode]:
 
-                                                if item.mode is "move":
+                                                if item.mode == "move":
                                                     item.gen_move_track(option.name, MODE_VS_OPTIONS[item.mode])
 
-                                                elif option.name is "see":
+                                                elif option.name == "see":
                                                     item.range += 1
                                                     # item.mode = "seen"
 
-                                                elif option.name is "smel":
+                                                elif option.name == "smel":
                                                     item.change_speed(1)
 
-                                                elif option.name is "medi":
+                                                elif option.name == "medi":
                                                     item.range += 10
 
-                                                elif option.name is "audio":
+                                                elif option.name == "audio":
                                                     item.change_speed(10)
 
-                                                elif option.name is "eat":
+                                                elif option.name == "eat":
                                                     item.change_speed(-1)
                                                 # Close menu if option selected
                                                 item.set_in_menu(False)
@@ -328,11 +328,11 @@ def game_loop():
 
                 # Item options
                 if item.in_menu:
-                    draw_item_options(item)
+                    draw_item_options(item, MOUSE_POS)
 
                 # Bodies
                 if (item.pos in grid.revealed_tiles) or (item == my_body):
-                    draw_body(item)
+                    draw_body(item, MOUSE_POS)
 
                 # Show movement track in color
                 if grid.show_movement and len(item.move_track) > 1:
@@ -353,7 +353,7 @@ def game_loop():
         # for tile in grid.tiles:
         #     draw_hover(tile, MOUSE_POS)
 
-        # Update display - end drawing
+        # Update display ===== End drawing
         pygame.display.update()
 
         # ================================================ CHANGE VARS ============================================== #
@@ -374,7 +374,7 @@ def game_loop():
                     if timer.is_over:
 
                         # Lifespan
-                        if timer.name is "lifespan":
+                        if timer.name == "lifespan":
                             GAME_EXIT = True
 
         # FPS

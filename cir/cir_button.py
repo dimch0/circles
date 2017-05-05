@@ -12,6 +12,7 @@ class ButtonItem(Item):
     """
     This is the base class for all circle items
     """
+    # TODO: Move item options here?
     def __init__(self, font, text_color, text=None, **kwargs):
         super(ButtonItem, self).__init__(**kwargs)
 

@@ -35,7 +35,8 @@ def load_all_items(grid, images, fonts, my_body):
         data = csv.reader(csvfile, delimiter=',')
         for row in data:
             if not row[0] == "type":
-                # print row
+
+                # ===================== COLS FROM data.csv FILE ==================== #
                 item_type = row[0] if len(row[0]) > 0 else None
                 item_name = row[1] if len(row[1]) > 0 else None
                 item_pos = eval(row[2]) if len(row[2]) > 0 else ()

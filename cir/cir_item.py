@@ -5,10 +5,6 @@
 #######################################################################################################################
 
 
-# TODO: Make a Basic Item class without menu
-# TODO: Make a Button Item class
-
-
 class Item(object):
     """
     This is the base class for all circle items
