@@ -20,7 +20,7 @@ from cir.cir_loader import load_all_items
 
 pygame.init()
 
-# Creating grid
+# LOADING GRID
 grid = cir_grid.Grid()
 
 # LOADING IMAGES AND FONTS
@@ -33,7 +33,6 @@ grid.items.append(my_body)
 
 # LOADING ALL ITEMS
 ALL_ITEMS, MODE_VS_OPTIONS = load_all_items(grid, images, fonts, my_body)
-
 
 # GAME SETTINGS
 gameDisplay = pygame.display.set_mode((grid.display_width, grid.display_height))
@@ -114,6 +113,17 @@ def draw_grid():
     for tile in grid.tiles:
         pygame.draw.circle(gameDisplay, grid.ungrey, tile, grid.tile_radius, 1)
 
+    rect1 = [
+        (0,0),
+        ((grid.display_width / 2) - (8 * grid.tile_radius), (grid.display_height))
+            ]
+    rect2 = [
+        ((grid.display_width / 2) + (8 * grid.tile_radius), 0),
+        (grid.display_width, grid.display_height)
+            ]
+    pygame.draw.rect(gameDisplay, grid.grey, rect1, 0)
+    pygame.draw.rect(gameDisplay, grid.grey, rect2, 0)
+
 
 def draw_hover(tile, MOUSE_POS):
     """ Highlights the hovered tile """
@@ -193,9 +203,7 @@ def game_loop():
 
     # Start
     while not GAME_EXIT:
-
         MOUSE_POS = pygame.mouse.get_pos()
-
 
         # Seconds in game
         seconds_in_game(START_TIME)
@@ -216,11 +224,12 @@ def game_loop():
                 # ========================================= SPACE BAR EVENTS ======================================== #
                 if event.key == pygame.K_SPACE:
                     if not grid.game_menu:
+
                         # Radar track populating
                         if not my_body.move_track and not my_body.in_menu and not my_body.radar_track:
                             my_body.gen_radar_track()
 
-                        # TODO: time modyfier
+                        # TODO: time modifier
                         # lifespan.len_step += (lifespan.len_step / 100) * 10
                         # lifespan.step += 15
                         # print "steps:", lifespan.number_of_steps
@@ -363,9 +372,11 @@ def game_loop():
                 if item.move_track:
                     item.move()
 
-            # Timers over effects
+
             if grid.timers:
                 for timer in grid.timers:
+
+                    # Timer is_over effects
                     if timer.is_over:
 
                         # Lifespan
