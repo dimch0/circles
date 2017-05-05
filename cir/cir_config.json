@@ -10,7 +10,9 @@
     "rows": 24,
     "cols": 24,
     "caption": "cir",
-    "img_dir": "img"
+    "img_dir": "img",
+    "font_file": "./fonts/HelveticaNeueMed.ttf",
+    "data_file": "cir/cir_data.csv"
     },
 
   "colors": {

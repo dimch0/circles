@@ -57,8 +57,8 @@ class Item(object):
         """
         self.mode = option.name
         self.color = option.color
-        if option.uncolor:
-            self.uncolor = option.uncolor
+        # if option.uncolor:
+        #     self.uncolor = option.uncolor
         self.img = option.img
         if option.name in mode_vs_option.keys():
             self.options = mode_vs_option[option.name]

@@ -153,7 +153,7 @@ class Grid(object):
     def set_mode_vs_options(self, mode_vs_options):
         for item in self.items:
             for mode_name, mode_options in mode_vs_options.items():
-                if item.name is mode_name:
+                if item.name == mode_name:
                     item.default_options = mode_options
                     item.options = item.default_options
 

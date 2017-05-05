@@ -7,15 +7,15 @@
 import os
 import pygame
 
-FONT_FILE = "./fonts/HelveticaNeueMed.ttf"
+
 class Fonts(object):
     """
     a class containing all the fonts
     """
     def __init__(self, grid):
-        self.small = pygame.font.Font(FONT_FILE, int(grid.tile_radius * 0.60))
-        self.medium = pygame.font.Font(FONT_FILE, int(grid.tile_radius * 1))
-        self.large = pygame.font.Font(FONT_FILE, grid.tile_radius * 2)
+        self.small = pygame.font.Font(grid.font_file, int(grid.tile_radius * 0.60))
+        self.medium = pygame.font.Font(grid.font_file, int(grid.tile_radius * 1))
+        self.large = pygame.font.Font(grid.font_file, grid.tile_radius * 2)
 
 
 class Images(object):
