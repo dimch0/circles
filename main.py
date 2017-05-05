@@ -5,159 +5,34 @@
 #######################################################################################################################
 import os
 import sys
-import csv
 import time
 import pygame
 
-from cir import cir_body, cir_grid, cir_item, cir_utils, cir_cosmetic, cir_timer, cir_mobile, cir_button
+from cir import cir_body
+from cir import cir_grid
+from cir import cir_utils
+from cir import cir_cosmetic
+from cir import cir_item
+from cir import cir_timer
+from cir import cir_mobile
+from cir import cir_button
+from cir.cir_loader import load_all_items
 
 pygame.init()
 
 # Creating grid
 grid = cir_grid.Grid()
 
-# Loading images
+# Loading images and fonts
 images = cir_cosmetic.Images(grid)
 fonts = cir_cosmetic.Fonts(grid)
 
-
-# Creating my body item
+# Creating my body
 my_body = cir_body.BodyItem(grid=grid, name="my body", pos=grid.center_tile, color=grid.pink, speed=2)
 grid.items.append(my_body)
 
-
-
-def load_all_items():
-    ALL_ITEMS = {
-        "items": [],
-        "timers": [],
-        "buttons": []
-    }
-
-    MODE_VS_OPTIONS = {
-        "my body": [],
-        "move": [],
-        "sensory": [],
-        "bokluk": [],
-        "govna": []
-    }
-
-    with open(grid.data_file, 'rb') as csvfile:
-        data = csv.reader(csvfile, delimiter=',')
-        for row in data:
-            if not row[0] == "type":
-                # print row
-                item_type = row[0] if len(row[0]) > 0 else None
-                item_name = row[1] if len(row[1]) > 0 else None
-                item_pos = eval(row[2]) if len(row[2]) > 0 else ()
-                item_color = getattr(grid, row[3]) if len(row[3]) > 0 else None
-                item_img = getattr(images, row[4]) if len(row[4]) > 0 else None
-                item_border = row[5] if len(row[5]) > 0 else 0
-                item_speed = int(row[6]) if len(row[6]) > 0 else None
-                item_range = row[7] if len(row[7]) > 0 else None
-                item_font = getattr(fonts, row[8]) if len(row[8]) > 0 else None
-                item_text_color = getattr(grid, row[9]) if len(row[9]) > 0 else None
-                item_text = row[10] if len(row[10]) > 0 else None
-                item_duration = int(row[11]) if len(row[11]) > 0 else None
-                item_time_color = getattr(grid, row[12]) if len(row[12]) > 0 else None
-                item_start_time = row[13] if len(row[13]) > 0 else None
-
-                if item_type == "cir_mobile":
-                    item_to_append = cir_mobile.MobileItem(
-                        grid=grid,
-                        name=item_name,
-                        pos=item_pos,
-                        color=item_color,
-                        speed=item_speed
-                    )
-                    ALL_ITEMS["items"].append(item_to_append)
-
-                elif item_type == "cir_timer":
-                    item_to_append = cir_timer.TimerItem(
-                        grid=grid,
-                        name=item_name,
-                        pos=item_pos,
-                        color=item_color,
-                        speed=item_speed,
-                        duration=item_duration,
-                        time_color=item_time_color
-                    )
-                    ALL_ITEMS["timers"].append(item_to_append)
-
-                elif item_type == "cir_button":
-                    item_to_append = cir_button.ButtonItem(
-                        grid=grid,
-                        name=item_name,
-                        pos=item_pos,
-                        color=item_color,
-                        font=item_font,
-                        text_color=item_text_color
-                    )
-                    ALL_ITEMS["buttons"].append(item_to_append)
-
-                elif not "cir" in item_type:
-                    item_to_append = cir_item.Item(
-                        grid=grid,
-                        name=item_name,
-                        pos=item_pos,
-                        color=item_color,
-                        image=item_img,
-                        border=item_border
-                    )
-                    MODE_VS_OPTIONS[item_type].append(item_to_append)
-
-
-    return ALL_ITEMS, MODE_VS_OPTIONS
-
-
-
-ALL_ITEMS, MODE_VS_OPTIONS = load_all_items()
-
-
-# TODO: Generate items and load from external file "hasattr"
-# TODO: Link timer to body
-MODE_VS_OPTIONS2 = {
-    "my body": [
-        cir_item.Item(grid=grid, name="option 1", color=grid.pink),
-        cir_item.Item(grid=grid, name="option 2", color=grid.pink),
-        cir_item.Item(grid=grid, name="option 3", color=grid.pink),
-        cir_item.Item(grid=grid, name="move", color=grid.pink, image=images.feet),
-        cir_item.Item(grid=grid, name="option 5", color=grid.pink),
-        cir_item.Item(grid=grid, name="sensory", color=grid.azure, image=images.brain),
-    ],
-    "move" : [
-        cir_item.Item(grid=grid, name="north", border=1, image=images.north),
-        cir_item.Item(grid=grid, name="northeast", border=1, image=images.northeast),
-        cir_item.Item(grid=grid, name="southeast", border=1, image=images.southeast),
-        cir_item.Item(grid=grid, name="south", border=1, image=images.south),
-        cir_item.Item(grid=grid, name="southwest", border=1, image=images.southwest),
-        cir_item.Item(grid=grid, name="northwest", border=1, image=images.northwest)
-    ],
-    "sensory": [
-        cir_item.Item(grid=grid, name="eat", color=grid.azure, image=images.lips_y),
-        cir_item.Item(grid=grid, name="audio", color=grid.azure, image=images.ear_y),
-        cir_item.Item(grid=grid, name="smel", color=grid.azure, image=images.nose_y),
-        cir_item.Item(grid=grid, name="medi", color=grid.azure, image=images.yoga),
-        cir_item.Item(grid=grid, name="touch", color=grid.azure, image=images.touch_y),
-        cir_item.Item(grid=grid, name="see", color=grid.azure, image=images.eye_y)
-    ],
-    "bokluk": [
-        cir_item.Item(grid=grid, name="govna", color=grid.black),
-        cir_item.Item(grid=grid, name="laina", color=grid.green),
-        cir_item.Item(grid=grid, name="otvrat", color=grid.green),
-        cir_item.Item(grid=grid, name="smrad", color=grid.green),
-        cir_item.Item(grid=grid, name="gadost", color=grid.green),
-        cir_item.Item(grid=grid, name="gnus", color=grid.green)
-    ],
-    "govna": [
-        cir_item.Item(grid=grid, name="shuplesto", color=grid.blue),
-        cir_item.Item(grid=grid, name="luskavo", color=grid.blue),
-        cir_item.Item(grid=grid, name="cherno", color=grid.black),
-        cir_item.Item(grid=grid, name="mirizlivo", color=grid.blue),
-        cir_item.Item(grid=grid, name="techno", color=grid.blue),
-        cir_item.Item(grid=grid, name="mazno", color=grid.blue)
-    ]
-}
+# Loading all items
+ALL_ITEMS, MODE_VS_OPTIONS = load_all_items(grid, images, fonts, my_body)
 
 # Setting all items
 grid.set_all_items(ALL_ITEMS)
@@ -165,20 +40,11 @@ grid.set_all_items(ALL_ITEMS)
 # Setting the above mode options
 grid.set_mode_vs_options(MODE_VS_OPTIONS)
 
-# print "DEBUG", MODE_VS_OPTIONS.keys() == MODE_VS_OPTIONS2.keys()
-# print "DEBUGGG", MODE_VS_OPTIONS["my body"][3].name
-# print "DEBUGG2", MODE_VS_OPTIONS2["my body"][3].name
-
-for item in grid.items:
-    print "DEBUG", [option.name for option in item.options]
-
 # GAME SETTINGS
 gameDisplay = pygame.display.set_mode((grid.display_width, grid.display_height))
 pygame.display.set_caption(grid.caption)
 clock = pygame.time.Clock()
 pygame.mouse.set_visible(True)
-# if grid.full_screen:
-#     pygame.display.toggle_fullscreen()
 
 
 def seconds_in_game(START_TIME):
@@ -257,7 +123,7 @@ def draw_hover(tile, MOUSE_POS):
     """ Highlights the hovered tile """
     # TODO: Implement for all items
     if cir_utils.in_circle(tile, grid.tile_radius, MOUSE_POS):
-        pygame.draw.circle(gameDisplay, grid.white, tile, grid.tile_radius + 1, 1)
+        pygame.draw.circle(gameDisplay, grid.white, tile, grid.tile_radius + 1, 2)
 
 
 def draw_movement(item):

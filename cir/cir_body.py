@@ -30,6 +30,7 @@ class BodyItem(MobileItem):
         # self.stress = 0
         # self.status = []
 
+    # TODO: Link timer to body
 
     def gen_radar_track(self):
         """
