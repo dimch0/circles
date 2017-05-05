@@ -12,48 +12,36 @@ from cir import cir_body, cir_grid, cir_item, cir_utils, cir_cosmetic, cir_timer
 
 pygame.init()
 
-
 # Creating grid
 grid = cir_grid.Grid()
 
 # Loading images
-# TODO: load from grid class
 images = cir_cosmetic.Images(grid)
 fonts = cir_cosmetic.Fonts(grid)
 
 
-# TODO: Generate items and load from external file "hasattr"
 # Creating my body item
-if 1:
-    my_body = cir_body.BodyItem(grid=grid, name="my body", pos=grid.center_tile, color=grid.pink, speed=2)
-    grid.items.append(my_body)
-
-# Creating bokluk item
-if 0:
-    bokluk = cir_mobile.MobileItem(grid=grid, name="bokluk", color=grid.green, speed = 0)
-    bokluk.pos = (grid.center_tile[0] + grid.cathetus, grid.center_tile[1] - grid.tile_radius)
-    grid.items.append(bokluk)
-
-# Creating timer item
-if 1:
-    lifespan = cir_timer.TimerItem(grid=grid, name="test timer", pos=grid.center_tile, duration=180, time_color=grid.black ,  color=grid.pink, speed=1)
-    # TODO: make grid.timers list attribute
-    grid.items.append(lifespan)
-
-# Creating button items
-if 1:
-    start_button = cir_button.ButtonItem(grid=grid, name="play", font=fonts.small, text_color=grid.white, pos=grid.adj_tiles(grid.center_tile)[0], color=grid.ungrey)
-    grid.game_menu_buttons.append(start_button)
-
-    quit_button = cir_button.ButtonItem(grid=grid, name="quit", font=fonts.small, text_color=grid.white, pos=grid.adj_tiles(grid.center_tile)[3], color=grid.ungrey)
-    grid.game_menu_buttons.append(quit_button)
-
-    # restart_button = cir_button.ButtonItem(grid=grid, name="replay", font=fonts.small, text_color=grid.white, pos=grid.center_tile, color=grid.ungrey)
-    # resume_button = cir_button.ButtonItem(grid=grid, name="resume", font=fonts.small, text_color=grid.white, pos=grid.adj_tiles(grid.center_tile)[0], color=grid.ungrey)
+my_body = cir_body.BodyItem(grid=grid, name="my body", pos=grid.center_tile, color=grid.pink, speed=2)
+grid.items.append(my_body)
 
 
+# TODO: Generate items and load from external file "hasattr"
+ALL_ITEMS = {
+    "items": [
+        # cir_mobile.MobileItem(grid=grid, name="bokluk", pos=(grid.center_tile[0] + grid.cathetus, grid.center_tile[1] - grid.tile_radius), color=grid.green, speed = 0)
+    ],
+    "timers": [
+        cir_timer.TimerItem(grid=grid, name="lifespan", pos=my_body.pos, duration=3, time_color=grid.black, color=grid.pink, speed=1)
+    ],
+    "buttons": [
+        cir_button.ButtonItem(grid=grid, name="play", font=fonts.small, text_color=grid.white, pos=grid.adj_tiles(grid.center_tile)[0], color=grid.ungrey),
+        cir_button.ButtonItem(grid=grid, name="quit", font=fonts.small, text_color=grid.white, pos=grid.adj_tiles(grid.center_tile)[3], color=grid.ungrey),
+        # cir_button.ButtonItem(grid=grid, name="replay", font=fonts.small, text_color=grid.white, pos=grid.center_tile, color=grid.ungrey),
+        # cir_button.ButtonItem(grid=grid, name="resume", font=fonts.small, text_color=grid.white, pos=grid.adj_tiles(grid.center_tile)[0], color=grid.ungrey)
+    ]
+}
 
-mode_vs_options = {
+MODE_VS_OPTIONS = {
     "my body": [
         cir_item.Item(grid=grid, name="option 1", color=my_body.default_color),
         cir_item.Item(grid=grid, name="option 2", color=my_body.default_color),
@@ -96,8 +84,11 @@ mode_vs_options = {
     ]
 }
 
+# Setting all items
+grid.set_all_items(ALL_ITEMS)
+
 # Setting the above mode options
-grid.set_mode_vs_options(mode_vs_options)
+grid.set_mode_vs_options(MODE_VS_OPTIONS)
 
 
 # GAME SETTINGS
@@ -139,28 +130,24 @@ def draw_revealed_radius():
 
 def draw_item_options(item):
     """ Draws the item menu options """
-    # menu background
-    # pygame.draw.circle(gameDisplay, item.color, item.pos, grid.tile_radius * 3, 0)
+
     for option in item.options:
         if option.color:
             pygame.draw.circle(gameDisplay, option.color, option.pos, grid.tile_radius, option.border)
         if option.img:
             gameDisplay.blit(option.img, option.set_img_pos())
 
-def draw_menu_buttons():
+def draw_menu_buttons(MOUSE_POS):
     """ Drawing the buttons in the game menu """
 
-    # if grid.seconds_in_game > 1:
-    #     grid.game_menu_buttons.append(restart_button)
-
-
-    for button in grid.game_menu_buttons:
+    for button in grid.buttons:
         if button.color:
             pygame.draw.circle(gameDisplay, button.color, button.pos, grid.tile_radius, button.border)
         if button.img:
             gameDisplay.blit(button.img, button.set_img_pos())
         if button.text:
             gameDisplay.blit(button.text, button.text_rect)
+        draw_hover(button.pos, MOUSE_POS)
 
 
 def draw_body(item):
@@ -170,11 +157,13 @@ def draw_body(item):
         gameDisplay.blit(item.img, item.set_img_pos())
 
 
-def draw_timer(item):
+def draw_timers():
     """ Draws current state of a timer """
-    pygame.draw.circle(gameDisplay, item.color, item.pos, grid.tile_radius, 0)
-    pygame.draw.arc(gameDisplay, item.time_color, item.rect, item.filled_angle, item.start_point, 2)
-
+    # pygame.draw.circle(gameDisplay, timer.color, timer.pos, grid.tile_radius, 0)
+    for timer in grid.timers:
+        if timer.name is "lifespan":
+            timer.pos = my_body.pos
+        pygame.draw.arc(gameDisplay, timer.time_color, timer.rect, timer.filled_angle, timer.start_point, 2)
 
 
 def draw_grid():
@@ -185,6 +174,7 @@ def draw_grid():
 
 def draw_hover(tile, MOUSE_POS):
     """ Highlights the hovered tile """
+    # TODO: Implement for all items
     if cir_utils.in_circle(tile, grid.tile_radius, MOUSE_POS):
         pygame.draw.circle(gameDisplay, grid.white, tile, grid.tile_radius + 1, 1)
 
@@ -205,7 +195,7 @@ def draw_playing_tiles():
 
 def gen_movement_my_body(event):
     """ Generates steps to move my body - gen_move_track() """
-    move_options = mode_vs_options["move"]
+    move_options = MODE_VS_OPTIONS["move"]
     arrows = [pygame.K_w, pygame.K_e, pygame.K_d, pygame.K_s, pygame.K_a, pygame.K_q]
     for idx, arrow in enumerate(arrows):
         if event.key is arrow:
@@ -252,86 +242,23 @@ revealed_radius: {0}
          )
 
 
-
-def game_menu():
-    """ Game menu loop """
-
-
-    while grid.game_menu:
-        MOUSE_POS = pygame.mouse.get_pos()
-
-
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                quit()
-
-            # Click events
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                clicked_circle = grid.mouse_in_tile(MOUSE_POS)
-                if clicked_circle:
-                    for button in grid.game_menu_buttons:
-                        if clicked_circle == button.pos:
-
-                            if button.name == "play":
-                                grid.game_menu = False
-
-                            elif button.name == "replay":
-                                os.execv(sys.executable, [sys.executable] + sys.argv)
-
-                            elif button.name == "quit":
-                                pygame.quit()
-                                quit()
-
-
-            if grid.seconds_in_game > 0:
-                # Key events
-                if event.type == pygame.KEYDOWN:
-                    if event.key is pygame.K_ESCAPE:
-                        grid.game_menu = False
-
-        # Background
-        gameDisplay.fill(grid.grey)
-
-        # Draw buttons
-        draw_menu_buttons()
-
-        # Highlight hovered buttons
-        # TODO: make a function
-        for button in grid.game_menu_buttons:
-            draw_hover(button.pos, MOUSE_POS)
-
-        # Update display - end drawing
-        pygame.display.update()
-
-    clock.tick(grid.fps)
-
-
-
 def game_loop():
     """ Main game loop. """
 
     GAME_EXIT = False
-
+    START_TIME = time.time()
+    grid.game_menu = True
 
     # Start
     while not GAME_EXIT:
 
         MOUSE_POS = pygame.mouse.get_pos()
 
-        # Menu
-        if grid.game_menu:
-            game_menu()
 
-
-        START_TIME = time.time()
         # Seconds in game
         seconds_in_game(START_TIME)
 
-        # Lifespan timer
-        lifespan.tick()
-
+        # Events
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 GAME_EXIT = True
@@ -339,68 +266,91 @@ def game_loop():
             if event.type == pygame.KEYDOWN:
                 # ========================================= ESCAPE LOOP ============================================= #
                 if event.key is pygame.K_ESCAPE:
-                    grid.game_menu = True
+                    if not grid.game_menu:
+                        grid.game_menu = True
 
+                    elif grid.game_menu and grid.seconds_in_game > 0:
+                        grid.game_menu = False
                 # ========================================= SPACE BAR EVENTS ======================================== #
                 if event.key == pygame.K_SPACE:
-                    # Radar track populating
-                    if not my_body.move_track and not my_body.in_menu and not my_body.radar_track:
-                        my_body.gen_radar_track()
+                    if not grid.game_menu:
+                        # Radar track populating
+                        if not my_body.move_track and not my_body.in_menu and not my_body.radar_track:
+                            my_body.gen_radar_track()
 
-                    # TODO: time modyfier
-                    # lifespan.len_step += (lifespan.len_step / 100) * 10
-                    # lifespan.step += 15
-                    # print "steps:", lifespan.number_of_steps
+                        # TODO: time modyfier
+                        # lifespan.len_step += (lifespan.len_step / 100) * 10
+                        # lifespan.step += 15
+                        # print "steps:", lifespan.number_of_steps
 
                     # Debug
                     debug_print_space()
 
                 # ========================================= GENERATE MOVEMENT ======================================= #
-                gen_movement_my_body(event)
+                if not grid.game_menu:
+                    gen_movement_my_body(event)
 
 
             # ============================================= CLICK EVENTS ============================================ #
             if event.type == pygame.MOUSEBUTTONDOWN:
                 clicked_circle = grid.mouse_in_tile(MOUSE_POS)
                 if clicked_circle:
-                    for item in grid.items:
-                        # Set in_menu for the items with menu (my_body)
-                        item.check_in_menu(clicked_circle, mode_vs_options)
-                        # Setting option positions
-                        item.set_option_pos()
-                        # Option clicked
-                        if item.in_menu:
-                            if item.options:
-                                for option in item.options:
-                                    if clicked_circle == option.pos:
 
-                                        # If default option -> set mode
-                                        if option in item.default_options:
-                                            item.set_mode(option, mode_vs_options)
+                    # ========== MENU BUTTONS ========== #
+                    if grid.game_menu:
+                        for button in grid.buttons:
+                            if clicked_circle == button.pos:
 
-                                        # Check option specifics
-                                        elif option in mode_vs_options[item.mode]:
+                                if button.name == "play":
+                                    grid.game_menu = False
 
-                                            if item.mode is "move":
-                                                item.gen_move_track(option.name, mode_vs_options[item.mode])
+                                elif button.name == "replay":
+                                    os.execv(sys.executable, [sys.executable] + sys.argv)
 
-                                            elif option.name is "see":
-                                                item.range += 1
-                                                # item.mode = "seen"
+                                elif button.name == "quit":
+                                    pygame.quit()
+                                    quit()
 
-                                            elif option.name is "smel":
-                                                item.change_speed(1)
+                    # =========== GRID ITEMS =========== #
+                    elif not grid.game_menu:
+                        for item in grid.items:
+                            # Set in_menu for the items with menu (my_body)
+                            item.check_in_menu(clicked_circle, MODE_VS_OPTIONS)
+                            # Setting option positions
+                            item.set_option_pos()
+                            # Option clicked
+                            if item.in_menu:
+                                if item.options:
+                                    for option in item.options:
+                                        if clicked_circle == option.pos:
 
-                                            elif option.name is "medi":
-                                                item.range += 10
+                                            # If default option -> set mode
+                                            if option in item.default_options:
+                                                item.set_mode(option, MODE_VS_OPTIONS)
 
-                                            elif option.name is "audio":
-                                                item.change_speed(10)
+                                            # Check option specifics
+                                            elif option in MODE_VS_OPTIONS[item.mode]:
 
-                                            elif option.name is "eat":
-                                                item.change_speed(-1)
-                                            # Close menu if option selected
-                                            item.set_in_menu(False)
+                                                if item.mode is "move":
+                                                    item.gen_move_track(option.name, MODE_VS_OPTIONS[item.mode])
+
+                                                elif option.name is "see":
+                                                    item.range += 1
+                                                    # item.mode = "seen"
+
+                                                elif option.name is "smel":
+                                                    item.change_speed(1)
+
+                                                elif option.name is "medi":
+                                                    item.range += 10
+
+                                                elif option.name is "audio":
+                                                    item.change_speed(10)
+
+                                                elif option.name is "eat":
+                                                    item.change_speed(-1)
+                                                # Close menu if option selected
+                                                item.set_in_menu(False)
                 # Debug
                 debug_print_click(MOUSE_POS, clicked_circle)
 
@@ -408,59 +358,77 @@ def game_loop():
         # Background
         gameDisplay.fill(grid.grey)
 
-        # Revealed radius
-        if grid.revealed_radius:
-            draw_revealed_radius()
+        if not grid.game_menu:
+            # Revealed radius
+            if grid.revealed_radius:
+                draw_revealed_radius()
 
-        # Grid
-        if grid.show_grid:
-            draw_grid()
+            # Grid
+            if grid.show_grid:
+                draw_grid()
 
-        # Playing board:
-        if grid.show_playing_tiles:
-            draw_playing_tiles()
+            # Playing board:
+            if grid.show_playing_tiles:
+                draw_playing_tiles()
 
         # ======================== DRAWING ANIMATIONS ======================= #
-        for item in grid.items:
+        if not grid.game_menu:
+            for item in grid.items:
 
-            # Radar
-            if item.radar_track:
-                draw_radar(item)
+                # Radar
+                if item.radar_track:
+                    draw_radar(item)
 
-            # Item options
-            if item.in_menu:
-                draw_item_options(item)
+                # Item options
+                if item.in_menu:
+                    draw_item_options(item)
 
-            # Bodies
-            if (item.pos in grid.revealed_tiles) or (item is my_body):
-                draw_body(item)
+                # Bodies
+                if (item.pos in grid.revealed_tiles) or (item == my_body):
+                    draw_body(item)
 
-            # Timer lifespan
-            if item is lifespan:
-                draw_timer(item)
+                # Show movement track in color
+                if grid.show_movement and len(item.move_track) > 1:
+                    draw_movement(item)
 
-            # Show movement track in color
-            if grid.show_movement and len(item.move_track) > 1:
-                draw_movement(item)
+            # Timers
+            if grid.timers:
+                draw_timers()
+
+        elif grid.game_menu:
+            # Menu Buttons
+            if grid.buttons:
+                draw_menu_buttons(MOUSE_POS)
 
         # Mouse Item
         # TODO: Create MouseItem
         # pygame.draw.circle(gameDisplay, grid.white, MOUSE_POS, 2, 0)
-        for tile in grid.tiles:
-            draw_hover(tile, MOUSE_POS)
+        # for tile in grid.tiles:
+        #     draw_hover(tile, MOUSE_POS)
 
         # Update display - end drawing
         pygame.display.update()
 
         # ================================================ CHANGE VARS ============================================== #
-        for item in grid.items:
-            # Movement
-            if item.move_track:
-                item.move()
+        if not grid.game_menu:
+            # Lifespan timer
+            if grid.timers:
+                for timer in grid.timers:
+                    timer.tick()
 
-        # Lifespan over
-        if lifespan.is_over:
-            GAME_EXIT = True
+            for item in grid.items:
+                # Movement
+                if item.move_track:
+                    item.move()
+
+            # Timers over effects
+            if grid.timers:
+                for timer in grid.timers:
+                    if timer.is_over:
+
+                        # Lifespan
+                        if timer.name is "lifespan":
+                            GAME_EXIT = True
 
         # FPS
         clock.tick(grid.fps)

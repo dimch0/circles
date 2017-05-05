@@ -19,14 +19,13 @@ class Item(object):
         self.name = name
         self.pos = pos
         self.color = color
-        self.uncolor = uncolor
+        # self.uncolor = uncolor
         self.img = image
         self.border = border
         self.options = []
         self.default_color = self.color
         self.default_img = self.img
         self.default_options = []
-        self.items_to_restore = []
         self.in_menu = False
         self.available = True
         self.mode = self.name

@@ -17,13 +17,13 @@ class MobileItem(Item):
         self.speed = speed
         self.direction = None
 
-    def change_speed(self, increment):
-        self.speed += increment
+    def change_speed(self, modifier):
+        self.speed += modifier
         if self.speed < 0:
             self.speed = 0
         if self.speed is 1:
             self.speed = 2
-        if self.speed is 2 and increment < 0:
+        if self.speed is 2 and modifier < 0:
             self.speed = 0
         if self.speed > 8:
             self.speed = 8

@@ -26,15 +26,18 @@ class Grid(object):
         self.find_center_tile()
         self._occupado_tiles = []
         self._playing_tiles = []
-        self.revealed_tiles = []
+
+
+        self.revealed_tiles = [self.center_tile]
         self.revealed_radius = []
         self.items = []
         self.overlapped_items = []
+        self.timers = []
+        self.buttons = []
 
+        self.game_menu = True
         self.seconds_in_game = 0
         self.seconds_in_pause = 0
-        self.game_menu = True
-        self.game_menu_buttons = []
 
         # self.mouse_mode = None
         # self.mouse_img = None
@@ -153,3 +156,16 @@ class Grid(object):
                 if item.name is mode_name:
                     item.default_options = mode_options
                     item.options = item.default_options
+
+    def set_all_items(self, all_items):
+        for category, items in all_items.items():
+            for item in items:
+                if category is "items":
+                    if not item in self.items:
+                        self.items.append(item)
+                elif category is "timers":
+                    if not item in self.timers:
+                        self.timers.append(item)
+                elif category is "buttons":
+                    if not item in self.buttons:
+                        self.buttons.append(item)
