@@ -23,22 +23,17 @@ pygame.init()
 # Creating grid
 grid = cir_grid.Grid()
 
-# Loading images and fonts
+# LOADING IMAGES AND FONTS
 images = cir_cosmetic.Images(grid)
 fonts = cir_cosmetic.Fonts(grid)
 
-# Creating my body
+# LOADING MY BODY
 my_body = cir_body.BodyItem(grid=grid, name="my body", pos=grid.center_tile, color=grid.pink, speed=2)
 grid.items.append(my_body)
 
-# Loading all items
+# LOADING ALL ITEMS
 ALL_ITEMS, MODE_VS_OPTIONS = load_all_items(grid, images, fonts, my_body)
 
-# Setting all items
-grid.set_all_items(ALL_ITEMS)
-
-# Setting the above mode options
-grid.set_mode_vs_options(MODE_VS_OPTIONS)
 
 # GAME SETTINGS
 gameDisplay = pygame.display.set_mode((grid.display_width, grid.display_height))

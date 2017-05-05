@@ -6,7 +6,7 @@
     "show_movement": true,
     "full_screen": false,
     "show_playing_tiles": false,
-    "tile_radius": 40,
+    "tile_radius": 30,
     "rows": 24,
     "cols": 24,
     "caption": "cir",

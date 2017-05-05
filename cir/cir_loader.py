@@ -10,6 +10,31 @@ import cir_timer
 import cir_button
 import cir_item
 
+
+def set_mode_vs_options(grid, mode_vs_options):
+    """ Setting all options to item which have options """
+    for item in grid.items:
+        for mode_name, mode_options in mode_vs_options.items():
+            if item.name == mode_name:
+                item.default_options = mode_options
+                item.options = item.default_options
+
+
+def set_all_items(grid, all_items):
+    """ Assigning all items to the grid object """
+    for category, items in all_items.items():
+        for item in items:
+            if category is "items":
+                if not item in grid.items:
+                    grid.items.append(item)
+            elif category is "timers":
+                if not item in grid.timers:
+                    grid.timers.append(item)
+            elif category is "buttons":
+                if not item in grid.buttons:
+                    grid.buttons.append(item)
+
+
 def load_all_items(grid, images, fonts, my_body):
     """
     This function loeads all items and menu options from external file.
@@ -96,4 +121,12 @@ def load_all_items(grid, images, fonts, my_body):
                     )
                     MODE_VS_OPTIONS[item_type].append(item_to_append)
 
+    # Setting all items
+    set_all_items(grid, ALL_ITEMS)
+
+    # Setting the above mode options
+    set_mode_vs_options(grid, MODE_VS_OPTIONS)
+
     return ALL_ITEMS, MODE_VS_OPTIONS
+
+

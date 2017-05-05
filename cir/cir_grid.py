@@ -149,23 +149,3 @@ class Grid(object):
                 (self_x - self.cathetus, self_y + self.tile_radius),
                 (self_x - self.cathetus, self_y - self.tile_radius)
                ]
-
-    def set_mode_vs_options(self, mode_vs_options):
-        for item in self.items:
-            for mode_name, mode_options in mode_vs_options.items():
-                if item.name == mode_name:
-                    item.default_options = mode_options
-                    item.options = item.default_options
-
-    def set_all_items(self, all_items):
-        for category, items in all_items.items():
-            for item in items:
-                if category is "items":
-                    if not item in self.items:
-                        self.items.append(item)
-                elif category is "timers":
-                    if not item in self.timers:
-                        self.timers.append(item)
-                elif category is "buttons":
-                    if not item in self.buttons:
-                        self.buttons.append(item)
