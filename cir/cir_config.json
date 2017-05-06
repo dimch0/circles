@@ -2,7 +2,7 @@
   "grid_settings":  {
     "scale": 1,
     "fps": 60,
-    "show_grid": true,
+    "show_grid": false,
     "show_movement": true,
     "full_screen": false,
     "show_playing_tiles": true,

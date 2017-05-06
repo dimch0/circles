@@ -113,16 +113,47 @@ def draw_grid():
     for tile in grid.tiles:
         pygame.draw.circle(gameDisplay, grid.ungrey, tile, grid.tile_radius, 1)
 
+    draw_playing_tiles()
+
+
+
+def draw_mask():
     rect1 = [
         (0,0),
-        ((grid.display_width / 2) - (8 * grid.tile_radius), (grid.display_height))
+        (grid.center_tile[0] - ((4 * grid.cathetus) + (grid.cathetus / 2) + 5), (grid.display_height))
             ]
     rect2 = [
-        ((grid.display_width / 2) + (8 * grid.tile_radius), 0),
-        (grid.display_width, grid.display_height)
+        (grid.center_tile[0] + ((4 * grid.cathetus) + (grid.cathetus / 2) + 5), 0),
+        (grid.center_tile[0], grid.display_height)
             ]
+    tri1 = [
+        (grid.center_tile[0] - ((4 * grid.cathetus) + (grid.cathetus / 2) + 5), (grid.center_tile[0] - 14 * grid.tile_radius)),
+        (grid.center_tile[0] - ((4 * grid.cathetus) + (grid.cathetus / 2) + 5), 0),
+        (grid.center_tile[0] + ((2 * grid.cathetus) + (grid.cathetus / 2) + 5), 0)
+    ]
+    tri2 = [
+        (grid.center_tile[0] + ((4 * grid.cathetus) + (grid.cathetus / 2) + 5), (grid.center_tile[0] - 14 * grid.tile_radius)),
+        (grid.center_tile[0] + ((4 * grid.cathetus) + (grid.cathetus / 2) + 5), 0),
+        (grid.center_tile[0] - ((2 * grid.cathetus) + (grid.cathetus / 2) + 5), 0)
+    ]
+    tri3 = [
+        (grid.center_tile[0] - ((4 * grid.cathetus) + (grid.cathetus / 2) + 5), (grid.center_tile[0] - 5 * grid.tile_radius)),
+        (grid.center_tile[0] - ((4 * grid.cathetus) + (grid.cathetus / 2) + 5), grid.display_height),
+        (grid.center_tile[0] + ((2 * grid.cathetus) + (grid.cathetus / 2) + 5), grid.display_height)
+    ]
+    tri4 = [
+        (grid.center_tile[0] + ((4 * grid.cathetus) + (grid.cathetus / 2) + 5), (grid.center_tile[0] - 5 * grid.tile_radius)),
+        (grid.center_tile[0] + ((4 * grid.cathetus) + (grid.cathetus / 2) + 5), grid.display_height),
+        (grid.center_tile[0] - ((2 * grid.cathetus) + (grid.cathetus / 2) + 5), grid.display_height)
+    ]
+
     pygame.draw.rect(gameDisplay, grid.grey, rect1, 0)
     pygame.draw.rect(gameDisplay, grid.grey, rect2, 0)
+    pygame.draw.polygon(gameDisplay, grid.grey, tri1, 0)
+    pygame.draw.polygon(gameDisplay, grid.grey, tri2, 0)
+
+    pygame.draw.polygon(gameDisplay, grid.grey, tri3, 0)
+    pygame.draw.polygon(gameDisplay, grid.grey, tri4, 0)
 
 
 def draw_hover(tile, MOUSE_POS):
@@ -293,7 +324,7 @@ def game_loop():
                                                     item.change_speed(1)
 
                                                 elif option.name == "medi":
-                                                    item.range += 10
+                                                    item.range += 5
 
                                                 elif option.name == "audio":
                                                     item.change_speed(10)
@@ -314,13 +345,15 @@ def game_loop():
             if grid.revealed_radius:
                 draw_revealed_radius()
 
+            draw_mask()
+
             # Grid
             if grid.show_grid:
                 draw_grid()
 
             # Playing board:
-            if grid.show_playing_tiles:
-                draw_playing_tiles()
+            # if grid.show_playing_tiles:
+            #     draw_playing_tiles()
 
         # ======================== DRAWING ANIMATIONS ======================= #
         if not grid.game_menu:
