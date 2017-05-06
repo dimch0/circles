@@ -27,7 +27,6 @@ class Grid(object):
         self._occupado_tiles = []
         self._playing_tiles = []
 
-
         self.revealed_tiles = [self.center_tile]
         self.revealed_radius = []
         self.items = []
@@ -36,6 +35,7 @@ class Grid(object):
         self.buttons = []
 
         self.game_menu = True
+        self.game_over = False
         self.seconds_in_game = 0
         self.seconds_in_pause = 0
 

@@ -33,6 +33,7 @@ grid.items.append(my_body)
 
 # LOADING ALL ITEMS
 ALL_ITEMS, MODE_VS_OPTIONS = load_all_items(grid, images, fonts, my_body)
+print MODE_VS_OPTIONS
 
 # GAME SETTINGS
 gameDisplay = pygame.display.set_mode((grid.display_width, grid.display_height))
@@ -285,6 +286,8 @@ def game_loop():
 
                                 if button.name == "play":
                                     grid.game_menu = False
+                                    if grid.game_over:
+                                        grid.game_over = False
 
                                 elif button.name == "replay":
                                     os.execv(sys.executable, [sys.executable] + sys.argv)
@@ -405,16 +408,15 @@ def game_loop():
                 if item.move_track:
                     item.move()
 
-
+            # Timers
             if grid.timers:
                 for timer in grid.timers:
-
-                    # Timer is_over effects
                     if timer.is_over:
-
                         # Lifespan
                         if timer.name == "lifespan":
-                            GAME_EXIT = True
+                            grid.game_over = True
+                            grid.game_menu = True
+                            os.execv(sys.executable, [sys.executable] + sys.argv)
 
         # FPS
         clock.tick(grid.fps)
