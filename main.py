@@ -33,7 +33,6 @@ grid.items.append(my_body)
 
 # LOADING ALL ITEMS
 ALL_ITEMS, MODE_VS_OPTIONS = load_all_items(grid, images, fonts, my_body)
-print MODE_VS_OPTIONS
 
 # GAME SETTINGS
 gameDisplay = pygame.display.set_mode((grid.display_width, grid.display_height))
