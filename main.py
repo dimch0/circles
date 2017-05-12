@@ -28,7 +28,7 @@ images = cir_cosmetic.Images(grid)
 fonts = cir_cosmetic.Fonts(grid)
 
 # LOADING MY BODY
-my_body = cir_body.BodyItem(grid=grid, name="my body", pos=grid.center_tile, color=grid.pink, speed=2)
+my_body = cir_body.BodyItem(grid=grid, name="my body", pos=grid.center_tile, color=None, speed=2)
 grid.items.append(my_body)
 
 # LOADING ALL ITEMS
@@ -60,13 +60,14 @@ def draw_radar(item):
 def draw_revealed_radius():
     """ Drawing the revealed areas """
     for revealed in grid.revealed_radius:
-        pygame.draw.circle(gameDisplay, grid.ungrey, revealed[0], revealed[1], 0)
+        # pygame.draw.circle(gameDisplay, grid.ungrey, revealed[0], revealed[1], 0)
         printed = revealed
         if printed:
             for to_be_printed in grid.revealed_radius:
                 if printed[0] == to_be_printed[0]:
                     if printed[1] < to_be_printed[1]:
-                        grid.revealed_radius.remove(printed)
+                        if printed in grid.revealed_radius:
+                            grid.revealed_radius.remove(printed)
 
 
 def draw_item_options(item, MOUSE_POS):
@@ -225,12 +226,19 @@ revealed_radius: {0}
          )
 
 
+for a_tile in grid.playing_tiles:
+    grid.items.append(cir_body.BodyItem(grid=grid, name="explode", pos=a_tile, color=None, speed=0))
+
+print len(grid.items)
+
 def game_loop():
     """ Main game loop. """
 
     GAME_EXIT = False
     START_TIME = time.time()
     grid.game_menu = True
+
+
 
     # Start
     while not GAME_EXIT:
@@ -260,16 +268,24 @@ def game_loop():
                         if not my_body.move_track and not my_body.in_menu and not my_body.radar_track:
                             my_body.gen_radar_track()
 
+                        for item in grid.items:
+                            if item.name == "explode" and item.pos in grid.revealed_tiles:
+                                item.gen_radar_track()
+
                         # TODO: time modifier
                         # lifespan.len_step += (lifespan.len_step / 100) * 10
                         # lifespan.step += 15
                         # print "steps:", lifespan.number_of_steps
 
+
+                        # Experiment mass radar
+
+
                     # Debug
                     debug_print_space()
 
                 # ========================================= GENERATE MOVEMENT ======================================= #
-                if not grid.game_menu:
+                if not grid.game_menu and not my_body.in_menu:
                     gen_movement_my_body(event)
 
 
@@ -326,7 +342,7 @@ def game_loop():
                                                     item.change_speed(1)
 
                                                 elif option.name == "medi":
-                                                    item.range += 5
+                                                    item.range += 3
 
                                                 elif option.name == "audio":
                                                     item.change_speed(10)
@@ -364,6 +380,8 @@ def game_loop():
                 # Radar
                 if item.radar_track:
                     draw_radar(item)
+                    # if item.name == "explode":
+                    #     grid.items.remove(item)
 
                 # Item options
                 if item.in_menu:
@@ -371,15 +389,16 @@ def game_loop():
 
                 # Bodies
                 if (item.pos in grid.revealed_tiles) or (item == my_body):
-                    draw_body(item, MOUSE_POS)
+                    if item.color:
+                        draw_body(item, MOUSE_POS)
 
                 # Show movement track in color
                 if grid.show_movement and len(item.move_track) > 1:
                     draw_movement(item)
 
             # Timers
-            if grid.timers:
-                draw_timers()
+            # if grid.timers:
+            #     draw_timers()
 
         elif grid.game_menu:
             # Menu Buttons
@@ -397,12 +416,14 @@ def game_loop():
 
         # ================================================ CHANGE VARS ============================================== #
         if not grid.game_menu:
+
             # Lifespan timer
             if grid.timers:
                 for timer in grid.timers:
                     timer.tick()
 
             for item in grid.items:
+
                 # Movement
                 if item.move_track:
                     item.move()

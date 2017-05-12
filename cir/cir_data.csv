@@ -1,5 +1,5 @@
 scenario,category,type,name,pos,color,img,border,speed,range,font,text_color,text,duration,time_color,start_time
-scenario 1,items,cir_mobile,bokluk,grid.adj_tiles(grid.center_tile)[1],green,,,0,,,,,,,
+scenario 3,items,cir_mobile,bokluk,grid.adj_tiles(grid.center_tile)[1],green,,,0,,,,,,,
 scenario 1,timers,cir_timer,lifespan,my_body.pos,pink,,,1,,,,,60,black,
 scenario 1,buttons,cir_button,play,grid.adj_tiles(grid.center_tile)[0],ungrey,,,,,small,white,,,,
 scenario 1,buttons,cir_button,quit,grid.adj_tiles(grid.center_tile)[3],ungrey,,,,,small,white,,,,
