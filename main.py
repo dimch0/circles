@@ -39,7 +39,6 @@ pygame.mouse.set_visible(True)
 
 def gen_movement_arrows(event):
     """ Generates steps to move my body - gen_move_track() """
-    # TODO: make a mobile body method
     move_options = MODE_VS_OPTIONS["move"]
     arrows = [pygame.K_w, pygame.K_e, pygame.K_d, pygame.K_s, pygame.K_a, pygame.K_q]
     for idx, arrow in enumerate(arrows):
