@@ -59,7 +59,6 @@ def game_loop():
     grid.game_menu = True
 
 
-
     # Start
     while not GAME_EXIT:
         MOUSE_POS = pygame.mouse.get_pos()
@@ -115,9 +114,6 @@ def game_loop():
                                     grid.game_menu = False
                                     if grid.game_over:
                                         grid.game_over = False
-
-                                elif button.name == "replay":
-                                    os.execv(sys.executable, [sys.executable] + sys.argv)
 
                                 elif button.name == "quit":
                                     pygame.quit()
@@ -245,7 +241,6 @@ def game_loop():
                         # Lifespan
                         if timer.name == "lifespan":
                             grid.game_over = True
-                            grid.game_menu = True
                             os.execv(sys.executable, [sys.executable] + sys.argv)
 
         # FPS
