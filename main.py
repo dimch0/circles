@@ -19,10 +19,11 @@ pygame.init()
 
 # LOADING GRID
 grid = cir_grid.Grid()
+grid.game_display = pygame.display.set_mode((grid.display_width, grid.display_height))
 
 # LOADING IMAGES AND FONTS
-images = cir_cosmetic.Images(grid)
-fonts = cir_cosmetic.Fonts(grid)
+images = cir_cosmetic.Images(grid, pygame)
+fonts = cir_cosmetic.Fonts(grid, pygame)
 
 # LOADING MY BODY
 my_body = cir_body.BodyItem(grid=grid, name="my body", pos=grid.center_tile, color=grid.pink, speed=2)
@@ -172,17 +173,17 @@ def game_loop():
         if not grid.game_menu:
             # Revealed radius
             if grid.revealed_radius:
-                cir_draw.draw_revealed_radius(grid)
+                cir_draw.draw_revealed_radius(pygame, grid)
 
-            cir_draw.draw_mask(grid)
+            cir_draw.draw_mask(pygame, grid)
 
             # Grid
             if grid.show_grid:
-                cir_draw.draw_grid(grid)
+                cir_draw.draw_grid(pygame, grid)
 
             # Playing board:
             if grid.show_playing_tiles:
-                cir_draw.draw_playing_tiles(grid)
+                cir_draw.draw_playing_tiles(pygame, grid)
 
         # ======================== DRAWING ANIMATIONS ======================= #
         if not grid.game_menu:
@@ -190,35 +191,35 @@ def game_loop():
 
                 # Radar
                 if item.radar_track:
-                    cir_draw.draw_radar(item, grid)
+                    cir_draw.draw_radar(pygame, grid, item)
 
                 # Item options
                 if item.in_menu:
-                    cir_draw.draw_item_options(item, grid, MOUSE_POS)
+                    cir_draw.draw_item_options(pygame, grid, MOUSE_POS, item)
 
                 # Bodies
                 if (item.pos in grid.revealed_tiles) or (item == my_body):
                     if item.color:
-                        cir_draw.draw_body(item, MOUSE_POS, grid)
+                        cir_draw.draw_body(pygame, grid, MOUSE_POS, item)
 
                 # Show movement track in color
                 if grid.show_movement and len(item.move_track) > 1:
-                    cir_draw.draw_movement(item, grid)
+                    cir_draw.draw_movement(pygame, grid, item)
 
             # Timers
             if grid.timers:
-                cir_draw.draw_timers(grid, my_body)
+                cir_draw.draw_timers(pygame, grid, my_body)
 
         elif grid.game_menu:
             # Menu Buttons
             if grid.buttons:
-                cir_draw.draw_menu_buttons(MOUSE_POS, grid)
+                cir_draw.draw_menu_buttons(pygame, grid, MOUSE_POS)
 
         # Mouse Item
         # TODO: Create MouseItem
         # pygame.draw.circle(grid.game_display, grid.white, MOUSE_POS, 2, 0)
         # for tile in grid.tiles:
-        #     cir_draw.draw_hover(tile, MOUSE_POS, grid, grid.game_display)
+        #     cir_draw.draw_hover(pygame, grid, MOUSE_POS, tile)
 
         # === END DRAWING === #
         pygame.display.update()

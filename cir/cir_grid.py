@@ -5,8 +5,6 @@
 #######################################################################################################################
 import pdb
 import json
-# TODO: see where else pygame is being imported
-import pygame
 from cir_utils import in_circle, inside_polygon
 from math import sqrt
 
@@ -65,7 +63,6 @@ class Grid(object):
         self.cathetus = int(sqrt(((2 * self.tile_radius) ** 2) - (self.tile_radius ** 2)))
         self.display_width = (self.cathetus * self.cols) + (self.tile_radius * 2)
         self.display_height = self.rows * self.tile_radius
-        self.game_display = pygame.display.set_mode((self.display_width, self.display_height))
 
     @property
     def tiles(self):
