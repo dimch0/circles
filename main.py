@@ -51,7 +51,7 @@ def gen_movement_arrows(event):
 
 
 
-# TODO: Generation algorithm on radar vs metrics
+# TODO: Item generation algorithm on radar vs metrics
 # TODO: Make a mouse class
 # TODO: Make a mini map
 # TODO: Make a signal method
@@ -144,6 +144,11 @@ def game_loop():
                             item.set_option_pos()
                             # Option clicked
                             if item.in_menu:
+
+                                # Mouse mode image
+                                grid.mouse_mode = None
+                                grid.mouse_img = None
+
                                 if item.options:
                                     for option in item.options:
                                         if clicked_circle == option.pos:
@@ -172,10 +177,17 @@ def game_loop():
                                                     item.change_speed(10)
 
                                                 elif option.name == "eat":
-                                                    # item.change_speed(-1)
-                                                    grid.tile_radius = 10
+                                                    item.change_speed(-1)
+                                                    # grid.tile_radius = 10
+
                                                 # Close menu if option selected
                                                 item.set_in_menu(False)
+
+                                            # Mouse mode image
+                                            if option.img:
+                                                grid.mouse_img = option.img
+                                            grid.mouse_mode = option.name
+
                 # Debug
                 cir_utils.debug_print_click(grid, MOUSE_POS, clicked_circle, my_body)
 
@@ -231,8 +243,9 @@ def game_loop():
         # Mouse Item
         # TODO: Create MouseItem
         # pygame.draw.circle(grid.game_display, grid.white, MOUSE_POS, 2, 0)
-        # for tile in grid.tiles:
-        #     cir_draw.draw_hover(pygame, grid, MOUSE_POS, tile)
+        if grid.mouse_mode:
+            cir_draw.draw_mouse_image(pygame, grid, MOUSE_POS)
+
 
         # === END DRAWING === #
         pygame.display.update()

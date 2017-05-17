@@ -40,9 +40,9 @@ class Grid(object):
         self.seconds_in_game = 0
         self.seconds_in_pause = 0
 
-
-        # self.mouse_mode = None
-        # self.mouse_img = None
+        self.mouse_mode = None
+        self.mouse_img = None
+        self.mode_img = None
         # self.mode = []
 
     def set_config(self):
@@ -79,15 +79,15 @@ class Grid(object):
         return self._tiles
 
 
-    def mouse_in_tile(self, mouse_pos):
+    def mouse_in_tile(self, MOUSE_POS):
         """
-        :param mouse_pos: position of the mouse
+        :param MOUSE_POS: position of the mouse
         :return: returns the current tile, the mouse is in
          or None if there is no such
         """
         current_tile = None
         for tile in self.tiles:
-            if in_circle(tile, self.tile_radius, mouse_pos):
+            if in_circle(tile, self.tile_radius, MOUSE_POS):
                 current_tile = tile
         return current_tile
 

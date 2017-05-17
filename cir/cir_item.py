@@ -29,14 +29,15 @@ class Item(object):
         self.move_track = []
         self.radar_track = []
 
-    def set_img_pos(self):
+    @staticmethod
+    def set_img_pos(item_pos, grid):
         """
         Centers the image posotion
         :param grid:  grid object
         :return: coordinates of the centered image
         """
-        img_x = self.pos[0] - self.grid.tile_radius / 2
-        img_y = self.pos[1] - self.grid.tile_radius / 2
+        img_x = item_pos[0] - grid.tile_radius / 2
+        img_y = item_pos[1] - grid.tile_radius / 2
         return (img_x, img_y)
 
     def set_option_pos(self):

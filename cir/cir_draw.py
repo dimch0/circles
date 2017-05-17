@@ -4,7 +4,7 @@
 #################                                                                                     #################
 #######################################################################################################################
 import cir_utils
-
+from cir_item import Item
 
 def draw_radar(pygame, grid, item):
     """ Radar animation """
@@ -33,7 +33,7 @@ def draw_item_options(pygame, grid, MOUSE_POS, item):
         if option.color:
             pygame.draw.circle(grid.game_display, option.color, option.pos, grid.tile_radius, option.border)
         if option.img:
-            grid.game_display.blit(option.img, option.set_img_pos())
+            grid.game_display.blit(option.img, Item.set_img_pos(option.pos, grid))
         draw_hover(pygame, grid, MOUSE_POS, option.pos)
 
 
@@ -44,7 +44,7 @@ def draw_menu_buttons(pygame, grid, MOUSE_POS):
         if button.color:
             pygame.draw.circle(grid.game_display, button.color, button.pos, grid.tile_radius, button.border)
         if button.img:
-            grid.game_display.blit(button.img, button.set_img_pos())
+            grid.game_display.blit(button.img, Item.set_img_pos(button.pos, grid))
         if button.text:
             grid.game_display.blit(button.text, button.text_rect)
         draw_hover(pygame, grid, MOUSE_POS, button.pos)
@@ -54,7 +54,7 @@ def draw_body(pygame, grid, MOUSE_POS, item):
     """ Draws each body and it's image if available """
     pygame.draw.circle(grid.game_display, item.color, item.pos, grid.tile_radius, item.border)
     if item.img:
-        grid.game_display.blit(item.img, item.set_img_pos())
+        grid.game_display.blit(item.img, Item.set_img_pos(item.pos, grid))
     draw_hover(pygame, grid, MOUSE_POS, item.pos)
 
 
@@ -117,6 +117,15 @@ def draw_hover(pygame, grid, MOUSE_POS, tile):
     """ Highlights the hovered tile """
     if cir_utils.in_circle(tile, grid.tile_radius, MOUSE_POS):
         pygame.draw.circle(grid.game_display, grid.white, tile, grid.tile_radius + 1, 2)
+
+
+def draw_mouse_image(pygame, grid, MOUSE_POS):
+    """ Draws the Mouse image"""
+    current_tile = grid.mouse_in_tile(MOUSE_POS)
+    if current_tile and grid.mouse_img:
+        pygame.draw.circle(grid.game_display, grid.white, current_tile, grid.tile_radius + 1, 2)
+        grid.game_display.blit(grid.mouse_img, Item.set_img_pos(current_tile, grid))
+
 
 
 def draw_movement(pygame, grid, item):
