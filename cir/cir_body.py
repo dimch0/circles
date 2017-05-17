@@ -39,7 +39,7 @@ class BodyItem(MobileItem):
         with the radius, thickness:
         (31, 10), (32, 10), (33, 10)
         """
-        radar_thickness = range(1, (10 / self.grid.scale) + 1)
+        radar_thickness = range(1, 11)
         radar_thickness.reverse()
         radar_limit = (self.grid.tile_radius * 2 * self.range) + 1 + self.grid.tile_radius
         radar_radius = range(self.grid.tile_radius + 1, radar_limit)

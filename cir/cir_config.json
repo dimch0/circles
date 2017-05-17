@@ -1,21 +1,25 @@
 {
-  "grid_settings":  {
-    "scale": 1,
-    "fps": 60,
-    "show_grid": false,
-    "show_movement": true,
-    "full_screen": false,
-    "show_playing_tiles": false,
+  "SETTINGS": {
     "tile_radius": 30,
     "rows": 24,
     "cols": 24,
+    "fps": 60
+    },
+
+  "VISIBILITY": {
+    "show_grid": false,
+    "show_movement": false,
+    "show_playing_tiles": false
+  },
+
+  "DIRS": {
     "caption": "cir",
     "img_dir": "img",
     "font_file": "./fonts/HelveticaNeueMed.ttf",
     "data_file": "cir/cir_data.csv"
-    },
+  },
 
-  "colors": {
+  "COLORS": {
     "black": [0, 0, 0],
     "dark_grey": [155, 145, 155],
     "grey": [175, 165, 175],

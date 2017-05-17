@@ -10,7 +10,7 @@ def draw_radar(pygame, grid, item):
     """ Radar animation """
     radar_radius, thick = item.radar()
     if radar_radius and thick:
-        pygame.draw.circle(grid.game_display, item.grid.green, item.pos, radar_radius, thick)
+        pygame.draw.circle(grid.game_display, item.grid.white, item.pos, radar_radius, thick)
 
 
 def draw_revealed_radius(pygame, grid):

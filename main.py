@@ -51,6 +51,22 @@ def gen_movement_arrows(event):
 
 
 
+# TODO: Generation algorithm on radar vs metrics
+# TODO: Make a mouse class
+# TODO: Make a mini map
+# TODO: Make a signal method
+# TODO: Log all statistics during a lifespan
+# TODO: Create spirit mode, where karma is calculated
+# TODO: Create pause menu before and while playing
+# TODO: Log all events and show the last 3 on screen
+# TODO: Fix track
+# TODO: Create save button
+# TODO: Show animated instructions
+# TODO: Animate item generation
+# TODO: Make installable exe file for the game
+
+
+
 def game_loop():
     """ Main game loop. """
 
@@ -156,7 +172,8 @@ def game_loop():
                                                     item.change_speed(10)
 
                                                 elif option.name == "eat":
-                                                    item.change_speed(-1)
+                                                    # item.change_speed(-1)
+                                                    grid.tile_radius = 10
                                                 # Close menu if option selected
                                                 item.set_in_menu(False)
                 # Debug
@@ -241,6 +258,7 @@ def game_loop():
                         # Lifespan
                         if timer.name == "lifespan":
                             grid.game_over = True
+                            # TODO: add sys argv for gameover and loading a game
                             os.execv(sys.executable, [sys.executable] + sys.argv)
 
         # FPS

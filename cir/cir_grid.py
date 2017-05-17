@@ -59,7 +59,6 @@ class Grid(object):
         except Exception as e:
             print "ERROR, could not set config:", e
         # Setting the display metrics
-        self.tile_radius = self.tile_radius / self.scale
         self.cathetus = int(sqrt(((2 * self.tile_radius) ** 2) - (self.tile_radius ** 2)))
         self.display_width = (self.cathetus * self.cols) + (self.tile_radius * 2)
         self.display_height = self.rows * self.tile_radius
