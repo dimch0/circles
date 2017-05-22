@@ -12,7 +12,7 @@ class Fonts(object):
     """
     def __init__(self, grid, pygame):
         self.small = pygame.font.Font(grid.font_file, int(grid.tile_radius * 0.60))
-        self.medium = pygame.font.Font(grid.font_file, int(grid.tile_radius * 1))
+        self.medium = pygame.font.Font(grid.font_file, int(grid.tile_radius))
         self.large = pygame.font.Font(grid.font_file, grid.tile_radius * 2)
 
 

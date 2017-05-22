@@ -16,7 +16,7 @@ def draw_radar(pygame, grid, item):
 def draw_revealed_radius(pygame, grid):
     """ Drawing the revealed areas """
     for revealed in grid.revealed_radius:
-        pygame.draw.circle(grid.game_display, grid.ungrey, revealed[0], revealed[1], 0)
+        pygame.draw.circle(grid.game_display, grid.grey, revealed[0], revealed[1], 0)
         printed = revealed
         if printed:
             for to_be_printed in grid.revealed_radius:
@@ -52,7 +52,8 @@ def draw_menu_buttons(pygame, grid, MOUSE_POS):
 
 def draw_body(pygame, grid, MOUSE_POS, item):
     """ Draws each body and it's image if available """
-    pygame.draw.circle(grid.game_display, item.color, item.pos, grid.tile_radius, item.border)
+    if item.color:
+        pygame.draw.circle(grid.game_display, item.color, item.pos, grid.tile_radius, item.border)
     if item.img:
         grid.game_display.blit(item.img, Item.set_img_pos(item.pos, grid))
     draw_hover(pygame, grid, MOUSE_POS, item.pos)
@@ -70,7 +71,7 @@ def draw_timers(pygame, grid, my_body):
 def draw_grid(pygame, grid):
     """ Shows the grid tiles in white """
     for tile in grid.tiles:
-        pygame.draw.circle(grid.game_display, grid.ungrey, tile, grid.tile_radius, 1)
+        pygame.draw.circle(grid.game_display, grid.grey, tile, grid.tile_radius, 1)
     draw_playing_tiles(pygame, grid)
 
 
@@ -104,13 +105,13 @@ def draw_mask(pygame, grid):
         (grid.center_tile[0] - ((2 * grid.cathetus) + (grid.cathetus / 2) + 5), grid.display_height)
     ]
 
-    pygame.draw.rect(grid.game_display, grid.grey, rect1, 0)
-    pygame.draw.rect(grid.game_display, grid.grey, rect2, 0)
-    pygame.draw.polygon(grid.game_display, grid.grey, tri1, 0)
-    pygame.draw.polygon(grid.game_display, grid.grey, tri2, 0)
+    pygame.draw.rect(grid.game_display, grid.dark_grey, rect1, 0)
+    pygame.draw.rect(grid.game_display, grid.dark_grey, rect2, 0)
+    pygame.draw.polygon(grid.game_display, grid.dark_grey, tri1, 0)
+    pygame.draw.polygon(grid.game_display, grid.dark_grey, tri2, 0)
 
-    pygame.draw.polygon(grid.game_display, grid.grey, tri3, 0)
-    pygame.draw.polygon(grid.game_display, grid.grey, tri4, 0)
+    pygame.draw.polygon(grid.game_display, grid.dark_grey, tri3, 0)
+    pygame.draw.polygon(grid.game_display, grid.dark_grey, tri4, 0)
 
 
 def draw_hover(pygame, grid, MOUSE_POS, tile):

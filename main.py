@@ -26,7 +26,7 @@ images = cir_cosmetic.Images(grid, pygame)
 fonts = cir_cosmetic.Fonts(grid, pygame)
 
 # LOADING MY BODY
-my_body = cir_body.BodyItem(grid=grid, name="my body", pos=grid.center_tile, color=grid.dark_grey, speed=2)
+my_body = cir_body.BodyItem(grid=grid, name="my body", image=images.galab, pos=grid.center_tile, color=None, speed=2)
 grid.items.append(my_body)
 
 # LOADING ALL ITEMS
@@ -193,7 +193,7 @@ def game_loop():
 
         # ======================== DRAWING BACKGROUND ======================= #
         # Background
-        grid.game_display.fill(grid.grey)
+        grid.game_display.fill(grid.dark_grey)
 
         if not grid.game_menu:
             # Revealed radius
@@ -224,8 +224,7 @@ def game_loop():
 
                 # Bodies
                 if (item.pos in grid.revealed_tiles) or (item == my_body):
-                    if item.color:
-                        cir_draw.draw_body(pygame, grid, MOUSE_POS, item)
+                    cir_draw.draw_body(pygame, grid, MOUSE_POS, item)
 
                 # Show movement track in color
                 if grid.show_movement and len(item.move_track) > 1:
