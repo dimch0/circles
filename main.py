@@ -262,6 +262,11 @@ def game_loop():
                 # Movement
                 if item.move_track:
                     item.move()
+                    if item == my_body:
+                        my_body.img = images.flying_pigeon
+                else:
+                    if item == my_body:
+                        my_body.img = images.galab
 
             # Timers
             if grid.timers:

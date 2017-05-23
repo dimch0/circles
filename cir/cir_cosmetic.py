@@ -34,7 +34,7 @@ class Images(object):
                     img_file = os.path.join(root, file)
                     name = os.path.splitext(file)[0]
                     image = pygame.image.load(img_file)
-                    image = pygame.transform.scale(image, (grid.tile_radius, grid.tile_radius))
+                    image = pygame.transform.scale(image, (grid.tile_radius * 2, grid.tile_radius * 2))
                     setattr(self, name, image)
         except Exception as e:
             print "ERROR, could not set image as attribute:", e
