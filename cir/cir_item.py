@@ -36,8 +36,8 @@ class Item(object):
         :param grid:  grid object
         :return: coordinates of the centered image
         """
-        img_x = item_pos[0] - grid.tile_radius / 2
-        img_y = item_pos[1] - grid.tile_radius / 2
+        img_x = item_pos[0] - grid.tile_radius
+        img_y = item_pos[1] - grid.tile_radius
         return (img_x, img_y)
 
     def set_option_pos(self):

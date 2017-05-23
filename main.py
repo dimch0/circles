@@ -26,7 +26,7 @@ images = cir_cosmetic.Images(grid, pygame)
 fonts = cir_cosmetic.Fonts(grid, pygame)
 
 # LOADING MY BODY
-my_body = cir_body.BodyItem(grid=grid, name="my body", image=images.galab, pos=grid.center_tile, color=None, speed=2)
+my_body = cir_body.BodyItem(grid=grid, name="my body", image=images.galab, pos=grid.center_tile, color=grid.dark_grey, speed=2)
 grid.items.append(my_body)
 
 # LOADING ALL ITEMS
@@ -45,9 +45,10 @@ def gen_movement_arrows(event):
     for idx, arrow in enumerate(arrows):
         if event.key == arrow:
             my_body.direction = move_options[idx].name
+            if my_body.direction and not my_body.move_track and not my_body.radar_track:
+                my_body.gen_move_track(my_body.direction, move_options)
+                my_body.img = eval("images.galab"+str(idx+1))
 
-    if my_body.direction and not my_body.move_track and not my_body.radar_track:
-        my_body.gen_move_track(my_body.direction, move_options)
 
 
 
@@ -262,8 +263,6 @@ def game_loop():
                 # Movement
                 if item.move_track:
                     item.move()
-                    if item == my_body:
-                        my_body.img = images.flying_pigeon
                 else:
                     if item == my_body:
                         my_body.img = images.galab
