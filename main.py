@@ -211,8 +211,7 @@ def game_loop():
             if grid.show_playing_tiles:
                 cir_draw.draw_playing_tiles(pygame, grid)
 
-        # ======================== DRAWING ANIMATIONS ======================= #
-        if not grid.game_menu:
+            # ====================== DRAWING ANIMATIONS ===================== #
             for item in grid.items:
 
                 # Radar

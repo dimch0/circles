@@ -23,14 +23,16 @@ class Grid(object):
 
         self.set_config()
         self._tiles = []
+
         self.center_tile = None
         self.find_center_tile()
-        self._occupado_tiles = []
-        self._playing_tiles = []
 
+
+        self._playing_tiles = []
         self.revealed_tiles = [self.center_tile]
         self.revealed_radius = []
         self.items = []
+        self._occupado_tiles = []
         self.overlapped_items = []
         self.timers = []
         self.buttons = []
