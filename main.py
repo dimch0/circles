@@ -88,14 +88,18 @@ def game_loop():
                 GAME_EXIT = True
 
             if event.type == pygame.KEYDOWN:
-                # ========================================= ESCAPE LOOP ============================================= #
+                # =============================================================== #
+                #                        ESCAPE LOOP                              #
+                # =============================================================== #
                 if event.key == pygame.K_ESCAPE:
                     if not grid.game_menu:
                         grid.game_menu = True
 
                     elif grid.game_menu and grid.seconds_in_game > 0:
                         grid.game_menu = False
-                # ========================================= SPACE BAR EVENTS ======================================== #
+                # =============================================================== #
+                #                        SPACEBAR EVENTS                          #
+                # =============================================================== #
                 if event.key == pygame.K_SPACE:
                     if not grid.game_menu:
 
@@ -111,12 +115,15 @@ def game_loop():
                     # Debug
                     cir_utils.debug_print_space(grid)
 
-                # ========================================= GENERATE MOVEMENT ======================================= #
+                # =============================================================== #
+                #                      Generate Movement                          #
+                # =============================================================== #
                 if not grid.game_menu and not my_body.in_menu:
                     gen_movement_arrows(event)
 
-
-            # ============================================= CLICK EVENTS ============================================ #
+            # =============================================================== #
+            #                           CLICK EVENTS                          #
+            # =============================================================== #
             if event.type == pygame.MOUSEBUTTONDOWN:
                 clicked_circle = grid.mouse_in_tile(MOUSE_POS)
                 if clicked_circle:
@@ -191,8 +198,10 @@ def game_loop():
                 # Debug
                 cir_utils.debug_print_click(grid, MOUSE_POS, clicked_circle, my_body)
 
-        # ======================== DRAWING BACKGROUND ======================= #
-        # Background
+        # =============================================================== #
+        #                        DRAWING BACKGROUND                       #
+        # =============================================================== #
+
         grid.game_display.fill(grid.dark_grey)
 
         if not grid.game_menu:
@@ -210,7 +219,9 @@ def game_loop():
             if grid.show_playing_tiles:
                 cir_draw.draw_playing_tiles(pygame, grid)
 
-            # ====================== DRAWING ANIMATIONS ===================== #
+            # =============================================================== #
+            #                        DRAWING ANIMATIONS                       #
+            # =============================================================== #
             for item in grid.items:
 
                 # Radar
@@ -248,7 +259,9 @@ def game_loop():
         # === END DRAWING === #
         pygame.display.update()
 
-        # ================================================ CHANGE VARS ============================================== #
+        # =============================================================== #
+        #                           CHANGE VARS                           #
+        # =============================================================== #
         if not grid.game_menu:
 
             # Lifespan timer

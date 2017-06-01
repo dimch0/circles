@@ -64,9 +64,11 @@ def draw_item_options(pygame, grid, MOUSE_POS, item):
     for option in item.options:
         if option.color:
             pygame.draw.circle(grid.game_display, option.color, option.pos, grid.tile_radius, option.border)
+
         if option.img:
             draw_img(grid, option)
             # grid.game_display.blit(option.img, Item.set_img_pos(option.pos, grid))
+
         draw_hover(pygame, grid, MOUSE_POS, option.pos)
 
 
@@ -152,7 +154,7 @@ def draw_mask(pygame, grid):
 def draw_hover(pygame, grid, MOUSE_POS, tile):
     """ Highlights the hovered tile """
     if cir_utils.in_circle(tile, grid.tile_radius, MOUSE_POS):
-        pygame.draw.circle(grid.game_display, grid.white, tile, grid.tile_radius + 1, 2)
+        pygame.draw.circle(grid.game_display, grid.white, tile, grid.tile_radius + 30, 30)
 
 
 def draw_mouse_image(pygame, grid, MOUSE_POS):
