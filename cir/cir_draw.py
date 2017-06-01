@@ -4,8 +4,6 @@
 #################                                                                                     #################
 #######################################################################################################################
 import cir_utils
-import pdb
-from cir_item import Item
 
 
 def set_img_pos(item_pos, grid):
@@ -38,6 +36,7 @@ def draw_img(grid, item):
             # print "Here"
         else:
             grid.game_display.blit(item.img, set_img_pos(item.pos, grid))
+
 
 def draw_radar(pygame, grid, item):
     """ Radar animation """
