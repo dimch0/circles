@@ -51,7 +51,6 @@ def gen_movement_arrows(event):
 
 
 
-
 # TODO: Item generation algorithm on radar vs metrics
 # TODO: Make a mouse class
 # TODO: Make a mini map

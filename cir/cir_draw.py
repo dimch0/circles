@@ -4,7 +4,40 @@
 #################                                                                                     #################
 #######################################################################################################################
 import cir_utils
+import pdb
 from cir_item import Item
+
+
+def set_img_pos(item_pos, grid):
+    """
+    Centers the image posotion
+    :param grid:  grid object
+    :return: coordinates of the centered image
+    """
+    img_x = item_pos[0] - grid.tile_radius
+    img_y = item_pos[1] - grid.tile_radius
+    return (img_x, img_y)
+
+
+def set_emoji_pos(item_pos, grid):
+    """
+    Centers the emoji image posotion
+    :param grid:  grid object
+    :return: coordinates of the centered image
+    """
+    img_x = item_pos[0] - grid.tile_radius / 2
+    img_y = item_pos[1] - grid.tile_radius / 2
+    return (img_x, img_y)
+
+
+def draw_img(grid, item):
+    if item.img:
+        # pdb.set_trace()
+        if item.img.get_width() == grid.tile_radius:
+            grid.game_display.blit(item.img, set_emoji_pos(item.pos, grid))
+            # print "Here"
+        else:
+            grid.game_display.blit(item.img, set_img_pos(item.pos, grid))
 
 def draw_radar(pygame, grid, item):
     """ Radar animation """
@@ -33,7 +66,8 @@ def draw_item_options(pygame, grid, MOUSE_POS, item):
         if option.color:
             pygame.draw.circle(grid.game_display, option.color, option.pos, grid.tile_radius, option.border)
         if option.img:
-            grid.game_display.blit(option.img, Item.set_img_pos(option.pos, grid))
+            draw_img(grid, option)
+            # grid.game_display.blit(option.img, Item.set_img_pos(option.pos, grid))
         draw_hover(pygame, grid, MOUSE_POS, option.pos)
 
 
@@ -44,7 +78,8 @@ def draw_menu_buttons(pygame, grid, MOUSE_POS):
         if button.color:
             pygame.draw.circle(grid.game_display, button.color, button.pos, grid.tile_radius, button.border)
         if button.img:
-            grid.game_display.blit(button.img, Item.set_img_pos(button.pos, grid))
+            draw_img(grid, button)
+            # grid.game_display.blit(button.img, Item.set_img_pos(button.pos, grid))
         if button.text:
             grid.game_display.blit(button.text, button.text_rect)
         draw_hover(pygame, grid, MOUSE_POS, button.pos)
@@ -55,7 +90,8 @@ def draw_body(pygame, grid, MOUSE_POS, item):
     if item.color:
         pygame.draw.circle(grid.game_display, item.color, item.pos, grid.tile_radius, item.border)
     if item.img:
-        grid.game_display.blit(item.img, Item.set_img_pos(item.pos, grid))
+        draw_img(grid, item)
+        # grid.game_display.blit(item.img, Item.set_img_pos(item.pos, grid))
     draw_hover(pygame, grid, MOUSE_POS, item.pos)
 
 
@@ -125,7 +161,8 @@ def draw_mouse_image(pygame, grid, MOUSE_POS):
     current_tile = grid.mouse_in_tile(MOUSE_POS)
     if current_tile and grid.mouse_img:
         pygame.draw.circle(grid.game_display, grid.white, current_tile, grid.tile_radius + 1, 2)
-        grid.game_display.blit(grid.mouse_img, Item.set_img_pos(current_tile, grid))
+        # TODO: Create a mouse item class
+        grid.game_display.blit(grid.mouse_img, set_img_pos(current_tile, grid))
 
 
 
