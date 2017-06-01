@@ -25,7 +25,7 @@ grid.game_display = pygame.display.set_mode((grid.display_width, grid.display_he
 images = cir_cosmetic.Images(grid, pygame)
 fonts = cir_cosmetic.Fonts(grid, pygame)
 
-# LOADING MY BODY
+# LOADING MY BODYeeeee
 my_body = cir_body.BodyItem(grid=grid, name="my body", image=images.galab, pos=grid.center_tile, color=grid.dark_grey, speed=2)
 grid.items.append(my_body)
 
