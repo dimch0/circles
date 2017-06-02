@@ -146,7 +146,6 @@ def draw_mask(pygame, grid):
     pygame.draw.rect(grid.game_display, grid.dark_grey, rect2, 0)
     pygame.draw.polygon(grid.game_display, grid.dark_grey, tri1, 0)
     pygame.draw.polygon(grid.game_display, grid.dark_grey, tri2, 0)
-
     pygame.draw.polygon(grid.game_display, grid.dark_grey, tri3, 0)
     pygame.draw.polygon(grid.game_display, grid.dark_grey, tri4, 0)
 
@@ -154,14 +153,14 @@ def draw_mask(pygame, grid):
 def draw_hover(pygame, grid, MOUSE_POS, tile):
     """ Highlights the hovered tile """
     if cir_utils.in_circle(tile, grid.tile_radius, MOUSE_POS):
-        pygame.draw.circle(grid.game_display, grid.white, tile, grid.tile_radius + 30, 30)
+        pygame.draw.circle(grid.game_display, grid.white, tile, grid.tile_radius, 1)
 
 
 def draw_mouse_image(pygame, grid, MOUSE_POS):
     """ Draws the Mouse image"""
     current_tile = grid.mouse_in_tile(MOUSE_POS)
     if current_tile and grid.mouse_img:
-        pygame.draw.circle(grid.game_display, grid.white, current_tile, grid.tile_radius + 1, 2)
+        pygame.draw.circle(grid.game_display, grid.white, current_tile, grid.tile_radius, 1)
         # TODO: Create a mouse item class
         if grid.mouse_img.get_width() == grid.tile_radius:
             grid.game_display.blit(grid.mouse_img, set_emoji_pos(current_tile, grid))

@@ -10,7 +10,7 @@ class Item(object):
     This is the base class for all circle items
     It includes the open_menu method.
     """
-    def __init__(self, grid, name, pos=(), color=None, uncolor=None, image=None, border=0):
+    def __init__(self, grid, name, pos=(), color=None, uncolor=None, image=None, border=0, modable=False):
         self.grid = grid
         self.name = name
         self.pos = pos
@@ -24,7 +24,9 @@ class Item(object):
         self.default_options = []
         self.in_menu = False
         self.available = True
+        self.modable = modable
         self.mode = self.name
+
 
         self.move_track = []
         self.radar_track = []
@@ -85,12 +87,16 @@ class Item(object):
             self.in_menu = True
         else:
             self.in_menu = False
+
+        # Return overlapped items
         self.overlap()
         return self.in_menu
 
     def check_in_menu(self, clicked_circle, mode_vs_options):
         # Clicked on item
+        # print self.mode_vs_options.keys()
         if clicked_circle == self.pos and self.name in mode_vs_options.keys():
+            print "HERE"
             # If default mode:
             if self.mode is self.name:
                 if not self.in_menu:

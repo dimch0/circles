@@ -189,12 +189,15 @@ def game_loop():
 
                                                 # Close menu if option selected
                                                 item.set_in_menu(False)
+                                            # Close menu if option has no suboptions
+                                            if option.name not in MODE_VS_OPTIONS.keys():
+                                                item.set_in_menu(False)
 
                                             # Mouse mode image
-                                            if option.img:
-                                                grid.mouse_img = option.img
-                                            grid.mouse_mode = option.name
-
+                                            if option.modable:
+                                                grid.mouse_mode = option.name
+                                                if option.img and option.modable:
+                                                    grid.mouse_img = option.img
                 # Debug
                 cir_utils.debug_print_click(grid, MOUSE_POS, clicked_circle, my_body)
 

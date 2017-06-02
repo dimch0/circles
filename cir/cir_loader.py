@@ -79,6 +79,7 @@ def load_all_items(grid, images, fonts, my_body):
                 item_duration = int(row[13]) if len(row[13]) > 0 else None
                 item_time_color = getattr(grid, row[14]) if len(row[14]) > 0 else None
                 item_start_time = row[15] if len(row[15]) > 0 else None
+                item_modable = row[16] if len(row[16]) > 0 else None
                 # ===================== COLS FROM data.csv FILE ==================== #
 
                 if item_scenario == "mode_vs_options":
@@ -88,7 +89,8 @@ def load_all_items(grid, images, fonts, my_body):
                         pos=item_pos,
                         color=item_color,
                         image=item_img,
-                        border=item_border
+                        border=item_border,
+                        modable=item_modable
                     )
                     MODE_VS_OPTIONS[item_category].append(item_to_append)
 
@@ -99,7 +101,8 @@ def load_all_items(grid, images, fonts, my_body):
                             name=item_name,
                             pos=item_pos,
                             color=item_color,
-                            speed=item_speed
+                            speed=item_speed,
+                            modable=item_modable
                         )
                         ALL_ITEMS[item_category].append(item_to_append)
 
@@ -111,7 +114,8 @@ def load_all_items(grid, images, fonts, my_body):
                             color=item_color,
                             speed=item_speed,
                             duration=item_duration,
-                            time_color=item_time_color
+                            time_color=item_time_color,
+                            modable=item_modable
                         )
                         ALL_ITEMS[item_category].append(item_to_append)
 
@@ -122,7 +126,8 @@ def load_all_items(grid, images, fonts, my_body):
                             pos=item_pos,
                             color=item_color,
                             font=item_font,
-                            text_color=item_text_color
+                            text_color=item_text_color,
+                            modable=item_modable
                         )
                         ALL_ITEMS[item_category].append(item_to_append)
 

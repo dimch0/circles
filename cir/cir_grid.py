@@ -31,11 +31,12 @@ class Grid(object):
         self._playing_tiles = []
         self.revealed_tiles = [self.center_tile]
         self.revealed_radius = []
-        self.items = []
         self._occupado_tiles = []
-        self.overlapped_items = []
-        self.timers = []
+
+        self.items = []
         self.buttons = []
+        self.timers = []
+        self.overlapped_items = []
 
         self.game_menu = True
         self.game_over = False
