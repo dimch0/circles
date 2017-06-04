@@ -88,13 +88,13 @@ def draw_menu_buttons(pygame, grid, MOUSE_POS):
 
 def draw_body(pygame, grid, MOUSE_POS, item):
     """ Draws each body and it's image if available """
-    for item in grid.bodies:
-        if item.color:
-            pygame.draw.circle(grid.game_display, item.color, item.pos, grid.tile_radius, item.border)
-        if item.img:
-            draw_img(grid, item)
-            # grid.game_display.blit(item.img, Item.set_img_pos(item.pos, grid))
-        draw_hover(pygame, grid, MOUSE_POS, item.pos)
+    # for item in grid.bodies:
+    if item.color:
+        pygame.draw.circle(grid.game_display, item.color, item.pos, grid.tile_radius, item.border)
+    if item.img:
+        draw_img(grid, item)
+        # grid.game_display.blit(item.img, Item.set_img_pos(item.pos, grid))
+    draw_hover(pygame, grid, MOUSE_POS, item.pos)
 
 
 def draw_timers(pygame, grid, my_body):

@@ -47,7 +47,8 @@ def gen_movement_arrows(event):
         if event.key == arrow:
             if not my_body.move_track and not my_body.radar_track:
                 my_body.gen_move_track(idx)
-                my_body.img = eval("images.galab"+str(idx+1))
+                if my_body.move_track:
+                    my_body.img = eval("images.galab"+str(idx+1))
 
 
 
