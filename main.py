@@ -9,7 +9,7 @@ import time
 import pygame
 
 from cir import cir_utils
-from cir import cir_body
+from cir import cir_item_body
 from cir import cir_grid
 from cir import cir_draw
 from cir import cir_cosmetic
@@ -26,8 +26,9 @@ images = cir_cosmetic.Images(grid, pygame)
 fonts = cir_cosmetic.Fonts(grid, pygame)
 
 # LOADING MY BODYeeeee
-my_body = cir_body.BodyItem(grid=grid, name="my body", image=images.galab, pos=grid.center_tile, color=grid.dark_grey, speed=2)
+my_body = cir_item_body.BodyItem(grid=grid, name="my body", image=images.galab, pos=grid.center_tile, color=grid.dark_grey, speed=2)
 grid.items.append(my_body)
+grid.bodies.append(my_body)
 
 # LOADING ALL ITEMS
 ALL_ITEMS, MODE_VS_OPTIONS = load_all_items(grid, images, fonts, my_body)
@@ -44,9 +45,8 @@ def gen_movement_arrows(event):
     arrows = [pygame.K_w, pygame.K_e, pygame.K_d, pygame.K_s, pygame.K_a, pygame.K_q]
     for idx, arrow in enumerate(arrows):
         if event.key == arrow:
-            my_body.direction = move_options[idx].name
-            if my_body.direction and not my_body.move_track and not my_body.radar_track:
-                my_body.gen_move_track(my_body.direction, move_options)
+            if not my_body.move_track and not my_body.radar_track:
+                my_body.gen_move_track(idx)
                 my_body.img = eval("images.galab"+str(idx+1))
 
 
@@ -160,22 +160,31 @@ def game_loop():
                                     for option in item.options:
                                         if clicked_circle == option.pos:
 
-                                            # If default option -> set mode
+                                            # DEFAULT OPTIONS
                                             if option in item.default_options:
+
+                                                if option.name == "bag":
+                                                    print "Gimme the loot!"
+
+                                                if option.name == "mitosis":
+                                                    item.mitosis()
+
                                                 item.set_mode(option, MODE_VS_OPTIONS)
 
-                                            # Check option specifics
+                                            # SUBOPTIONS
                                             elif option in MODE_VS_OPTIONS[item.mode]:
 
                                                 if item.mode == "move":
-                                                    item.gen_move_track(option.name, MODE_VS_OPTIONS[item.mode])
+                                                    # TODO: fix below movement on arrows click
+                                                    # item.gen_move_track(option.name, MODE_VS_OPTIONS[item.mode])
+                                                    pass
 
                                                 elif option.name == "see":
                                                     item.range += 1
                                                     # item.mode = "seen"
 
                                                 elif option.name == "smel":
-                                                    item.change_speed(1)
+                                                    print "sniff hair"
 
                                                 elif option.name == "medi":
                                                     item.range += 3
@@ -231,13 +240,17 @@ def game_loop():
                 if item.radar_track:
                     cir_draw.draw_radar(pygame, grid, item)
 
+                # Bodies
+                # if (item.pos in grid.revealed_tiles) or (item == my_body):
+                # TODO: fix drawing above items (overlap?)
+                if (item.pos in grid.revealed_tiles) or (item in grid.bodies):
+                    cir_draw.draw_body(pygame, grid, MOUSE_POS, item)
+
                 # Item options
                 if item.in_menu:
                     cir_draw.draw_item_options(pygame, grid, MOUSE_POS, item)
 
-                # Bodies
-                if (item.pos in grid.revealed_tiles) or (item == my_body):
-                    cir_draw.draw_body(pygame, grid, MOUSE_POS, item)
+
 
                 # Show movement track in color
                 if grid.show_movement and len(item.move_track) > 1:

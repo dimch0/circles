@@ -5,7 +5,7 @@
 #######################################################################################################################
 import math
 import time
-from cir_mobile import MobileItem
+from cir_item_mobile import MobileItem
 
 
 class TimerItem(MobileItem):

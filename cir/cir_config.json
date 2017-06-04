@@ -16,7 +16,7 @@
     "caption": "cir",
     "img_dir": "img",
     "font_file": "./fonts/HelveticaNeueMed.ttf",
-    "data_file": "cir/cir_data.csv"
+    "data_file": "cir/cir_data2.csv"
   },
 
   "COLORS": {

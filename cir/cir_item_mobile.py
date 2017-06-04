@@ -4,6 +4,8 @@
 #################                                                                                     #################
 #######################################################################################################################
 import math
+import copy
+import pdb
 from cir_item import Item
 from math import sqrt, ceil, hypot
 
@@ -58,19 +60,17 @@ class MobileItem(Item):
             result.append(Tile_B)
         return result
 
-    def gen_move_track(self, direction, options):
+    def gen_move_track(self, direction_idx):
         """
-        :param self.grid: self.grid instance
-        :return: a list of all available tiles in northeast direction
+        :param direction_idx: index of the 6 directions (0-5)
+        :param options: options
+        :return: a list of all available tiles in northeast direction_idx
         """
         # print "Inside gen move track"
-        dir = None
-        for idx, option in enumerate(options):
-            if direction == option.name:
-                dir = idx
         result = []
         Point_A = self.pos
-        Point_B = self.grid.adj_tiles(self.pos)[dir]
+        # pdb.set_trace()
+        Point_B = self.grid.adj_tiles(self.pos)[direction_idx]
         if self.speed > 0:
             for fields in range(1,13):
                 if Point_B in self.grid.playing_tiles:
@@ -82,7 +82,7 @@ class MobileItem(Item):
                         self.move_track = result
                         return result
                 Point_A = Point_B
-                Point_B = self.grid.adj_tiles(Point_A)[dir]
+                Point_B = self.grid.adj_tiles(Point_A)[direction_idx]
             self.move_track = result
         print "steps:", len(result)
         return result
@@ -94,3 +94,23 @@ class MobileItem(Item):
         if self.move_track:
             self.pos = self.move_track[0]
             self.move_track.pop(0)
+
+    def mitosis(self):
+        # TODO: Avoid duplicated copies
+        new_cell = MobileItem(
+            grid = self.grid,
+            speed = self.speed,
+            name = None,
+            pos = self.pos,
+            color = self.color,
+            image = self.img,
+
+        )
+        self.grid.items.append(new_cell)
+        self.grid.bodies.append(new_cell)
+
+        for idx, tile in enumerate(self.grid.adj_tiles(self.pos)):
+            if not tile in self.grid.occupado_tiles and tile in self.grid.revealed_tiles:
+                new_cell.gen_move_track(idx)
+
+        return new_cell

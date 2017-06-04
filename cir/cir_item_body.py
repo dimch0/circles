@@ -4,7 +4,7 @@
 #################                                                                                     #################
 #######################################################################################################################
 import pdb
-from cir_mobile import MobileItem
+from cir_item_mobile import MobileItem
 from cir_utils import in_circle
 
 class BodyItem(MobileItem):

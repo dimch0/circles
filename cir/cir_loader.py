@@ -5,9 +5,9 @@
 #######################################################################################################################
 import csv
 
-import cir_mobile
-import cir_timer
-import cir_button
+import cir_item_mobile
+import cir_item_timer
+import cir_item_button
 import cir_item
 
 
@@ -96,7 +96,7 @@ def load_all_items(grid, images, fonts, my_body):
 
                 elif item_scenario == "scenario 1":
                     if item_type == "cir_mobile":
-                        item_to_append = cir_mobile.MobileItem(
+                        item_to_append = cir_item_mobile.MobileItem(
                             grid=grid,
                             name=item_name,
                             pos=item_pos,
@@ -107,7 +107,7 @@ def load_all_items(grid, images, fonts, my_body):
                         ALL_ITEMS[item_category].append(item_to_append)
 
                     elif item_type == "cir_timer":
-                        item_to_append = cir_timer.TimerItem(
+                        item_to_append = cir_item_timer.TimerItem(
                             grid=grid,
                             name=item_name,
                             pos=item_pos,
@@ -120,7 +120,7 @@ def load_all_items(grid, images, fonts, my_body):
                         ALL_ITEMS[item_category].append(item_to_append)
 
                     elif item_type == "cir_button":
-                        item_to_append = cir_button.ButtonItem(
+                        item_to_append = cir_item_button.ButtonItem(
                             grid=grid,
                             name=item_name,
                             pos=item_pos,

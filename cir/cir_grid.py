@@ -34,6 +34,7 @@ class Grid(object):
         self._occupado_tiles = []
 
         self.items = []
+        self.bodies = []
         self.buttons = []
         self.timers = []
         self.overlapped_items = []
@@ -99,7 +100,7 @@ class Grid(object):
         """
         Marking the occupado grid tiles
         """
-        self._occupado_tiles = [item.pos for item in self.items]
+        self._occupado_tiles = [item.pos for item in self.items] + [body.pos for body in self.bodies]
         return self._occupado_tiles
 
 
