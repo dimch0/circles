@@ -99,24 +99,22 @@ class MobileItem(Item):
     def division(self):
         # TODO: Avoid duplicated copies
 
-        new_cell = MobileItem(
-            grid = self.grid,
-            speed = self.speed,
-            name = "copy cell",
-            pos = self.pos,
-            color = self.color,
-            image = self.img,
-
-        )
-        self.grid.items.append(new_cell)
-        self.grid.bodies.append(new_cell)
-
         for idx, tile in enumerate(self.grid.adj_tiles(self.pos)):
             if (tile not in self.grid.occupado_tiles) and (tile in self.grid.revealed_tiles):
-                new_cell.move_track = self.move_to_tile(new_cell.pos, tile)
-                # new_cell.gen_move_track(idx)
+                new_cell = MobileItem(
+                    grid=self.grid,
+                    speed=self.speed,
+                    name="copy cell",
+                    pos=self.pos,
+                    color=self.color,
+                    image=self.img,
 
-        return new_cell
+                )
+                self.grid.items.append(new_cell)
+                self.grid.bodies.append(new_cell)
+                new_cell.move_track = self.move_to_tile(new_cell.pos, tile)
+                break
+                # new_cell.gen_move_track(idx)
 
 
     def mitosis(self):
