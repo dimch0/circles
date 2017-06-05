@@ -60,7 +60,7 @@ def gen_movement_arrows(event):
 # TODO: Create spirit mode, where karma is calculated
 # TODO: Create pause menu before and while playing
 # TODO: Log all events and show the last 3 on screen
-# TODO: Fix track
+# TODO: Fix movement track
 # TODO: Create save button
 # TODO: Show animated instructions
 # TODO: Animate item generation
@@ -125,6 +125,8 @@ def game_loop():
             # =============================================================== #
             #                           CLICK EVENTS                          #
             # =============================================================== #
+            copy_count = 1
+
             if event.type == pygame.MOUSEBUTTONDOWN:
                 clicked_circle = grid.mouse_in_tile(MOUSE_POS)
                 if clicked_circle:
@@ -161,7 +163,9 @@ def game_loop():
                                     for option in item.options:
                                         if clicked_circle == option.pos:
 
-                                            # DEFAULT OPTIONS
+                                            # =============================================================== #
+                                            #                          DEFAULT OPTIONS                        #
+                                            # =============================================================== #
                                             if option in item.default_options:
 
                                                 if option.name == "bag":
@@ -172,7 +176,9 @@ def game_loop():
 
                                                 item.set_mode(option, MODE_VS_OPTIONS)
 
-                                            # SUBOPTIONS
+                                            # =============================================================== #
+                                            #                            SUBOPTIONS                           #
+                                            # =============================================================== #
                                             elif option in MODE_VS_OPTIONS[item.mode]:
 
                                                 if item.mode == "move":
@@ -250,7 +256,6 @@ def game_loop():
                 # Item options
                 if item.in_menu:
                     cir_draw.draw_item_options(pygame, grid, MOUSE_POS, item)
-
 
 
                 # Show movement track in color

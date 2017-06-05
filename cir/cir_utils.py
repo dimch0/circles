@@ -69,7 +69,7 @@ speed       : {9}
            clicked_circle,
            my_body.mode,
            my_body.in_menu,
-           [item.name for item in grid.items],
+           len([item.name for item in grid.items]),
            grid.occupado_tiles,
            len(grid.playing_tiles),
            my_body.move_track,

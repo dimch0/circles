@@ -73,10 +73,12 @@ class Item(object):
                 if overlapping_item.pos in self.grid.adj_tiles(self.pos):
                     self.grid.overlapped_items.append(overlapping_item)
                     self.grid.items.remove(overlapping_item)
+                    # self.grid.bodies.remove(overlapping_item)
         else:
             if self.grid.overlapped_items:
                 for overlapping_item in self.grid.overlapped_items:
                     self.grid.items.append(overlapping_item)
+                    # self.grid.bodies.append(overlapping_item)
                     self.grid.overlapped_items.remove(overlapping_item)
 
     def set_in_menu(self, FLAG):
@@ -96,7 +98,6 @@ class Item(object):
         # Clicked on item
         # print self.mode_vs_options.keys()
         if clicked_circle == self.pos and self.name in mode_vs_options.keys():
-            print "HERE"
             # If default mode:
             if self.mode is self.name:
                 if not self.in_menu:

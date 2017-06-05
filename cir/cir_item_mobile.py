@@ -87,6 +87,7 @@ class MobileItem(Item):
         print "steps:", len(result)
         return result
 
+
     def move(self):
         """
         :return: move self.pos per point in move_track
@@ -95,12 +96,13 @@ class MobileItem(Item):
             self.pos = self.move_track[0]
             self.move_track.pop(0)
 
-    def mitosis(self):
+    def division(self):
         # TODO: Avoid duplicated copies
+
         new_cell = MobileItem(
             grid = self.grid,
             speed = self.speed,
-            name = None,
+            name = "copy cell",
             pos = self.pos,
             color = self.color,
             image = self.img,
@@ -110,7 +112,20 @@ class MobileItem(Item):
         self.grid.bodies.append(new_cell)
 
         for idx, tile in enumerate(self.grid.adj_tiles(self.pos)):
-            if not tile in self.grid.occupado_tiles and tile in self.grid.revealed_tiles:
-                new_cell.gen_move_track(idx)
+            if (tile not in self.grid.occupado_tiles) and (tile in self.grid.revealed_tiles):
+                new_cell.move_track = self.move_to_tile(new_cell.pos, tile)
+                # new_cell.gen_move_track(idx)
 
         return new_cell
+
+
+    def mitosis(self):
+
+        # Ready copies
+        for copy_item in self.grid.items:
+            if copy_item.name == "copy cell":
+                copy_item.name = self.name
+
+        for some_item in self.grid.items:
+            if some_item.name == self.name:
+                some_item.division()
