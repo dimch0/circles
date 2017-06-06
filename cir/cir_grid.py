@@ -121,7 +121,6 @@ class Grid(object):
         """
         Defining the playing tiles
         """
-        # TODO: pass a scenario with the board and borders
         hex_board = [
             (self.center_tile[0], self.center_tile[1] - (9 * self.tile_radius)),
             (self.center_tile[0] + (5 * self.cathetus), self.center_tile[1] - (4 * self.tile_radius)),
