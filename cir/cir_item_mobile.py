@@ -101,7 +101,7 @@ class MobileItem(Item):
 
         for idx, tile in enumerate(self.grid.adj_tiles(self.pos)):
             if (tile in self.grid.revealed_tiles) and (tile not in self.grid.occupado_tiles):
-
+                print "NE MOJE", tile in self.grid.revealed_tiles, tile
                 new_cell = MobileItem(
                     grid=self.grid,
                     speed=1,
