@@ -3,6 +3,27 @@
 #################                                 Main file                                           #################
 #################                                                                                     #################
 #######################################################################################################################
+
+# TODO: Item generation algorithm on radar vs metrics
+# TODO: Make a mouse class
+# TODO: Make a mini map
+# TODO: Make a signal method
+# TODO: Log all statistics during a lifespan
+# TODO: Create spirit mode, where karma is calculated
+# TODO: Create pause menu before and while playing
+# TODO: Log all events and show the last 3 on screen
+# TODO: Fix movement track
+# TODO: Create save button
+# TODO: Show animated instructions
+# TODO: Animate item generation
+# TODO: Make installable exe file for the game
+
+# Bugfixes:
+# TODO: Fix movement
+# TODO: Fix overlap bug
+# TODO: Fix mitosis items creation
+
+
 import os
 import sys
 import time
@@ -49,23 +70,6 @@ def gen_movement_arrows(event):
                 my_body.gen_move_track(idx)
                 if my_body.move_track:
                     my_body.img = eval("images.galab"+str(idx+1))
-
-
-
-# TODO: Item generation algorithm on radar vs metrics
-# TODO: Make a mouse class
-# TODO: Make a mini map
-# TODO: Make a signal method
-# TODO: Log all statistics during a lifespan
-# TODO: Create spirit mode, where karma is calculated
-# TODO: Create pause menu before and while playing
-# TODO: Log all events and show the last 3 on screen
-# TODO: Fix movement track
-# TODO: Create save button
-# TODO: Show animated instructions
-# TODO: Animate item generation
-# TODO: Make installable exe file for the game
-
 
 
 def game_loop():

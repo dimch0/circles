@@ -100,18 +100,21 @@ class MobileItem(Item):
         # TODO: Avoid duplicated copies
 
         for idx, tile in enumerate(self.grid.adj_tiles(self.pos)):
-            if (tile not in self.grid.occupado_tiles) and (tile in self.grid.revealed_tiles):
+            if (tile in self.grid.revealed_tiles) and (tile not in self.grid.occupado_tiles):
+
                 new_cell = MobileItem(
                     grid=self.grid,
-                    speed=self.speed,
+                    speed=1,
                     name="copy cell",
                     pos=self.pos,
                     color=self.color,
                     image=self.img,
 
                 )
+                self.grid.occupado_tiles.append(tile)
                 self.grid.items.append(new_cell)
                 self.grid.bodies.append(new_cell)
+
                 new_cell.move_track = self.move_to_tile(new_cell.pos, tile)
                 break
                 # new_cell.gen_move_track(idx)

@@ -70,7 +70,7 @@ speed       : {9}
            my_body.mode,
            my_body.in_menu,
            len([item.name for item in grid.items]),
-           grid.occupado_tiles,
+           len(grid.occupado_tiles),
            len(grid.playing_tiles),
            my_body.move_track,
            len(grid.tiles),
