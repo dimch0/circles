@@ -32,17 +32,17 @@ class BodyItem(MobileItem):
 
     # TODO: Link timer to body
 
-    def gen_radar_track(self):
+    def gen_radar_track(self, grid):
         """
-        :param self.grid: self.grid object
+        :param grid: grid object
         :return: a list of tuples for each radar circle iteration
         with the radius, thickness:
         (31, 10), (32, 10), (33, 10)
         """
-        radar_thickness = range(1, (self.grid.tile_radius / 3) + 1)
+        radar_thickness = range(1, (grid.tile_radius / 3) + 1)
         radar_thickness.reverse()
-        radar_limit = (self.grid.tile_radius * 2 * self.range) + self.grid.tile_radius + 1
-        radar_radius = range(self.grid.tile_radius , radar_limit)
+        radar_limit = (grid.tile_radius * 2 * self.range) + grid.tile_radius + 1
+        radar_radius = range(grid.tile_radius , radar_limit)
         radar_delimiter = (radar_radius[-1] - radar_radius[0]) / radar_thickness[0]
         result = []
 
@@ -53,9 +53,9 @@ class BodyItem(MobileItem):
         self.radar_track = zip(radar_radius, result)
         return self.radar_track
 
-    def radar(self):
+    def radar(self, grid):
         """
-        :param self.grid: self.grid object
+        :param grid: grid object
         :return: the radius and thickness for each wave
         from the radar_track list and removes after returning it
         Also defines the revealed tiles
@@ -68,13 +68,13 @@ class BodyItem(MobileItem):
 
         # Mark tiles as revealed
         revealed = ((self.pos), radar_radius)
-        if not revealed in self.grid.revealed_radius:
-            self.grid.revealed_radius.append(revealed)
+        if not revealed in grid.revealed_radius:
+            grid.revealed_radius.append(revealed)
 
-        for tile in self.grid.tiles:
-            if in_circle(self.pos, radar_radius, tile) and tile not in self.grid.revealed_tiles:
-                if not tile in self.grid.revealed_tiles:
-                    if tile in self.grid.playing_tiles:
-                        self.grid.revealed_tiles.append(tile)
+        for tile in grid.tiles:
+            if in_circle(self.pos, radar_radius, tile) and tile not in grid.revealed_tiles:
+                if not tile in grid.revealed_tiles:
+                    if tile in grid.playing_tiles:
+                        grid.revealed_tiles.append(tile)
 
         return radar_radius, thick

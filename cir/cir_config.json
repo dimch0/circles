@@ -9,14 +9,14 @@
   "VISIBILITY": {
     "show_grid": false,
     "show_movement": false,
-    "show_playing_tiles": true
+    "show_playing_tiles": false
   },
 
   "DIRS": {
     "caption": "cir",
     "img_dir": "img",
     "font_file": "./fonts/HelveticaNeueMed.ttf",
-    "data_file": "cir/cir_data2.csv"
+    "data_file": "cir/cir_data_all.csv"
   },
 
   "COLORS": {

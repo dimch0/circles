@@ -30,7 +30,7 @@ class MobileItem(Item):
         if self.speed > 8:
             self.speed = 8
 
-    def move_to_tile(self, Tile_A, Tile_B):
+    def move_to_tile(self, grid, Tile_A, Tile_B):
         """
         This method moves the item from the current position to Tile_B.
         :param Tile_B: coordinates of destination point B (x, y)
@@ -40,7 +40,8 @@ class MobileItem(Item):
         # print "Inside move to tile"
         result = []
         # Movement only allowed in revealed_tiles and not occupado_tiles
-        if Tile_B in self.grid.revealed_tiles and Tile_B not in self.grid.occupado_tiles and self.speed > 0:
+        # if Tile_B in grid.revealed_tiles and Tile_B not in grid.occupado_tiles and self.speed > 0:
+        if self.speed > 0:
             ax = Tile_A[0]
             ay = Tile_A[1]
             bx = Tile_B[0]
@@ -48,7 +49,7 @@ class MobileItem(Item):
             # TODO: debug step generation
             dx, dy = (bx - ax, by - ay)
             # distance = int(sqrt(dx ** 2 + dy ** 2))
-            distance = 2 * self.grid.tile_radius
+            distance = 2 * grid.tile_radius
             # steps_number = int(ceil(2 * distance / (2 * self.speed)))
             steps_number = 2 * distance / (2 * self.speed)
             step_size = int(distance / steps_number)
@@ -60,7 +61,7 @@ class MobileItem(Item):
             result.append(Tile_B)
         return result
 
-    def gen_move_track(self, direction_idx):
+    def gen_move_track(self, grid, direction_idx):
         """
         :param direction_idx: index of the 6 directions (0-5)
         :param options: options
@@ -70,23 +71,22 @@ class MobileItem(Item):
         result = []
         Point_A = self.pos
         # pdb.set_trace()
-        Point_B = self.grid.adj_tiles(self.pos)[direction_idx]
+        Point_B = grid.adj_tiles(self.pos)[direction_idx]
         if self.speed > 0:
             for fields in range(1,13):
-                if Point_B in self.grid.playing_tiles:
-                    if Point_B not in self.grid.occupado_tiles and Point_B in self.grid.revealed_tiles:
-                        for new_steps in self.move_to_tile(Point_A, Point_B):
+                if Point_B in grid.playing_tiles:
+                    if Point_B not in grid.occupado_tiles and Point_B in grid.revealed_tiles:
+                        for new_steps in self.move_to_tile(grid, Point_A, Point_B):
                             if not new_steps in result:
                                 result.append(new_steps)
                     else:
                         self.move_track = result
                         return result
                 Point_A = Point_B
-                Point_B = self.grid.adj_tiles(Point_A)[direction_idx]
+                Point_B = grid.adj_tiles(Point_A)[direction_idx]
             self.move_track = result
         print "steps:", len(result)
         return result
-
 
     def move(self):
         """
@@ -96,39 +96,61 @@ class MobileItem(Item):
             self.pos = self.move_track[0]
             self.move_track.pop(0)
 
-    def division(self):
+
+
+    def cell_division(self, grid):
         # TODO: Avoid duplicated copies
 
-        for idx, tile in enumerate(self.grid.adj_tiles(self.pos)):
-            if (tile in self.grid.revealed_tiles) and (tile not in self.grid.occupado_tiles):
+        FREE_TILE = None
+        for idx, tile in enumerate(grid.adj_tiles(self.pos)):
+            if tile in grid.revealed_tiles:
+                if not tile in grid.occupado_tiles:
+                    FREE_TILE = tile
+                    break
+                    # grid.append_occupado(tile)
+                    # print "DEBUG", grid.occupado_tiles
+                    # print "DEBUG", len(grid.occupado_tiles)
 
-                self.grid.occupado_tiles.append(tile)
-
-                new_cell = MobileItem(
-                    grid=self.grid,
-                    speed=1,
-                    name="copy cell",
-                    pos=self.pos,
-                    color=self.color,
-                    image=self.img,
-
-                )
-
-                self.grid.items.append(new_cell)
-                self.grid.bodies.append(new_cell)
-
-                new_cell.move_track = self.move_to_tile(new_cell.pos, tile)
-                break
-                # new_cell.gen_move_track(idx)
+        print "FREE TILE", FREE_TILE, self.name
+        if FREE_TILE:
+            occupado_placeholder = Item(
+                name="placeholder",
+                pos=tile,
+            )
+            grid.items.append(occupado_placeholder)
+            print "placeholder", occupado_placeholder.pos
 
 
-    def mitosis(self):
+            new_cell = MobileItem(
+                speed=1,
+                name="new copy",
+                pos=self.pos,
+                color=self.color,
+                image=self.img,
 
+            )
+            new_cell.move_track = self.move_to_tile(grid, new_cell.pos, tile)
+
+            grid.items.append(new_cell)
+            grid.bodies.append(new_cell)
+            # new_cell.gen_move_track(grid, idx)
+
+                # # TODO:
+                # else:
+                #     continue
+
+
+
+    def mitosis(self, grid):
+        # pdb.set_trace()
         # Ready copies
-        for copy_item in self.grid.items:
-            if copy_item.name == "copy cell":
-                copy_item.name = self.name
+        for item in grid.items:
+            print item.name
+            if item.name == "new copy":
+                item.name = str(self.name + " copy")
 
-        for some_item in self.grid.items:
-            if some_item.name == self.name:
-                some_item.division()
+        for second_item in grid.items:
+            if second_item.name in [self.name, str(self.name + " copy")]:
+                second_item.cell_division(grid)
+
+

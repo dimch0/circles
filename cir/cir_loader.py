@@ -84,7 +84,6 @@ def load_all_items(grid, images, fonts, my_body):
 
                 if item_scenario == "mode_vs_options":
                     item_to_append = cir_item.Item(
-                        grid=grid,
                         name=item_name,
                         pos=item_pos,
                         color=item_color,
@@ -97,7 +96,6 @@ def load_all_items(grid, images, fonts, my_body):
                 elif item_scenario == "scenario 1":
                     if item_type == "cir_mobile":
                         item_to_append = cir_item_mobile.MobileItem(
-                            grid=grid,
                             name=item_name,
                             pos=item_pos,
                             color=item_color,
@@ -108,20 +106,19 @@ def load_all_items(grid, images, fonts, my_body):
 
                     elif item_type == "cir_timer":
                         item_to_append = cir_item_timer.TimerItem(
-                            grid=grid,
                             name=item_name,
                             pos=item_pos,
                             color=item_color,
                             speed=item_speed,
                             duration=item_duration,
                             time_color=item_time_color,
+                            tile_radius=grid.tile_radius,
                             modable=item_modable
                         )
                         ALL_ITEMS[item_category].append(item_to_append)
 
                     elif item_type == "cir_button":
                         item_to_append = cir_item_button.ButtonItem(
-                            grid=grid,
                             name=item_name,
                             pos=item_pos,
                             color=item_color,

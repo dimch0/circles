@@ -10,12 +10,14 @@ from cir_item_mobile import MobileItem
 
 class TimerItem(MobileItem):
     """ This is the base class for all timer items """
-    def __init__(self, duration, time_color, start_time=None, **kwargs):
+    def __init__(self, duration, time_color, tile_radius, start_time=None, **kwargs):
         super(TimerItem, self).__init__(**kwargs)
 
         self.time_color = time_color
         self.start_time = start_time
         self.duration = duration
+
+        self.timer_tile_radius = tile_radius
         self._rect = []
         self.filled_steps = 90
         self.start_point = math.radians(self.filled_steps)
@@ -56,10 +58,10 @@ class TimerItem(MobileItem):
     @property
     def rect(self):
         """ This defines the rect argument for the arch drawing """
-        self._rect = [self.pos[0] - self.grid.tile_radius,
-                self.pos[1] - self.grid.tile_radius,
-                2 * self.grid.tile_radius,
-                2 * self.grid.tile_radius]
+        self._rect = [self.pos[0] - self.timer_tile_radius,
+                self.pos[1] - self.timer_tile_radius,
+                2 * self.timer_tile_radius,
+                2 * self.timer_tile_radius]
         return self._rect
 
 

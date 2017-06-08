@@ -28,8 +28,14 @@ def set_emoji_pos(item_pos, grid):
     return (img_x, img_y)
 
 
+def draw_hover(pygame, grid, MOUSE_POS, tile):
+    """ Highlights the hovered tile """
+    if cir_utils.in_circle(tile, grid.tile_radius, MOUSE_POS):
+        pygame.draw.circle(grid.game_display, grid.white, tile, grid.tile_radius, 1)
+
+
 def draw_img(grid, item):
-    if item.img:
+    if item.img and item.available:
         # pdb.set_trace()
         if item.img.get_width() == grid.tile_radius:
             grid.game_display.blit(item.img, set_emoji_pos(item.pos, grid))
@@ -40,9 +46,9 @@ def draw_img(grid, item):
 
 def draw_radar(pygame, grid, item):
     """ Radar animation """
-    radar_radius, thick = item.radar()
+    radar_radius, thick = item.radar(grid)
     if radar_radius and thick:
-        pygame.draw.circle(grid.game_display, item.grid.white, item.pos, radar_radius, thick)
+        pygame.draw.circle(grid.game_display, grid.white, item.pos, radar_radius, thick)
 
 
 def draw_revealed_radius(pygame, grid):
@@ -62,48 +68,52 @@ def draw_item_options(pygame, grid, MOUSE_POS, item):
     """ Draws the item menu options """
 
     for option in item.options:
-        if option.color:
-            pygame.draw.circle(grid.game_display, option.color, option.pos, grid.tile_radius, option.border)
+        if option.available:
+            if option.color:
+                pygame.draw.circle(grid.game_display, option.color, option.pos, grid.tile_radius, option.border)
 
-        if option.img:
-            draw_img(grid, option)
-            # grid.game_display.blit(option.img, Item.set_img_pos(option.pos, grid))
+            if option.img:
+                draw_img(grid, option)
+                # grid.game_display.blit(option.img, Item.set_img_pos(option.pos, grid))
 
-        draw_hover(pygame, grid, MOUSE_POS, option.pos)
+            draw_hover(pygame, grid, MOUSE_POS, option.pos)
 
 
 def draw_menu_buttons(pygame, grid, MOUSE_POS):
     """ Drawing the buttons in the game menu """
 
     for button in grid.buttons:
-        if button.color:
-            pygame.draw.circle(grid.game_display, button.color, button.pos, grid.tile_radius, button.border)
-        if button.img:
-            draw_img(grid, button)
-            # grid.game_display.blit(button.img, Item.set_img_pos(button.pos, grid))
-        if button.text:
-            grid.game_display.blit(button.text, button.text_rect)
-        draw_hover(pygame, grid, MOUSE_POS, button.pos)
+        if button.available:
+            if button.color:
+                pygame.draw.circle(grid.game_display, button.color, button.pos, grid.tile_radius, button.border)
+            if button.img:
+                draw_img(grid, button)
+                # grid.game_display.blit(button.img, Item.set_img_pos(button.pos, grid))
+            if button.text:
+                grid.game_display.blit(button.text, button.text_rect)
+            draw_hover(pygame, grid, MOUSE_POS, button.pos)
 
 
 def draw_body(pygame, grid, MOUSE_POS, item):
     """ Draws each body and it's image if available """
     # for item in grid.bodies:
-    if item.color:
-        pygame.draw.circle(grid.game_display, item.color, item.pos, grid.tile_radius, item.border)
-    if item.img:
-        draw_img(grid, item)
-        # grid.game_display.blit(item.img, Item.set_img_pos(item.pos, grid))
-    draw_hover(pygame, grid, MOUSE_POS, item.pos)
+    if item.available:
+        if item.color:
+            pygame.draw.circle(grid.game_display, item.color, item.pos, grid.tile_radius, item.border)
+        if item.img:
+            draw_img(grid, item)
+            # grid.game_display.blit(item.img, Item.set_img_pos(item.pos, grid))
+        draw_hover(pygame, grid, MOUSE_POS, item.pos)
 
 
 def draw_timers(pygame, grid, my_body):
     """ Draws current state of a timer """
     # pygame.draw.circle(grid.game_display, timer.color, timer.pos, grid.tile_radius, 0)
     for timer in grid.timers:
-        if timer.name == "lifespan":
-            timer.pos = my_body.pos
-        pygame.draw.arc(grid.game_display, timer.time_color, timer.rect, timer.filled_angle, timer.start_point, 2)
+        if timer.available:
+            if timer.name == "lifespan":
+                timer.pos = my_body.pos
+            pygame.draw.arc(grid.game_display, timer.time_color, timer.rect, timer.filled_angle, timer.start_point, 2)
 
 
 def draw_grid(pygame, grid):
@@ -149,12 +159,6 @@ def draw_mask(pygame, grid):
     pygame.draw.polygon(grid.game_display, grid.dark_grey, tri2, 0)
     pygame.draw.polygon(grid.game_display, grid.dark_grey, tri3, 0)
     pygame.draw.polygon(grid.game_display, grid.dark_grey, tri4, 0)
-
-
-def draw_hover(pygame, grid, MOUSE_POS, tile):
-    """ Highlights the hovered tile """
-    if cir_utils.in_circle(tile, grid.tile_radius, MOUSE_POS):
-        pygame.draw.circle(grid.game_display, grid.white, tile, grid.tile_radius, 1)
 
 
 def draw_mouse_image(pygame, grid, MOUSE_POS):

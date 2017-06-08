@@ -3,15 +3,14 @@
 #################                           Item class, MobileItem class                              #################
 #################                                                                                     #################
 #######################################################################################################################
-
+import pdb
 
 class Item(object):
     """
     This is the base class for all circle items
     It includes the open_menu method.
     """
-    def __init__(self, grid, name, pos=(), color=None, uncolor=None, image=None, border=0, modable=False):
-        self.grid = grid
+    def __init__(self, name, pos=(), color=None, uncolor=None, image=None, border=0, modable=False):
         self.name = name
         self.pos = pos
         self.color = color
@@ -31,13 +30,13 @@ class Item(object):
         self.move_track = []
         self.radar_track = []
 
-    def set_option_pos(self):
+    def set_option_pos(self, grid):
         # Returning the options only
         for idx, option in enumerate(self.options):
             if self.in_menu:
-                option.pos = self.grid.adj_tiles(self.pos)[idx]
+                option.pos = grid.adj_tiles(self.pos)[idx]
 
-    def set_mode(self, option, mode_vs_option):
+    def set_mode(self, grid, option, mode_vs_option):
         """
         Changes the mode of an item to a given options
         :param option: an option item of a menu
@@ -50,7 +49,7 @@ class Item(object):
         self.img = option.img
         if option.name in mode_vs_option.keys():
             self.options = mode_vs_option[option.name]
-        self.set_option_pos()
+        self.set_option_pos(grid)
 
     def reset_mode(self):
         """
@@ -61,27 +60,33 @@ class Item(object):
         self.img = self.default_img
         self.options = self.default_options
 
-    def overlap(self):
+    def overlap(self, grid):
         """
         Checks for overlapping items
-        if in menu: creates a backup in grid.overlapped_items
-        if not in menu: restores from grid.overlapped_items
+        if in menu: creates a backup in grid.overlap
+        if not in menu: restores from grid.overlap
         :return:
         """
         if self.in_menu:
-            for overlapping_item in self.grid.items:
-                if overlapping_item.pos in self.grid.adj_tiles(self.pos):
-                    self.grid.overlapped_items.append(overlapping_item)
-                    self.grid.items.remove(overlapping_item)
-                    # self.grid.bodies.remove(overlapping_item)
+            for overlapping_item in grid.items:
+                # TODO: Fix this mess below
+                print "DEBUG INSIDE OLAP", [ig.pos for ig in grid.items]
+                print "DEBUG INSIDE OLAP", len([ig.pos for ig in grid.items])
+                # if overlapping_item.pos in grid.adj_tiles(self.pos):
+                for ajd_tile in grid.adj_tiles(self.pos):
+                    print "DEBUG olap item", overlapping_item.pos
+                    print "DEBUG adj tile", ajd_tile
+                    if overlapping_item.pos == ajd_tile:
+                        # pdb.set_trace()
+                        grid.overlap.append(overlapping_item)
+                        overlapping_item.available = False
         else:
-            if self.grid.overlapped_items:
-                for overlapping_item in self.grid.overlapped_items:
-                    self.grid.items.append(overlapping_item)
-                    # self.grid.bodies.append(overlapping_item)
-                    self.grid.overlapped_items.remove(overlapping_item)
+            if grid.overlap:
+                for oitem in grid.overlap:
+                    oitem.available = True
+                    grid.overlap.remove(oitem)
 
-    def set_in_menu(self, FLAG):
+    def set_in_menu(self, grid, FLAG):
         """ Setting the in_menu attribute
         :param FLAG: boolean -True or False
         """
@@ -91,26 +96,26 @@ class Item(object):
             self.in_menu = False
 
         # Return overlapped items
-        self.overlap()
+        self.overlap(grid)
         return self.in_menu
 
-    def check_in_menu(self, clicked_circle, mode_vs_options):
+    def check_in_menu(self, grid, clicked_circle, mode_vs_options):
         # Clicked on item
         # print self.mode_vs_options.keys()
         if clicked_circle == self.pos and self.name in mode_vs_options.keys():
             # If default mode:
             if self.mode is self.name:
                 if not self.in_menu:
-                    self.set_in_menu(True)
+                    self.set_in_menu(grid, True)
                 elif self.in_menu:
-                    self.set_in_menu(False)
+                    self.set_in_menu(grid, False)
             # If not default mode
             elif self.mode is not self.name:
                 if self.in_menu:
                     self.reset_mode()
                 elif not self.in_menu:
-                    self.set_in_menu(True)
+                    self.set_in_menu(grid, True)
         # Clicked outside
-        elif clicked_circle is not self.pos and clicked_circle not in self.grid.adj_tiles(self.pos):
-            self.set_in_menu(False)
+        elif clicked_circle is not self.pos and clicked_circle not in grid.adj_tiles(self.pos):
+            self.set_in_menu(grid, False)
 

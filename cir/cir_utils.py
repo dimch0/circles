@@ -48,10 +48,11 @@ def inside_polygon(poly, point):
 def seconds_in_game(grid, START_TIME):
     """ Counts the seconds in the game """
     # TODO: FIX START TIME AND PAUSE SECONDS
-    if not grid.game_menu:
-        if time.time() + grid.seconds_in_pause > (START_TIME + grid.seconds_in_game) - grid.seconds_in_pause:
-            print "second: {0}".format(grid.seconds_in_game)
-            grid.seconds_in_game += 1
+    pass
+    # if not grid.game_menu:
+    #     if time.time() + grid.seconds_in_pause > (START_TIME + grid.seconds_in_game) - grid.seconds_in_pause:
+    #         print "second: {0}".format(grid.seconds_in_game)
+    #         grid.seconds_in_game += 1
 
 
 def debug_print_click(grid, MOUSE_POS, clicked_circle, my_body):
@@ -65,6 +66,7 @@ playing     : {6}
 move track  : {7}
 all tiles   : {8}
 speed       : {9}
+overlap     : {10}
 """.format(MOUSE_POS,
            clicked_circle,
            my_body.mode,
@@ -74,7 +76,8 @@ speed       : {9}
            len(grid.playing_tiles),
            my_body.move_track,
            len(grid.tiles),
-           my_body.speed
+           my_body.speed,
+           len(grid.overlap)
            )
           )
 

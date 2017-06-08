@@ -27,7 +27,6 @@ class Grid(object):
         self.center_tile = None
         self.find_center_tile()
 
-
         self._playing_tiles = []
         self.revealed_tiles = [self.center_tile]
         self.revealed_radius = []
@@ -37,7 +36,7 @@ class Grid(object):
         self.bodies = []
         self.buttons = []
         self.timers = []
-        self.overlapped_items = []
+        self.overlap = []
 
         self.game_menu = True
         self.game_over = False
@@ -100,9 +99,13 @@ class Grid(object):
         """
         Marking the occupado grid tiles
         """
-        self._occupado_tiles = [item.pos for item in self.items] + [body.pos for body in self.bodies]
+        # TODO: do set
+        self._occupado_tiles = list(set([item.pos for item in self.items] + [body.pos for body in self.bodies]))
         return self._occupado_tiles
 
+    def append_occupado(self, tile):
+        self._occupado_tiles = self.occupado_tiles + [tile]
+        return self._occupado_tiles
 
     def find_center_tile(self):
         """
