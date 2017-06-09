@@ -16,33 +16,39 @@ class Grid(object):
     master class for the grid
     """
     def __init__(self):
+        # ===================================================== #
+        #                      SETTINGS                         #
+        # ===================================================== #
         self.cathetus = 0
         self.display_width = 0
         self.display_height = 0
         self.game_display = None
-
         self.set_config()
+        self.game_menu = True
+        self.game_over = False
+        self.seconds_in_game = 0
+        self.seconds_in_pause = 0
+        # ===================================================== #
+        #                      TILES                            #
+        # ===================================================== #
         self._tiles = []
-
         self.center_tile = None
         self.find_center_tile()
-
         self._playing_tiles = []
         self.revealed_tiles = [self.center_tile]
         self.revealed_radius = []
         self._occupado_tiles = []
-
+        # ===================================================== #
+        #                      ITEMS                            #
+        # ===================================================== #
         self.items = []
         self.bodies = []
         self.buttons = []
         self.timers = []
         self.overlap = []
-
-        self.game_menu = True
-        self.game_over = False
-        self.seconds_in_game = 0
-        self.seconds_in_pause = 0
-
+        # ===================================================== #
+        #                      MOUSE                            #
+        # ===================================================== #
         self.mouse_mode = None
         self.mouse_img = None
         self.mode_img = None

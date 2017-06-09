@@ -30,6 +30,7 @@ class Item(object):
         self.move_track = []
         self.radar_track = []
 
+
     def set_option_pos(self, grid):
         # Returning the options only
         for idx, option in enumerate(self.options):
@@ -67,15 +68,20 @@ class Item(object):
         if not in menu: restores from grid.overlap
         :return:
         """
+        print "=" * 20
+        print "DEBUG Adjecent tiles to:", self.pos, self.name, self.in_menu
+        print grid.adj_tiles(self.pos)
+        print "DEBUG Grid items"
+        print [ipo.pos for ipo in grid.items]
+        print "DEBUG Occupado:"
+        print grid.occupado_tiles
+
+
         if self.in_menu:
             for overlapping_item in grid.items:
                 # TODO: Fix this mess below
-                print "DEBUG INSIDE OLAP", [ig.pos for ig in grid.items]
-                print "DEBUG INSIDE OLAP", len([ig.pos for ig in grid.items])
                 # if overlapping_item.pos in grid.adj_tiles(self.pos):
                 for ajd_tile in grid.adj_tiles(self.pos):
-                    print "DEBUG olap item", overlapping_item.pos
-                    print "DEBUG adj tile", ajd_tile
                     if overlapping_item.pos == ajd_tile:
                         # pdb.set_trace()
                         grid.overlap.append(overlapping_item)
@@ -85,6 +91,7 @@ class Item(object):
                 for oitem in grid.overlap:
                     oitem.available = True
                     grid.overlap.remove(oitem)
+
 
     def set_in_menu(self, grid, FLAG):
         """ Setting the in_menu attribute
@@ -98,6 +105,7 @@ class Item(object):
         # Return overlapped items
         self.overlap(grid)
         return self.in_menu
+
 
     def check_in_menu(self, grid, clicked_circle, mode_vs_options):
         # Clicked on item

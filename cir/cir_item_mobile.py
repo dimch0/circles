@@ -122,7 +122,7 @@ class MobileItem(Item):
 
 
             new_cell = MobileItem(
-                speed=1,
+                speed=2,
                 name="new copy",
                 pos=self.pos,
                 color=self.color,
@@ -149,8 +149,9 @@ class MobileItem(Item):
             if item.name == "new copy":
                 item.name = str(self.name + " copy")
 
-        for second_item in grid.items:
-            if second_item.name in [self.name, str(self.name + " copy")]:
-                second_item.cell_division(grid)
+        for item_a in grid.items:
+            if item_a.name in [self.name, str(self.name + " copy")]:
+                if item_a.speed:
+                    item_a.cell_division(grid)
 
 
