@@ -107,19 +107,15 @@ class MobileItem(Item):
                 if not tile in grid.occupado_tiles:
                     FREE_TILE = tile
                     break
-                    # grid.append_occupado(tile)
-                    # print "DEBUG", grid.occupado_tiles
-                    # print "DEBUG", len(grid.occupado_tiles)
 
-        print "FREE TILE", FREE_TILE, self.name
+
         if FREE_TILE:
             occupado_placeholder = Item(
                 name="placeholder",
                 pos=tile,
             )
-            grid.items.append(occupado_placeholder)
-            print "placeholder", occupado_placeholder.pos
 
+            grid.items.append(occupado_placeholder)
 
             new_cell = MobileItem(
                 speed=2,

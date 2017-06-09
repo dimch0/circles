@@ -33,6 +33,7 @@ import time
 import pygame
 
 from cir import cir_utils
+from cir import cir_item
 from cir import cir_item_body
 from cir import cir_grid
 from cir import cir_draw
@@ -68,6 +69,7 @@ pygame.mouse.set_visible(True)
 
 def gen_movement_arrows(grid, event):
     """ Generates steps to move my body - gen_move_track() """
+    # TODO: make rotating image
     arrows = [pygame.K_w, pygame.K_e, pygame.K_d, pygame.K_s, pygame.K_a, pygame.K_q]
     for idx, arrow in enumerate(arrows):
         if event.key == arrow:
@@ -118,7 +120,7 @@ def game_loop():
                         # =============================================================== #
                         if not my_body.move_track and not my_body.in_menu and not my_body.radar_track:
                             my_body.gen_radar_track(grid)
-                            my_body.mitosis(grid)
+                            # my_body.mitosis(grid)
 
                         # TODO: time modifier
                         # lifespan.len_step += (lifespan.len_step / 100) * 10
@@ -140,6 +142,18 @@ def game_loop():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 clicked_circle = grid.mouse_in_tile(MOUSE_POS)
                 if clicked_circle:
+
+
+                    if grid.mouse_mode == "laino":
+                        if clicked_circle not in grid.occupado_tiles:
+                            hui = cir_item.Item(
+                                name="hui",
+                                color = grid.orange,
+                                image=images.laino3,
+                                pos=clicked_circle,
+                            )
+                            if hui not in grid.items:
+                                grid.items.append(hui)
 
                     # =============================================================== #
                     #                        CLICK MENU BUTTONS                       #
