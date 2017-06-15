@@ -96,23 +96,34 @@ class MobileItem(Item):
             self.pos = self.move_track[0]
             self.move_track.pop(0)
 
-
-
-    def cell_division(self, grid):
-        # TODO: Avoid duplicated copies
-
-        FREE_TILE = None
+    def check_for_empty_tile(self, grid):
+        """
+        Checks for an empty adj tile and creates a placeholder thare.
+        :param grid: grid instance
+        :return: the first available empty tile (1, 1) or None
+        """
+        EMPTY_TILE = None
         for idx, tile in enumerate(grid.adj_tiles(self.pos)):
             if tile in grid.revealed_tiles:
                 if not tile in grid.occupado_tiles:
-                    FREE_TILE = tile
+                    EMPTY_TILE = tile
                     break
 
+        return EMPTY_TILE
 
-        if FREE_TILE:
+    def cell_division(self, grid):
+        """
+        Creates a placeholder in the empty tile.
+        Than creates a copy of the item and moves it into the placehoder.
+        They're being cleaned with the clean_placehoder function.
+        :param grid: grid instance
+        :return:
+        """
+        empty_tile = self.check_for_empty_tile(grid)
+        if empty_tile:
             occupado_placeholder = Item(
                 name="placeholder",
-                pos=tile,
+                pos=empty_tile,
             )
 
             grid.items.append(occupado_placeholder)
@@ -125,20 +136,14 @@ class MobileItem(Item):
                 image=self.img,
 
             )
-            new_cell.move_track = self.move_to_tile(grid, new_cell.pos, tile)
+            new_cell.move_track = self.move_to_tile(grid, new_cell.pos, empty_tile)
 
             grid.items.append(new_cell)
             grid.bodies.append(new_cell)
             # new_cell.gen_move_track(grid, idx)
 
-                # # TODO:
-                # else:
-                #     continue
-
-
 
     def mitosis(self, grid):
-        # pdb.set_trace()
         # Ready copies
         for item in grid.items:
             print item.name

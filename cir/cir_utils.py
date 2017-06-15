@@ -91,3 +91,10 @@ revealed_radius: {0}
            len(grid.revealed_radius),
           )
          )
+
+
+def clean_placeholders(grid, item):
+    if item.name == "placeholder":
+        for other_item in grid.items:
+            if other_item.pos == item.pos:
+                grid.items.remove(item)

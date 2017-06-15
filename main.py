@@ -15,14 +15,15 @@
 # TODO: Create spirit mode, calculate karma
 # TODO: Log messages on screen
 # TODO: Create save button
-# TODO: Animated instructions
+# TODO: Animate instructions
 # TODO: Animate item generation
 # TODO: Animate activation of abilities
-# TODO: Create installable exe
+# TODO: Aninate rotation of image
+# TODO: Create installation .exe file
 # =============================================================== #
 #                            BUG FIXES                            #
 # =============================================================== #
-# TODO: Fix movement
+# TODO: Fix movement track
 # TODO: Fix items overlap bug
 # TODO: Fix radar lag outside of playing board
 
@@ -231,7 +232,6 @@ def game_loop():
 
                                                 elif option.name == "eat":
                                                     item.change_speed(-1)
-                                                    # grid.tile_radius = 10
 
                                                 # Close menu if option selected
                                                 item.set_in_menu(grid, False)
@@ -324,18 +324,19 @@ def game_loop():
 
             for item in grid.items:
 
+                # Overlap
+                item.overlapping(grid)
+
                 # Movement
                 if item.move_track:
                     item.move()
+                # TODO: include the below in movement
                 else:
                     if item == my_body:
                         my_body.img = images.galab
 
                 # Clean placeholders
-                if item.name == "placeholder":
-                    for other_item in grid.items:
-                        if other_item.pos == item.pos:
-                            grid.items.remove(item)
+                cir_utils.clean_placeholders(grid, item)
 
             # Timers
             if grid.timers:

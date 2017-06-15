@@ -26,6 +26,8 @@ class Item(object):
         self.modable = modable
         self.mode = self.name
 
+        self.overlap = []
+
 
         self.move_track = []
         self.radar_track = []
@@ -61,26 +63,24 @@ class Item(object):
         self.img = self.default_img
         self.options = self.default_options
 
-    def hide_overlap(self, grid):
+    def overlapping(self, grid):
         """
         Checks for overlapping items
-        if in menu: creates a backup in grid.overlap
+        if in menu: creates a backup in self.overlap
+        if not in menu: restores from self.overlap
         """
-        for overlapping_item in grid.items:
-            for ajd_tile in grid.adj_tiles(self.pos):
-                if overlapping_item.pos == ajd_tile:
-                    grid.overlap.append(overlapping_item)
-                    overlapping_item.available = False
-
-    def restore_overlap(self, grid):
-        """
-        Checks for overlapping items
-        if not in menu: restores from grid.overlap
-        """
-        if grid.overlap:
-            for item in grid.overlap:
-                item.available = True
-                grid.overlap.remove(item)
+        if self.in_menu:
+            for overlapping_item in grid.items:
+                for ajd_tile in grid.adj_tiles(self.pos):
+                    if overlapping_item.pos == ajd_tile:
+                        if not overlapping_item in self.overlap:
+                            self.overlap.append(overlapping_item)
+                            overlapping_item.available = False
+        else:
+            if self.overlap:
+                for item in self.overlap:
+                    item.available = True
+                    self.overlap.remove(item)
 
     def set_in_menu(self, grid, FLAG):
         """ Setting the in_menu attribute
@@ -88,14 +88,10 @@ class Item(object):
         """
         if FLAG:
             self.in_menu = True
-            self.hide_overlap(grid)
-            print "OPEN MENU: ", (it.name for it in grid.overlap)
-            print len(grid.overlap)
+
         else:
             self.in_menu = False
-            self.restore_overlap(grid)
-            print "CLOSE MENU: ", (it.name for it in grid.overlap)
-            print len(grid.overlap)
+
         return self.in_menu
 
 
@@ -118,4 +114,3 @@ class Item(object):
         # Clicked outside
         elif clicked_circle is not self.pos and clicked_circle not in grid.adj_tiles(self.pos):
             self.set_in_menu(grid, False)
-
