@@ -156,7 +156,7 @@ def game_loop():
                                 grid.items.append(hui)
 
                     # =============================================================== #
-                    #                        CLICK MENU BUTTONS                       #
+                    #                        CLICK IN GAME MENU                       #
                     # =============================================================== #
                     if grid.game_menu:
                         for button in grid.buttons:
@@ -183,7 +183,6 @@ def game_loop():
                                 item.set_option_pos(grid)
                                 # Option clicked
                                 if item.in_menu:
-
                                     # Mouse mode image
                                     grid.mouse_mode = None
                                     grid.mouse_img = None

@@ -61,37 +61,26 @@ class Item(object):
         self.img = self.default_img
         self.options = self.default_options
 
-    def overlap(self, grid):
+    def hide_overlap(self, grid):
         """
         Checks for overlapping items
         if in menu: creates a backup in grid.overlap
-        if not in menu: restores from grid.overlap
-        :return:
         """
-        print "=" * 20
-        print "DEBUG Adjecent tiles to:", self.pos, self.name, self.in_menu
-        print grid.adj_tiles(self.pos)
-        print "DEBUG Grid items"
-        print [ipo.pos for ipo in grid.items]
-        print "DEBUG Occupado:"
-        print grid.occupado_tiles
+        for overlapping_item in grid.items:
+            for ajd_tile in grid.adj_tiles(self.pos):
+                if overlapping_item.pos == ajd_tile:
+                    grid.overlap.append(overlapping_item)
+                    overlapping_item.available = False
 
-
-        if self.in_menu:
-            for overlapping_item in grid.items:
-                # TODO: Fix this mess below
-                # if overlapping_item.pos in grid.adj_tiles(self.pos):
-                for ajd_tile in grid.adj_tiles(self.pos):
-                    if overlapping_item.pos == ajd_tile:
-                        # pdb.set_trace()
-                        grid.overlap.append(overlapping_item)
-                        overlapping_item.available = False
-        else:
-            if grid.overlap:
-                for oitem in grid.overlap:
-                    oitem.available = True
-                    grid.overlap.remove(oitem)
-
+    def restore_overlap(self, grid):
+        """
+        Checks for overlapping items
+        if not in menu: restores from grid.overlap
+        """
+        if grid.overlap:
+            for item in grid.overlap:
+                item.available = True
+                grid.overlap.remove(item)
 
     def set_in_menu(self, grid, FLAG):
         """ Setting the in_menu attribute
@@ -99,11 +88,14 @@ class Item(object):
         """
         if FLAG:
             self.in_menu = True
+            self.hide_overlap(grid)
+            print "OPEN MENU: ", (it.name for it in grid.overlap)
+            print len(grid.overlap)
         else:
             self.in_menu = False
-
-        # Return overlapped items
-        self.overlap(grid)
+            self.restore_overlap(grid)
+            print "CLOSE MENU: ", (it.name for it in grid.overlap)
+            print len(grid.overlap)
         return self.in_menu
 
 
