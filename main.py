@@ -157,7 +157,7 @@ def game_loop():
                         if clicked_circle not in grid.occupado_tiles:
                             hui = cir_item.Item(
                                 name="hui",
-                                color = grid.orange,
+                                color = grid.gelb,
                                 image=images.laino3,
                                 pos=clicked_circle,
                             )
