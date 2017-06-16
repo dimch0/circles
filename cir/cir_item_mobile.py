@@ -12,7 +12,7 @@ from math import sqrt, ceil, hypot
 
 class MobileItem(Item):
     """
-    This is the base class for all circle items
+    This is the base class for all CIR items
     """
     def __init__(self, speed, **kwargs):
         super(MobileItem, self).__init__(**kwargs)

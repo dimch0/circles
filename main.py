@@ -304,7 +304,7 @@ def game_loop():
 
         # Mouse Item
         # TODO: Create MouseItem
-        # pygame.draw.circle(grid.game_display, grid.white, MOUSE_POS, 2, 0)
+        # pygame.draw.CIR(grid.game_display, grid.white, MOUSE_POS, 2, 0)
         if grid.mouse_mode:
             cir_draw.draw_mouse_image(pygame, grid, MOUSE_POS)
 

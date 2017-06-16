@@ -10,7 +10,7 @@ from math import sqrt, ceil, hypot
 
 class ButtonItem(Item):
     """
-    This is the base class for all circle items
+    This is the base class for all CIR items
     """
     # TODO: Move item options here?
     def __init__(self, font, text_color, text=None, **kwargs):

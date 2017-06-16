@@ -7,7 +7,7 @@ import pdb
 
 class Item(object):
     """
-    This is the base class for all circle items
+    This is the base class for all CIR items
     It includes the open_menu method.
     """
     def __init__(self, name, pos=(), color=None, uncolor=None, image=None, border=0, modable=False):

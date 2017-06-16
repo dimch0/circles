@@ -108,7 +108,7 @@ def draw_body(pygame, grid, MOUSE_POS, item):
 
 def draw_timers(pygame, grid, my_body):
     """ Draws current state of a timer """
-    # pygame.draw.circle(grid.game_display, timer.color, timer.pos, grid.tile_radius, 0)
+    # pygame.draw.CIR(grid.game_display, timer.color, timer.pos, grid.tile_radius, 0)
     for timer in grid.timers:
         if timer.available:
             if timer.name == "lifespan":

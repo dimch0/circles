@@ -8,10 +8,10 @@ import time
 
 def in_circle(center, radius, point):
     """
-    :param center: center of the circle
-    :param radius: radius of the circle
+    :param center: center of the CIR
+    :param radius: radius of the CIR
     :param point: coordinates of the point to be checked (x, y)
-    :return: boolean - is the point inside the given circle
+    :return: boolean - is the point inside the given CIR
     """
     center_x, center_y = center[0], center[1]
     x, y = point[0], point[1]

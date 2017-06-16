@@ -35,7 +35,7 @@ class BodyItem(MobileItem):
     def gen_radar_track(self, grid):
         """
         :param grid: grid object
-        :return: a list of tuples for each radar circle iteration
+        :return: a list of tuples for each radar CIR iteration
         with the radius, thickness:
         (31, 10), (32, 10), (33, 10)
         """
