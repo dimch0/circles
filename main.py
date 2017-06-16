@@ -7,8 +7,11 @@
 # =============================================================== #
 #                            FEATURES                             #
 # =============================================================== #
+# TODO: Time modifier
+# TODO: Parametrize scenario
+# TODO: add sys argv for gameover and loading a game
 # TODO: Item generation on radar
-# TODO: Define a mouse class
+# TODO: Link timer to body
 # TODO: Create a mini map
 # TODO: Define a signal function
 # TODO: Log all statistics during a lifespan
@@ -311,8 +314,7 @@ def game_loop():
             if grid.buttons:
                 cir_draw.draw_menu_buttons(pygame, grid, MOUSE_POS)
 
-        # Mouse Item
-        # TODO: Create MouseItem
+        # Mouse
         # pygame.draw.CIR(grid.game_display, grid.white, MOUSE_POS, 2, 0)
         if grid.mouse_mode:
             cir_draw.draw_mouse_image(pygame, grid, MOUSE_POS)
