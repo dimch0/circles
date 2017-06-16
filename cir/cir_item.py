@@ -96,8 +96,13 @@ class Item(object):
 
 
     def check_in_menu(self, grid, clicked_circle, mode_vs_options):
+        """
+        On a clicked circle - check if this item is in menu and set it
+        :param grid: grid instance
+        :param clicked_circle: the current clicekd circle
+        :param mode_vs_options: dict of the mode and options for it
+        """
         # Clicked on item
-        # print self.mode_vs_options.keys()
         if clicked_circle == self.pos and self.name in mode_vs_options.keys():
             # If default mode:
             if self.mode is self.name:

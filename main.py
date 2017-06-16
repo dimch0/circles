@@ -24,9 +24,9 @@
 #                            BUG FIXES                            #
 # =============================================================== #
 # TODO: Fix movement track
-# TODO: Fix items overlap bug
-# TODO: Fix radar lag outside of playing board
 
+
+import pdb
 
 import os
 import sys
@@ -131,6 +131,14 @@ def game_loop():
                     # Debug
                     cir_utils.debug_print_space(grid)
 
+
+                # =============================================================== #
+                #                           OTHER KEYS                            #
+                # =============================================================== #
+                if event.key == pygame.K_p:
+                    if not grid.game_menu:
+                        ### DEBUG ###
+                        pdb.set_trace()
                 # =============================================================== #
                 #                      Generate Movement                          #
                 # =============================================================== #
@@ -259,6 +267,7 @@ def game_loop():
             if grid.revealed_radius:
                 cir_draw.draw_revealed_radius(pygame, grid)
 
+            # Mask
             cir_draw.draw_mask(pygame, grid)
 
             # Grid
@@ -330,7 +339,6 @@ def game_loop():
                 # Movement
                 if item.move_track:
                     item.move()
-                # TODO: include the below in movement
                 else:
                     if item == my_body:
                         my_body.img = images.galab
@@ -351,7 +359,7 @@ def game_loop():
         # FPS
         clock.tick(grid.fps)
 
-    # == END == #
+    #### END ####
     pygame.quit()
     quit()
 

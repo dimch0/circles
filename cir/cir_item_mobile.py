@@ -73,7 +73,7 @@ class MobileItem(Item):
         # pdb.set_trace()
         Point_B = grid.adj_tiles(self.pos)[direction_idx]
         if self.speed > 0:
-            for fields in range(1,13):
+            for fields in range(1, 26):
                 if Point_B in grid.playing_tiles:
                     if Point_B not in grid.occupado_tiles and Point_B in grid.revealed_tiles:
                         for new_steps in self.move_to_tile(grid, Point_A, Point_B):
@@ -85,7 +85,6 @@ class MobileItem(Item):
                 Point_A = Point_B
                 Point_B = grid.adj_tiles(Point_A)[direction_idx]
             self.move_track = result
-        print "steps:", len(result)
         return result
 
     def move(self):
@@ -144,14 +143,18 @@ class MobileItem(Item):
 
 
     def mitosis(self, grid):
+        """
+
+        :param grid: grid instance
+        :return:
+        """
         # Ready copies
         for item in grid.items:
-            print item.name
             if item.name == "new copy":
-                item.name = str(self.name + " copy")
+                item.name = str(self.name + " - copy")
 
         for item_a in grid.items:
-            if item_a.name in [self.name, str(self.name + " copy")]:
+            if item_a.name in [self.name, str(self.name + " - copy")]:
                 if item_a.speed:
                     item_a.cell_division(grid)
 

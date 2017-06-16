@@ -166,7 +166,6 @@ def draw_mouse_image(pygame, grid, MOUSE_POS):
     current_tile = grid.mouse_in_tile(MOUSE_POS)
     if current_tile and grid.mouse_img:
         pygame.draw.circle(grid.game_display, grid.white, current_tile, grid.tile_radius, 1)
-        # TODO: Create a mouse item class
         if grid.mouse_img.get_width() == grid.tile_radius:
             grid.game_display.blit(grid.mouse_img, set_emoji_pos(current_tile, grid))
         else:

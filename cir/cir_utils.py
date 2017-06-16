@@ -3,8 +3,8 @@
 #################                                 Helping Utilities                                   #################
 #################                                                                                     #################
 #######################################################################################################################
-import time
-
+import pdb
+import pprint
 
 def in_circle(center, radius, point):
     """
@@ -66,7 +66,6 @@ playing     : {6}
 move track  : {7}
 all tiles   : {8}
 speed       : {9}
-overlap     : {10}
 """.format(MOUSE_POS,
            clicked_circle,
            my_body.mode,
@@ -76,19 +75,34 @@ overlap     : {10}
            len(grid.playing_tiles),
            my_body.move_track,
            len(grid.tiles),
-           my_body.speed,
-           len(grid.overlap)
+           my_body.speed
            )
           )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 def debug_print_space(grid):
     """  Debug print on space bar event  """
     print(""">>>> space
 revealed tiles: {0}
-revealed_radius: {0}
+revealed_radius: {1}
+{2}
 """.format(len(grid.revealed_tiles),
            len(grid.revealed_radius),
+           grid.revealed_radius,
           )
          )
 

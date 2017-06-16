@@ -16,9 +16,9 @@ class Grid(object):
     master class for the grid
     """
     def __init__(self):
-        # ===================================================== #
-        #                      SETTINGS                         #
-        # ===================================================== #
+        # ================================================== #
+        #                      SETTINGS                      #
+        # ================================================== #
         self.cathetus = 0
         self.display_width = 0
         self.display_height = 0
@@ -28,31 +28,30 @@ class Grid(object):
         self.game_over = False
         self.seconds_in_game = 0
         self.seconds_in_pause = 0
-        # ===================================================== #
-        #                      TILES                            #
-        # ===================================================== #
+        # ================================================== #
+        #                      TILES                         #
+        # ================================================== #
         self._tiles = []
         self.center_tile = None
         self.find_center_tile()
-        self._playing_tiles = []
+        self.playing_tiles = []
+        self.set_playing_tiles()
         self.revealed_tiles = [self.center_tile]
         self.revealed_radius = []
         self._occupado_tiles = []
-        # ===================================================== #
-        #                      ITEMS                            #
-        # ===================================================== #
+        # ================================================== #
+        #                      ITEMS                         #
+        # ================================================== #
         self.items = []
         self.bodies = []
         self.buttons = []
         self.timers = []
-        self.overlap = []
-        # ===================================================== #
-        #                      MOUSE                            #
-        # ===================================================== #
+        # ================================================== #
+        #                      MOUSE                         #
+        # ================================================== #
         self.mouse_mode = None
         self.mouse_img = None
         self.mode_img = None
-        # self.mode = []
 
     def set_config(self):
         """
@@ -67,7 +66,8 @@ class Grid(object):
                     setattr(self, status, value)
         except Exception as e:
             print "ERROR, could not set config:", e
-        # Setting the display metrics
+
+        ##### Setting the display metrics ####
         self.cathetus = int(sqrt(((2 * self.tile_radius) ** 2) - (self.tile_radius ** 2)))
         self.display_width = (self.cathetus * self.cols) + (self.tile_radius * 2)
         self.display_height = self.rows * self.tile_radius
@@ -105,7 +105,6 @@ class Grid(object):
         """
         Marking the occupado grid tiles
         """
-        # TODO: do set
         self._occupado_tiles = list(set([item.pos for item in self.items] + [body.pos for body in self.bodies]))
         return self._occupado_tiles
 
@@ -125,8 +124,7 @@ class Grid(object):
                 break
         return self.center_tile
 
-    @property
-    def playing_tiles(self):
+    def set_playing_tiles(self):
         """
         Defining the playing tiles
         """
@@ -140,10 +138,8 @@ class Grid(object):
         ]
         for tile in self.tiles:
             if inside_polygon(hex_board, tile):
-                if not tile in self._playing_tiles:
-                    self._playing_tiles.append(tile)
-        return self._playing_tiles
-
+                if not tile in self.playing_tiles:
+                    self.playing_tiles.append(tile)
 
     def adj_tiles(self, center):
         """

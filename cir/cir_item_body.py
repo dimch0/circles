@@ -69,7 +69,8 @@ class BodyItem(MobileItem):
         # Mark tiles as revealed
         revealed = ((self.pos), radar_radius)
         if not revealed in grid.revealed_radius:
-            grid.revealed_radius.append(revealed)
+            #if revealed[0] in grid.playing_tiles:
+              grid.revealed_radius.append(revealed)
 
         for tile in grid.tiles:
             if in_circle(self.pos, radar_radius, tile) and tile not in grid.revealed_tiles:
