@@ -1,8 +1,8 @@
 {
   "SETTINGS": {
     "tile_radius": 30,
-    "rows": 12,
-    "cols": 12,
+    "rows": 24,
+    "cols": 24,
     "fps": 60
     },
 
