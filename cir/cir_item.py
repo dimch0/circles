@@ -66,7 +66,7 @@ class Item(object):
     def overlapping(self, grid):
         """
         Checks for overlapping items
-        if in menu: creates a backup in self.overlap
+        if in menu: creates a archive in self.overlap
         if not in menu: restores from self.overlap
         """
         if self.in_menu:

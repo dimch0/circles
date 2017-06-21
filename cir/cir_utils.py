@@ -57,27 +57,28 @@ def seconds_in_game(grid, START_TIME):
 
 def debug_print_click(grid, MOUSE_POS, clicked_circle, my_body):
     """  Debug print on click event  """
-    print(""">>>>>> click: {0}, tile: {1}
-mode        : {2}
-menu        : {3}
-grid items  : {4}
-occupado:   : {5}
-playing     : {6}
-move track  : {7}
-all tiles   : {8}
-speed       : {9}
-""".format(MOUSE_POS,
-           clicked_circle,
-           my_body.mode,
-           my_body.in_menu,
-           len([item.name for item in grid.items]),
-           len(grid.occupado_tiles),
-           len(grid.playing_tiles),
-           my_body.move_track,
-           len(grid.tiles),
-           my_body.speed
-           )
-          )
+    pass
+#     print(""">>>>>> click: {0}, tile: {1}
+# mode        : {2}
+# menu        : {3}
+# grid items  : {4}
+# occupado:   : {5}
+# playing     : {6}
+# move track  : {7}
+# all tiles   : {8}
+# speed       : {9}
+# """.format(MOUSE_POS,
+#            clicked_circle,
+#            my_body.mode,
+#            my_body.in_menu,
+#            len([item.name for item in grid.items]),
+#            len(grid.occupado_tiles),
+#            len(grid.playing_tiles),
+#            my_body.move_track,
+#            len(grid.tiles),
+#            my_body.speed
+#            )
+#           )
 
 
 
