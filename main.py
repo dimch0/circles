@@ -75,17 +75,19 @@ pygame.mouse.set_visible(True)
 def gen_rot_track(idx):
     """ Generates rotating track and revert rotating track """
     track = None
+    step = 12
+    end_point = step * 5
 
     if idx == 1:
-        track = range(-12, -72, -12)
+        track = range(-step, -end_point, -step)
     elif idx == 2:
-        track = range(-12, -72 * 2, -12)
+        track = range(-step, -end_point * 2, -step)
     elif idx == 3:
-        track = range(-12, -72 * 3, -12)
+        track = range(-step, -end_point * 3, -step)
     elif idx == 4:
-        track = range(12, 72 * 2, 12)
+        track = range(step, end_point * 2, step)
     elif idx == 5:
-        track = range(12, 72, 12)
+        track = range(step, end_point, step)
 
     if track:
         my_body.rot_track = track
@@ -361,11 +363,13 @@ def game_loop():
 
                     # Image rotation
                     if item.rot_track:
+                        last_position = item.rot_track[-1]
                         item.rotate_img(pygame, item.rot_track[0])
                         item.rot_track.pop(0)
 
-                    if not item.move_track and item.rot_revert:
-                        item.rotate_revert_img(pygame, item.rot_revert[0])
+
+                    if not item.move_track and item.rot_revert and last_position:
+                        item.rotate_revert_img(pygame, last_position, item.rot_revert[0])
                         item.rot_revert.pop(0)
 
 

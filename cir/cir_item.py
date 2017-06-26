@@ -42,8 +42,9 @@ class Item(object):
         self.img = rot_image
 
 
-    def rotate_revert_img(self, pygame, angle):
+    def rotate_revert_img(self, pygame, start_angle, angle):
         # Rotating image
+        self.rotate_img(pygame, start_angle)
         orig_rect = self.img.get_rect()
 
         rot_image = pygame.transform.rotate(self.img, angle)
