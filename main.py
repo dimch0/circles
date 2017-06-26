@@ -4,10 +4,11 @@
 #################                                                                                     #################
 #######################################################################################################################
 
-# =============================================================== #
+# --------------------------------------------------------------- #
 #                            FEATURES                             #
-# =============================================================== #
+# --------------------------------------------------------------- #
 # TODO: Time modifier
+# TODO: Aninate rotation of image
 # TODO: Parametrize scenario
 # TODO: add sys argv for gameover and loading a game
 # TODO: Item generation on radar
@@ -21,11 +22,10 @@
 # TODO: Animate instructions
 # TODO: Animate item generation
 # TODO: Animate activation of abilities
-# TODO: Aninate rotation of image
 # TODO: Create installation .exe file
-# =============================================================== #
+# --------------------------------------------------------------- #
 #                            BUG FIXES                            #
-# =============================================================== #
+# --------------------------------------------------------------- #
 # TODO: Fix movement track
 
 
@@ -46,9 +46,9 @@ from cir.cir_loader import load_all_items
 
 pygame.init()
 
-# =============================================================== #
+# --------------------------------------------------------------- #
 #                             LOADING                             #
-# =============================================================== #
+# --------------------------------------------------------------- #
 # Grid
 grid = cir_grid.Grid()
 grid.game_display = pygame.display.set_mode((grid.display_width, grid.display_height))
@@ -58,7 +58,7 @@ images = cir_cosmetic.Images(grid, pygame)
 fonts = cir_cosmetic.Fonts(grid, pygame)
 
 # Player body
-my_body = cir_item_body.BodyItem(name="my body", image=images.galab, pos=grid.center_tile, color=grid.dark_grey, speed=2)
+my_body = cir_item_body.BodyItem(name="my body", image=images.galab1, pos=grid.center_tile, color=grid.dark_grey, speed=2)
 grid.items.append(my_body)
 grid.bodies.append(my_body)
 
@@ -71,6 +71,30 @@ clock = pygame.time.Clock()
 pygame.mouse.set_visible(True)
 
 
+
+def gen_rot_track(idx):
+    """ Generates rotating track and revert rotating track """
+    track = None
+
+    if idx == 1:
+        track = range(-12, -72, -12)
+    elif idx == 2:
+        track = range(-12, -72 * 2, -12)
+    elif idx == 3:
+        track = range(-12, -72 * 3, -12)
+    elif idx == 4:
+        track = range(12, 72 * 2, 12)
+    elif idx == 5:
+        track = range(12, 72, 12)
+
+    if track:
+        my_body.rot_track = track
+        my_body.rot_revert = cir_utils.negative_list(track)
+
+
+
+
+
 def gen_movement_arrows(grid, event):
     """ Generates steps to move my body - gen_move_track() """
     # TODO: make rotating image
@@ -78,7 +102,10 @@ def gen_movement_arrows(grid, event):
     for idx, arrow in enumerate(arrows):
         if event.key == arrow:
             if not my_body.move_track and not my_body.radar_track:
+                gen_rot_track(idx)
                 my_body.gen_move_track(grid, idx)
+
+
                 if my_body.move_track:
                     my_body.img = eval("images.galab"+str(idx+1))
 
@@ -104,24 +131,25 @@ def game_loop():
                 GAME_EXIT = True
 
             if event.type == pygame.KEYDOWN:
-                # =============================================================== #
+                # --------------------------------------------------------------- #
                 #                        ESCAPE LOOP                              #
-                # =============================================================== #
+                # --------------------------------------------------------------- #
                 if event.key == pygame.K_ESCAPE:
                     if not grid.game_menu:
                         grid.game_menu = True
 
                     elif grid.game_menu and grid.seconds_in_game > 0:
                         grid.game_menu = False
-                # =============================================================== #
+                # --------------------------------------------------------------- #
                 #                        SPACEBAR EVENTS                          #
-                # =============================================================== #
-                if event.key == pygame.K_SPACE:
-                    if not grid.game_menu:
+                # --------------------------------------------------------------- #
+                if not grid.game_menu:
+                    if event.key == pygame.K_SPACE:
 
-                        # =============================================================== #
+
+                        # --------------------------------------------------------------- #
                         #                      RADAR TRACK POPULATE                       #
-                        # =============================================================== #
+                        # --------------------------------------------------------------- #
                         if not my_body.move_track and not my_body.in_menu and not my_body.radar_track:
                             my_body.gen_radar_track(grid)
                             # my_body.mitosis(grid)
@@ -131,26 +159,52 @@ def game_loop():
                         # lifespan.step += 15
                         # print "steps:", lifespan.number_of_steps
 
-                    # Debug
-                    cir_utils.debug_print_space(grid)
+                        # Debug
+                        cir_utils.debug_print_space(grid)
 
 
-                # =============================================================== #
-                #                           OTHER KEYS                            #
-                # =============================================================== #
-                if event.key == pygame.K_p:
-                    if not grid.game_menu:
-                        ### DEBUG ###
-                        pdb.set_trace()
-                # =============================================================== #
-                #                      Generate Movement                          #
-                # =============================================================== #
-                if not grid.game_menu and not my_body.in_menu:
-                    gen_movement_arrows(grid, event)
+                    # --------------------------------------------------------------- #
+                    #                           't' KEY EVENTS                          #
+                    # --------------------------------------------------------------- #
+                    elif event.key == pygame.K_t:
+                            # Timers
+                            if grid.timers:
+                                for timer in grid.timers:
+                                    if timer.name == "lifespan":
+                                        print "step            :", timer.step
+                                        print "filled_steps    :", timer.filled_steps
+                                        print "number of steps :", timer.number_of_steps
+                                        print "len of step     :", timer.len_step
+                                        print "-"*20
+                                        # timer.step += 200
+                                        # timer.filled_steps -= 90
 
-            # =============================================================== #
+                    # --------------------------------------------------------------- #
+                    #                           'l' KEY EVENTS                          #
+                    # --------------------------------------------------------------- #
+                    elif event.key == pygame.K_l:
+                        # my_body.rot_track = range(12, 72, 12)
+                        # my_body.rotate_img(pygame, -12)
+                        print "l"
+
+                    # --------------------------------------------------------------- #
+                    #                           'r' KEY EVENTS                          #
+                    # --------------------------------------------------------------- #
+                    elif event.key == pygame.K_r:
+                        # my_body.rot_track = range(-12, -72, -12)
+                        # my_body.rotate_img(pygame, 60)
+                        print "r"
+
+
+                    # --------------------------------------------------------------- #
+                    #                      Generate Movement                          #
+                    # --------------------------------------------------------------- #
+                    if not my_body.in_menu:
+                        gen_movement_arrows(grid, event)
+
+            # --------------------------------------------------------------- #
             #                           CLICK EVENTS                          #
-            # =============================================================== #
+            # --------------------------------------------------------------- #r
             if event.type == pygame.MOUSEBUTTONDOWN:
                 clicked_circle = grid.mouse_in_tile(MOUSE_POS)
                 if clicked_circle:
@@ -167,9 +221,9 @@ def game_loop():
                             if hui not in grid.items:
                                 grid.items.append(hui)
 
-                    # =============================================================== #
+                    # --------------------------------------------------------------- #
                     #                        CLICK IN GAME MENU                       #
-                    # =============================================================== #
+                    # --------------------------------------------------------------- #
                     if grid.game_menu:
                         for button in grid.buttons:
                             if clicked_circle == button.pos and button.available:
@@ -183,9 +237,9 @@ def game_loop():
                                     pygame.quit()
                                     quit()
 
-                    # =============================================================== #
+                    # --------------------------------------------------------------- #
                     #                        CLICK GRID ITEMS                         #
-                    # =============================================================== #
+                    # --------------------------------------------------------------- #
                     elif not grid.game_menu:
                         for item in grid.items:
                             if clicked_circle == item.pos and item.available:
@@ -199,16 +253,16 @@ def game_loop():
                                     grid.mouse_mode = None
                                     grid.mouse_img = None
 
-                            # =============================================================== #
+                            # --------------------------------------------------------------- #
                             #                       CLICK ITEM OPTIONS                        #
-                            # =============================================================== #
+                            # --------------------------------------------------------------- #
                             elif clicked_circle in grid.adj_tiles(item.pos) and item.in_menu:
                                 if item.options:
                                     for option in item.options:
                                         if clicked_circle == option.pos:
-                                            # =============================================================== #
+                                            # --------------------------------------------------------------- #
                                             #                       CLICK DEFAULT OPTIONS                     #
-                                            # =============================================================== #
+                                            # --------------------------------------------------------------- #
                                             if option in item.default_options:
 
                                                 if option.name == "bag":
@@ -220,9 +274,9 @@ def game_loop():
                                                 # Setting the mode
                                                 item.set_mode(grid, option, MODE_VS_OPTIONS)
 
-                                            # =============================================================== #
+                                            # --------------------------------------------------------------- #
                                             #                        CLICK SUB-OPTIONS                        #
-                                            # =============================================================== #
+                                            # --------------------------------------------------------------- #
                                             elif option in MODE_VS_OPTIONS[item.mode]:
 
                                                 if item.mode == "move":
@@ -250,9 +304,9 @@ def game_loop():
                                             if option.name not in MODE_VS_OPTIONS.keys():
                                                 item.set_in_menu(grid, False)
 
-                                            # =============================================================== #
+                                            # --------------------------------------------------------------- #
                                             #                            MOUSE MODE                           #
-                                            # =============================================================== #
+                                            # --------------------------------------------------------------- #
                                             if option.modable:
                                                 grid.mouse_mode = option.name
                                                 if option.img and option.modable:
@@ -260,9 +314,9 @@ def game_loop():
                 # Debug print
                 cir_utils.debug_print_click(grid, MOUSE_POS, clicked_circle, my_body)
 
-        # =============================================================== #
+        # --------------------------------------------------------------- #
         #                        DRAWING BACKGROUND                       #
-        # =============================================================== #
+        # --------------------------------------------------------------- #
         grid.game_display.fill(grid.dark_grey)
 
         if not grid.game_menu:
@@ -281,9 +335,9 @@ def game_loop():
             if grid.show_playing_tiles:
                 cir_draw.draw_playing_tiles(pygame, grid)
 
-            # =============================================================== #
+            # --------------------------------------------------------------- #
             #                        DRAWING ANIMATIONS                       #
-            # =============================================================== #
+            # --------------------------------------------------------------- #
             for item in grid.items:
                 if item.available:
 
@@ -305,9 +359,23 @@ def game_loop():
                     if grid.show_movement and len(item.move_track) > 1:
                         cir_draw.draw_movement(pygame, grid, item)
 
+                    # Image rotation
+                    if item.rot_track:
+                        item.rotate_img(pygame, item.rot_track[0])
+                        item.rot_track.pop(0)
+
+                    if not item.move_track and item.rot_revert:
+                        item.rotate_revert_img(pygame, item.rot_revert[0])
+                        item.rot_revert.pop(0)
+
+
+
             # Timers
             if grid.timers:
                 cir_draw.draw_timers(pygame, grid, my_body)
+
+            # ROTATION TEST
+            grid.game_display.blit(images.cacti, (200, 200))
 
         elif grid.game_menu:
             # Menu Buttons
@@ -323,9 +391,9 @@ def game_loop():
         # === END DRAWING === #
         pygame.display.update()
 
-        # =============================================================== #
+        # --------------------------------------------------------------- #
         #                           CHANGE VARS                           #
-        # =============================================================== #
+        # --------------------------------------------------------------- #
         if not grid.game_menu:
 
             # Lifespan timer
@@ -341,9 +409,9 @@ def game_loop():
                 # Movement
                 if item.move_track:
                     item.move()
-                else:
-                    if item == my_body:
-                        my_body.img = images.galab
+                # else:
+                #     if item == my_body:
+                #         my_body.img = images.galab
 
                 # Clean placeholders
                 cir_utils.clean_placeholders(grid, item)

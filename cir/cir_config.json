@@ -7,9 +7,9 @@
     },
 
   "VISIBILITY": {
-    "show_grid": 1,
+    "show_grid": false,
     "show_movement": false,
-    "show_playing_tiles": 1
+    "show_playing_tiles": false
   },
 
   "DIRS": {

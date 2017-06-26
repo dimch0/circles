@@ -18,6 +18,8 @@ class MobileItem(Item):
         super(MobileItem, self).__init__(**kwargs)
         self.speed = speed
         self.direction = None
+        self.move_track = []
+
 
     def change_speed(self, modifier):
         self.speed += modifier

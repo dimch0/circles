@@ -59,29 +59,72 @@ def load_all_items(grid, images, fonts, my_body):
 
     with open(grid.data_file, 'rb') as csvfile:
         data = csv.reader(csvfile, delimiter=',')
+        header = next(data)
+
+        # --------------------------------------------------------------- #
+        #                        SET COLUMN INDEX                         #
+        # --------------------------------------------------------------- #
+        for idx, name in enumerate(header):
+            if name == "scenario":
+                idx_scenario = idx
+            elif name == "category":
+                idx_category = idx
+            elif name == "type":
+                idx_type = idx
+            elif name == "name":
+                idx_name = idx
+            elif name == "pos":
+                idx_pos = idx
+            elif name == "color":
+                idx_color = idx
+            elif name == "img":
+                idx_img = idx
+            elif name == "border":
+                idx_border = idx
+            elif name == "speed":
+                idx_speed = idx
+            elif name == "range":
+                idx_range = idx
+            elif name == "font":
+                idx_font = idx
+            elif name == "text_color":
+                idx_text_color = idx
+            elif name == "text":
+                idx_text = idx
+            elif name == "duration":
+                idx_duration = idx
+            elif name == "time_color":
+                idx_time_color = idx
+            elif name == "modable":
+                idx_modable = idx
+
         for row in data:
             if not row[0] == "scenario":
 
-                # ===================== COLS FROM data.csv FILE ==================== #
-                item_scenario = row[0]
-                item_category = row[1]
-                item_type = row[2] if len(row[2]) > 0 else None
-                item_name = row[3] if len(row[3]) > 0 else None
-                item_pos = eval(row[4]) if len(row[4]) > 0 else ()
-                item_color = getattr(grid, row[5]) if len(row[5]) > 0 else None
-                item_img = getattr(images, row[6]) if len(row[6]) > 0 else None
-                item_border = row[7] if len(row[7]) > 0 else 0
-                item_speed = int(row[8]) if len(row[8]) > 0 else None
-                item_range = row[9] if len(row[9]) > 0 else None
-                item_font = getattr(fonts, row[10]) if len(row[10]) > 0 else None
-                item_text_color = getattr(grid, row[11]) if len(row[11]) > 0 else None
-                item_text = row[12] if len(row[12]) > 0 else None
-                item_duration = int(row[13]) if len(row[13]) > 0 else None
-                item_time_color = getattr(grid, row[14]) if len(row[14]) > 0 else None
-                item_start_time = row[15] if len(row[15]) > 0 else None
-                item_modable = row[16] if len(row[16]) > 0 else None
-                # ===================== COLS FROM data.csv FILE ==================== #
+                # --------------------------------------------------------------- #
+                #                      SET COLS AS ATTRIBUTES                     #
+                # --------------------------------------------------------------- #
+                item_scenario = row[idx_scenario]
+                item_category = row[idx_category]
+                item_type = row[idx_type] if len(row[idx_type]) > 0 else None
+                item_name = row[idx_name] if len(row[idx_name]) > 0 else None
+                item_pos = eval(row[idx_pos]) if len(row[idx_pos]) > 0 else ()
+                item_color = getattr(grid, row[idx_color]) if len(row[idx_color]) > 0 else None
+                item_img = getattr(images, row[idx_img]) if len(row[idx_img]) > 0 else None
+                item_border = row[idx_border] if len(row[idx_border]) > 0 else 0
+                item_speed = int(row[idx_speed]) if len(row[idx_speed]) > 0 else None
+                item_range = row[idx_range] if len(row[idx_range]) > 0 else None
+                item_font = getattr(fonts, row[idx_font]) if len(row[idx_font]) > 0 else None
+                item_text_color = getattr(grid, row[idx_text_color]) if len(row[idx_text_color]) > 0 else None
+                item_text = row[idx_text] if len(row[idx_text]) > 0 else None
+                item_duration = int(row[idx_duration]) if len(row[idx_duration]) > 0 else None
+                item_time_color = getattr(grid, row[idx_time_color]) if len(row[idx_time_color]) > 0 else None
+                item_modable = row[idx_modable] if len(row[idx_modable]) > 0 else None
 
+
+                # --------------------------------------------------------------- #
+                #                           CREATE ITEMS                          #
+                # --------------------------------------------------------------- #
                 if item_scenario == "mode_vs_options":
                     item_to_append = cir_item.Item(
                         name=item_name,

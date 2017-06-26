@@ -13,21 +13,20 @@ class TimerItem(MobileItem):
     def __init__(self, duration, time_color, tile_radius, start_time=None, **kwargs):
         super(TimerItem, self).__init__(**kwargs)
 
-        self.time_color = time_color
         self.start_time = start_time
         self.duration = duration
-
+        self.time_color = time_color
         self.timer_tile_radius = tile_radius
         self._rect = []
-        self.filled_steps = 90
-        self.start_point = math.radians(self.filled_steps)
-        self._filled_angle = None
+
+        self.start_rad = 90
+        self.filled_steps = self.start_rad
+        self.step = 1
 
         self.time_step = 0.0157
+        self._is_over = False
         self.number_of_steps = int(self.duration / self.time_step)
         self.len_step = -float(360) / self.number_of_steps
-        self.step = 1
-        self._is_over = False
 
     def tick(self):
         """ Starts the timer, increasing the step and filled_steps """
@@ -45,15 +44,6 @@ class TimerItem(MobileItem):
             if self.step == self.number_of_steps:
                 self._is_over = True
         return self._is_over
-
-    @property
-    def filled_angle(self):
-        """
-        This defines the first radian argument for the arc drawing of timer
-        stop_radian is at math.radians(-270)
-        """
-        self._filled_angle = math.radians(self.filled_steps)
-        return self._filled_angle
 
     @property
     def rect(self):

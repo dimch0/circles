@@ -84,17 +84,6 @@ def debug_print_click(grid, MOUSE_POS, clicked_circle, my_body):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 def debug_print_space(grid):
     """  Debug print on space bar event  """
     print(""">>>> space
@@ -109,7 +98,21 @@ revealed_radius: {1}
 
 
 def clean_placeholders(grid, item):
+    """Cleans the placeholders for mitosis"""
     if item.name == "placeholder":
         for other_item in grid.items:
             if other_item.pos == item.pos:
                 grid.items.remove(item)
+
+
+def negative_list(original_list):
+    return [-x for x in original_list]
+
+# def rot_center(pygame, image, angle):
+#     """rotate an image while keeping its center and size"""
+#     orig_rect = image.get_rect()
+#     rot_image = pygame.transform.rotate(image, angle)
+#     rot_rect = orig_rect.copy()
+#     rot_rect.center = rot_image.get_rect().center
+#     rot_image = rot_image.subsurface(rot_rect).copy()
+#     return rot_image

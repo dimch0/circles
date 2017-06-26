@@ -27,10 +27,30 @@ class Item(object):
         self.mode = self.name
 
         self.overlap = []
+        self.rot_track = []
+        self.rot_revert = []
 
 
-        self.move_track = []
-        self.radar_track = []
+    def rotate_img(self, pygame, angle):
+        # Rotating image
+        orig_rect = self.default_img.get_rect()
+
+        rot_image = pygame.transform.rotate(self.default_img, angle)
+        rot_rect = orig_rect.copy()
+        rot_rect.center = rot_image.get_rect().center
+        rot_image = rot_image.subsurface(rot_rect).copy()
+        self.img = rot_image
+
+
+    def rotate_revert_img(self, pygame, angle):
+        # Rotating image
+        orig_rect = self.img.get_rect()
+
+        rot_image = pygame.transform.rotate(self.img, angle)
+        rot_rect = orig_rect.copy()
+        rot_rect.center = rot_image.get_rect().center
+        rot_image = rot_image.subsurface(rot_rect).copy()
+        self.img = rot_image
 
 
     def set_option_pos(self, grid):
@@ -119,3 +139,4 @@ class Item(object):
         # Clicked outside
         elif clicked_circle is not self.pos and clicked_circle not in grid.adj_tiles(self.pos):
             self.set_in_menu(grid, False)
+
