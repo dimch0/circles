@@ -324,7 +324,7 @@ def game_loop():
                         item.rotate(pygame)
 
                     # Item revert rotation
-                    if not item.move_track and item.rot_revert and item.last_direction:
+                    if not item.move_track:
                         item.revert_rotation(pygame)
 
             # Timers

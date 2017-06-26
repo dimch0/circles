@@ -32,9 +32,8 @@ class Item(object):
         self.last_direction = None
 
     def rotate_img(self, pygame, angle):
-        # Rotating image
+        """ Creates rotated image """
         orig_rect = self.default_img.get_rect()
-
         rot_image = pygame.transform.rotate(self.default_img, angle)
         rot_rect = orig_rect.copy()
         rot_rect.center = rot_image.get_rect().center
@@ -43,10 +42,9 @@ class Item(object):
 
 
     def rotate_revert_img(self, pygame, start_angle, angle):
-        # Rotating image
+        """ Creates counter-rotated image """
         self.rotate_img(pygame, start_angle)
         orig_rect = self.img.get_rect()
-
         rot_image = pygame.transform.rotate(self.img, angle)
         rot_rect = orig_rect.copy()
         rot_rect.center = rot_image.get_rect().center
@@ -55,13 +53,19 @@ class Item(object):
 
 
     def rotate(self, pygame):
+        """ Rotates the image """
         self.rotate_img(pygame, self.rot_track[0])
         self.rot_track.pop(0)
 
 
     def revert_rotation(self, pygame):
-        self.rotate_revert_img(pygame, self.last_direction, self.rot_revert[0])
-        self.rot_revert.pop(0)
+        if self.rot_revert and self.last_direction:
+            self.rotate_revert_img(pygame, self.last_direction, self.rot_revert[0])
+            self.rot_revert.pop(0)
+        # TODO: check if virgin
+        if not self.rot_revert:
+            self.img = self.default_img
+
 
 
     def set_option_pos(self, grid):
