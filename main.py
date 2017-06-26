@@ -72,46 +72,6 @@ pygame.mouse.set_visible(True)
 
 
 
-def gen_rot_track(idx):
-    """ Generates rotating track and revert rotating track """
-    track = None
-    step = 12
-    end_point = step * 5
-
-    if idx == 1:
-        track = range(-step, -end_point, -step)
-    elif idx == 2:
-        track = range(-step, -end_point * 2, -step)
-    elif idx == 3:
-        track = range(-step, -end_point * 3, -step)
-    elif idx == 4:
-        track = range(step, end_point * 2, step)
-    elif idx == 5:
-        track = range(step, end_point, step)
-
-    if track:
-        my_body.rot_track = track
-        my_body.rot_revert = cir_utils.negative_list(track)
-
-
-
-
-
-def gen_movement_arrows(grid, event):
-    """ Generates steps to move my body - gen_move_track() """
-    # TODO: make rotating image
-    arrows = [pygame.K_w, pygame.K_e, pygame.K_d, pygame.K_s, pygame.K_a, pygame.K_q]
-    for idx, arrow in enumerate(arrows):
-        if event.key == arrow:
-            if not my_body.move_track and not my_body.radar_track:
-                gen_rot_track(idx)
-                my_body.gen_move_track(grid, idx)
-
-
-                if my_body.move_track:
-                    my_body.img = eval("images.galab"+str(idx+1))
-
-
 def game_loop():
     """ Main game loop. """
 
@@ -185,16 +145,14 @@ def game_loop():
                     #                           'l' KEY EVENTS                          #
                     # --------------------------------------------------------------- #
                     elif event.key == pygame.K_l:
-                        # my_body.rot_track = range(12, 72, 12)
-                        # my_body.rotate_img(pygame, -12)
                         print "l"
 
                     # --------------------------------------------------------------- #
                     #                           'r' KEY EVENTS                          #
                     # --------------------------------------------------------------- #
                     elif event.key == pygame.K_r:
-                        # my_body.rot_track = range(-12, -72, -12)
-                        # my_body.rotate_img(pygame, 60)
+                        my_body.img = images.alien1
+                        my_body.default_img = my_body.img
                         print "r"
 
 
@@ -202,7 +160,7 @@ def game_loop():
                     #                      Generate Movement                          #
                     # --------------------------------------------------------------- #
                     if not my_body.in_menu:
-                        gen_movement_arrows(grid, event)
+                        cir_utils.gen_movement_arrows(pygame, grid, event, my_body)
 
             # --------------------------------------------------------------- #
             #                           CLICK EVENTS                          #
@@ -362,24 +320,17 @@ def game_loop():
                         cir_draw.draw_movement(pygame, grid, item)
 
                     # Image rotation
-                    if item.rot_track:
-                        last_position = item.rot_track[-1]
-                        item.rotate_img(pygame, item.rot_track[0])
-                        item.rot_track.pop(0)
+                    if item.rot_track and item.move_track:
+                        item.rotate(pygame)
 
-
-                    if not item.move_track and item.rot_revert and last_position:
-                        item.rotate_revert_img(pygame, last_position, item.rot_revert[0])
-                        item.rot_revert.pop(0)
-
-
+                    # Item revert rotation
+                    if not item.move_track and item.rot_revert and item.last_direction:
+                        item.revert_rotation(pygame)
 
             # Timers
             if grid.timers:
                 cir_draw.draw_timers(pygame, grid, my_body)
 
-            # ROTATION TEST
-            grid.game_display.blit(images.cacti, (200, 200))
 
         elif grid.game_menu:
             # Menu Buttons
@@ -413,9 +364,6 @@ def game_loop():
                 # Movement
                 if item.move_track:
                     item.move()
-                # else:
-                #     if item == my_body:
-                #         my_body.img = images.galab
 
                 # Clean placeholders
                 cir_utils.clean_placeholders(grid, item)

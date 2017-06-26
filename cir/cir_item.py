@@ -29,7 +29,7 @@ class Item(object):
         self.overlap = []
         self.rot_track = []
         self.rot_revert = []
-
+        self.last_direction = None
 
     def rotate_img(self, pygame, angle):
         # Rotating image
@@ -52,6 +52,16 @@ class Item(object):
         rot_rect.center = rot_image.get_rect().center
         rot_image = rot_image.subsurface(rot_rect).copy()
         self.img = rot_image
+
+
+    def rotate(self, pygame):
+        self.rotate_img(pygame, self.rot_track[0])
+        self.rot_track.pop(0)
+
+
+    def revert_rotation(self, pygame):
+        self.rotate_revert_img(pygame, self.last_direction, self.rot_revert[0])
+        self.rot_revert.pop(0)
 
 
     def set_option_pos(self, grid):

@@ -105,14 +105,43 @@ def clean_placeholders(grid, item):
                 grid.items.remove(item)
 
 
+# --------------------------------------------------------------- #
+#                      ROTATION AND MOVEMENT                      #
+# --------------------------------------------------------------- #
 def negative_list(original_list):
+    """ Returns the negative values of a list """
     return [-x for x in original_list]
 
-# def rot_center(pygame, image, angle):
-#     """rotate an image while keeping its center and size"""
-#     orig_rect = image.get_rect()
-#     rot_image = pygame.transform.rotate(image, angle)
-#     rot_rect = orig_rect.copy()
-#     rot_rect.center = rot_image.get_rect().center
-#     rot_image = rot_image.subsurface(rot_rect).copy()
-#     return rot_image
+
+def gen_rot_track(idx, item):
+    """ Generates rotating track and revert rotating track """
+    track = None
+    step = 12
+    end_point = step * 5
+
+    if idx == 1:
+        track = range(-step, -end_point, -step)
+    elif idx == 2:
+        track = range(-step, -end_point * 2, -step)
+    elif idx == 3:
+        track = range(-step, -end_point * 3, -step)
+    elif idx == 4:
+        track = range(step, end_point * 2, step)
+    elif idx == 5:
+        track = range(step, end_point, step)
+
+    if track:
+        item.rot_track = track
+        item.rot_revert = negative_list(track)
+        item.last_direction = item.rot_track[-1]
+
+
+def gen_movement_arrows(pygame, grid, event, item):
+    """ Generates steps to move my body - gen_move_track() """
+    arrows = [pygame.K_w, pygame.K_e, pygame.K_d, pygame.K_s, pygame.K_a, pygame.K_q]
+    for idx, arrow in enumerate(arrows):
+        if event.key == arrow:
+            if not item.move_track and not item.radar_track:
+                gen_rot_track(idx, item)
+                item.gen_move_track(grid, idx)
+
