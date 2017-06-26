@@ -46,29 +46,7 @@ from cir.cir_loader import load_all_items
 
 pygame.init()
 
-# --------------------------------------------------------------- #
-#                             LOADING                             #
-# --------------------------------------------------------------- #
-# Grid
-grid = cir_grid.Grid()
-grid.game_display = pygame.display.set_mode((grid.display_width, grid.display_height))
 
-# Images and fonts
-images = cir_cosmetic.Images(grid, pygame)
-fonts = cir_cosmetic.Fonts(grid, pygame)
-
-# Player body
-my_body = cir_item_body.BodyItem(name="my body", image=images.galab1, pos=grid.center_tile, color=grid.dark_grey, speed=2)
-grid.items.append(my_body)
-grid.bodies.append(my_body)
-
-# All items
-ALL_ITEMS, MODE_VS_OPTIONS = load_all_items(grid, images, fonts, my_body)
-
-# Settings
-pygame.display.set_caption(grid.caption)
-clock = pygame.time.Clock()
-pygame.mouse.set_visible(True)
 
 
 
@@ -386,4 +364,28 @@ def game_loop():
     quit()
 
 if __name__ == '__main__':
+    # --------------------------------------------------------------- #
+    #                             LOADING                             #
+    # --------------------------------------------------------------- #
+    # Grid
+    grid = cir_grid.Grid()
+    grid.game_display = pygame.display.set_mode((grid.display_width, grid.display_height))
+
+    # Images and fonts
+    images = cir_cosmetic.Images(grid, pygame)
+    fonts = cir_cosmetic.Fonts(grid, pygame)
+
+    # Player body
+    my_body = cir_item_body.BodyItem(name="my body", image=images.galab1, pos=grid.center_tile, color=grid.dark_grey,
+                                     speed=2)
+    grid.items.append(my_body)
+    grid.bodies.append(my_body)
+
+    # All items
+    ALL_ITEMS, MODE_VS_OPTIONS = load_all_items(grid, images, fonts, my_body)
+
+    # Settings
+    pygame.display.set_caption(grid.caption)
+    clock = pygame.time.Clock()
+    pygame.mouse.set_visible(True)
     game_loop()

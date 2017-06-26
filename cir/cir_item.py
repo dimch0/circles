@@ -26,10 +26,15 @@ class Item(object):
         self.modable = modable
         self.mode = self.name
 
+
+        self.direction = None
+        self.last_direction = None
+        self.move_track = []
+        self.radar_track = []
         self.overlap = []
         self.rot_track = []
         self.rot_revert = []
-        self.last_direction = None
+
 
     def rotate_img(self, pygame, angle):
         """ Creates rotated image """
