@@ -138,7 +138,13 @@ def gen_rot_track(idx, item):
 
 def gen_movement_arrows(pygame, grid, event, item):
     """ Generates steps to move my body - gen_move_track() """
-    arrows = [pygame.K_w, pygame.K_e, pygame.K_d, pygame.K_s, pygame.K_a, pygame.K_q]
+    arrows = [pygame.K_w,
+              pygame.K_e,
+              pygame.K_d,
+              pygame.K_s,
+              pygame.K_a,
+              pygame.K_q]
+
     for idx, arrow in enumerate(arrows):
         if event.key == arrow:
             if not item.move_track and not item.radar_track:
