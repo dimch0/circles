@@ -80,19 +80,13 @@ def debug_print_click(grid, MOUSE_POS, clicked_circle, my_body):
 #            )
 #           )
 
-
-
-
-
 def debug_print_space(grid):
     """  Debug print on space bar event  """
     print(""">>>> space
 revealed tiles: {0}
 revealed_radius: {1}
-{2}
 """.format(len(grid.revealed_tiles),
            len(grid.revealed_radius),
-           grid.revealed_radius,
           )
          )
 
@@ -105,19 +99,19 @@ def clean_placeholders(grid, item):
                 grid.items.remove(item)
 
 
-# --------------------------------------------------------------- #
-#                      ROTATION AND MOVEMENT                      #
-# --------------------------------------------------------------- #
 def negative_list(original_list):
     """ Returns the negative values of a list """
     return [-x for x in original_list]
 
 
+# --------------------------------------------------------------- #
+#                      ROTATION AND MOVEMENT                      #
+# --------------------------------------------------------------- #
 def gen_rot_track(idx, item):
     """ Generates rotating track and revert rotating track """
     track = None
-    step = 12
-    end_point = step * 5
+    step = 20
+    end_point = step * 4
 
     if idx == 1:
         track = range(-step, -end_point, -step)
@@ -133,17 +127,18 @@ def gen_rot_track(idx, item):
     if track:
         item.rot_track = track
         item.rot_revert = negative_list(track)
-        item.last_direction = item.rot_track[-1]
 
 
 def gen_movement_arrows(pygame, grid, event, item):
     """ Generates steps to move my body - gen_move_track() """
-    arrows = [pygame.K_w,
-              pygame.K_e,
-              pygame.K_d,
-              pygame.K_s,
-              pygame.K_a,
-              pygame.K_q]
+    arrows = [
+        pygame.K_w,
+        pygame.K_e,
+        pygame.K_d,
+        pygame.K_s,
+        pygame.K_a,
+        pygame.K_q
+    ]
 
     for idx, arrow in enumerate(arrows):
         if event.key == arrow:

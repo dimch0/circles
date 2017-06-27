@@ -81,18 +81,17 @@ def game_loop():
                     elif grid.game_menu and grid.seconds_in_game > 0:
                         grid.game_menu = False
                 # --------------------------------------------------------------- #
-                #                        SPACEBAR EVENTS                          #
+                #                        SPACE BAR EVENTS                          #
                 # --------------------------------------------------------------- #
                 if not grid.game_menu:
                     if event.key == pygame.K_SPACE:
 
 
                         # --------------------------------------------------------------- #
-                        #                      RADAR TRACK POPULATE                       #
+                        #                     RADAR TRACK POPULATION                      #
                         # --------------------------------------------------------------- #
                         if not my_body.move_track and not my_body.in_menu and not my_body.radar_track:
                             my_body.gen_radar_track(grid)
-                            # my_body.mitosis(grid)
 
                         # TODO: time modifier
                         # lifespan.len_step += (lifespan.len_step / 100) * 10
@@ -302,7 +301,7 @@ def game_loop():
                         item.rotate(pygame)
 
                     # Item revert rotation
-                    if not item.move_track:
+                    if not item.move_track and item.last_direction:
                         item.revert_rotation(pygame)
 
             # Timers

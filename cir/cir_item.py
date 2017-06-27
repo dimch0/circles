@@ -3,7 +3,7 @@
 #################                           Item class, MobileItem class                              #################
 #################                                                                                     #################
 #######################################################################################################################
-import pdb
+
 
 class Item(object):
     """
@@ -11,31 +11,40 @@ class Item(object):
     It includes the open_menu method.
     """
     def __init__(self, name, pos=(), color=None, uncolor=None, image=None, border=0, modable=False):
+        # --------------------------------------------------------------- #
+        #                            BASICS                               #
+        # --------------------------------------------------------------- #
         self.name = name
         self.pos = pos
         self.color = color
-        # self.uncolor = uncolor
         self.img = image
         self.border = border
-        self.options = []
         self.default_color = self.color
         self.default_img = self.img
-        self.default_options = []
-        self.in_menu = False
         self.available = True
+        # --------------------------------------------------------------- #
+        #                            OPTIONS                              #
+        # --------------------------------------------------------------- #
+        self.in_menu = False
         self.modable = modable
         self.mode = self.name
-
-
+        self.options = []
+        self.default_options = []
+        self.overlap = []
+        # --------------------------------------------------------------- #
+        #                            ANIMATION                            #
+        # --------------------------------------------------------------- #
         self.direction = None
         self.last_direction = None
         self.move_track = []
         self.radar_track = []
-        self.overlap = []
         self.rot_track = []
         self.rot_revert = []
 
 
+    # --------------------------------------------------------------- #
+    #                           ROTATION                              #
+    # --------------------------------------------------------------- #
     def rotate_img(self, pygame, angle):
         """ Creates rotated image """
         orig_rect = self.default_img.get_rect()
@@ -44,7 +53,6 @@ class Item(object):
         rot_rect.center = rot_image.get_rect().center
         rot_image = rot_image.subsurface(rot_rect).copy()
         self.img = rot_image
-
 
     def rotate_revert_img(self, pygame, start_angle, angle):
         """ Creates counter-rotated image """
@@ -56,13 +64,6 @@ class Item(object):
         rot_image = rot_image.subsurface(rot_rect).copy()
         self.img = rot_image
 
-
-    def rotate(self, pygame):
-        """ Rotates the image """
-        self.rotate_img(pygame, self.rot_track[0])
-        self.rot_track.pop(0)
-
-
     def revert_rotation(self, pygame):
         if self.rot_revert and self.last_direction:
             self.rotate_revert_img(pygame, self.last_direction, self.rot_revert[0])
@@ -70,9 +71,18 @@ class Item(object):
         # TODO: check if virgin
         if not self.rot_revert:
             self.img = self.default_img
+            self.last_direction = False
 
+    def rotate(self, pygame):
+        """ Rotates the image """
+        self.rotate_img(pygame, self.rot_track[0])
+        if len(self.rot_track) == 1:
+            self.last_direction = True
+        self.rot_track.pop(0)
 
-
+    # --------------------------------------------------------------- #
+    #                          MODE OPTIONS                           #
+    # --------------------------------------------------------------- #
     def set_option_pos(self, grid):
         # Returning the options only
         for idx, option in enumerate(self.options):
@@ -103,37 +113,19 @@ class Item(object):
         self.img = self.default_img
         self.options = self.default_options
 
-    def overlapping(self, grid):
-        """
-        Checks for overlapping items
-        if in menu: creates a archive in self.overlap
-        if not in menu: restores from self.overlap
-        """
-        if self.in_menu:
-            for overlapping_item in grid.items:
-                for ajd_tile in grid.adj_tiles(self.pos):
-                    if overlapping_item.pos == ajd_tile:
-                        if not overlapping_item in self.overlap:
-                            self.overlap.append(overlapping_item)
-                            overlapping_item.available = False
-        else:
-            if self.overlap:
-                for item in self.overlap:
-                    item.available = True
-                    self.overlap.remove(item)
 
+    # --------------------------------------------------------------- #
+    #                           ITEM MENU                             #
+    # --------------------------------------------------------------- #
     def set_in_menu(self, grid, FLAG):
         """ Setting the in_menu attribute
         :param FLAG: boolean -True or False
         """
         if FLAG:
             self.in_menu = True
-
         else:
             self.in_menu = False
-
         return self.in_menu
-
 
     def check_in_menu(self, grid, clicked_circle, mode_vs_options):
         """
@@ -160,3 +152,25 @@ class Item(object):
         elif clicked_circle is not self.pos and clicked_circle not in grid.adj_tiles(self.pos):
             self.set_in_menu(grid, False)
 
+
+    # --------------------------------------------------------------- #
+    #                            OVERLAP                              #
+    # --------------------------------------------------------------- #
+    def overlapping(self, grid):
+        """
+        Checks for overlapping items
+        if in menu: creates a archive in self.overlap
+        if not in menu: restores from self.overlap
+        """
+        if self.in_menu:
+            for overlapping_item in grid.items:
+                for ajd_tile in grid.adj_tiles(self.pos):
+                    if overlapping_item.pos == ajd_tile:
+                        if not overlapping_item in self.overlap:
+                            self.overlap.append(overlapping_item)
+                            overlapping_item.available = False
+        else:
+            if self.overlap:
+                for item in self.overlap:
+                    item.available = True
+                    self.overlap.remove(item)

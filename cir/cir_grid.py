@@ -9,7 +9,7 @@ from cir_utils import in_circle, inside_polygon
 from math import sqrt
 
 
-CONFIG_JSON_FILE = "cir/cir_config.json"
+CONFIG_JSON_FILE = "data/cir_config.json"
 
 class Grid(object):
     """
