@@ -104,15 +104,27 @@ def negative_list(original_list):
     return [-x for x in original_list]
 
 
+def rot_center(pygame, image, angle):
+    """rotate an image while keeping its center and size"""
+    orig_rect = image.get_rect()
+    rot_image = pygame.transform.rotate(image, angle)
+    rot_rect = orig_rect.copy()
+    rot_rect.center = rot_image.get_rect().center
+    rot_image = rot_image.subsurface(rot_rect).copy()
+    return rot_image
+
 # --------------------------------------------------------------- #
-#                      ROTATION AND MOVEMENT                      #
+#                            MOVEMENT                             #
 # --------------------------------------------------------------- #
 def gen_rot_track(idx, item):
-    """ Generates rotating track and revert rotating track """
+    """
+    Generates rotating track and revert rotating track
+    :param idx:  index of direction
+    :param item: item to whom belongs the image
+    """
+    step = 12
+    end_point = step * 6
     track = None
-    step = 20
-    end_point = step * 4
-
     if idx == 1:
         track = range(-step, -end_point, -step)
     elif idx == 2:
@@ -126,7 +138,10 @@ def gen_rot_track(idx, item):
 
     if track:
         item.rot_track = track
-        item.rot_revert = negative_list(track)
+        if idx == 3:
+            item.rot_revert = range(-step, -end_point * 2, -step)
+        else:
+            item.rot_revert = negative_list(item.rot_track)
 
 
 def gen_movement_arrows(pygame, grid, event, item):
@@ -145,4 +160,3 @@ def gen_movement_arrows(pygame, grid, event, item):
             if not item.move_track and not item.radar_track:
                 gen_rot_track(idx, item)
                 item.gen_move_track(grid, idx)
-

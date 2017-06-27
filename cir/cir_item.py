@@ -3,7 +3,7 @@
 #################                           Item class, MobileItem class                              #################
 #################                                                                                     #################
 #######################################################################################################################
-
+from cir_utils import rot_center
 
 class Item(object):
     """
@@ -47,28 +47,18 @@ class Item(object):
     # --------------------------------------------------------------- #
     def rotate_img(self, pygame, angle):
         """ Creates rotated image """
-        orig_rect = self.default_img.get_rect()
-        rot_image = pygame.transform.rotate(self.default_img, angle)
-        rot_rect = orig_rect.copy()
-        rot_rect.center = rot_image.get_rect().center
-        rot_image = rot_image.subsurface(rot_rect).copy()
-        self.img = rot_image
+        self.img = rot_center(pygame, self.default_img, angle)
 
-    def rotate_revert_img(self, pygame, start_angle, angle):
+    def rotate_revert_img(self, pygame, angle):
         """ Creates counter-rotated image """
-        self.rotate_img(pygame, start_angle)
-        orig_rect = self.img.get_rect()
-        rot_image = pygame.transform.rotate(self.img, angle)
-        rot_rect = orig_rect.copy()
-        rot_rect.center = rot_image.get_rect().center
-        rot_image = rot_image.subsurface(rot_rect).copy()
-        self.img = rot_image
+        self.img = rot_center(pygame, self.img, angle)
 
     def revert_rotation(self, pygame):
+        """ Returns the image to start position """
         if self.rot_revert and self.last_direction:
-            self.rotate_revert_img(pygame, self.last_direction, self.rot_revert[0])
+            self.rotate_img(pygame, self.last_direction)
+            self.rotate_revert_img(pygame, self.rot_revert[0])
             self.rot_revert.pop(0)
-        # TODO: check if virgin
         if not self.rot_revert:
             self.img = self.default_img
             self.last_direction = False
@@ -77,7 +67,7 @@ class Item(object):
         """ Rotates the image """
         self.rotate_img(pygame, self.rot_track[0])
         if len(self.rot_track) == 1:
-            self.last_direction = True
+            self.last_direction = self.rot_track[-1]
         self.rot_track.pop(0)
 
     # --------------------------------------------------------------- #
@@ -97,8 +87,6 @@ class Item(object):
         """
         self.mode = option.name
         self.color = option.color
-        # if option.uncolor:
-        #     self.uncolor = option.uncolor
         self.img = option.img
         if option.name in mode_vs_option.keys():
             self.options = mode_vs_option[option.name]
@@ -117,11 +105,11 @@ class Item(object):
     # --------------------------------------------------------------- #
     #                           ITEM MENU                             #
     # --------------------------------------------------------------- #
-    def set_in_menu(self, grid, FLAG):
-        """ Setting the in_menu attribute
-        :param FLAG: boolean -True or False
+    def set_in_menu(self, grid, value):
+        """ Setting the in_menu attribute to value
+        :param value: boolean -True or False
         """
-        if FLAG:
+        if value:
             self.in_menu = True
         else:
             self.in_menu = False

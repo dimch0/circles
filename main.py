@@ -8,9 +8,8 @@
 #                            FEATURES                             #
 # --------------------------------------------------------------- #
 # TODO: Time modifier
-# TODO: Aninate rotation of image
 # TODO: Parametrize scenario
-# TODO: add sys argv for gameover and loading a game
+# TODO: Add sys argv for gameover and loading a game
 # TODO: Item generation on radar
 # TODO: Link timer to body
 # TODO: Create a mini map
@@ -27,7 +26,7 @@
 #                            BUG FIXES                            #
 # --------------------------------------------------------------- #
 # TODO: Fix movement track
-
+# TODO: Fix rotation of image
 
 import pdb
 
@@ -36,11 +35,11 @@ import sys
 import time
 import pygame
 
-from cir import cir_utils
 from cir import cir_item
-from cir import cir_item_body
 from cir import cir_grid
 from cir import cir_draw
+from cir import cir_utils
+from cir import cir_item_body
 from cir import cir_cosmetic
 from cir.cir_loader import load_all_items
 
