@@ -156,3 +156,10 @@ class Grid(object):
                 (self_x - self.cathetus, self_y + self.tile_radius),
                 (self_x - self.cathetus, self_y - self.tile_radius)
                ]
+
+    def clean_placeholders(self, item):
+        """ Cleans the placeholders (eg for mitosis) """
+        if item.name == "placeholder":
+            for other_item in self.items:
+                if other_item.pos == item.pos:
+                    self.items.remove(item)

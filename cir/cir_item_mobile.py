@@ -29,6 +29,12 @@ class MobileItem(Item):
         if self.speed > 8:
             self.speed = 8
 
+
+    # --------------------------------------------------------------- #
+    #                                                                 #
+    #                             MOVEMENT                            #
+    #                                                                 #
+    # --------------------------------------------------------------- #
     def move_to_tile(self, grid, Tile_A, Tile_B):
         """
         This method moves the item from the current position to Tile_B.
@@ -86,6 +92,24 @@ class MobileItem(Item):
             self.move_track = result
         return result
 
+    def gen_movement_arrows(self, pygame, grid, event):
+        """ Generates steps to move my body - gen_move_track() """
+        arrows = [
+            pygame.K_w,
+            pygame.K_e,
+            pygame.K_d,
+            pygame.K_s,
+            pygame.K_a,
+            pygame.K_q
+        ]
+
+        for idx, arrow in enumerate(arrows):
+            if event.key == arrow:
+                if not self.move_track and not self.radar_track:
+                    if not self.rot_track:
+                        self.gen_rot_track(idx)
+                        self.gen_move_track(grid, idx)
+
     def move(self):
         """
         :return: move self.pos per point in move_track
@@ -94,6 +118,12 @@ class MobileItem(Item):
             self.pos = self.move_track[0]
             self.move_track.pop(0)
 
+
+    # --------------------------------------------------------------- #
+    #                                                                 #
+    #                             MITOSIS                             #
+    #                                                                 #
+    # --------------------------------------------------------------- #
     def check_for_empty_tile(self, grid):
         """
         Checks for an empty adj tile and creates a placeholder thare.
@@ -139,7 +169,6 @@ class MobileItem(Item):
             grid.items.append(new_cell)
             grid.bodies.append(new_cell)
             # new_cell.gen_move_track(grid, idx)
-
 
     def mitosis(self, grid):
         """

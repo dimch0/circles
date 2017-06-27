@@ -91,14 +91,6 @@ revealed_radius: {1}
          )
 
 
-def clean_placeholders(grid, item):
-    """Cleans the placeholders for mitosis"""
-    if item.name == "placeholder":
-        for other_item in grid.items:
-            if other_item.pos == item.pos:
-                grid.items.remove(item)
-
-
 def negative_list(original_list):
     """ Returns the negative values of a list """
     return [-x for x in original_list]
@@ -112,51 +104,3 @@ def rot_center(pygame, image, angle):
     rot_rect.center = rot_image.get_rect().center
     rot_image = rot_image.subsurface(rot_rect).copy()
     return rot_image
-
-# --------------------------------------------------------------- #
-#                            MOVEMENT                             #
-# --------------------------------------------------------------- #
-def gen_rot_track(idx, item):
-    """
-    Generates rotating track and revert rotating track
-    :param idx:  index of direction
-    :param item: item to whom belongs the image
-    """
-    step = 12
-    end_point = step * 6
-    track = None
-    if idx == 1:
-        track = range(-step, -end_point, -step)
-    elif idx == 2:
-        track = range(-step, -end_point * 2, -step)
-    elif idx == 3:
-        track = range(-step, -end_point * 3, -step)
-    elif idx == 4:
-        track = range(step, end_point * 2, step)
-    elif idx == 5:
-        track = range(step, end_point, step)
-
-    if track:
-        item.rot_track = track
-        if idx == 3:
-            item.rot_revert = range(-step, -end_point * 2, -step)
-        else:
-            item.rot_revert = negative_list(item.rot_track)
-
-
-def gen_movement_arrows(pygame, grid, event, item):
-    """ Generates steps to move my body - gen_move_track() """
-    arrows = [
-        pygame.K_w,
-        pygame.K_e,
-        pygame.K_d,
-        pygame.K_s,
-        pygame.K_a,
-        pygame.K_q
-    ]
-
-    for idx, arrow in enumerate(arrows):
-        if event.key == arrow:
-            if not item.move_track and not item.radar_track:
-                gen_rot_track(idx, item)
-                item.gen_move_track(grid, idx)

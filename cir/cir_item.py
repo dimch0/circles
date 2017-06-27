@@ -3,13 +3,14 @@
 #################                           Item class, MobileItem class                              #################
 #################                                                                                     #################
 #######################################################################################################################
-from cir_utils import rot_center
+import cir_utils
 
 class Item(object):
     """
     This is the base class for all CIR items
     It includes the open_menu method.
     """
+
     def __init__(self, name, pos=(), color=None, uncolor=None, image=None, border=0, modable=False):
         # --------------------------------------------------------------- #
         #                            BASICS                               #
@@ -45,30 +46,53 @@ class Item(object):
     # --------------------------------------------------------------- #
     #                           ROTATION                              #
     # --------------------------------------------------------------- #
-    def rotate_img(self, pygame, angle):
-        """ Creates rotated image """
-        self.img = rot_center(pygame, self.default_img, angle)
+    def gen_rot_track(self, idx):
+        """
+        Generates rotating track and revert rotating track
+        :param idx:  index of direction
+        :param item: item to whom belongs the image
+        """
+        step = 15
+        end_point = step * 4
+        track = None
+        if idx == 1:
+            track = range(-step, -end_point, -step)
+        elif idx == 2:
+            track = range(-step, -end_point * 2, -step)
+        elif idx == 3:
+            track = range(-step, -end_point * 3, -step)
+        elif idx == 4:
+            track = range(step, end_point * 2, step)
+        elif idx == 5:
+            track = range(step, end_point, step)
 
-    def rotate_revert_img(self, pygame, angle):
-        """ Creates counter-rotated image """
-        self.img = rot_center(pygame, self.img, angle)
-
-    def revert_rotation(self, pygame):
-        """ Returns the image to start position """
-        if self.rot_revert and self.last_direction:
-            self.rotate_img(pygame, self.last_direction)
-            self.rotate_revert_img(pygame, self.rot_revert[0])
-            self.rot_revert.pop(0)
-        if not self.rot_revert:
-            self.img = self.default_img
-            self.last_direction = False
+        if track:
+            self.rot_track = track
+            if idx == 3:
+                self.rot_revert = range(-step, -end_point * 2, -step)
+            else:
+                self.rot_revert = cir_utils.negative_list(self.rot_track)
 
     def rotate(self, pygame):
         """ Rotates the image """
-        self.rotate_img(pygame, self.rot_track[0])
+        self.img = cir_utils.rot_center(pygame, self.default_img, self.rot_track[0])
+
         if len(self.rot_track) == 1:
             self.last_direction = self.rot_track[-1]
         self.rot_track.pop(0)
+
+    def rotate_reverse(self, pygame):
+        """ Returns the image to start position """
+        if self.last_direction:
+            self.img = cir_utils.rot_center(pygame, self.default_img, self.last_direction)
+
+        if self.rot_revert:
+            self.img = cir_utils.rot_center(pygame, self.img, self.rot_revert[0])
+            self.rot_revert.pop(0)
+
+        else:
+            self.img = self.default_img
+            self.last_direction = False
 
     # --------------------------------------------------------------- #
     #                          MODE OPTIONS                           #
@@ -87,7 +111,7 @@ class Item(object):
         """
         self.mode = option.name
         self.color = option.color
-        self.img = option.img
+        # self.img = option.img
         if option.name in mode_vs_option.keys():
             self.options = mode_vs_option[option.name]
         self.set_option_pos(grid)

@@ -26,7 +26,6 @@
 #                            BUG FIXES                            #
 # --------------------------------------------------------------- #
 # TODO: Fix movement track
-# TODO: Fix rotation of image
 
 import pdb
 
@@ -48,7 +47,6 @@ pygame.init()
 
 
 
-
 def game_loop():
     """ Main game loop. """
 
@@ -56,53 +54,53 @@ def game_loop():
     START_TIME = time.time()
     grid.game_menu = True
 
-
-    # Start
     while not GAME_EXIT:
+        # Mouse
         MOUSE_POS = pygame.mouse.get_pos()
-
         # Seconds in game
         cir_utils.seconds_in_game(grid, START_TIME)
 
-        # Events
+        # --------------------------------------------------------------- #
+        #                                                                 #
+        #                            EVENTS                               #
+        #                                                                 #
+        # --------------------------------------------------------------- #
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 GAME_EXIT = True
 
-            if event.type == pygame.KEYDOWN:
+            # --------------------------------------------------------------- #
+            #                           KEY EVENTS                            #
+            # --------------------------------------------------------------- #
+            elif event.type == pygame.KEYDOWN:
+
                 # --------------------------------------------------------------- #
-                #                        ESCAPE LOOP                              #
+                #                            ESC KEY                              #
                 # --------------------------------------------------------------- #
                 if event.key == pygame.K_ESCAPE:
                     if not grid.game_menu:
                         grid.game_menu = True
-
                     elif grid.game_menu and grid.seconds_in_game > 0:
                         grid.game_menu = False
+
                 # --------------------------------------------------------------- #
-                #                        SPACE BAR EVENTS                          #
+                #                            IN GAME                              #
                 # --------------------------------------------------------------- #
                 if not grid.game_menu:
+                    # --------------------------------------------------------------- #
+                    #                           SPACE KEY                             #
+                    # --------------------------------------------------------------- #
                     if event.key == pygame.K_SPACE:
 
-
-                        # --------------------------------------------------------------- #
-                        #                     RADAR TRACK POPULATION                      #
-                        # --------------------------------------------------------------- #
+                        # RADAR Population
                         if not my_body.move_track and not my_body.in_menu and not my_body.radar_track:
                             my_body.gen_radar_track(grid)
-
-                        # TODO: time modifier
-                        # lifespan.len_step += (lifespan.len_step / 100) * 10
-                        # lifespan.step += 15
-                        # print "steps:", lifespan.number_of_steps
 
                         # Debug
                         cir_utils.debug_print_space(grid)
 
-
                     # --------------------------------------------------------------- #
-                    #                           't' KEY EVENTS                          #
+                    #                            't' KEY                              #
                     # --------------------------------------------------------------- #
                     elif event.key == pygame.K_t:
                             # Timers
@@ -118,30 +116,29 @@ def game_loop():
                                         # timer.filled_steps -= 90
 
                     # --------------------------------------------------------------- #
-                    #                           'l' KEY EVENTS                          #
+                    #                            'l' KEY                              #
                     # --------------------------------------------------------------- #
                     elif event.key == pygame.K_l:
+                        my_body.img = images.alien2
+                        my_body.default_img = my_body.img
                         print "l"
 
                     # --------------------------------------------------------------- #
-                    #                           'r' KEY EVENTS                          #
+                    #                            'r' KEY                              #
                     # --------------------------------------------------------------- #
                     elif event.key == pygame.K_r:
-                        my_body.img = images.alien1
+                        my_body.img = images.galab1
                         my_body.default_img = my_body.img
                         print "r"
 
-
-                    # --------------------------------------------------------------- #
-                    #                      Generate Movement                          #
-                    # --------------------------------------------------------------- #
+                    # MOVEMENT Population
                     if not my_body.in_menu:
-                        cir_utils.gen_movement_arrows(pygame, grid, event, my_body)
+                        my_body.gen_movement_arrows(pygame, grid, event)
 
             # --------------------------------------------------------------- #
             #                           CLICK EVENTS                          #
-            # --------------------------------------------------------------- #r
-            if event.type == pygame.MOUSEBUTTONDOWN:
+            # --------------------------------------------------------------- #
+            elif event.type == pygame.MOUSEBUTTONDOWN:
                 clicked_circle = grid.mouse_in_tile(MOUSE_POS)
                 if clicked_circle:
 
@@ -251,10 +248,15 @@ def game_loop():
                 cir_utils.debug_print_click(grid, MOUSE_POS, clicked_circle, my_body)
 
         # --------------------------------------------------------------- #
-        #                        DRAWING BACKGROUND                       #
+        #                                                                 #
+        #                             DRAWING                             #
+        #                                                                 #
         # --------------------------------------------------------------- #
+        # BACKGROUND
         grid.game_display.fill(grid.dark_grey)
-
+        # --------------------------------------------------------------- #
+        #                             IN GAME                             #
+        # --------------------------------------------------------------- #
         if not grid.game_menu:
             # Revealed radius
             if grid.revealed_radius:
@@ -272,7 +274,7 @@ def game_loop():
                 cir_draw.draw_playing_tiles(pygame, grid)
 
             # --------------------------------------------------------------- #
-            #                        DRAWING ANIMATIONS                       #
+            #                             ANIMATIONS                          #
             # --------------------------------------------------------------- #
             for item in grid.items:
                 if item.available:
@@ -282,7 +284,6 @@ def game_loop():
                         cir_draw.draw_radar(pygame, grid, item)
 
                     # Bodies
-                    # if (item.pos in grid.revealed_tiles) or (item == my_body):
                     if (item.pos in grid.revealed_tiles) or (item in grid.bodies):
                         cir_draw.draw_body(pygame, grid, MOUSE_POS, item)
 
@@ -296,18 +297,20 @@ def game_loop():
                         cir_draw.draw_movement(pygame, grid, item)
 
                     # Image rotation
-                    if item.rot_track and item.move_track:
+                    if item.rot_track:
                         item.rotate(pygame)
 
-                    # Item revert rotation
-                    if not item.move_track and item.last_direction:
-                        item.revert_rotation(pygame)
+                    # Item reverse rotation
+                    if item.last_direction and not item.move_track:
+                        item.rotate_reverse(pygame)
 
             # Timers
             if grid.timers:
                 cir_draw.draw_timers(pygame, grid, my_body)
 
-
+        # --------------------------------------------------------------- #
+        #                           GAME MENU                             #
+        # --------------------------------------------------------------- #
         elif grid.game_menu:
             # Menu Buttons
             if grid.buttons:
@@ -323,7 +326,9 @@ def game_loop():
         pygame.display.update()
 
         # --------------------------------------------------------------- #
+        #                                                                 #
         #                           CHANGE VARS                           #
+        #                                                                 #
         # --------------------------------------------------------------- #
         if not grid.game_menu:
 
@@ -342,7 +347,7 @@ def game_loop():
                     item.move()
 
                 # Clean placeholders
-                cir_utils.clean_placeholders(grid, item)
+                grid.clean_placeholders(item)
 
             # Timers
             if grid.timers:
@@ -361,10 +366,17 @@ def game_loop():
     pygame.quit()
     quit()
 
+
+# --------------------------------------------------------------- #
+#                                                                 #
+#                              MAIN                               #
+#                                                                 #
+# --------------------------------------------------------------- #
 if __name__ == '__main__':
     # --------------------------------------------------------------- #
     #                             LOADING                             #
     # --------------------------------------------------------------- #
+
     # Grid
     grid = cir_grid.Grid()
     grid.game_display = pygame.display.set_mode((grid.display_width, grid.display_height))
@@ -374,16 +386,17 @@ if __name__ == '__main__':
     fonts = cir_cosmetic.Fonts(grid, pygame)
 
     # Player body
-    my_body = cir_item_body.BodyItem(name="my body", image=images.galab1, pos=grid.center_tile, color=grid.dark_grey,
+    my_body = cir_item_body.BodyItem(name="my body", image=images.alien1, pos=grid.center_tile, color=grid.dark_grey,
                                      speed=2)
+    # Items
     grid.items.append(my_body)
     grid.bodies.append(my_body)
-
-    # All items
     ALL_ITEMS, MODE_VS_OPTIONS = load_all_items(grid, images, fonts, my_body)
 
     # Settings
     pygame.display.set_caption(grid.caption)
     clock = pygame.time.Clock()
     pygame.mouse.set_visible(True)
+
+    # Start
     game_loop()
