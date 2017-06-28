@@ -1,6 +1,6 @@
 #######################################################################################################################
 #################                                                                                     #################
-#################                                 TimerItem class                                      #################
+#################                                 TimerItem class                                     #################
 #################                                                                                     #################
 #######################################################################################################################
 import math
@@ -10,7 +10,7 @@ from cir_item_mobile import MobileItem
 
 class TimerItem(MobileItem):
     """ This is the base class for all timer items """
-    def __init__(self, duration, time_color, tile_radius, start_time=None, **kwargs):
+    def __init__(self, duration=0, time_color=None, tile_radius=None, start_time=None, **kwargs):
         super(TimerItem, self).__init__(**kwargs)
 
         self.start_time = start_time

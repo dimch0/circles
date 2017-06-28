@@ -1,9 +1,9 @@
 scenario,type,category,name,modable,color,img,pos,border,speed,range,font,text_color,text,duration,time_color
-1,my_body,my body,my body,,dark_grey,alien1,grid.center_tile,,2,1,,,,,
-1,cir_timer,timers,lifespan,,pink,,,,0,,,,,60,black
-ALL,cir_button,buttons,play,,grey,,grid.adj_tiles(grid.center_tile)[0],,,,small,white,,,
-ALL,cir_button,buttons,quit,,grey,,grid.adj_tiles(grid.center_tile)[3],,,,small,white,,,
-3,cir_button,buttons,replay,,grey,,grid.adj_tiles(grid.center_tile)[0],,,,small,white,,,
+1,cir_item_body.BodyItem,my body,my body,,dark_grey,alien1,grid.center_tile,,2,1,,,,,
+1,cir_item_timer.TimerItem,timers,lifespan,,pink,,,,0,,,,,60,black
+ALL,cir_item_button.Button_item,buttons,play,,grey,,grid.adj_tiles(grid.center_tile)[0],,,,small,white,,,
+ALL,cir_item_button.Button_item,buttons,quit,,grey,,grid.adj_tiles(grid.center_tile)[3],,,,small,white,,,
+3,cir_item_button.Button_item,buttons,replay,,grey,,grid.adj_tiles(grid.center_tile)[0],,,,small,white,,,
 1,mode_option,my body,mitosis,,dark_grey,mitosis,,,,,,,,,
 1,mode_option,my body,option 2,,dark_grey,,,,,,,,,,
 1,mode_option,my body,bag,TRUE,dark_grey,plastic_bag,,,,,,,,,
@@ -34,5 +34,5 @@ ALL,cir_button,buttons,quit,,grey,,grid.adj_tiles(grid.center_tile)[3],,,,small,
 1,mode_option,govna,mirizlivo,,blue,,,,,,,,,,
 1,mode_option,govna,techno,,blue,,,,,,,,,,
 1,mode_option,govna,mazno,TRUE,blue,,,,,,,,,,
-2,my_body,my body,my body,,pink,alien2,grid.center_tile,,2,1,,,,,
-2,cir_mobile,items,bokluk,,green,,grid.adj_tiles(grid.center_tile)[1],,0,,,,,,
+2,cir_item_body.BodyItem,my body,my body,,pink,alien2,grid.center_tile,,2,1,,,,,
+2,cir__item_mobile.MobileItem,items,bokluk,,green,,grid.adj_tiles(grid.center_tile)[1],,0,,,,,,

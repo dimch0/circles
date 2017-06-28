@@ -54,16 +54,14 @@ def set_grid_items(grid, item):
             grid_attribute.append(item_obj)
 
 
-def create_item(attribute):
-    type = cir_item_body.BodyItem
-    import inspect
-    print inspect.getmembers(type)
-    # print [i for i in dir(type) if not inspect.ismethod(i)]
+def create_item(type, attribute):
+    print "DEBUG", type
+    dummy = eval(type + "()")
+    print(vars(dummy))
 
-    # print dir(type)
-    # print type.__class__.__dict__
-    # if attribute in dir(type):
-    #     print attribute
+    if attribute in vars(dummy).keys():
+        print attribute
+    sys.exit()
 
 
 
@@ -127,10 +125,9 @@ def load_data(grid, images, fonts, SCENARIO):
                 # --------------------------------------------------------------- #
                 item_scenario = row[idx_scenario]
                 if str(SCENARIO) in item_scenario or "ALL" in item_scenario:
-
+                    type = row[idx_type] if len(row[idx_type]) > 0 else None
+                    category = row[idx_category]
                     attributes = {
-                        "category": row[idx_category],
-                        "type": row[idx_type] if len(row[idx_type]) > 0 else None,
                         "name": row[idx_name] if len(row[idx_name]) > 0 else None,
                         "pos": eval(row[idx_pos]) if len(row[idx_pos]) > 0 else (),
                         "color": getattr(grid, row[idx_color]) if len(row[idx_color]) > 0 else None,
@@ -147,9 +144,8 @@ def load_data(grid, images, fonts, SCENARIO):
                     }
 
                     # print attributes
-                    for a in attributes.keys():
-                        print a
-                        create_item(a)
+                    for attr in attributes.keys():
+                        create_item(type, attr)
 
 
                     # item_category = row[idx_category]

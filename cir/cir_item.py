@@ -11,7 +11,7 @@ class Item(object):
     It includes the open_menu method.
     """
 
-    def __init__(self, name, pos=(), color=None, uncolor=None, image=None, border=0, modable=False):
+    def __init__(self, name=None, pos=(), color=None, uncolor=None, image=None, border=0, modable=False):
         # --------------------------------------------------------------- #
         #                            BASICS                               #
         # --------------------------------------------------------------- #

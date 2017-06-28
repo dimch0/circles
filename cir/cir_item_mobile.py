@@ -11,7 +11,7 @@ class MobileItem(Item):
     """
     This is the base class for all CIR items
     """
-    def __init__(self, speed, **kwargs):
+    def __init__(self, speed=2, **kwargs):
         super(MobileItem, self).__init__(**kwargs)
         self.speed = speed
 
