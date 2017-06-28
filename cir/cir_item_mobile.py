@@ -89,6 +89,9 @@ class MobileItem(Item):
             self.move_track = result
         return result
 
+
+
+
     def gen_movement_arrows(self, pygame, grid, event):
         """ Generates steps to move my body - gen_move_track() """
         arrows = [

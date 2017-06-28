@@ -9,12 +9,12 @@
 # --------------------------------------------------------------- #
 # TODO: Time modifier
 # TODO: Parametrize scenario
-# TODO: Add sys argv for gameover and loading a game
+# TODO: Add sys argv for gameover, loading and scenario
 # TODO: Item generation on radar
 # TODO: Link timer to body
 # TODO: Create a mini map
 # TODO: Define a signal function
-# TODO: Log all statistics during a lifespan
+# TODO: Log statistics during a lifespan
 # TODO: Create spirit mode, calculate karma
 # TODO: Log messages on screen
 # TODO: Create save button
@@ -26,6 +26,7 @@
 #                            BUG FIXES                            #
 # --------------------------------------------------------------- #
 # TODO: Fix movement track
+# TODO: Remove grid.bodies usage
 
 import pdb
 
@@ -38,10 +39,8 @@ from cir import cir_item
 from cir import cir_grid
 from cir import cir_draw
 from cir import cir_utils
-from cir import cir_item_body
+from cir import cir_loader
 from cir import cir_cosmetic
-from cir.cir_loader import load_diskette
-
 
 
 def game_loop():
@@ -174,7 +173,7 @@ def game_loop():
                         for item in grid.items:
                             if clicked_circle == item.pos and item.available:
                                 # Set in_menu for the items with menu (my_body)
-                                item.check_in_menu(grid, clicked_circle, MODE_VS_OPTIONS)
+                                item.check_in_menu(grid, clicked_circle, mode_vs_options)
                                 # Setting option positions
                                 item.set_option_pos(grid)
                                 # Option clicked
@@ -202,15 +201,15 @@ def game_loop():
                                                     item.mitosis(grid)
 
                                                 # Setting the mode
-                                                item.set_mode(grid, option, MODE_VS_OPTIONS)
+                                                item.set_mode(grid, option, mode_vs_options)
 
                                             # --------------------------------------------------------------- #
                                             #                        CLICK SUB-OPTIONS                        #
                                             # --------------------------------------------------------------- #
-                                            elif option in MODE_VS_OPTIONS[item.mode]:
+                                            elif option in mode_vs_options[item.mode]:
 
                                                 if item.mode == "move":
-                                                    item.gen_move_track(grid, MODE_VS_OPTIONS[item.mode].index(option))
+                                                    item.gen_move_track(grid, mode_vs_options[item.mode].index(option))
 
                                                 elif option.name == "see":
                                                     item.range += 1
@@ -231,7 +230,7 @@ def game_loop():
                                                 # Close menu if option selected
                                                 item.set_in_menu(grid, False)
                                             # Close menu if option has no suboptions
-                                            if option.name not in MODE_VS_OPTIONS.keys():
+                                            if option.name not in mode_vs_options.keys():
                                                 item.set_in_menu(grid, False)
 
                                             # --------------------------------------------------------------- #
@@ -367,10 +366,48 @@ def game_loop():
     quit()
 
 
+def loading_general_settings():
+    """
+    Loading general game instances and settings
+    :return: grid, images, fonts, clock
+    """
+    # Pygame
+    pygame.init()
+    # Grid
+    grid = cir_grid.Grid()
+    grid.game_display = pygame.display.set_mode((grid.display_width, grid.display_height))
+    # Images and fonts
+    images = cir_cosmetic.Images(grid, pygame)
+    fonts = cir_cosmetic.Fonts(grid, pygame)
+    # Settings
+    pygame.display.set_caption(grid.caption)
+    # pygame.mouse.set_visible(True)
+    clock = pygame.time.Clock()
+    return grid, images, fonts, clock
 
 
+def load_items():
+    """
+    Loading all grid items, my body and mode options
+    :return: my_body, mode_vs_options
+    """
+    my_body = None
+    mode_vs_options = {}
+    for item in cir_loader.load_data(grid, images, fonts, SCENARIO):
+        category = item['category']
+        item_obj = item['object']
+        type = item["type"]
+        if type == "mode_option":
+            cir_loader.get_mode_vs_options(category, item_obj, mode_vs_options)
+        else:
+            if category == "my body":
+                my_body = cir_loader.set_grid_items(grid, item)
+            else:
+                cir_loader.set_grid_items(grid, item)
 
+    cir_loader.set_mode_vs_options(grid, mode_vs_options)
 
+    return my_body, mode_vs_options
 
 # --------------------------------------------------------------- #
 #                                                                 #
@@ -378,60 +415,9 @@ def game_loop():
 #                                                                 #
 # --------------------------------------------------------------- #
 if __name__ == '__main__':
-
-    from cir import cir_loader_test
-
     # Loading
-    # Pygame
-    # pygame.init()
-    #
-    # # Grid
-    # grid = cir_grid.Grid()
-    # grid.game_display = pygame.display.set_mode((grid.display_width, grid.display_height))
-    #
-    # # Images and fonts
-    # images = cir_cosmetic.Images(grid, pygame)
-    # fonts = cir_cosmetic.Fonts(grid, pygame)
-    #
-    #
-    # for item in cir_loader_test.load_data(grid, images, fonts):
-    #     print item
-    #     if item[0]:
-    #         print item[0].name
-
-
-
-    # Loading
-    # Pygame
-    pygame.init()
-
-    # Grid
-    grid = cir_grid.Grid()
-    grid.game_display = pygame.display.set_mode((grid.display_width, grid.display_height))
-
-    # Images and fonts
-    images = cir_cosmetic.Images(grid, pygame)
-    fonts = cir_cosmetic.Fonts(grid, pygame)
-
-    # Settings
-    pygame.display.set_caption(grid.caption)
-    # pygame.mouse.set_visible(True)
-    clock = pygame.time.Clock()
-
-
-
-
-    # Player body
-    my_body = cir_item_body.BodyItem(name="my body",
-                                     image=images.alien2,
-                                     pos=grid.center_tile,
-                                     color=grid.dark_grey,
-                                     speed=2,
-                                     range=1)
-    grid.items.append(my_body)
-    grid.bodies.append(my_body)
-    # Items
-    ALL_ITEMS, MODE_VS_OPTIONS = load_diskette(grid, images, fonts, my_body)
-
+    SCENARIO = 001
+    grid, images, fonts, clock = loading_general_settings()
+    my_body, mode_vs_options = load_items()
     # Start
     game_loop()

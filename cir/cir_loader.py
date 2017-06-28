@@ -4,11 +4,13 @@
 #################                                                                                     #################
 #######################################################################################################################
 import csv
-
-import cir_item_mobile
+import sys
+import cir_item
+import cir_item_body
 import cir_item_timer
 import cir_item_button
-import cir_item
+import cir_item_mobile
+
 
 
 def set_mode_vs_options(grid, mode_vs_options):
@@ -25,50 +27,66 @@ def set_mode_vs_options(grid, mode_vs_options):
                 item.options = item.default_options
 
 
-def set_all_grid_items(grid, all_items):
+
+def get_mode_vs_options(category, item_obj, MODE_VS_OPTIONS):
+    if category not in MODE_VS_OPTIONS.keys():
+        MODE_VS_OPTIONS[category] = []
+    MODE_VS_OPTIONS[category].append(item_obj)
+
+
+
+
+def set_grid_items(grid, item):
     """ Assigning all items to the grid object """
-    # TODO: Parametrize scenario
-    for category, items in all_items.items():
-        for item in items:
-            if category == "items":
-                if not item in grid.items:
-                    grid.items.append(item)
-            elif category == "timers":
-                if not item in grid.timers:
-                    grid.timers.append(item)
-            elif category == "buttons":
-                if not item in grid.buttons:
-                    grid.buttons.append(item)
+    category = item['category']
+    item_obj = item['object']
+
+    if category == 'my body':
+        if not item_obj in grid.bodies:
+            grid.bodies.append(item_obj)
+        if not item_obj in grid.items:
+            grid.items.append(item_obj)
+        return item_obj
+
+    elif hasattr(grid, category):
+        grid_attribute = getattr(grid, category)
+        if not item_obj in grid_attribute:
+            grid_attribute.append(item_obj)
 
 
-def load_data(grid, images, fonts, my_body):
+def create_item(attribute):
+    type = cir_item_body.BodyItem
+    import inspect
+    print inspect.getmembers(type)
+    # print [i for i in dir(type) if not inspect.ismethod(i)]
+
+    # print dir(type)
+    # print type.__class__.__dict__
+    # if attribute in dir(type):
+    #     print attribute
+
+
+
+def load_data(grid, images, fonts, SCENARIO):
     """
     This function loads all items and menu options from external data file.
     :return:  two dicts:
     - ALL_ITEMS
     - MODE_VS_OPTIONS
     """
-    ALL_ITEMS = {
-        "items": [],
-        "timers": [],
-        "buttons": []
-    }
-    MODE_VS_OPTIONS = {
-        "my body": [],
-        "move": [],
-        "sensory": [],
-        "bokluk": [],
-        "govna": []
-    }
+
 
     with open(grid.data_file, 'rb') as csvfile:
 
         data = csv.reader(csvfile, delimiter=',')
-        header = next(data)
+        HEADER = next(data)
+        ITEM_OBJECT = None
+        SCENARIO = SCENARIO
+
         # --------------------------------------------------------------- #
         #                        SET COLUMN INDEX                         #
         # --------------------------------------------------------------- #
-        for idx, name in enumerate(header):
+        for idx, name in enumerate(HEADER):
             if name == "scenario":
                 idx_scenario = idx
             elif name == "category":
@@ -103,56 +121,92 @@ def load_data(grid, images, fonts, my_body):
                 idx_modable = idx
 
         for row in data:
-            if not row[0] == "scenario":
-
+            if not row == HEADER:
                 # --------------------------------------------------------------- #
                 #                      SET COLS AS ATTRIBUTES                     #
                 # --------------------------------------------------------------- #
                 item_scenario = row[idx_scenario]
-                item_category = row[idx_category]
-                item_type = row[idx_type] if len(row[idx_type]) > 0 else None
-                item_name = row[idx_name] if len(row[idx_name]) > 0 else None
-                item_pos = eval(row[idx_pos]) if len(row[idx_pos]) > 0 else ()
-                item_color = getattr(grid, row[idx_color]) if len(row[idx_color]) > 0 else None
-                item_img = getattr(images, row[idx_img]) if len(row[idx_img]) > 0 else None
-                item_border = row[idx_border] if len(row[idx_border]) > 0 else 0
-                item_speed = int(row[idx_speed]) if len(row[idx_speed]) > 0 else None
-                item_range = row[idx_range] if len(row[idx_range]) > 0 else None
-                item_font = getattr(fonts, row[idx_font]) if len(row[idx_font]) > 0 else None
-                item_text_color = getattr(grid, row[idx_text_color]) if len(row[idx_text_color]) > 0 else None
-                item_text = row[idx_text] if len(row[idx_text]) > 0 else None
-                item_duration = int(row[idx_duration]) if len(row[idx_duration]) > 0 else None
-                item_time_color = getattr(grid, row[idx_time_color]) if len(row[idx_time_color]) > 0 else None
-                item_modable = row[idx_modable] if len(row[idx_modable]) > 0 else None
+                if str(SCENARIO) in item_scenario or "ALL" in item_scenario:
+
+                    attributes = {
+                        "category": row[idx_category],
+                        "type": row[idx_type] if len(row[idx_type]) > 0 else None,
+                        "name": row[idx_name] if len(row[idx_name]) > 0 else None,
+                        "pos": eval(row[idx_pos]) if len(row[idx_pos]) > 0 else (),
+                        "color": getattr(grid, row[idx_color]) if len(row[idx_color]) > 0 else None,
+                        "img": getattr(images, row[idx_img]) if len(row[idx_img]) > 0 else None,
+                        "border": row[idx_border] if len(row[idx_border]) > 0 else 0,
+                        "speed": int(row[idx_speed]) if len(row[idx_speed]) > 0 else None,
+                        "range": int(row[idx_range]) if len(row[idx_range]) > 0 else None,
+                        "font": getattr(fonts, row[idx_font]) if len(row[idx_font]) > 0 else None,
+                        "text_color": getattr(grid, row[idx_text_color]) if len(row[idx_text_color]) > 0 else None,
+                        "text": row[idx_text] if len(row[idx_text]) > 0 else None,
+                        "duration": int(row[idx_duration]) if len(row[idx_duration]) > 0 else None,
+                        "time_color": getattr(grid, row[idx_time_color]) if len(row[idx_time_color]) > 0 else None,
+                        "modable": row[idx_modable] if len(row[idx_modable]) > 0 else None,
+                    }
+
+                    # print attributes
+                    for a in attributes.keys():
+                        print a
+                        create_item(a)
 
 
-                # --------------------------------------------------------------- #
-                #                           CREATE ITEMS                          #
-                # --------------------------------------------------------------- #
-                if item_scenario == "mode_vs_options":
-                    item_to_append = cir_item.Item(
-                        name=item_name,
-                        pos=item_pos,
-                        color=item_color,
-                        image=item_img,
-                        border=item_border,
-                        modable=item_modable
-                    )
-                    MODE_VS_OPTIONS[item_category].append(item_to_append)
+                    # item_category = row[idx_category]
+                    # item_type = row[idx_type] if len(row[idx_type]) > 0 else None
+                    # item_name = row[idx_name] if len(row[idx_name]) > 0 else None
+                    # item_pos = eval(row[idx_pos]) if len(row[idx_pos]) > 0 else ()
+                    # item_color = getattr(grid, row[idx_color]) if len(row[idx_color]) > 0 else None
+                    # item_img = getattr(images, row[idx_img]) if len(row[idx_img]) > 0 else None
+                    # item_border = row[idx_border] if len(row[idx_border]) > 0 else 0
+                    # item_speed = int(row[idx_speed]) if len(row[idx_speed]) > 0 else None
+                    # item_range = int(row[idx_range]) if len(row[idx_range]) > 0 else None
+                    # item_font = getattr(fonts, row[idx_font]) if len(row[idx_font]) > 0 else None
+                    # item_text_color = getattr(grid, row[idx_text_color]) if len(row[idx_text_color]) > 0 else None
+                    # item_text = row[idx_text] if len(row[idx_text]) > 0 else None
+                    # item_duration = int(row[idx_duration]) if len(row[idx_duration]) > 0 else None
+                    # item_time_color = getattr(grid, row[idx_time_color]) if len(row[idx_time_color]) > 0 else None
+                    # item_modable = row[idx_modable] if len(row[idx_modable]) > 0 else None
 
-                elif item_scenario == "scenario 1":
-                    if item_type == "cir_mobile":
-                        item_to_append = cir_item_mobile.MobileItem(
+                    # --------------------------------------------------------------- #
+                    #                           CREATE ITEMS                          #
+                    # --------------------------------------------------------------- #
+                    # TODO: Create a function that checks which attributes are needed
+
+
+                    if item_type == "my_body":
+                        ITEM_OBJECT = cir_item_body.BodyItem(
+                            name=item_name,
+                            pos=item_pos,
+                            color=item_color,
+                            image=item_img,
+                            speed=item_speed,
+                            range=item_range,
+                            border=item_border,
+                            modable=item_modable
+                        )
+
+                    elif item_type == "mode_option":
+                        ITEM_OBJECT = cir_item.Item(
+                            name=item_name,
+                            pos=item_pos,
+                            color=item_color,
+                            image=item_img,
+                            border=item_border,
+                            modable=item_modable
+                        )
+
+                    elif item_type == "cir_mobile":
+                        ITEM_OBJECT = cir_item_mobile.MobileItem(
                             name=item_name,
                             pos=item_pos,
                             color=item_color,
                             speed=item_speed,
                             modable=item_modable
                         )
-                        ALL_ITEMS[item_category].append(item_to_append)
 
                     elif item_type == "cir_timer":
-                        item_to_append = cir_item_timer.TimerItem(
+                        ITEM_OBJECT = cir_item_timer.TimerItem(
                             name=item_name,
                             pos=item_pos,
                             color=item_color,
@@ -162,10 +216,9 @@ def load_data(grid, images, fonts, my_body):
                             tile_radius=grid.tile_radius,
                             modable=item_modable
                         )
-                        ALL_ITEMS[item_category].append(item_to_append)
 
                     elif item_type == "cir_button":
-                        item_to_append = cir_item_button.ButtonItem(
+                        ITEM_OBJECT = cir_item_button.ButtonItem(
                             name=item_name,
                             pos=item_pos,
                             color=item_color,
@@ -173,18 +226,12 @@ def load_data(grid, images, fonts, my_body):
                             text_color=item_text_color,
                             modable=item_modable
                         )
-                        ALL_ITEMS[item_category].append(item_to_append)
 
-    return ALL_ITEMS, MODE_VS_OPTIONS
+                    yield {
+                        "object": ITEM_OBJECT,
+                        "scenario": item_scenario,
+                        "type": item_type,
+                        "category": item_category
+                    }
 
 
-def load_diskette(grid, images, fonts, my_body):
-
-    ALL_ITEMS, MODE_VS_OPTIONS = load_data(grid, images, fonts, my_body)
-    # Setting all items
-    set_all_grid_items(grid, ALL_ITEMS)
-
-    # Setting the above mode options
-    set_mode_vs_options(grid, MODE_VS_OPTIONS)
-
-    return ALL_ITEMS, MODE_VS_OPTIONS
