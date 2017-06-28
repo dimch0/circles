@@ -3,11 +3,8 @@
 #################                              MobileItem class                                       #################
 #################                                                                                     #################
 #######################################################################################################################
-import math
-import copy
-import pdb
+
 from cir_item import Item
-from math import sqrt, ceil, hypot
 
 
 class MobileItem(Item):

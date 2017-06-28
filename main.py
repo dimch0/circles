@@ -40,15 +40,14 @@ from cir import cir_draw
 from cir import cir_utils
 from cir import cir_item_body
 from cir import cir_cosmetic
-from cir.cir_loader import load_all_items
-
-pygame.init()
-
+from cir.cir_loader import load_diskette
 
 
 
 def game_loop():
     """ Main game loop. """
+
+    print "Game started"
 
     GAME_EXIT = False
     START_TIME = time.time()
@@ -119,8 +118,6 @@ def game_loop():
                     #                            'l' KEY                              #
                     # --------------------------------------------------------------- #
                     elif event.key == pygame.K_l:
-                        my_body.img = images.alien2
-                        my_body.default_img = my_body.img
                         print "l"
 
                     # --------------------------------------------------------------- #
@@ -334,8 +331,11 @@ def game_loop():
 
             # Lifespan timer
             if grid.timers:
+
                 for timer in grid.timers:
                     timer.tick()
+                    if timer.name == "lifespan":
+                        timer.pos = my_body.pos
 
             for item in grid.items:
 
@@ -367,15 +367,43 @@ def game_loop():
     quit()
 
 
+
+
+
+
+
 # --------------------------------------------------------------- #
 #                                                                 #
 #                              MAIN                               #
 #                                                                 #
 # --------------------------------------------------------------- #
 if __name__ == '__main__':
-    # --------------------------------------------------------------- #
-    #                             LOADING                             #
-    # --------------------------------------------------------------- #
+
+    from cir import cir_loader_test
+
+    # Loading
+    # Pygame
+    # pygame.init()
+    #
+    # # Grid
+    # grid = cir_grid.Grid()
+    # grid.game_display = pygame.display.set_mode((grid.display_width, grid.display_height))
+    #
+    # # Images and fonts
+    # images = cir_cosmetic.Images(grid, pygame)
+    # fonts = cir_cosmetic.Fonts(grid, pygame)
+    #
+    #
+    # for item in cir_loader_test.load_data(grid, images, fonts):
+    #     print item
+    #     if item[0]:
+    #         print item[0].name
+
+
+
+    # Loading
+    # Pygame
+    pygame.init()
 
     # Grid
     grid = cir_grid.Grid()
@@ -385,18 +413,25 @@ if __name__ == '__main__':
     images = cir_cosmetic.Images(grid, pygame)
     fonts = cir_cosmetic.Fonts(grid, pygame)
 
-    # Player body
-    my_body = cir_item_body.BodyItem(name="my body", image=images.alien1, pos=grid.center_tile, color=grid.dark_grey,
-                                     speed=2)
-    # Items
-    grid.items.append(my_body)
-    grid.bodies.append(my_body)
-    ALL_ITEMS, MODE_VS_OPTIONS = load_all_items(grid, images, fonts, my_body)
-
     # Settings
     pygame.display.set_caption(grid.caption)
+    # pygame.mouse.set_visible(True)
     clock = pygame.time.Clock()
-    pygame.mouse.set_visible(True)
+
+
+
+
+    # Player body
+    my_body = cir_item_body.BodyItem(name="my body",
+                                     image=images.alien2,
+                                     pos=grid.center_tile,
+                                     color=grid.dark_grey,
+                                     speed=2,
+                                     range=1)
+    grid.items.append(my_body)
+    grid.bodies.append(my_body)
+    # Items
+    ALL_ITEMS, MODE_VS_OPTIONS = load_diskette(grid, images, fonts, my_body)
 
     # Start
     game_loop()

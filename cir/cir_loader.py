@@ -12,7 +12,11 @@ import cir_item
 
 
 def set_mode_vs_options(grid, mode_vs_options):
-    """ Setting all options to item which have options """
+    """
+    Setting all options to grid.item
+    mode_vs_options:
+    """
+
     for item in grid.items:
         for mode_name, mode_options in mode_vs_options.items():
 
@@ -21,7 +25,7 @@ def set_mode_vs_options(grid, mode_vs_options):
                 item.options = item.default_options
 
 
-def set_all_items(grid, all_items):
+def set_all_grid_items(grid, all_items):
     """ Assigning all items to the grid object """
     # TODO: Parametrize scenario
     for category, items in all_items.items():
@@ -37,12 +41,12 @@ def set_all_items(grid, all_items):
                     grid.buttons.append(item)
 
 
-def load_all_items(grid, images, fonts, my_body):
+def load_data(grid, images, fonts, my_body):
     """
-    This function loeads all items and menu options from external file.
+    This function loads all items and menu options from external data file.
     :return:  two dicts:
-    ALL_ITEMS
-    MODE_VS_OPTIONS
+    - ALL_ITEMS
+    - MODE_VS_OPTIONS
     """
     ALL_ITEMS = {
         "items": [],
@@ -58,9 +62,9 @@ def load_all_items(grid, images, fonts, my_body):
     }
 
     with open(grid.data_file, 'rb') as csvfile:
+
         data = csv.reader(csvfile, delimiter=',')
         header = next(data)
-
         # --------------------------------------------------------------- #
         #                        SET COLUMN INDEX                         #
         # --------------------------------------------------------------- #
@@ -171,14 +175,16 @@ def load_all_items(grid, images, fonts, my_body):
                         )
                         ALL_ITEMS[item_category].append(item_to_append)
 
+    return ALL_ITEMS, MODE_VS_OPTIONS
 
 
+def load_diskette(grid, images, fonts, my_body):
+
+    ALL_ITEMS, MODE_VS_OPTIONS = load_data(grid, images, fonts, my_body)
     # Setting all items
-    set_all_items(grid, ALL_ITEMS)
+    set_all_grid_items(grid, ALL_ITEMS)
 
     # Setting the above mode options
     set_mode_vs_options(grid, MODE_VS_OPTIONS)
 
     return ALL_ITEMS, MODE_VS_OPTIONS
-
-

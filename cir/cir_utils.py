@@ -4,7 +4,7 @@
 #################                                                                                     #################
 #######################################################################################################################
 import pdb
-import pprint
+import time
 
 def in_circle(center, radius, point):
     """
@@ -48,11 +48,10 @@ def inside_polygon(poly, point):
 def seconds_in_game(grid, START_TIME):
     """ Counts the seconds in the game """
     # TODO: FIX START TIME AND PAUSE SECONDS
-    pass
-    # if not grid.game_menu:
-    #     if time.time() + grid.seconds_in_pause > (START_TIME + grid.seconds_in_game) - grid.seconds_in_pause:
-    #         print "second: {0}".format(grid.seconds_in_game)
-    #         grid.seconds_in_game += 1
+    if not grid.game_menu:
+        if time.time() + grid.seconds_in_pause > (START_TIME + grid.seconds_in_game) - grid.seconds_in_pause:
+            # print "second: {0}".format(grid.seconds_in_game)
+            grid.seconds_in_game += 1
 
 
 def debug_print_click(grid, MOUSE_POS, clicked_circle, my_body):

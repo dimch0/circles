@@ -68,10 +68,11 @@ class Item(object):
 
         if track:
             self.rot_track = track
-            if idx == 3:
-                self.rot_revert = range(-step, -end_point * 2, -step)
-            else:
-                self.rot_revert = cir_utils.negative_list(self.rot_track)
+            if not self.rot_revert:
+                if idx == 3:
+                    self.rot_revert = range(-step, -end_point * 2, -step)
+                else:
+                    self.rot_revert = cir_utils.negative_list(self.rot_track)
 
     def rotate(self, pygame):
         """ Rotates the image """
