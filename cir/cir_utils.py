@@ -112,3 +112,12 @@ def set_scenario(SYS_ARGV):
             result = argument
 
     return result
+
+
+# --------------------------------------------------------------- #
+#                                                                 #
+#                            POOPING                              #
+#                                                                 #
+# --------------------------------------------------------------- #
+def pooping(grid, laino):
+    pass

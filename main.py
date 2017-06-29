@@ -13,6 +13,7 @@
 # TODO: Item generation on radar
 # TODO: Create a mini map
 # TODO: Define a signal function
+# TODO: Define a pooping function
 # TODO: Log statistics during a lifespan
 # TODO: Create spirit mode, calculate karma
 # TODO: Log messages on screen
@@ -161,7 +162,7 @@ def game_loop():
 
                     if grid.mouse_mode == "laino":
                         if clicked_circle not in grid.occupado_tiles:
-                            # TODO: Create pooping method with shit item as param
+                            # TODO: Define a pooping function with a shit from data as argument
                             hui = cir_item.Item(
                                 name="hui",
                                 color = grid.gelb,

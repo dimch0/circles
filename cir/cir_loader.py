@@ -76,7 +76,7 @@ def create_new_item(grid, type, attributes):
         dummy = cir_item_button.ButtonItem()
     elif type == "mobile":
         dummy = cir_item_mobile.MobileItem()
-    elif type == "mode_option":
+    elif type in ["mode_option", "simple"]:
         dummy = cir_item.Item()
 
     for attribute, value in attributes.items():
