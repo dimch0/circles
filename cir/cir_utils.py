@@ -3,7 +3,6 @@
 #################                                 Helping Utilities                                   #################
 #################                                                                                     #################
 #######################################################################################################################
-import pdb
 import time
 
 def in_circle(center, radius, point):
@@ -103,3 +102,13 @@ def rot_center(pygame, image, angle):
     rot_rect.center = rot_image.get_rect().center
     rot_image = rot_image.subsurface(rot_rect).copy()
     return rot_image
+
+
+def set_scenario(SYS_ARGV):
+    """ Setting the scenario """
+    result = "Scenario_1"
+    for argument in SYS_ARGV:
+        if "Scenario" in argument:
+            result = argument
+
+    return result

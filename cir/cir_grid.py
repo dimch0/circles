@@ -45,6 +45,7 @@ class Grid(object):
         self.items = []
         self.bodies = []
         self.buttons = []
+        self.buttonz = {}
         self.timers = []
         # ================================================== #
         #                      MOUSE                         #

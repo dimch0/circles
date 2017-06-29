@@ -3,7 +3,6 @@
 #################                                 TimerItem class                                     #################
 #################                                                                                     #################
 #######################################################################################################################
-import math
 import time
 from cir_item_mobile import MobileItem
 
@@ -25,8 +24,20 @@ class TimerItem(MobileItem):
 
         self.time_step = 0.0157
         self._is_over = False
-        self.number_of_steps = int(self.duration / self.time_step)
-        self.len_step = -float(360) / self.number_of_steps
+        self._number_of_steps = int(self.duration / self.time_step)
+        self._len_step = None
+
+
+    @property
+    def number_of_steps(self):
+        self._number_of_steps = int(self.duration / self.time_step)
+        return self._number_of_steps
+
+    @property
+    def len_step(self):
+        if self._number_of_steps > 0:
+            self._len_step = -float(360) / self._number_of_steps
+            return self._len_step
 
     def tick(self):
         """ Starts the timer, increasing the step and filled_steps """
@@ -48,10 +59,11 @@ class TimerItem(MobileItem):
     @property
     def rect(self):
         """ This defines the rect argument for the arch drawing """
-        self._rect = [self.pos[0] - self.timer_tile_radius,
-                self.pos[1] - self.timer_tile_radius,
-                2 * self.timer_tile_radius,
-                2 * self.timer_tile_radius]
+        if self.timer_tile_radius:
+            self._rect = [self.pos[0] - self.timer_tile_radius,
+                    self.pos[1] - self.timer_tile_radius,
+                    2 * self.timer_tile_radius,
+                    2 * self.timer_tile_radius]
         return self._rect
 
 

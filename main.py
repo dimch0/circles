@@ -1,6 +1,8 @@
 #######################################################################################################################
 #################                                                                                     #################
+#################                                                                                     #################
 #################                                 Main file                                           #################
+#################                                                                                     #################
 #################                                                                                     #################
 #######################################################################################################################
 
@@ -8,16 +10,14 @@
 #                            FEATURES                             #
 # --------------------------------------------------------------- #
 # TODO: Time modifier
-# TODO: Parametrize scenario
-# TODO: Add sys argv for gameover, loading and scenario
 # TODO: Item generation on radar
-# TODO: Link timer to body
 # TODO: Create a mini map
 # TODO: Define a signal function
 # TODO: Log statistics during a lifespan
 # TODO: Create spirit mode, calculate karma
 # TODO: Log messages on screen
 # TODO: Create save button
+# TODO: Add sys argv for loading a game
 # TODO: Animate instructions
 # TODO: Animate item generation
 # TODO: Animate activation of abilities
@@ -26,7 +26,12 @@
 #                            BUG FIXES                            #
 # --------------------------------------------------------------- #
 # TODO: Fix movement track
+# --------------------------------------------------------------- #
+#                            OPTIONAL                             #
+# --------------------------------------------------------------- #
 # TODO: Remove grid.bodies usage
+# TODO: Remove mode_vs_options usage
+# TODO: Link timer to body
 
 import pdb
 
@@ -43,6 +48,55 @@ from cir import cir_loader
 from cir import cir_cosmetic
 
 
+def loading_general_settings():
+    """
+    Loading general game instances and settings
+    :return: grid, images, fonts, clock
+    """
+    # Pygame
+    pygame.init()
+
+    # Grid
+    grid = cir_grid.Grid()
+    grid.game_display = pygame.display.set_mode((grid.display_width, grid.display_height))
+
+    # Images and fonts
+    images = cir_cosmetic.Images(grid, pygame)
+    fonts = cir_cosmetic.Fonts(grid, pygame)
+
+    # Settings
+    pygame.display.set_caption(grid.caption)
+
+    # pygame.mouse.set_visible(True)
+    clock = pygame.time.Clock()
+
+    return grid, images, fonts, clock
+
+
+def load_items():
+    """
+    Loading all grid items, my body and mode options
+    :return: my_body, mode_vs_options
+    """
+    my_body = None
+    mode_vs_options = {}
+    for item in cir_loader.load_data(grid, images, fonts, SCENARIO):
+        category = item['category']
+        item_obj = item['object']
+        type = item["type"]
+        if type == "mode_option":
+            cir_loader.add_optoin_to_mode(category, item_obj, mode_vs_options)
+        else:
+            if category == "my body":
+                my_body = cir_loader.set_grid_items(grid, item)
+            else:
+                cir_loader.set_grid_items(grid, item)
+
+    cir_loader.set_item_mode_options(grid, mode_vs_options)
+
+    return my_body, mode_vs_options
+
+
 def game_loop():
     """ Main game loop. """
 
@@ -50,7 +104,10 @@ def game_loop():
 
     GAME_EXIT = False
     START_TIME = time.time()
-    grid.game_menu = True
+    # grid.game_menu = True
+
+
+
 
     while not GAME_EXIT:
         # Mouse
@@ -97,6 +154,7 @@ def game_loop():
                         # Debug
                         cir_utils.debug_print_space(grid)
 
+
                     # --------------------------------------------------------------- #
                     #                            't' KEY                              #
                     # --------------------------------------------------------------- #
@@ -110,13 +168,16 @@ def game_loop():
                                         print "number of steps :", timer.number_of_steps
                                         print "len of step     :", timer.len_step
                                         print "-"*20
-                                        # timer.step += 200
-                                        # timer.filled_steps -= 90
+                                        timer.step -= 200
+                                        timer.filled_steps += 90
 
                     # --------------------------------------------------------------- #
                     #                            'l' KEY                              #
                     # --------------------------------------------------------------- #
                     elif event.key == pygame.K_l:
+                        grid.game_over = True
+                        sys.argv.append('Scenario_2')
+                        os.execv(sys.executable, [sys.executable] + sys.argv)
                         print "l"
 
                     # --------------------------------------------------------------- #
@@ -126,6 +187,16 @@ def game_loop():
                         my_body.img = images.galab1
                         my_body.default_img = my_body.img
                         print "r"
+
+                    # --------------------------------------------------------------- #
+                    #                            'k' KEY                              #
+                    # --------------------------------------------------------------- #
+                    elif event.key == pygame.K_k:
+                        for timer in grid.timers:
+                            if timer.name == "lifespan":
+                                pass
+                        print "k"
+
 
                     # MOVEMENT Population
                     if not my_body.in_menu:
@@ -157,7 +228,7 @@ def game_loop():
                         for button in grid.buttons:
                             if clicked_circle == button.pos and button.available:
 
-                                if button.name == "play":
+                                if button.name in ["play", "replay"]:
                                     grid.game_menu = False
                                     if grid.game_over:
                                         grid.game_over = False
@@ -355,7 +426,7 @@ def game_loop():
                         # Lifespan
                         if timer.name == "lifespan":
                             grid.game_over = True
-                            # TODO: add sys argv for gameover and loading a game
+                            sys.argv.append('replay')
                             os.execv(sys.executable, [sys.executable] + sys.argv)
 
         # FPS
@@ -365,59 +436,36 @@ def game_loop():
     pygame.quit()
     quit()
 
-
-def loading_general_settings():
-    """
-    Loading general game instances and settings
-    :return: grid, images, fonts, clock
-    """
-    # Pygame
-    pygame.init()
-    # Grid
-    grid = cir_grid.Grid()
-    grid.game_display = pygame.display.set_mode((grid.display_width, grid.display_height))
-    # Images and fonts
-    images = cir_cosmetic.Images(grid, pygame)
-    fonts = cir_cosmetic.Fonts(grid, pygame)
-    # Settings
-    pygame.display.set_caption(grid.caption)
-    # pygame.mouse.set_visible(True)
-    clock = pygame.time.Clock()
-    return grid, images, fonts, clock
-
-
-def load_items():
-    """
-    Loading all grid items, my body and mode options
-    :return: my_body, mode_vs_options
-    """
-    my_body = None
-    mode_vs_options = {}
-    for item in cir_loader.load_data(grid, images, fonts, SCENARIO):
-        category = item['category']
-        item_obj = item['object']
-        type = item["type"]
-        if type == "mode_option":
-            cir_loader.get_mode_vs_options(category, item_obj, mode_vs_options)
-        else:
-            if category == "my body":
-                my_body = cir_loader.set_grid_items(grid, item)
-            else:
-                cir_loader.set_grid_items(grid, item)
-
-    cir_loader.set_mode_vs_options(grid, mode_vs_options)
-
-    return my_body, mode_vs_options
-
 # --------------------------------------------------------------- #
 #                                                                 #
 #                              MAIN                               #
 #                                                                 #
 # --------------------------------------------------------------- #
 if __name__ == '__main__':
-    # Loading
-    SCENARIO = 001
+
+    # SCENARIO
+    SCENARIO = cir_utils.set_scenario(sys.argv)
+
+    # LOADING
     grid, images, fonts, clock = loading_general_settings()
     my_body, mode_vs_options = load_items()
-    # Start
+
+    # REPLAY BUTTON
+    for button in grid.buttons:
+        if 'replay' not in sys.argv:
+            if button.name == "replay":
+                button.available = False
+        else:
+            if button.name == "replay":
+                button.available = True
+            if button.name == "play":
+                button.available = False
+
+    # GRID SETTINGS
+    if 'Scenario_2' in sys.argv:
+        grid.game_menu = False
+    else:
+        grid.game_menu = True
+
+    # START
     game_loop()
