@@ -1,6 +1,8 @@
 #######################################################################################################################
 #################                                                                                     #################
+#################                                                                                     #################
 #################                                 TimerItem class                                     #################
+#################                                                                                     #################
 #################                                                                                     #################
 #######################################################################################################################
 import time
@@ -9,6 +11,7 @@ from cir_item_mobile import MobileItem
 
 class TimerItem(MobileItem):
     """ This is the base class for all timer items """
+
     def __init__(self, duration=0, time_color=None, tile_radius=None, start_time=None, **kwargs):
         super(TimerItem, self).__init__(**kwargs)
 
@@ -39,15 +42,6 @@ class TimerItem(MobileItem):
             self._len_step = -float(360) / self._number_of_steps
             return self._len_step
 
-    def tick(self):
-        """ Starts the timer, increasing the step and filled_steps """
-        if not self.start_time:
-            self.start_time = time.time()
-        if self.start_time and not self.step == self.number_of_steps:
-            if time.time() > (self.start_time + (self.time_step * self.step)):
-                self.filled_steps += self.len_step
-                self.step += 1
-
     @property
     def is_over(self):
         """ Returns a boolean if the timer is over """
@@ -67,3 +61,11 @@ class TimerItem(MobileItem):
         return self._rect
 
 
+    def tick(self):
+        """ Starts the timer, increasing the step and filled_steps """
+        if not self.start_time:
+            self.start_time = time.time()
+        if self.start_time and not self.step == self.number_of_steps:
+            if time.time() > (self.start_time + (self.time_step * self.step)):
+                self.filled_steps += self.len_step
+                self.step += 1

@@ -17,12 +17,11 @@
 # TODO: Create spirit mode, calculate karma
 # TODO: Log messages on screen
 # TODO: Create save button
-# TODO: Add sys argv for loading a game
 # TODO: Animate instructions
 # TODO: Animate item generation
 # TODO: Animate activation of abilities
 # TODO: Create installation .exe file
-# --------------------------------------------------------------- #
+# ---------------------------------------------------s------------ #
 #                            BUG FIXES                            #
 # --------------------------------------------------------------- #
 # TODO: Fix movement track
@@ -46,55 +45,6 @@ from cir import cir_draw
 from cir import cir_utils
 from cir import cir_loader
 from cir import cir_cosmetic
-
-
-def loading_general_settings():
-    """
-    Loading general game instances and settings
-    :return: grid, images, fonts, clock
-    """
-    # Pygame
-    pygame.init()
-
-    # Grid
-    grid = cir_grid.Grid()
-    grid.game_display = pygame.display.set_mode((grid.display_width, grid.display_height))
-
-    # Images and fonts
-    images = cir_cosmetic.Images(grid, pygame)
-    fonts = cir_cosmetic.Fonts(grid, pygame)
-
-    # Settings
-    pygame.display.set_caption(grid.caption)
-
-    # pygame.mouse.set_visible(True)
-    clock = pygame.time.Clock()
-
-    return grid, images, fonts, clock
-
-
-def load_items():
-    """
-    Loading all grid items, my body and mode options
-    :return: my_body, mode_vs_options
-    """
-    my_body = None
-    mode_vs_options = {}
-    for item in cir_loader.load_data(grid, images, fonts, SCENARIO):
-        category = item['category']
-        item_obj = item['object']
-        type = item["type"]
-        if type == "mode_option":
-            cir_loader.add_optoin_to_mode(category, item_obj, mode_vs_options)
-        else:
-            if category == "my body":
-                my_body = cir_loader.set_grid_items(grid, item)
-            else:
-                cir_loader.set_grid_items(grid, item)
-
-    cir_loader.set_item_mode_options(grid, mode_vs_options)
-
-    return my_body, mode_vs_options
 
 
 def game_loop():
@@ -209,9 +159,9 @@ def game_loop():
                 clicked_circle = grid.mouse_in_tile(MOUSE_POS)
                 if clicked_circle:
 
-
                     if grid.mouse_mode == "laino":
                         if clicked_circle not in grid.occupado_tiles:
+                            # TODO: Create pooping method with shit item as param
                             hui = cir_item.Item(
                                 name="hui",
                                 color = grid.gelb,
@@ -384,12 +334,11 @@ def game_loop():
                 cir_draw.draw_menu_buttons(pygame, grid, MOUSE_POS)
 
         # Mouse
-        # pygame.draw.CIR(grid.game_display, grid.white, MOUSE_POS, 2, 0)
         if grid.mouse_mode:
             cir_draw.draw_mouse_image(pygame, grid, MOUSE_POS)
 
 
-        # === END DRAWING === #
+        # End drawing
         pygame.display.update()
 
         # --------------------------------------------------------------- #
@@ -432,7 +381,7 @@ def game_loop():
         # FPS
         clock.tick(grid.fps)
 
-    #### END ####
+    # END
     pygame.quit()
     quit()
 
@@ -443,14 +392,38 @@ def game_loop():
 # --------------------------------------------------------------- #
 if __name__ == '__main__':
 
-    # SCENARIO
-    SCENARIO = cir_utils.set_scenario(sys.argv)
+    # --------------------------------------------------------------- #
+    #                             LOADING                             #
+    # --------------------------------------------------------------- #
 
-    # LOADING
-    grid, images, fonts, clock = loading_general_settings()
-    my_body, mode_vs_options = load_items()
+    # Scenario
+    scenario = cir_utils.set_scenario(sys.argv)
 
-    # REPLAY BUTTON
+    # Pygame
+    pygame.init()
+
+    # Grid
+    grid = cir_grid.Grid()
+    grid.game_display = pygame.display.set_mode((grid.display_width, grid.display_height))
+
+    # Images and fonts
+    images = cir_cosmetic.Images(grid, pygame)
+    fonts = cir_cosmetic.Fonts(grid, pygame)
+
+    # Settings
+    pygame.display.set_caption(grid.caption)
+
+    # pygame.mouse.set_visible(True)
+    clock = pygame.time.Clock()
+
+    # Player body, mode options and items
+    my_body, mode_vs_options = cir_loader.load_items(grid, images, fonts, scenario)
+
+    # --------------------------------------------------------------- #
+    #                           GRID settings                         #
+    # --------------------------------------------------------------- #
+
+    # Replay
     for button in grid.buttons:
         if 'replay' not in sys.argv:
             if button.name == "replay":
@@ -461,11 +434,13 @@ if __name__ == '__main__':
             if button.name == "play":
                 button.available = False
 
-    # GRID SETTINGS
+    # Start in menu
     if 'Scenario_2' in sys.argv:
         grid.game_menu = False
     else:
         grid.game_menu = True
 
-    # START
+    # --------------------------------------------------------------- #
+    #                             START                               #
+    # --------------------------------------------------------------- #
     game_loop()

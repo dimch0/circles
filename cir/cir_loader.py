@@ -13,6 +13,8 @@ import cir_item_button
 import cir_item_mobile
 
 
+
+
 def set_item_mode_options(grid, mode_vs_options):
     """
     Setting all options to grid.item
@@ -87,7 +89,6 @@ def create_new_item(grid, type, attributes):
             if attribute == "color":
                 if hasattr(dummy, "default_color"):
                     setattr(dummy, "default_color", value)
-
     return dummy
 
 
@@ -154,3 +155,31 @@ def load_data(grid, images, fonts, SCENARIO):
                         "type": type,
                         "category": category
                     }
+
+
+def load_items(grid, images, fonts, scenario):
+    """
+    Loading all grid items, my body and mode options
+    :return: my_body, mode_vs_options
+    """
+    my_body = None
+    mode_vs_options = {}
+
+    for item in load_data(grid, images, fonts, scenario):
+
+        category = item['category']
+        item_obj = item['object']
+        type = item["type"]
+
+        if type == "mode_option":
+            add_optoin_to_mode(category, item_obj, mode_vs_options)
+        else:
+            if category == "my body":
+                my_body = set_grid_items(grid, item)
+            else:
+                set_grid_items(grid, item)
+
+    # Setting mode_vs_options
+    set_item_mode_options(grid, mode_vs_options)
+
+    return my_body, mode_vs_options
