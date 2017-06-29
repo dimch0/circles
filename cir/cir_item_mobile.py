@@ -23,8 +23,8 @@ class MobileItem(Item):
             self.speed = 2
         if self.speed is 2 and modifier < 0:
             self.speed = 0
-        if self.speed > 8:
-            self.speed = 8
+        # if self.speed > 8:
+        #     self.speed = 8
 
 
     # --------------------------------------------------------------- #
@@ -54,7 +54,7 @@ class MobileItem(Item):
             distance = 2 * grid.tile_radius
             # steps_number = int(ceil(2 * distance / (2 * self.speed)))
             steps_number = 2 * distance / (2 * self.speed)
-            step_size = int(distance / steps_number)
+            # step_size = int(distance / steps_number)
             if steps_number > 0:
                 stepx, stepy = int(dx / steps_number), int(dy / steps_number)
                 for i in range(steps_number + 1):

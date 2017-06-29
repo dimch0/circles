@@ -22,7 +22,7 @@
 # TODO: Animate activation of abilities
 # TODO: Create installation .exe file
 # ---------------------------------------------------s------------ #
-#                            BUG FIXES                            #
+#                            BUG FIXES       q                     #
 # --------------------------------------------------------------- #
 # TODO: Fix movement track
 # --------------------------------------------------------------- #
@@ -233,17 +233,18 @@ def game_loop():
                                                     item.gen_move_track(grid, mode_vs_options[item.mode].index(option))
 
                                                 elif option.name == "see":
-                                                    item.range += 1
-                                                    # item.mode = "seen"
+                                                    item.range += 3
+                                                    print "seen"
 
                                                 elif option.name == "smel":
                                                     print "sniff hair"
 
                                                 elif option.name == "medi":
                                                     item.range += 3
+                                                    item.change_speed(10)
 
                                                 elif option.name == "audio":
-                                                    item.change_speed(10)
+                                                    item.range += 1
 
                                                 elif option.name == "eat":
                                                     item.change_speed(-1)

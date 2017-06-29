@@ -114,9 +114,9 @@ def load_data(grid, images, fonts, SCENARIO):
         # --------------------------------------------------------------- #
         #                        SET COLUMN INDEX                         #
         # --------------------------------------------------------------- #
-        col_indexes = {}
+        col_idx = {}
         for idx, name in enumerate(HEADER):
-            col_indexes[name] = idx
+            col_idx[name] = idx
 
         for row in data:
             if not row == HEADER:
@@ -124,24 +124,24 @@ def load_data(grid, images, fonts, SCENARIO):
                 # --------------------------------------------------------------- #
                 #                      SET COLS AS ATTRIBUTES                     #
                 # --------------------------------------------------------------- #
-                scenario_col = row[col_indexes["scenario"]]
+                scenario_col = row[col_idx["scenario"]]
                 if str(SCENARIO) in scenario_col or "ALL" in scenario_col:
-                    type = row[col_indexes["type"]] if len(row[col_indexes["type"]]) > 0 else None
-                    category = row[col_indexes["category"]]
+                    type = row[col_idx["type"]] if len(row[col_idx["type"]]) > 0 else None
+                    category = row[col_idx["category"]]
 
                     attributes = {
-                        "name": row[col_indexes["name"]] if len(row[col_indexes["name"]]) > 0 else None,
-                        "pos": eval(row[col_indexes["pos"]]) if len(row[col_indexes["pos"]]) > 0 else (),
-                        "color": getattr(grid, row[col_indexes["color"]]) if len(row[col_indexes["color"]]) > 0 else None,
-                        "img": getattr(images, row[col_indexes["img"]]) if len(row[col_indexes["img"]]) > 0 else None,
-                        "border": row[col_indexes["border"]] if len(row[col_indexes["border"]]) > 0 else 0,
-                        "speed": int(row[col_indexes["speed"]]) if len(row[col_indexes["speed"]]) > 0 else None,
-                        "range": int(row[col_indexes["range"]]) if len(row[col_indexes["range"]]) > 0 else None,
-                        "font": getattr(fonts, row[col_indexes["font"]]) if len(row[col_indexes["font"]]) > 0 else None,
-                        "text_color": getattr(grid, row[col_indexes["text_color"]]) if len(row[col_indexes["text_color"]]) > 0 else None,
-                        "duration": int(row[col_indexes["duration"]]) if len(row[col_indexes["duration"]]) > 0 else None,
-                        "time_color": getattr(grid, row[col_indexes["time_color"]]) if len(row[col_indexes["time_color"]]) > 0 else None,
-                        "modable": row[col_indexes["modable"]] if len(row[col_indexes["modable"]]) > 0 else None,
+                        "name": row[col_idx["name"]] if len(row[col_idx["name"]]) > 0 else None,
+                        "pos": eval(row[col_idx["pos"]]) if len(row[col_idx["pos"]]) > 0 else None,
+                        "color": getattr(grid, row[col_idx["color"]]) if len(row[col_idx["color"]]) > 0 else None,
+                        "img": getattr(images, row[col_idx["img"]]) if len(row[col_idx["img"]]) > 0 else None,
+                        "border": row[col_idx["border"]] if len(row[col_idx["border"]]) > 0 else 0,
+                        "speed": int(row[col_idx["speed"]]) if len(row[col_idx["speed"]]) > 0 else None,
+                        "range": int(row[col_idx["range"]]) if len(row[col_idx["range"]]) > 0 else None,
+                        "font": getattr(fonts, row[col_idx["font"]]) if len(row[col_idx["font"]]) > 0 else None,
+                        "text_color": getattr(grid, row[col_idx["text_color"]]) if len(row[col_idx["text_color"]]) > 0 else None,
+                        "duration": int(row[col_idx["duration"]]) if len(row[col_idx["duration"]]) > 0 else None,
+                        "time_color": getattr(grid, row[col_idx["time_color"]]) if len(row[col_idx["time_color"]]) > 0 else None,
+                        "modable": row[col_idx["modable"]] if len(row[col_idx["modable"]]) > 0 else None,
                     }
 
                     # --------------------------------------------------------------- #
