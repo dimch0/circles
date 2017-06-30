@@ -41,7 +41,6 @@ import sys
 import time
 import pygame
 
-from cir import cir_item
 from cir import cir_grid
 from cir import cir_draw
 from cir import cir_utils
@@ -113,11 +112,11 @@ def game_loop():
                             if grid.timers:
                                 for timer in grid.timers:
                                     if timer.name == "lifespan":
-                                        print "step            :", timer.step
-                                        print "filled_steps    :", timer.filled_steps
-                                        print "number of steps :", timer.number_of_steps
-                                        print "len of step     :", timer.len_step
-                                        print "-"*20
+                                        # print "step            :", timer.step
+                                        # print "filled_steps    :", timer.filled_steps
+                                        # print "number of steps :", timer.number_of_steps
+                                        # print "len of step     :", timer.len_step
+                                        # print "-"*20
                                         timer.step -= 200
                                         timer.filled_steps += 90
 
@@ -163,7 +162,7 @@ def game_loop():
                     #                          POOP MODE                              #
                     # --------------------------------------------------------------- #
                     if grid.mouse_mode == "laino":
-                        if clicked_circle not in grid.occupado_tiles:
+                        if clicked_circle not in grid.occupado_tiles and clicked_circle in grid.revealed_tiles:
                             cir_utils.produce(grid, "shit", clicked_circle)
 
                     # --------------------------------------------------------------- #
@@ -258,6 +257,11 @@ def game_loop():
                                                     grid.mouse_mode = option.name
                                                     if option.img and option.modable:
                                                         grid.mouse_img = option.img
+
+                                # Clicked outside
+                                elif (clicked_circle != item.pos) and (clicked_circle not in grid.adj_tiles(item.pos)):
+                                    item.set_in_menu(grid, False)
+
                 # Debug print
                 cir_utils.debug_print_click(grid, MOUSE_POS, clicked_circle, my_body)
 

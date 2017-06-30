@@ -126,14 +126,14 @@ class MobileItem(Item):
         :param grid: grid instance
         :return: the first available empty tile (1, 1) or None
         """
-        print "CHECK EMPTY", grid.occupado_tiles
         EMPTY_TILE = None
+
         for idx, tile in enumerate(grid.adj_tiles(self.pos)):
             if tile in grid.revealed_tiles:
                 if tile not in grid.occupado_tiles:
                     EMPTY_TILE = tile
                     break
-        print "EMPTY_TILE = ", EMPTY_TILE
+
         return EMPTY_TILE
 
     def cell_division(self, grid):
@@ -163,7 +163,6 @@ class MobileItem(Item):
             new_copy.move_track = self.move_to_tile(grid, new_copy.pos, empty_tile)
             grid.items.append(new_copy)
             grid.bodies.append(new_copy)
-            print "DIVISION", grid.occupado_tiles
 
     def mitosis(self, grid):
         """

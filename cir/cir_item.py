@@ -154,6 +154,7 @@ class Item(object):
         :param clicked_circle: the current clicekd circle
         :param mode_vs_options: dict of the mode and options for it
         """
+
         # Clicked on item
         if clicked_circle == self.pos and self.name in mode_vs_options.keys():
             # If default mode:
@@ -168,8 +169,9 @@ class Item(object):
                     self.reset_mode()
                 elif not self.in_menu:
                     self.set_in_menu(grid, True)
+
         # Clicked outside
-        elif clicked_circle is not self.pos and clicked_circle not in grid.adj_tiles(self.pos):
+        elif (clicked_circle != self.pos) and (clicked_circle not in grid.adj_tiles(self.pos)):
             self.set_in_menu(grid, False)
 
 
