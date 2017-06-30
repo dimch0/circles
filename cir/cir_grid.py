@@ -40,15 +40,16 @@ class Grid(object):
         self.set_playing_tiles()
         self.revealed_tiles = [self.center_tile]
         self.revealed_radius = []
-        self._occupado_tiles = []
+
         # ================================================== #
         #                      ITEMS                         #
         # ================================================== #
         self.items = []
         self.bodies = []
-        self.buttons = []
         self.timers = []
+        self.buttons = []
         self.everything = {}
+        self._occupado_tiles = []
         # ================================================== #
         #                      MOUSE                         #
         # ================================================== #
@@ -105,15 +106,14 @@ class Grid(object):
 
     @property
     def occupado_tiles(self):
-        """
-        Marking the occupado grid tiles
-        """
-        self._occupado_tiles = list(set([item.pos for item in self.items] + [body.pos for body in self.bodies]))
+        set_items = list(set([item.pos for item in self.items if item.pos]))
+        set_bodies = list(set([body.pos for body in self.bodies if body.pos]))
+        self._occupado_tiles = set_items + set_bodies
         return self._occupado_tiles
 
-    def append_occupado(self, tile):
-        self._occupado_tiles = self.occupado_tiles + [tile]
-        return self._occupado_tiles
+    # def append_occupado(self, tile):
+    #     self._occupado_tiles = self.occupado_tiles + [tile]
+    #     return self._occupado_tiles
 
     def find_center_tile(self):
         """
@@ -165,4 +165,11 @@ class Grid(object):
         if item.name == "placeholder":
             for other_item in self.items:
                 if other_item.pos == item.pos:
-                    self.items.remove(item)
+                    try:
+                        item.available = False
+                        self.items.remove(item)
+                    except Exception as e:
+                        print "ERROR", e
+                        print "ERROR name", item.name
+                        print "ERROR pos", item.pos
+                        print "ERROR available", item.available

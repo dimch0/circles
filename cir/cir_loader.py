@@ -40,6 +40,7 @@ def set_grid_items(grid, item):
     """ Assigning all items to the grid object """
     category = item['category']
     item_obj = item['object']
+    grid.everything[item_obj.name] = item_obj
 
     if category == 'my body':
         if not item_obj in grid.bodies:
@@ -52,8 +53,7 @@ def set_grid_items(grid, item):
         grid_attribute = getattr(grid, category)
         if not item_obj in grid_attribute:
             grid_attribute.append(item_obj)
-        # if category == "buttons":
-        #     grid.buttonz[item_obj.name] = item_obj
+
 
 
 def create_new_item(grid, type, attributes):
@@ -83,12 +83,14 @@ def create_new_item(grid, type, attributes):
         if dummy:
             if hasattr(dummy, attribute):
                 setattr(dummy, attribute, value)
+
             if attribute == "img":
                 if hasattr(dummy, "default_img"):
                     setattr(dummy, "default_img", value)
             if attribute == "color":
                 if hasattr(dummy, "default_color"):
                     setattr(dummy, "default_color", value)
+
     return dummy
 
 
@@ -108,8 +110,7 @@ def load_data(grid, images, fonts, SCENARIO):
         data = csv.reader(csvfile, delimiter=',')
         HEADER = next(data)
         SCENARIO = SCENARIO
-
-        print "SCENARIO IN LOAD_DATA", SCENARIO
+        print "Loading scenario...", SCENARIO
 
         # --------------------------------------------------------------- #
         #                        SET COLUMN INDEX                         #
@@ -130,18 +131,19 @@ def load_data(grid, images, fonts, SCENARIO):
                     category = row[col_idx["category"]]
 
                     attributes = {
-                        "name": row[col_idx["name"]] if len(row[col_idx["name"]]) > 0 else None,
-                        "pos": eval(row[col_idx["pos"]]) if len(row[col_idx["pos"]]) > 0 else None,
-                        "color": getattr(grid, row[col_idx["color"]]) if len(row[col_idx["color"]]) > 0 else None,
-                        "img": getattr(images, row[col_idx["img"]]) if len(row[col_idx["img"]]) > 0 else None,
-                        "border": row[col_idx["border"]] if len(row[col_idx["border"]]) > 0 else 0,
-                        "speed": int(row[col_idx["speed"]]) if len(row[col_idx["speed"]]) > 0 else None,
-                        "range": int(row[col_idx["range"]]) if len(row[col_idx["range"]]) > 0 else None,
-                        "font": getattr(fonts, row[col_idx["font"]]) if len(row[col_idx["font"]]) > 0 else None,
+                        "available" : bool(row[col_idx["available"]]) if len(row[col_idx["available"]]) > 0 else None,
+                        "border"    : row[col_idx["border"]] if len(row[col_idx["border"]]) > 0 else 0,
+                        "name"      : row[col_idx["name"]] if len(row[col_idx["name"]]) > 0 else None,
+                        "pos"       : eval(row[col_idx["pos"]]) if len(row[col_idx["pos"]]) > 0 else None,
+                        "color"     : getattr(grid, row[col_idx["color"]]) if len(row[col_idx["color"]]) > 0 else None,
+                        "img"       : getattr(images, row[col_idx["img"]]) if len(row[col_idx["img"]]) > 0 else None,
+                        "speed"     : int(row[col_idx["speed"]]) if len(row[col_idx["speed"]]) > 0 else None,
+                        "range"     : int(row[col_idx["range"]]) if len(row[col_idx["range"]]) > 0 else None,
+                        "font"      : getattr(fonts, row[col_idx["font"]]) if len(row[col_idx["font"]]) > 0 else None,
                         "text_color": getattr(grid, row[col_idx["text_color"]]) if len(row[col_idx["text_color"]]) > 0 else None,
-                        "duration": int(row[col_idx["duration"]]) if len(row[col_idx["duration"]]) > 0 else None,
+                        "duration"  : int(row[col_idx["duration"]]) if len(row[col_idx["duration"]]) > 0 else None,
                         "time_color": getattr(grid, row[col_idx["time_color"]]) if len(row[col_idx["time_color"]]) > 0 else None,
-                        "modable": row[col_idx["modable"]] if len(row[col_idx["modable"]]) > 0 else None,
+                        "modable"   : row[col_idx["modable"]] if len(row[col_idx["modable"]]) > 0 else None,
                     }
 
                     # --------------------------------------------------------------- #

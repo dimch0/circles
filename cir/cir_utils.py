@@ -4,6 +4,7 @@
 #################                                                                                     #################
 #######################################################################################################################
 import time
+import copy
 
 def in_circle(center, radius, point):
     """
@@ -55,28 +56,29 @@ def seconds_in_game(grid, START_TIME):
 
 def debug_print_click(grid, MOUSE_POS, clicked_circle, my_body):
     """  Debug print on click event  """
-    pass
-#     print(""">>>>>> click: {0}, tile: {1}
-# mode        : {2}
-# menu        : {3}
-# grid items  : {4}
-# occupado:   : {5}
-# playing     : {6}
-# move track  : {7}
-# all tiles   : {8}
-# speed       : {9}
-# """.format(MOUSE_POS,
-#            clicked_circle,
-#            my_body.mode,
-#            my_body.in_menu,
-#            len([item.name for item in grid.items]),
-#            len(grid.occupado_tiles),
-#            len(grid.playing_tiles),
-#            my_body.move_track,
-#            len(grid.tiles),
-#            my_body.speed
-#            )
-#           )
+#     pass
+    print(""">>>>>> click: {0}, tile: {1}
+mode        : {2}
+menu        : {3}
+grid items  : {4}
+occupado:   : {5}
+playing     : {6}
+move track  : {7}
+all tiles   : {8}
+speed       : {9}
+""".format(MOUSE_POS,
+           clicked_circle,
+           my_body.mode,
+           my_body.in_menu,
+           [(item.name, item.pos) for item in grid.items],
+           [ot for ot in grid.occupado_tiles],
+           # len(grid._occupado_tiles),
+           len(grid.playing_tiles),
+           my_body.move_track,
+           len(grid.tiles),
+           my_body.speed,
+           )
+          )
 
 def debug_print_space(grid):
     """  Debug print on space bar event  """
@@ -87,7 +89,6 @@ revealed_radius: {1}
            len(grid.revealed_radius),
           )
          )
-
 
 def negative_list(original_list):
     """ Returns the negative values of a list """
@@ -116,8 +117,17 @@ def set_scenario(SYS_ARGV):
 
 # --------------------------------------------------------------- #
 #                                                                 #
-#                            POOPING                              #
+#                            PRODUCE                              #
 #                                                                 #
 # --------------------------------------------------------------- #
-def pooping(grid, laino):
-    pass
+def produce(grid, product, position):
+    new_item = None
+    for name, item in grid.everything.items():
+        if name == product:
+            new_item = copy.deepcopy(item)
+            new_item.img = item.img
+            new_item.default_img = item.default_img
+            new_item.pos = position
+            new_item.available = True
+            grid.items.append(new_item)
+    return new_item

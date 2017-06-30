@@ -58,7 +58,7 @@ class BodyItem(MobileItem):
         :param grid: grid object
         :return: the radius and thickness for each wave
         from the radar_track list and removes after returning it
-        Also defines the revealed tiles
+        Also updates the revealed tiles
         """
         radar_radius, thick = None, None
         if self.radar_track:

@@ -39,10 +39,9 @@ class MobileItem(Item):
         :return: a list of steps from point A to point B
         number of steps depends on the speed and the distance
         """
-        # print "Inside move to tile"
         result = []
         # Movement only allowed in revealed_tiles and not occupado_tiles
-        # if Tile_B in grid.revealed_tiles and Tile_B not in grid.occupado_tiles and self.speed > 0:
+        # if Tile_B in grid.revealed_tiles and Tile_B not in grid._occupado_tiles and self.speed > 0:
         if self.speed > 0:
             ax = Tile_A[0]
             ay = Tile_A[1]
@@ -69,7 +68,6 @@ class MobileItem(Item):
         :param options: options
         :return: a list of all available tiles in northeast direction_idx
         """
-        # print "Inside gen move track"
         result = []
         Point_A = self.pos
         # pdb.set_trace()
@@ -90,8 +88,6 @@ class MobileItem(Item):
         return result
 
 
-
-
     def gen_movement_arrows(self, pygame, grid, event):
         """ Generates steps to move my body - gen_move_track() """
         arrows = [
@@ -105,7 +101,7 @@ class MobileItem(Item):
 
         for idx, arrow in enumerate(arrows):
             if event.key == arrow:
-                if not self.move_track and not self.radar_track:
+                if not self.move_track and not self.radar_track and not self.rot_revert and not self.rot_track:
                     if not self.rot_track:
                         self.gen_rot_track(idx)
                         self.gen_move_track(grid, idx)
@@ -126,17 +122,18 @@ class MobileItem(Item):
     # --------------------------------------------------------------- #
     def check_for_empty_tile(self, grid):
         """
-        Checks for an empty adj tile and creates a placeholder thare.
+        Checks for an empty adj tile
         :param grid: grid instance
         :return: the first available empty tile (1, 1) or None
         """
+        print "CHECK EMPTY", grid.occupado_tiles
         EMPTY_TILE = None
         for idx, tile in enumerate(grid.adj_tiles(self.pos)):
             if tile in grid.revealed_tiles:
-                if not tile in grid.occupado_tiles:
+                if tile not in grid.occupado_tiles:
                     EMPTY_TILE = tile
                     break
-
+        print "EMPTY_TILE = ", EMPTY_TILE
         return EMPTY_TILE
 
     def cell_division(self, grid):
@@ -153,10 +150,9 @@ class MobileItem(Item):
                 name="placeholder",
                 pos=empty_tile,
             )
-
             grid.items.append(occupado_placeholder)
 
-            new_cell = MobileItem(
+            new_copy = MobileItem(
                 speed=2,
                 name="new copy",
                 pos=self.pos,
@@ -164,15 +160,13 @@ class MobileItem(Item):
                 image=self.img,
 
             )
-            new_cell.move_track = self.move_to_tile(grid, new_cell.pos, empty_tile)
-
-            grid.items.append(new_cell)
-            grid.bodies.append(new_cell)
-            # new_cell.gen_move_track(grid, idx)
+            new_copy.move_track = self.move_to_tile(grid, new_copy.pos, empty_tile)
+            grid.items.append(new_copy)
+            grid.bodies.append(new_copy)
+            print "DIVISION", grid.occupado_tiles
 
     def mitosis(self, grid):
         """
-
         :param grid: grid instance
         :return:
         """
@@ -185,5 +179,4 @@ class MobileItem(Item):
             if item_a.name in [self.name, str(self.name + " - copy")]:
                 if item_a.speed:
                     item_a.cell_division(grid)
-
 
