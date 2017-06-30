@@ -131,19 +131,20 @@ def load_data(grid, images, fonts, SCENARIO):
                     category = row[col_idx["category"]]
 
                     attributes = {
-                        "available" : bool(row[col_idx["available"]]) if len(row[col_idx["available"]]) > 0 else None,
-                        "border"    : row[col_idx["border"]] if len(row[col_idx["border"]]) > 0 else 0,
-                        "name"      : row[col_idx["name"]] if len(row[col_idx["name"]]) > 0 else None,
-                        "pos"       : eval(row[col_idx["pos"]]) if len(row[col_idx["pos"]]) > 0 else None,
-                        "color"     : getattr(grid, row[col_idx["color"]]) if len(row[col_idx["color"]]) > 0 else None,
-                        "img"       : getattr(images, row[col_idx["img"]]) if len(row[col_idx["img"]]) > 0 else None,
-                        "speed"     : int(row[col_idx["speed"]]) if len(row[col_idx["speed"]]) > 0 else None,
-                        "range"     : int(row[col_idx["range"]]) if len(row[col_idx["range"]]) > 0 else None,
-                        "font"      : getattr(fonts, row[col_idx["font"]]) if len(row[col_idx["font"]]) > 0 else None,
-                        "text_color": getattr(grid, row[col_idx["text_color"]]) if len(row[col_idx["text_color"]]) > 0 else None,
-                        "duration"  : int(row[col_idx["duration"]]) if len(row[col_idx["duration"]]) > 0 else None,
-                        "time_color": getattr(grid, row[col_idx["time_color"]]) if len(row[col_idx["time_color"]]) > 0 else None,
-                        "modable"   : row[col_idx["modable"]] if len(row[col_idx["modable"]]) > 0 else None,
+                        "available"   : bool(row[col_idx["available"]]) if len(row[col_idx["available"]]) > 0 else None,
+                        "border"      : row[col_idx["border"]] if len(row[col_idx["border"]]) > 0 else 0,
+                        "name"        : row[col_idx["name"]] if len(row[col_idx["name"]]) > 0 else None,
+                        "pos"         : eval(row[col_idx["pos"]]) if len(row[col_idx["pos"]]) > 0 else None,
+                        "color"       : getattr(grid, row[col_idx["color"]]) if len(row[col_idx["color"]]) > 0 else None,
+                        "img"         : getattr(images, row[col_idx["img"]]) if len(row[col_idx["img"]]) > 0 else None,
+                        "speed"       : int(row[col_idx["speed"]]) if len(row[col_idx["speed"]]) > 0 else None,
+                        "range"       : int(row[col_idx["range"]]) if len(row[col_idx["range"]]) > 0 else None,
+                        "font"        : getattr(fonts, row[col_idx["font"]]) if len(row[col_idx["font"]]) > 0 else None,
+                        "text_color"  : getattr(grid, row[col_idx["text_color"]]) if len(row[col_idx["text_color"]]) > 0 else None,
+                        "duration"    : int(row[col_idx["duration"]]) if len(row[col_idx["duration"]]) > 0 else None,
+                        "time_color"  : getattr(grid, row[col_idx["time_color"]]) if len(row[col_idx["time_color"]]) > 0 else None,
+                        "modable"     : row[col_idx["modable"]] if len(row[col_idx["modable"]]) > 0 else None,
+                        "collectable" : row[col_idx["collectable"]] if len(row[col_idx["collectable"]]) > 0 else None,
                     }
 
                     # --------------------------------------------------------------- #

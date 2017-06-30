@@ -165,6 +165,8 @@ def game_loop():
                         if clicked_circle not in grid.occupado_tiles and clicked_circle in grid.revealed_tiles:
                             cir_utils.produce(grid, "shit", clicked_circle)
 
+
+
                     # --------------------------------------------------------------- #
                     #                          IN GAME MENU                           #
                     # --------------------------------------------------------------- #
@@ -188,6 +190,22 @@ def game_loop():
                         for item in grid.items:
                             if item.available:
                                 if clicked_circle == item.pos:
+                                    # --------------------------------------------------------------- #
+                                    #                          BAG MODE                               #
+                                    # --------------------------------------------------------------- #
+                                    # if grid.mouse_mode == "bag":
+                                    #     if item.collectable:
+                                    #         DEBA
+                                    #         for option in my_body.default_options:
+                                    #             if option.name == "bag":
+                                    #                 print [oi.name for oi in my_body.options]
+                                    #                 for in_bag in my_body.options:
+                                    #                     if "in_bag" in in_bag.name:
+                                    #                         my_body.options.remove(in_bag)
+                                    #                         my_body.options.append(item)
+                                    #                         break
+
+
                                     # Set in_menu for the items with menu (my_body)
                                     item.check_in_menu(grid, clicked_circle, mode_vs_options)
                                     # Setting option positions
@@ -197,6 +215,9 @@ def game_loop():
                                         # Mouse mode image
                                         grid.mouse_mode = None
                                         grid.mouse_img = None
+
+
+
 
                                 # --------------------------------------------------------------- #
                                 #                       CLICK ITEM OPTIONS                        #
@@ -439,3 +460,4 @@ if __name__ == '__main__':
     #                             START                               #
     # --------------------------------------------------------------- #
     game_loop()
+e

@@ -13,7 +13,7 @@ class Item(object):
     It includes the open_menu method.
     """
 
-    def __init__(self, name=None, pos=(), color=None, uncolor=None, image=None, border=0, modable=False):
+    def __init__(self, name=None, pos=(), color=None, uncolor=None, image=None, border=0):
         # --------------------------------------------------------------- #
         #                            BASICS                               #
         # --------------------------------------------------------------- #
@@ -24,12 +24,13 @@ class Item(object):
         self.border = border
         self.default_color = self.color
         self.default_img = self.img
-        self.available = True
         # --------------------------------------------------------------- #
         #                            OPTIONS                              #
         # --------------------------------------------------------------- #
         self.in_menu = False
-        self.modable = modable
+        self.modable = False
+        self.available = True
+        self.collectable = False
         self.mode = self.name
         self.options = []
         self.default_options = []
