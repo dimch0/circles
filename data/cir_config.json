@@ -7,8 +7,8 @@
     },
 
   "VISIBILITY": {
-    "debug": false,
     "show_grid": false,
+    "show_debug": false,
     "show_movement": false,
     "show_playing_tiles": false
   },

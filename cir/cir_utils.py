@@ -56,7 +56,7 @@ def seconds_in_game(grid, START_TIME):
 
 def debug_print_click(grid, MOUSE_POS, clicked_circle, my_body):
     """  Debug print on click event  """
-    if grid.debug:
+    if grid.show_debug:
             print(""">>>>>> click: {0}, tile: {1}
         mode        : {2}
         menu        : {3}
@@ -82,13 +82,14 @@ def debug_print_click(grid, MOUSE_POS, clicked_circle, my_body):
 
 def debug_print_space(grid):
     """  Debug print on space bar event  """
-    print(""">>>> space
-revealed tiles: {0}
-revealed_radius: {1}
-""".format(len(grid.revealed_tiles),
-           len(grid.revealed_radius),
-          )
-         )
+    if grid.show_debug:
+        print(""">>>> space
+    revealed tiles: {0}
+    revealed_radius: {1}
+    """.format(len(grid.revealed_tiles),
+               len(grid.revealed_radius),
+              )
+             )
 
 def negative_list(original_list):
     """ Returns the negative values of a list """
