@@ -114,7 +114,6 @@ def set_scenario(SYS_ARGV):
     for argument in SYS_ARGV:
         if "Scenario" in argument:
             result = argument
-
     return result
 
 

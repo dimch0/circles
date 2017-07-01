@@ -114,7 +114,6 @@ class MobileItem(Item):
             self.pos = self.move_track[0]
             self.move_track.pop(0)
 
-
     # --------------------------------------------------------------- #
     #                                                                 #
     #                             MITOSIS                             #
@@ -126,15 +125,14 @@ class MobileItem(Item):
         :param grid: grid instance
         :return: the first available empty tile (1, 1) or None
         """
-        EMPTY_TILE = None
+        empty_tile = None
 
         for idx, tile in enumerate(grid.adj_tiles(self.pos)):
             if tile in grid.revealed_tiles:
                 if tile not in grid.occupado_tiles:
-                    EMPTY_TILE = tile
+                    empty_tile = tile
                     break
-
-        return EMPTY_TILE
+        return empty_tile
 
     def cell_division(self, grid):
         """
@@ -153,7 +151,7 @@ class MobileItem(Item):
             grid.items.append(occupado_placeholder)
 
             new_copy = MobileItem(
-                speed=2,
+                speed=self.speed,
                 name="new copy",
                 pos=self.pos,
                 color=self.color,

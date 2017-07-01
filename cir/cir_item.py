@@ -190,7 +190,7 @@ class Item(object):
         if self.in_menu:
             for overlapping_item in grid.items:
                 for ajd_tile in grid.adj_tiles(self.pos):
-                    if overlapping_item.pos == ajd_tile:
+                    if overlapping_item.pos == ajd_tile and overlapping_item.available:
                         if not overlapping_item in self.overlap:
                             self.overlap.append(overlapping_item)
                             overlapping_item.available = False

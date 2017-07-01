@@ -13,14 +13,11 @@ import cir_item_button
 import cir_item_mobile
 
 
-
-
 def set_item_mode_options(grid, mode_vs_options):
     """
     Setting all options to grid.item
     mode_vs_options:
     """
-
     for item in grid.items:
         for mode_name, mode_options in mode_vs_options.items():
 
@@ -36,23 +33,20 @@ def add_optoin_to_mode(category, item_obj, MODE_VS_OPTIONS):
     MODE_VS_OPTIONS[category].append(item_obj)
 
 
-def set_grid_items(grid, item):
+def set_grid_items(grid, category, item):
     """ Assigning all items to the grid object """
-    category = item['category']
-    item_obj = item['object']
-    grid.everything[item_obj.name] = item_obj
 
     if category == 'my body':
-        if not item_obj in grid.bodies:
-            grid.bodies.append(item_obj)
-        if not item_obj in grid.items:
-            grid.items.append(item_obj)
-        return item_obj
+        if not item in grid.bodies:
+            grid.bodies.append(item)
+        if not item in grid.items:
+            grid.items.append(item)
+        return item
 
     elif hasattr(grid, category):
         grid_attribute = getattr(grid, category)
-        if not item_obj in grid_attribute:
-            grid_attribute.append(item_obj)
+        if not item in grid_attribute:
+            grid_attribute.append(item)
 
 
 
@@ -93,6 +87,13 @@ def create_new_item(grid, type, attributes):
 
     return dummy
 
+def set_col_idx(header):
+    """ Returns a dict with all columns as keys
+    and their indexes as values """
+    result = {}
+    for idx, name in enumerate(header):
+        result[name] = idx
+    return result
 
 
 def load_data(grid, images, fonts, SCENARIO):
@@ -102,34 +103,22 @@ def load_data(grid, images, fonts, SCENARIO):
     :param images:  images instance
     :param fonts:  fonts instance
     :param SCENARIO:  scenario number
-    :return: a dict, containing the ITEM OBJECT, scenario, category and type
+    :return: item object, type and category
     """
-
+    print "Loading", SCENARIO, "..."
     with open(grid.data_file, 'rb') as csvfile:
-
         data = csv.reader(csvfile, delimiter=',')
-        HEADER = next(data)
-        SCENARIO = SCENARIO
-        print "Loading scenario...", SCENARIO
-
-        # --------------------------------------------------------------- #
-        #                        SET COLUMN INDEX                         #
-        # --------------------------------------------------------------- #
-        col_idx = {}
-        for idx, name in enumerate(HEADER):
-            col_idx[name] = idx
-
+        header = next(data)
+        col_idx = set_col_idx(header)
         for row in data:
-            if not row == HEADER:
-
-                # --------------------------------------------------------------- #
-                #                      SET COLS AS ATTRIBUTES                     #
-                # --------------------------------------------------------------- #
+            if not row == header:
                 scenario_col = row[col_idx["scenario"]]
                 if str(SCENARIO) in scenario_col or "ALL" in scenario_col:
-                    type = row[col_idx["type"]] if len(row[col_idx["type"]]) > 0 else None
                     category = row[col_idx["category"]]
-
+                    type = row[col_idx["type"]]
+                    # --------------------------------------------------------------- #
+                    #                        ATTRIBUTES DICT                          #
+                    # --------------------------------------------------------------- #
                     attributes = {
                         "available"   : bool(row[col_idx["available"]]) if len(row[col_idx["available"]]) > 0 else None,
                         "border"      : row[col_idx["border"]] if len(row[col_idx["border"]]) > 0 else 0,
@@ -146,18 +135,9 @@ def load_data(grid, images, fonts, SCENARIO):
                         "modable"     : row[col_idx["modable"]] if len(row[col_idx["modable"]]) > 0 else None,
                         "collectable" : row[col_idx["collectable"]] if len(row[col_idx["collectable"]]) > 0 else None,
                     }
-
-                    # --------------------------------------------------------------- #
-                    #                         CREATING ITEM                           #
-                    # --------------------------------------------------------------- #
-                    ITEM_OBJECT = create_new_item(grid, type, attributes)
-
-                    yield {
-                        "object": ITEM_OBJECT,
-                        "scenario": scenario_col,
-                        "type": type,
-                        "category": category
-                    }
+                    # Create an item
+                    item = create_new_item(grid, type, attributes)
+                    yield item, type, category
 
 
 def load_items(grid, images, fonts, scenario):
@@ -167,22 +147,18 @@ def load_items(grid, images, fonts, scenario):
     """
     my_body = None
     mode_vs_options = {}
-
-    for item in load_data(grid, images, fonts, scenario):
-
-        category = item['category']
-        item_obj = item['object']
-        type = item["type"]
-
+    for item, type, category in load_data(grid, images, fonts, scenario):
+        # Everything
+        grid.everything[item.name] = item
+        # Mode options
         if type == "mode_option":
-            add_optoin_to_mode(category, item_obj, mode_vs_options)
+            add_optoin_to_mode(category, item, mode_vs_options)
         else:
+            # My body
             if category == "my body":
-                my_body = set_grid_items(grid, item)
+                my_body = set_grid_items(grid, category, item)
             else:
-                set_grid_items(grid, item)
-
+                set_grid_items(grid, category, item)
     # Setting mode_vs_options
     set_item_mode_options(grid, mode_vs_options)
-
     return my_body, mode_vs_options

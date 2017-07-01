@@ -4,7 +4,7 @@ ALL,button,buttons,TRUE,,,quit,grey,,grid.adj_tiles(grid.center_tile)[3],,,,smal
 ALL,button,buttons,,,,replay,grey,,grid.adj_tiles(grid.center_tile)[0],,,,small,white,,
 Scenario_1,body,my body,TRUE,,,my body,dark_grey,alien1,grid.center_tile,,2,1,,,,
 Scenario_1,timer,timers,TRUE,,,lifespan,pink,,,,0,,,,60,black
-Scenario_1,mode_option,my body,TRUE,,,mitosis,dark_grey,mitosis,,,,,,,,
+Scenario_1 Scenario_2,mode_option,my body,TRUE,,,mitosis,dark_grey,mitosis,,,,,,,,
 Scenario_1,mode_option,my body,TRUE,,,option 2,dark_grey,,,,,,,,,
 Scenario_1,mode_option,my body,TRUE,TRUE,,bag,dark_grey,plastic_bag,,,,,,,,
 Scenario_1,mode_option,my body,TRUE,,,move,dark_grey,emoji_feet,,,,,,,,

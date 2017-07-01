@@ -128,7 +128,11 @@ def game_loop():
                         sys.argv.append('Scenario_2')
                         os.execv(sys.executable, [sys.executable] + sys.argv)
                         print "l"
-
+                    # --------------------------------------------------------------- #
+                    #                            'b' KEY                              #
+                    # --------------------------------------------------------------- #
+                    elif event.key == pygame.K_b:
+                        print "b"
                     # --------------------------------------------------------------- #
                     #                            'r' KEY                              #
                     # --------------------------------------------------------------- #
@@ -193,17 +197,14 @@ def game_loop():
                                     # --------------------------------------------------------------- #
                                     #                          BAG MODE                               #
                                     # --------------------------------------------------------------- #
-                                    # if grid.mouse_mode == "bag":
-                                    #     if item.collectable:
-                                    #         DEBA
-                                    #         for option in my_body.default_options:
-                                    #             if option.name == "bag":
-                                    #                 print [oi.name for oi in my_body.options]
-                                    #                 for in_bag in my_body.options:
-                                    #                     if "in_bag" in in_bag.name:
-                                    #                         my_body.options.remove(in_bag)
-                                    #                         my_body.options.append(item)
-                                    #                         break
+                                    if grid.mouse_mode == "bag":
+                                        if item.collectable:
+                                            for option in mode_vs_options["bag"]:
+                                                if "in_bag" in option.name:
+                                                    mode_vs_options["bag"].remove(option)
+                                                    mode_vs_options["bag"].append(grid.everything['laino'])
+                                                    item.available = False
+                                                    break
 
 
                                     # Set in_menu for the items with menu (my_body)
