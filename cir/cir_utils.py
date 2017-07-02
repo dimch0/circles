@@ -116,7 +116,10 @@ def set_scenario(SYS_ARGV):
             result = argument
     return result
 
-
+def set_mouse_mode(grid, option):
+    grid.mouse_mode = option.name
+    if option.img and option.modable:
+        grid.mouse_img = option.img
 # --------------------------------------------------------------- #
 #                                                                 #
 #                            PRODUCE                              #

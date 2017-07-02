@@ -1,46 +1,48 @@
 {
   "SETTINGS": {
-    "tile_radius": 25,
-    "rows": 12,
-    "cols": 12,
-    "fps": 60
+    "tile_radius": 15,
+    "rows"       : 24,
+    "cols"       : 24,
+    "fps"        : 60
     },
 
   "VISIBILITY": {
-    "show_grid": false,
-    "show_debug": false,
-    "show_movement": false,
+    "show_grid"         : false,
+    "show_debug"        : true,
+    "show_movement"     : false,
     "show_playing_tiles": false
   },
 
   "DIRS": {
-    "caption": "cir",
-    "img_dir": "img",
+    "caption"  : "cir",
+    "img_dir"  : "img",
     "font_file": "./fonts/HelveticaNeueMed.ttf",
-    "data_file": "./data/cir_data_all.csv"
+    "data_file": "./data/cir_data.csv"
   },
 
   "COLORS": {
-    "black": [0, 0, 0],
-    "dark_grey": [155, 145, 155],
-    "grey": [175, 165, 175],
-    "ungrey": [195, 195, 195],
-    "light_grey": [220, 215, 220],
-    "white": [255, 255, 255],
-    "unpink": [240, 222, 221],
+    "black"      : [0, 0, 0],
+    "dark_grey"  : [155, 145, 155],
+    "grey"       : [175, 165, 175],
+    "ungrey"     : [195, 195, 195],
+    "light_grey" : [220, 215, 220],
+    "white"      : [255, 255, 255],
+    "unpink"     : [240, 222, 221],
     "pastel_pink": [255, 209, 220],
-    "pink": [254, 215, 252],
-    "purp": [244, 195, 253],
-    "cyclama": [255, 107, 155],
-    "red": [243, 93, 115],
-    "blue": [188, 255, 254],
-    "azure": [23, 251, 244],
-    "green": [210, 255, 191],
-    "electric": [63, 255, 0],
-    "light_gelb": [255, 255, 221],
-    "gelb": [252, 255, 190],
-    "neapo": [255, 255, 140],
-    "yellow": [255, 255, 0],
-    "orange": [255, 178, 0]
+    "pink"       : [254, 215, 252],
+    "purp"       : [244, 195, 253],
+    "cyclama"    : [255, 107, 155],
+    "red"        : [243, 93, 115],
+    "blue"       : [188, 255, 254],
+    "azure"      : [23, 251, 244],
+    "green"      : [210, 255, 191],
+    "electric"   : [63, 255, 0],
+    "light_gelb" : [255, 255, 221],
+    "gelb"       : [252, 255, 190],
+    "neapo"      : [255, 255, 140],
+    "yellow"     : [255, 255, 0],
+    "yellowgrey" : [238, 224, 112],
+    "orange"     : [255, 178, 0],
+    "brown"      : [203, 169, 131]
     }
 }

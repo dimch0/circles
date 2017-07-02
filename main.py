@@ -10,17 +10,17 @@
 #                            FEATURES                             #
 # --------------------------------------------------------------- #
 # TODO: Time modifier
-# TODO: Item generation on radar
-# TODO: Create a mini map
-# TODO: Define a signal function
-# TODO: Define a pooping function
+# TODO: Item collection
+# TODO: Item generation
+# TODO: Create mini map
+# TODO: Define signal function
 # TODO: Log statistics during a lifespan
+# TODO: Create more rooms
 # TODO: Create spirit mode, calculate karma
 # TODO: Log messages on screen
 # TODO: Create save button
-# TODO: Animate instructions
 # TODO: Animate item generation
-# TODO: Animate activation of abilities
+# TODO: Animate item activation
 # TODO: Create installation .exe file
 # --------------------------------------------------------------- #
 #                            BUG FIXES                            #
@@ -29,16 +29,16 @@
 # --------------------------------------------------------------- #
 #                            OPTIONAL                             #
 # --------------------------------------------------------------- #
-# TODO: Add kiss touch circke animation
+# TODO: Animate circle kiss
+# TODO: Animate instructions
 # TODO: Remove grid.bodies usage
 # TODO: Remove mode_vs_options usage
 # TODO: Link timer to body
 
-import pdb
-
 import os
 import sys
 import time
+import copy
 import pygame
 
 from cir import cir_grid
@@ -50,13 +50,9 @@ from cir import cir_cosmetic
 
 def game_loop():
     """ Main game loop. """
-
     print "Game started"
-
     GAME_EXIT = False
     START_TIME = time.time()
-    # grid.game_menu = True
-
 
     while not GAME_EXIT:
         # Mouse
@@ -162,14 +158,28 @@ def game_loop():
                 clicked_circle = grid.mouse_in_tile(MOUSE_POS)
                 if clicked_circle:
 
+
+
+
+
                     # --------------------------------------------------------------- #
-                    #                          POOP MODE                              #
+                    #                          LAINO MODE                             #
                     # --------------------------------------------------------------- #
                     if grid.mouse_mode == "laino":
                         if clicked_circle not in grid.occupado_tiles and clicked_circle in grid.revealed_tiles:
                             cir_utils.produce(grid, "shit", clicked_circle)
-
-
+                    # --------------------------------------------------------------- #
+                    #                           SHIT MODE                             #
+                    # --------------------------------------------------------------- #
+                    if grid.mouse_mode == "shit":
+                        for bag_item in mode_vs_options["bag"]:
+                            if bag_item.name == grid.mouse_mode:
+                                print "OPA", bag_item.uses
+                                if bag_item.uses:
+                                    if clicked_circle not in grid.occupado_tiles and clicked_circle in grid.revealed_tiles:
+                                        cir_utils.produce(grid, "shit", clicked_circle)
+                                    # Exhaust
+                                    bag_item.uses -= 1
 
                     # --------------------------------------------------------------- #
                     #                          IN GAME MENU                           #
@@ -200,10 +210,17 @@ def game_loop():
                                     if grid.mouse_mode == "bag":
                                         if item.collectable:
                                             for option in mode_vs_options["bag"]:
-                                                if "in_bag" in option.name:
+                                                if "bag_placeholder" in option.name:
+                                                    print "OPAA"
                                                     mode_vs_options["bag"].remove(option)
-                                                    mode_vs_options["bag"].append(grid.everything['laino'])
+                                                    new_item = copy.deepcopy(item)
+                                                    new_item.modable = True
+                                                    new_item.img = item.img
+                                                    new_item.default_img = item.default_img
+                                                    new_item.color = option.color
+                                                    mode_vs_options["bag"].append(new_item)
                                                     item.available = False
+                                                    grid.items.remove(item)
                                                     break
 
 
@@ -216,9 +233,6 @@ def game_loop():
                                         # Mouse mode image
                                         grid.mouse_mode = None
                                         grid.mouse_img = None
-
-
-
 
                                 # --------------------------------------------------------------- #
                                 #                       CLICK ITEM OPTIONS                        #
@@ -266,19 +280,19 @@ def game_loop():
                                                     elif option.name == "eat":
                                                         item.change_speed(-1)
 
-                                                    # Close menu if option selected
+                                                    # Close menu when sub-option selected
                                                     item.set_in_menu(grid, False)
-                                                # Close menu if option has no suboptions
+
+                                                # Close menu if option has no sub-options
                                                 if option.name not in mode_vs_options.keys():
                                                     item.set_in_menu(grid, False)
 
                                                 # --------------------------------------------------------------- #
                                                 #                            MOUSE MODE                           #
                                                 # --------------------------------------------------------------- #
+
                                                 if option.modable:
-                                                    grid.mouse_mode = option.name
-                                                    if option.img and option.modable:
-                                                        grid.mouse_img = option.img
+                                                    cir_utils.set_mouse_mode(grid, option)
 
                                 # Clicked outside
                                 elif (clicked_circle != item.pos) and (clicked_circle not in grid.adj_tiles(item.pos)):
@@ -331,7 +345,6 @@ def game_loop():
                     if item.in_menu:
                         cir_draw.draw_item_options(pygame, grid, MOUSE_POS, item)
 
-
                     # Show movement track in color
                     if grid.show_movement and len(item.move_track) > 1:
                         cir_draw.draw_movement(pygame, grid, item)
@@ -367,14 +380,18 @@ def game_loop():
         #                                                                 #
         # --------------------------------------------------------------- #
         if not grid.game_menu:
+            # Bag options
+            for bag_item in mode_vs_options["bag"]:
+                if bag_item.uses == 0:
+                    mode_vs_options["bag"].remove(bag_item)
+                    mode_vs_options["bag"].append(grid.everything["bag_placeholder"])
 
             # Lifespan timer
             if grid.timers:
 
                 for timer in grid.timers:
                     timer.tick()
-                    if timer.name == "lifespan":
-                        timer.pos = my_body.pos
+                    grid.everything['lifespan'].pos = my_body.pos
 
             for item in grid.items:
                 if item.available:
@@ -397,10 +414,8 @@ def game_loop():
                             grid.game_over = True
                             sys.argv.append('replay')
                             os.execv(sys.executable, [sys.executable] + sys.argv)
-
         # FPS
         clock.tick(grid.fps)
-
     # END
     pygame.quit()
     quit()
@@ -411,38 +426,28 @@ def game_loop():
 #                                                                 #
 # --------------------------------------------------------------- #
 if __name__ == '__main__':
-
     # --------------------------------------------------------------- #
     #                             LOADING                             #
     # --------------------------------------------------------------- #
-
     # Scenario
     scenario = cir_utils.set_scenario(sys.argv)
-
     # Pygame
     pygame.init()
-
     # Grid
     grid = cir_grid.Grid()
     grid.game_display = pygame.display.set_mode((grid.display_width, grid.display_height))
-
     # Images and fonts
     images = cir_cosmetic.Images(grid, pygame)
     fonts = cir_cosmetic.Fonts(grid, pygame)
-
     # Settings
     pygame.display.set_caption(grid.caption)
-
     # pygame.mouse.set_visible(True)
     clock = pygame.time.Clock()
-
     # Player body, mode options and items
     my_body, mode_vs_options = cir_loader.load_items(grid, images, fonts, scenario)
-
     # --------------------------------------------------------------- #
     #                           GRID settings                         #
     # --------------------------------------------------------------- #
-
     # Replay
     for button in grid.buttons:
         if 'replay' in sys.argv:
@@ -450,7 +455,6 @@ if __name__ == '__main__':
                 button.available = True
             if button.name == "play":
                 button.available = False
-
     # Start in menu
     if 'Scenario_2' in sys.argv:
         grid.game_menu = False
@@ -461,4 +465,3 @@ if __name__ == '__main__':
     #                             START                               #
     # --------------------------------------------------------------- #
     game_loop()
-e
