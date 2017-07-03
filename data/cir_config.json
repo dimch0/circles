@@ -1,8 +1,8 @@
 {
   "SETTINGS": {
-    "tile_radius": 15,
-    "rows"       : 24,
-    "cols"       : 24,
+    "tile_radius": 12,
+    "rows"       : 18,
+    "cols"       : 18,
     "fps"        : 60
     },
 
@@ -13,7 +13,7 @@
     "show_playing_tiles": false
   },
 
-  "DIRS": {
+  "DIRECTORIES": {
     "caption"  : "cir",
     "img_dir"  : "img",
     "font_file": "./fonts/HelveticaNeueMed.ttf",

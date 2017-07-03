@@ -158,10 +158,6 @@ def game_loop():
                 clicked_circle = grid.mouse_in_tile(MOUSE_POS)
                 if clicked_circle:
 
-
-
-
-
                     # --------------------------------------------------------------- #
                     #                          LAINO MODE                             #
                     # --------------------------------------------------------------- #
@@ -174,12 +170,11 @@ def game_loop():
                     if grid.mouse_mode == "shit":
                         for bag_item in mode_vs_options["bag"]:
                             if bag_item.name == grid.mouse_mode:
-                                print "OPA", bag_item.uses
                                 if bag_item.uses:
                                     if clicked_circle not in grid.occupado_tiles and clicked_circle in grid.revealed_tiles:
                                         cir_utils.produce(grid, "shit", clicked_circle)
-                                    # Exhaust
-                                    bag_item.uses -= 1
+                                        # Exhaust
+                                        bag_item.uses -= 1
 
                     # --------------------------------------------------------------- #
                     #                          IN GAME MENU                           #
@@ -211,7 +206,6 @@ def game_loop():
                                         if item.collectable:
                                             for option in mode_vs_options["bag"]:
                                                 if "bag_placeholder" in option.name:
-                                                    print "OPAA"
                                                     mode_vs_options["bag"].remove(option)
                                                     new_item = copy.deepcopy(item)
                                                     new_item.modable = True
@@ -300,6 +294,7 @@ def game_loop():
 
                 # Debug print
                 cir_utils.debug_print_click(grid, MOUSE_POS, clicked_circle, my_body)
+                print "DEBUG", [ibag.name for ibag in mode_vs_options["bag"]]
 
         # --------------------------------------------------------------- #
         #                                                                 #
@@ -380,19 +375,32 @@ def game_loop():
         #                                                                 #
         # --------------------------------------------------------------- #
         if not grid.game_menu:
+
             # Bag options
             for bag_item in mode_vs_options["bag"]:
                 if bag_item.uses == 0:
                     mode_vs_options["bag"].remove(bag_item)
-                    mode_vs_options["bag"].append(grid.everything["bag_placeholder"])
+                    empty_placeholder = copy.deepcopy(grid.everything["bag_placeholder"])
+                    empty_placeholder.color = grid.everything["bag_placeholder"].color
+                    mode_vs_options["bag"].append(empty_placeholder)
+                    if grid.mouse_mode == bag_item.name:
+                        grid.mouse_mode = None
+                        grid.mouse_img = None
+                    break
 
-            # Lifespan timer
+            # Timers
             if grid.timers:
-
                 for timer in grid.timers:
                     timer.tick()
-                    grid.everything['lifespan'].pos = my_body.pos
 
+                    # Lifespan timer
+                    grid.everything['lifespan'].pos = my_body.pos
+                    if grid.everything['lifespan'].is_over:
+                        grid.game_over = True
+                        sys.argv.append('replay')
+                        os.execv(sys.executable, [sys.executable] + sys.argv)
+
+            # Items
             for item in grid.items:
                 if item.available:
                     # Overlap
@@ -405,15 +413,6 @@ def game_loop():
                     # Clean placeholders
                     grid.clean_placeholders(item)
 
-            # Timers
-            if grid.timers:
-                for timer in grid.timers:
-                    if timer.is_over:
-                        # Lifespan
-                        if timer.name == "lifespan":
-                            grid.game_over = True
-                            sys.argv.append('replay')
-                            os.execv(sys.executable, [sys.executable] + sys.argv)
         # FPS
         clock.tick(grid.fps)
     # END
