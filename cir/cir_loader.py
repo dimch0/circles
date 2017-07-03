@@ -57,30 +57,35 @@ def create_new_item(grid, type, attributes):
     :return: a new instance of an item object
     """
     dummy = None
+    try:
+        if type == "body":
+            dummy = cir_item_body.BodyItem()
+        elif type == "timer":
+            dummy = cir_item_timer.TimerItem()
+            dummy.timer_tile_radius = grid.tile_radius
+        elif type == "button":
+            dummy = cir_item_button.ButtonItem()
+        elif type == "mobile":
+            dummy = cir_item_mobile.MobileItem()
+        elif type in ["mode_option", "simple"]:
+            dummy = cir_item.Item()
+    except Exception as e:
+        print e
+        print "Error, could not create item of type: {0}".format(type)
 
-    if type == "body":
-        dummy = cir_item_body.BodyItem()
-    elif type == "timer":
-        dummy = cir_item_timer.TimerItem()
-        dummy.timer_tile_radius = grid.tile_radius
-    elif type == "button":
-        dummy = cir_item_button.ButtonItem()
-    elif type == "mobile":
-        dummy = cir_item_mobile.MobileItem()
-    elif type in ["mode_option", "simple"]:
-        dummy = cir_item.Item()
-
-    for attribute, value in attributes.items():
-        if dummy:
-            if hasattr(dummy, attribute):
-                setattr(dummy, attribute, value)
-
-            if attribute == "img":
-                if hasattr(dummy, "default_img"):
-                    setattr(dummy, "default_img", value)
-            if attribute == "color":
-                if hasattr(dummy, "default_color"):
-                    setattr(dummy, "default_color", value)
+    try:
+        for attribute, value in attributes.items():
+            if dummy:
+                if hasattr(dummy, attribute):
+                    setattr(dummy, attribute, value)
+                if attribute == "img":
+                    if hasattr(dummy, "default_img"):
+                        setattr(dummy, "default_img", value)
+                if attribute == "color":
+                    if hasattr(dummy, "default_color"):
+                        setattr(dummy, "default_color", value)
+    except Exception as e:
+        print "Error, could not set attribute: {0}".format(e)
 
     return dummy
 
