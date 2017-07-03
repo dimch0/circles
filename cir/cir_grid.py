@@ -38,18 +38,17 @@ class Grid(object):
         self.find_center_tile()
         self.playing_tiles = []
         self.set_playing_tiles()
+        self._occupado_tiles = []
         self.revealed_tiles = [self.center_tile]
         self.revealed_radius = []
-
         # ================================================== #
         #                      ITEMS                         #
         # ================================================== #
         self.items = []
-        self.bodies = []
         self.timers = []
         self.buttons = []
         self.everything = {}
-        self._occupado_tiles = []
+        self.mode_vs_options = {}
         # ================================================== #
         #                      MOUSE                         #
         # ================================================== #
@@ -75,6 +74,9 @@ class Grid(object):
         self.cathetus = int(sqrt(((2 * self.tile_radius) ** 2) - (self.tile_radius ** 2)))
         self.display_width = (self.cathetus * self.cols) + (self.tile_radius * 2)
         self.display_height = self.rows * self.tile_radius
+
+    def set_game_display(self, pygame):
+        self.game_display = pygame.display.set_mode((self.display_width, self.display_height))
 
     @property
     def tiles(self):
@@ -106,14 +108,8 @@ class Grid(object):
 
     @property
     def occupado_tiles(self):
-        set_items = list(set([item.pos for item in self.items if item.pos]))
-        set_bodies = list(set([body.pos for body in self.bodies if body.pos]))
-        self._occupado_tiles = set_items + set_bodies
+        self._occupado_tiles = list(set([item.pos for item in self.items if item.pos]))
         return self._occupado_tiles
-
-    # def append_occupado(self, tile):
-    #     self._occupado_tiles = self.occupado_tiles + [tile]
-    #     return self._occupado_tiles
 
     def find_center_tile(self):
         """
@@ -173,3 +169,15 @@ class Grid(object):
                         print "ERROR name", item.name
                         print "ERROR pos", item.pos
                         print "ERROR available", item.available
+
+    # --------------------------------------------------------------- #
+    #                             MOUSE                               #
+    # --------------------------------------------------------------- #
+    def clean_mouse(self):
+        self.mouse_mode = None
+        self.mouse_img = None
+
+    def set_mouse_mode(self, option):
+        self.mouse_mode = option.name
+        if option.img and option.modable:
+            self.mouse_img = option.img

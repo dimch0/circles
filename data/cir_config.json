@@ -1,14 +1,14 @@
 {
   "SETTINGS": {
-    "tile_radius": 12,
-    "rows"       : 18,
-    "cols"       : 18,
+    "tile_radius": 10,
+    "rows"       : 20,
+    "cols"       : 20,
     "fps"        : 60
     },
 
   "VISIBILITY": {
     "show_grid"         : false,
-    "show_debug"        : true,
+    "show_debug"        : false,
     "show_movement"     : false,
     "show_playing_tiles": false
   },

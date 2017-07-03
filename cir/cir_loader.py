@@ -13,13 +13,12 @@ import cir_item_button
 import cir_item_mobile
 
 
-def set_item_mode_options(grid, mode_vs_options):
+def set_item_mode_options(grid):
     """
-    Setting all options to grid.item
-    mode_vs_options:
+    Setting all options from grid.mode_vs_options to grid.items
     """
     for item in grid.items:
-        for mode_name, mode_options in mode_vs_options.items():
+        for mode_name, mode_options in grid.mode_vs_options.items():
 
             if item.name == mode_name:
                 item.default_options = mode_options
@@ -37,8 +36,6 @@ def set_grid_items(grid, category, item):
     """ Assigning all items to the grid object """
 
     if category == 'my body':
-        if not item in grid.bodies:
-            grid.bodies.append(item)
         if not item in grid.items:
             grid.items.append(item)
         return item
@@ -144,16 +141,15 @@ def load_data(grid, images, fonts, SCENARIO):
 def load_items(grid, images, fonts, scenario):
     """
     Loading all grid items, my body and mode options
-    :return: my_body, mode_vs_options
+    :return: my_body
     """
     my_body = None
-    mode_vs_options = {}
     for item, type, category in load_data(grid, images, fonts, scenario):
         # Everything
         grid.everything[item.name] = item
         # Mode options
         if type == "mode_option":
-            add_optoin_to_mode(category, item, mode_vs_options)
+            add_optoin_to_mode(category, item, grid.mode_vs_options)
         else:
             # My body
             if category == "my body":
@@ -161,5 +157,5 @@ def load_items(grid, images, fonts, scenario):
             else:
                 set_grid_items(grid, category, item)
     # Setting mode_vs_options
-    set_item_mode_options(grid, mode_vs_options)
-    return my_body, mode_vs_options
+    set_item_mode_options(grid)
+    return my_body

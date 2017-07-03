@@ -6,7 +6,6 @@
 #################                                                                                     #################
 #######################################################################################################################
 import time
-import copy
 
 def in_circle(center, radius, point):
     """
@@ -115,24 +114,3 @@ def set_scenario(SYS_ARGV):
         if "Scenario" in argument:
             result = argument
     return result
-
-def set_mouse_mode(grid, option):
-    grid.mouse_mode = option.name
-    if option.img and option.modable:
-        grid.mouse_img = option.img
-# --------------------------------------------------------------- #
-#                                                                 #
-#                            PRODUCE                              #
-#                                                                 #
-# --------------------------------------------------------------- #
-def produce(grid, product, position):
-    new_item = None
-    for name, item in grid.everything.items():
-        if name == product:
-            new_item = copy.deepcopy(item)
-            new_item.img = item.img
-            new_item.default_img = item.default_img
-            new_item.pos = position
-            new_item.available = True
-            grid.items.append(new_item)
-    return new_item

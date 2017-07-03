@@ -114,7 +114,7 @@ class Item(object):
             if self.in_menu:
                 option.pos = grid.adj_tiles(self.pos)[idx]
 
-    def set_mode(self, grid, option, mode_vs_option):
+    def set_mode(self, grid, option):
         """
         Changes the mode of an item to a given options
         :param option: an option item of a menu
@@ -123,8 +123,8 @@ class Item(object):
         self.mode = option.name
         self.color = option.color
         # self.img = option.img
-        if option.name in mode_vs_option.keys():
-            self.options = mode_vs_option[option.name]
+        if option.name in grid.mode_vs_options.keys():
+            self.options = grid.mode_vs_options[option.name]
         self.set_option_pos(grid)
 
     def reset_mode(self):
@@ -152,16 +152,15 @@ class Item(object):
             self.in_menu = False
         return self.in_menu
 
-    def check_in_menu(self, grid, clicked_circle, mode_vs_options):
+    def check_in_menu(self, grid, clicked_circle):
         """
         On a clicked circle - check if this item is in menu and set it
         :param grid: grid instance
         :param clicked_circle: the current clicekd circle
-        :param mode_vs_options: dict of the mode and options for it
         """
 
         # Clicked on item
-        if clicked_circle == self.pos and self.name in mode_vs_options.keys():
+        if clicked_circle == self.pos and self.name in grid.mode_vs_options.keys():
             # If default mode:
             if self.mode is self.name:
                 if not self.in_menu:

@@ -162,7 +162,6 @@ class MobileItem(Item):
             )
             new_copy.move_track = self.move_to_tile(grid, new_copy.pos, empty_tile)
             grid.items.append(new_copy)
-            grid.bodies.append(new_copy)
 
     def mitosis(self, grid):
         """
