@@ -66,7 +66,7 @@ def collect(grid, item):
                 new_item.modable = True
                 new_item.img = item.img
                 new_item.default_img = item.default_img
-                new_item.color = option.color
+                new_item.color = item.color
                 grid.mode_vs_options["bag"].append(new_item)
                 item.available = False
                 grid.items.remove(item)

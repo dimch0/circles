@@ -22,6 +22,8 @@ class Item(object):
         self.color = color
         self.img = image
         self.border = border
+        self.border_color = None
+        self.border_width = None
         self.default_color = self.color
         self.default_img = self.img
         # --------------------------------------------------------------- #

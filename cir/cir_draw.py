@@ -90,10 +90,18 @@ def draw_item_options(pygame, grid, MOUSE_POS, item):
                                    option.pos,
                                    grid.tile_radius,
                                    option.border)
+            if option.border_color:
+                border_color = option.border_color
+            else:
+                border_color = grid.rev_color
+            pygame.draw.circle(grid.game_display,
+                               border_color,
+                               option.pos,
+                               grid.tile_radius,
+                               option.border_width)
 
             if option.img:
                 draw_img(grid, option)
-            pygame.draw.circle(grid.game_display, grid.rev_color, option.pos, grid.tile_radius, 1)
             draw_hover(pygame, grid, MOUSE_POS, option.pos)
 
 

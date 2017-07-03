@@ -119,6 +119,8 @@ def load_data(grid, images, fonts, SCENARIO):
                     attributes = {
                         "available"   : bool(row[col_idx["available"]]) if len(row[col_idx["available"]]) > 0 else None,
                         "border"      : row[col_idx["border"]] if len(row[col_idx["border"]]) > 0 else 0,
+                        "border_width": int(row[col_idx["border_width"]]) if len(row[col_idx["border_width"]]) > 0 else 1,
+                        "border_color": getattr(grid, row[col_idx["border_color"]]) if len(row[col_idx["border_color"]]) > 0 else None,
                         "name"        : row[col_idx["name"]] if len(row[col_idx["name"]]) > 0 else None,
                         "pos"         : eval(row[col_idx["pos"]]) if len(row[col_idx["pos"]]) > 0 else None,
                         "color"       : getattr(grid, row[col_idx["color"]]) if len(row[col_idx["color"]]) > 0 else None,
