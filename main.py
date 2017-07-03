@@ -5,7 +5,6 @@
 #################                                                                                     #################
 #################                                                                                     #################
 #######################################################################################################################
-
 # --------------------------------------------------------------- #
 #                            Features                             #
 # --------------------------------------------------------------- #
@@ -136,14 +135,7 @@ def game_loop():
                 clicked_circle = grid.mouse_in_tile(MOUSE_POS)
                 if clicked_circle:
                     # --------------------------------------------------------------- #
-                    #                        MOUSE MODES CLICK                        #
-                    # --------------------------------------------------------------- #
-                    if grid.mouse_mode == "laino":
-                        cir_effects.laino_mode_click(grid, clicked_circle)
-                    elif grid.mouse_mode == "shit":
-                        cir_effects.shit_mode_click(grid, clicked_circle)
-                    # --------------------------------------------------------------- #
-                    #                          IN GAME MENU                           #
+                    #                            GAME MENU                            #
                     # --------------------------------------------------------------- #
                     if grid.game_menu:
                         for button in grid.buttons:
@@ -155,10 +147,18 @@ def game_loop():
                                 elif button.name == "quit":
                                     pygame.quit()
                                     quit()
-                    # --------------------------------------------------------------- #
-                    #                        CLICK ON GRID ITEMS                      #
-                    # --------------------------------------------------------------- #
-                    elif not grid.game_menu:
+                    else:
+                        # --------------------------------------------------------------- #
+                        #                        MOUSE MODES CLICK                        #
+                        # --------------------------------------------------------------- #
+                        if grid.mouse_mode == "laino":
+                            cir_effects.laino_mode_click(grid, clicked_circle)
+                        elif grid.mouse_mode == "shit":
+                            cir_effects.shit_mode_click(grid, clicked_circle)
+
+                        # --------------------------------------------------------------- #
+                        #                          CLICK ON ITEMS                         #
+                        # --------------------------------------------------------------- #
                         for item in grid.items:
                             if item.available:
                                 if clicked_circle == item.pos:
@@ -229,12 +229,14 @@ def game_loop():
         #                             DRAWING                             #
         #                                                                 #
         # --------------------------------------------------------------- #
-        # Background
-        grid.game_display.fill(grid.dark_grey)
+        cir_draw.draw_background(grid, grid.bkg_color)
         # --------------------------------------------------------------- #
-        #                             IN GAME                             #
+        #                           GAME MENU                             #
         # --------------------------------------------------------------- #
-        if not grid.game_menu:
+        if grid.game_menu:
+            if grid.buttons:
+                cir_draw.draw_menu_buttons(pygame, grid, MOUSE_POS)
+        else:
             # Revealed radius
             if grid.revealed_radius:
                 cir_draw.draw_revealed_radius(pygame, grid)
@@ -253,10 +255,11 @@ def game_loop():
             # Items
             for item in grid.items:
                 if item.available:
+
                     # Radar
                     if item.radar_track:
                         cir_draw.draw_radar(pygame, grid, item)
-                    # if item.pos in grid.revealed_tiles:
+                    # Items
                     cir_draw.draw_body(pygame, grid, MOUSE_POS, item)
                     # Item options
                     if item.in_menu:
@@ -278,13 +281,6 @@ def game_loop():
             # Mouse
             if grid.mouse_mode:
                 cir_draw.draw_mouse_image(pygame, grid, MOUSE_POS)
-        # --------------------------------------------------------------- #
-        #                           GAME MENU                             #
-        # --------------------------------------------------------------- #
-        elif grid.game_menu:
-            # Menu Buttons
-            if grid.buttons:
-                cir_draw.draw_menu_buttons(pygame, grid, MOUSE_POS)
 
         # End drawing
         pygame.display.update()
@@ -293,32 +289,31 @@ def game_loop():
         #                           CHANGE VARS                           #
         #                                                                 #
         # --------------------------------------------------------------- #
-        if not grid.game_menu:
-            # Empty bag in needed
-            if "bag" in grid.everything.keys():
-                cir_effects.empty_bag(grid)
+        # Check bag
+        if "bag" in grid.everything.keys():
+            cir_effects.empty_bag(grid)
 
-            # Timers
-            if grid.timers:
-                for timer in grid.timers:
-                    timer.tick()
-                    # Lifespan timer
-                    grid.everything['lifespan'].pos = my_body.pos
-                    if grid.everything['lifespan'].is_over:
-                        grid.game_over = True
-                        sys.argv.append('replay')
-                        os.execv(sys.executable, [sys.executable] + sys.argv)
+        # Timers
+        if grid.timers:
+            for timer in grid.timers:
+                timer.tick()
+            # Lifespan timer
+            grid.everything['lifespan'].pos = my_body.pos
+            if grid.everything['lifespan'].is_over:
+                grid.game_over = True
+                sys.argv.append('Game Over')
+                os.execv(sys.executable, [sys.executable] + sys.argv)
 
-            # Items
-            for item in grid.items:
-                if item.available:
-                    # Overlap
-                    item.overlapping(grid)
-                    # Movement
-                    if item.move_track:
-                        item.move()
-                    # Clean placeholders
-                    grid.clean_placeholders(item)
+        # Items
+        for item in grid.items:
+            if item.available:
+                # Overlap
+                item.overlapping(grid)
+                # Movement
+                if item.move_track:
+                    item.move()
+                # Clean placeholders
+                grid.clean_placeholders(item)
 
         # FPS
         clock.tick(grid.fps)
@@ -347,18 +342,11 @@ if __name__ == '__main__':
     # --------------------------------------------------------------- #
     #                           Settings                              #
     # --------------------------------------------------------------- #
-    # Replay
-    for button in grid.buttons:
-        if 'replay' in sys.argv:
-            if button.name == "replay":
-                button.available = True
-            if button.name == "play":
-                button.available = False
-    # Start in menu
+    if 'Game Over' in sys.argv:
+        grid.everything["play"].available = False
+        grid.everything["replay"].available = True
     if 'Scenario_2' in sys.argv:
         grid.game_menu = False
-    else:
-        grid.game_menu = True
     # --------------------------------------------------------------- #
     #                             Start                               #
     # --------------------------------------------------------------- #

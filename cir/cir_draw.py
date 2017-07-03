@@ -1,6 +1,8 @@
 #######################################################################################################################
 #################                                                                                     #################
+#################                                                                                     #################
 #################                                    Drawing                                          #################
+#################                                                                                     #################
 #################                                                                                     #################
 #######################################################################################################################
 import cir_utils
@@ -27,6 +29,8 @@ def set_emoji_pos(item_pos, grid):
     img_y = item_pos[1] - grid.tile_radius / 2
     return (img_x, img_y)
 
+def draw_background(grid, color):
+    grid.game_display.fill(color)
 
 def draw_hover(pygame, grid, MOUSE_POS, tile):
     """ Highlights the hovered tile """
@@ -63,7 +67,7 @@ def draw_revealed_radius(pygame, grid):
     """ Drawing the revealed areas """
     for revealed in grid.revealed_radius:
         pygame.draw.circle(grid.game_display,
-                           grid.grey,
+                           grid.rev_color,
                            revealed[0],
                            revealed[1], 0)
         printed = revealed
@@ -89,8 +93,7 @@ def draw_item_options(pygame, grid, MOUSE_POS, item):
 
             if option.img:
                 draw_img(grid, option)
-                # grid.game_display.blit(option.img, Item.set_img_pos(option.pos, grid))
-
+            pygame.draw.circle(grid.game_display, grid.rev_color, option.pos, grid.tile_radius, 1)
             draw_hover(pygame, grid, MOUSE_POS, option.pos)
 
 
@@ -107,7 +110,6 @@ def draw_menu_buttons(pygame, grid, MOUSE_POS):
                                    button.border)
             if button.img:
                 draw_img(grid, button)
-                # grid.game_display.blit(button.img, Item.set_img_pos(button.pos, grid))
             if button.text:
                 grid.game_display.blit(button.text, button.text_rect)
             draw_hover(pygame, grid, MOUSE_POS, button.pos)
@@ -125,7 +127,6 @@ def draw_body(pygame, grid, MOUSE_POS, item):
                                item.border)
         if item.img:
             draw_img(grid, item)
-            # grid.game_display.blit(item.img, Item.set_img_pos(item.pos, grid))
         draw_hover(pygame, grid, MOUSE_POS, item.pos)
 
 
@@ -147,7 +148,7 @@ def draw_timers(pygame, grid, my_body):
 def draw_grid(pygame, grid):
     """ Shows the grid tiles in white """
     for tile in grid.tiles:
-        pygame.draw.circle(grid.game_display, grid.grey, tile, grid.tile_radius, 1)
+        pygame.draw.circle(grid.game_display, grid.rev_color, tile, grid.tile_radius, 1)
     draw_playing_tiles(pygame, grid)
 
 
@@ -181,12 +182,12 @@ def draw_mask(pygame, grid):
         (grid.center_tile[0] - ((2 * grid.cathetus) + (grid.cathetus / 2) + 5), grid.display_height)
     ]
 
-    pygame.draw.rect(grid.game_display, grid.dark_grey, rect1, 0)
-    pygame.draw.rect(grid.game_display, grid.dark_grey, rect2, 0)
-    pygame.draw.polygon(grid.game_display, grid.dark_grey, tri1, 0)
-    pygame.draw.polygon(grid.game_display, grid.dark_grey, tri2, 0)
-    pygame.draw.polygon(grid.game_display, grid.dark_grey, tri3, 0)
-    pygame.draw.polygon(grid.game_display, grid.dark_grey, tri4, 0)
+    pygame.draw.rect(grid.game_display, grid.bkg_color, rect1, 0)
+    pygame.draw.rect(grid.game_display, grid.bkg_color, rect2, 0)
+    pygame.draw.polygon(grid.game_display, grid.bkg_color, tri1, 0)
+    pygame.draw.polygon(grid.game_display, grid.bkg_color, tri2, 0)
+    pygame.draw.polygon(grid.game_display, grid.bkg_color, tri3, 0)
+    pygame.draw.polygon(grid.game_display, grid.bkg_color, tri4, 0)
 
 
 def draw_mouse_image(pygame, grid, MOUSE_POS):

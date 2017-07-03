@@ -60,7 +60,6 @@ class TimerItem(MobileItem):
                     2 * self.timer_tile_radius]
         return self._rect
 
-
     def tick(self):
         """ Starts the timer, increasing the step and filled_steps """
         if not self.start_time:

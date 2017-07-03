@@ -5,7 +5,6 @@
 #################                                                                                     #################
 #################                                                                                     #################
 #######################################################################################################################
-
 import copy
 
 
@@ -47,12 +46,12 @@ def shit_mode_click(grid, clicked_circle):
     :param grid: grid instance
     :param clicked_circle: the clicked circle
     """
-    if grid.mouse_mode == "shit":
-        for bag_item in grid.mode_vs_options["bag"]:
-            if bag_item.name == grid.mouse_mode:
-                if bag_item.uses:
-                    produce(grid, "shit", clicked_circle)
-                    bag_item.uses -= 1
+    for bag_item in grid.mode_vs_options["bag"]:
+        if bag_item.name == grid.mouse_mode:
+            if bag_item.uses:
+                produce(grid, "shit", clicked_circle)
+                bag_item.uses -= 1
+                return 1
 
 # --------------------------------------------------------------- #
 #                           BAG EFFECTS                           #
@@ -71,16 +70,17 @@ def collect(grid, item):
                 grid.mode_vs_options["bag"].append(new_item)
                 item.available = False
                 grid.items.remove(item)
-                break
+                return 1
 
 def empty_bag(grid):
     """ Empties the bag if an item's uses are exhausted """
     for bag_item in grid.mode_vs_options["bag"]:
         if bag_item.uses == 0:
+            print "DEBUG", [ib.name for ib in grid.mode_vs_options["bag"]]
             grid.mode_vs_options["bag"].remove(bag_item)
             empty_placeholder = copy.deepcopy(grid.everything["bag_placeholder"])
             empty_placeholder.color = grid.everything["bag_placeholder"].color
             grid.mode_vs_options["bag"].append(empty_placeholder)
             if grid.mouse_mode == bag_item.name:
                 grid.clean_mouse()
-            break
+            return 1
