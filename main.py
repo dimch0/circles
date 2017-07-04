@@ -9,12 +9,14 @@
 #                            Features                             #
 # --------------------------------------------------------------- #
 # TODO: Time modifier
+# TODO: Tile names
 # TODO: Item generation
+# TODO: Make game menu separate loop
 # TODO: Indicate uses
 # TODO: Create mini map
 # TODO: Define signal function
 # TODO: Log statistics during a lifespan
-# TODO: Create more rooms
+# TODO: Room transition
 # TODO: Create spirit mode, calculate karma
 # TODO: Log messages on screen
 # TODO: Create save button
@@ -30,20 +32,21 @@
 # --------------------------------------------------------------- #
 # TODO: Animate circle kiss
 # TODO: Animate instructions
-# TODO: Remove mode_vs_options usage
-# TODO: Link timer to body
+
 
 import os
 import sys
 import time
 import pygame
+pygame.init()
 
 from cir import cir_grid
 from cir import cir_draw
 from cir import cir_utils
 from cir import cir_loader
-from cir import cir_effects
+from cir import cir_item_effects
 from cir import cir_cosmetic
+
 
 
 def game_loop():
@@ -92,36 +95,47 @@ def game_loop():
                             my_body.gen_radar_track(grid)
                         # Debug
                         cir_utils.debug_print_space(grid)
-                    # t
+
                     elif event.key == pygame.K_t:
-                            # Timers
-                            if grid.timers:
-                                for timer in grid.timers:
-                                    if timer.name == "lifespan":
-                                        print "step            :", timer.step
-                                        print "filled steps    :", timer.filled_steps
-                                        print "number of steps :", timer.number_of_steps
-                                        print "len of step     :", timer.len_step
-                                        print "-"*35
-                                        timer.step -= 20
-                                        timer.filled_steps += 20
-                    # l
+                            # Lifespan timer
+                            lst = grid.everything["lifespan"]
+                            print "step            :", lst.step
+                            print "filled steps    :", lst.filled_steps
+                            print "number of steps :", lst.number_of_steps
+                            print "len of step     :", lst.len_step
+                            print "-"*35
+                            lst.step -= 20
+                            lst.filled_steps += 20
+
                     elif event.key == pygame.K_l:
                         grid.game_over = True
                         sys.argv.append('Scenario_2')
                         os.execv(sys.executable, [sys.executable] + sys.argv)
                         print "l"
-                    # b
+
                     elif event.key == pygame.K_b:
+                        room_1_items = grid.items
+                        room_1_timers = grid.timers
+                        room_1_revealed_tiles = grid.revealed_tiles
+                        room_1_revealed_radius = grid.revealed_radius
+                        my_body.pos = grid.center_tile
+                        grid.items = [my_body]
+                        grid.revealed_tiles = [grid.center_tile]
+                        grid.revealed_radius = []
                         print "b"
-                    # r
+
                     elif event.key == pygame.K_r:
                         my_body.img = images.galab
                         my_body.default_img = my_body.img
                         print "r"
-                    # k
+
                     elif event.key == pygame.K_k:
+                        grid.items = room_1_items
+                        grid.timers = room_1_timers
+                        grid.revealed_tiles = room_1_revealed_tiles
+                        grid.revealed_radius = room_1_revealed_radius
                         print "k"
+
                     # Movement Population
                     elif not my_body.in_menu:
                         my_body.gen_movement_arrows(pygame, grid, event)
@@ -152,9 +166,9 @@ def game_loop():
                         #                        MOUSE MODES CLICK                        #
                         # --------------------------------------------------------------- #
                         if grid.mouse_mode == "laino":
-                            cir_effects.laino_mode_click(grid, clicked_circle)
+                            cir_item_effects.laino_mode_click(grid, clicked_circle)
                         elif grid.mouse_mode == "shit":
-                            cir_effects.shit_mode_click(grid, clicked_circle)
+                            cir_item_effects.shit_mode_click(grid, clicked_circle)
 
                         # --------------------------------------------------------------- #
                         #                          CLICK ON ITEMS                         #
@@ -166,7 +180,7 @@ def game_loop():
                                     #                            BAG MODE                             #
                                     # --------------------------------------------------------------- #
                                     if grid.mouse_mode == "bag":
-                                        cir_effects.collect(grid, item)
+                                        cir_item_effects.collect(grid, item)
 
                                     # Set in_menu for the items with menu (my_body)
                                     item.check_in_menu(grid, clicked_circle)
@@ -229,7 +243,7 @@ def game_loop():
         #                             DRAWING                             #
         #                                                                 #
         # --------------------------------------------------------------- #
-        cir_draw.draw_background(grid, grid.bkg_color)
+        cir_draw.draw_background(grid)
         # --------------------------------------------------------------- #
         #                           GAME MENU                             #
         # --------------------------------------------------------------- #
@@ -273,10 +287,9 @@ def game_loop():
                     # Item reverse rotation
                     if item.last_direction and not item.move_track:
                         item.rotate_reverse(pygame)
-
-            # Timers
-            if grid.timers:
-                cir_draw.draw_timers(pygame, grid, my_body)
+                    # Timers
+                    if item.timer:
+                        cir_draw.draw_timers(pygame, grid, my_body)
 
             # Mouse
             if grid.mouse_mode:
@@ -284,6 +297,7 @@ def game_loop():
 
         # End drawing
         pygame.display.update()
+
         # --------------------------------------------------------------- #
         #                                                                 #
         #                           CHANGE VARS                           #
@@ -291,18 +305,13 @@ def game_loop():
         # --------------------------------------------------------------- #
         # Check bag
         if "bag" in grid.everything.keys():
-            cir_effects.empty_bag(grid)
-
-        # Timers
-        if grid.timers:
-            for timer in grid.timers:
-                timer.tick()
-            # Lifespan timer
-            grid.everything['lifespan'].pos = my_body.pos
-            if grid.everything['lifespan'].is_over:
-                grid.game_over = True
-                sys.argv.append('Game Over')
-                os.execv(sys.executable, [sys.executable] + sys.argv)
+            cir_item_effects.empty_bag(grid)
+        # Lifespan timer
+        if grid.everything['lifespan'].is_over:
+            # TODO: Escape restarting
+            grid.game_over = True
+            sys.argv.append('Game Over')
+            os.execv(sys.executable, [sys.executable] + sys.argv)
 
         # Items
         for item in grid.items:
@@ -312,11 +321,14 @@ def game_loop():
                 # Movement
                 if item.move_track:
                     item.move()
+                if item.timer:
+                    item.timer.tick()
+
                 # Clean placeholders
                 grid.clean_placeholders(item)
 
         # FPS
-        clock.tick(grid.fps)
+        pygame.time.Clock().tick(grid.fps)
     # END
     pygame.quit()
     quit()
@@ -328,17 +340,17 @@ def game_loop():
 # --------------------------------------------------------------- #
 if __name__ == '__main__':
     # --------------------------------------------------------------- #
-    #                             Loading                             #
+    #                           Loading                               #
     # --------------------------------------------------------------- #
-    pygame.init()
     scenario = cir_utils.set_scenario(sys.argv)
-    grid = cir_grid.Grid()
+    grid = cir_grid.Grid(pygame)
     images = cir_cosmetic.Images(grid, pygame)
     fonts = cir_cosmetic.Fonts(grid, pygame)
     my_body = cir_loader.load_items(grid, images, fonts, scenario)
-    grid.set_game_display(pygame)
-    pygame.display.set_caption(grid.caption)
-    clock = pygame.time.Clock()
+    # --------------------------------------------------------------- #
+    #                           Current room                          #
+    # --------------------------------------------------------------- #
+    grid.items.append(my_body)
     # --------------------------------------------------------------- #
     #                           Settings                              #
     # --------------------------------------------------------------- #
@@ -348,6 +360,6 @@ if __name__ == '__main__':
     if 'Scenario_2' in sys.argv:
         grid.game_menu = False
     # --------------------------------------------------------------- #
-    #                             Start                               #
+    #                           Start                                 #
     # --------------------------------------------------------------- #
     game_loop()

@@ -1,0 +1,19 @@
+{
+  "name"             : "Urban",
+  "theme"            : "grey",
+  "my_body"          : {
+    "image"          : "galab"
+  },
+  "room_1"           : {
+    "items"          : [],
+    "timers"         : [],
+    "revealed_tiles" : [],
+    "revealed_radius": []
+  },
+  "room_2"           : {
+    "items"          : [],
+    "timers"         : [],
+    "revealed_tiles" : [],
+    "revealed_radius": []
+  }
+}

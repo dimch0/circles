@@ -13,40 +13,6 @@ import cir_item_button
 import cir_item_mobile
 
 
-def set_item_mode_options(grid):
-    """
-    Setting all options from grid.mode_vs_options to grid.items
-    """
-    for item in grid.items:
-        for mode_name, mode_options in grid.mode_vs_options.items():
-
-            if item.name == mode_name:
-                item.default_options = mode_options
-                item.options = item.default_options
-
-
-def add_optoin_to_mode(category, item_obj, MODE_VS_OPTIONS):
-    """ Appending the mode option to the MODE_VS_OPTIONS DICT """
-    if category not in MODE_VS_OPTIONS.keys():
-        MODE_VS_OPTIONS[category] = []
-    MODE_VS_OPTIONS[category].append(item_obj)
-
-
-def set_grid_items(grid, category, item):
-    """ Assigning all items to the grid object """
-
-    if category == 'my body':
-        if not item in grid.items:
-            grid.items.append(item)
-        return item
-
-    elif hasattr(grid, category):
-        grid_attribute = getattr(grid, category)
-        if not item in grid_attribute:
-            grid_attribute.append(item)
-
-
-
 def create_new_item(grid, type, attributes):
     """
     This function creates an item of a class by the given type.
@@ -145,24 +111,56 @@ def load_data(grid, images, fonts, SCENARIO):
                     yield item, type, category
 
 
+def add_optoin_to_mode(grid, category, option):
+    """ Append the mode option to the MODE_VS_OPTIONS DICT """
+    if category not in grid.mode_vs_options.keys():
+        grid.mode_vs_options[category] = []
+    grid.mode_vs_options[category].append(option)
+
+
+def set_mode_options(grid):
+    """ Assign all options from grid.mode_vs_options to grid.items """
+    for name, item in grid.everything.items():
+        for mode_name, mode_options in grid.mode_vs_options.items():
+            if item.name == mode_name:
+                item.default_options = mode_options
+                item.options = item.default_options
+
+
+def set_timers(grid):
+    """ Assign all options from grid.mode_vs_options to grid.items """
+    for name, item in grid.everything.items():
+        for item_name, timer in grid.timer_vs_items.items():
+            if item.name == item_name:
+                item.timer = timer
+
+
+def set_buttons(grid, category, item):
+    """ Assign all items to the grid object """
+    if category == "buttons":
+        grid_attribute = getattr(grid, category)
+        if not item in grid_attribute:
+            grid_attribute.append(item)
+
+
 def load_items(grid, images, fonts, scenario):
     """
-    Loading all grid items, my body and mode options
+    Loading all modes, buttons, timers, my_body
     :return: my_body
     """
-    my_body = None
     for item, type, category in load_data(grid, images, fonts, scenario):
         # Everything
         grid.everything[item.name] = item
         # Mode options
         if type == "mode_option":
-            add_optoin_to_mode(category, item, grid.mode_vs_options)
+            add_optoin_to_mode(grid, category, item)
+        elif type == "timer":
+            grid.timer_vs_items[category] = item
+        # Buttons
         else:
-            # My body
-            if category == "my body":
-                my_body = set_grid_items(grid, category, item)
-            else:
-                set_grid_items(grid, category, item)
-    # Setting mode_vs_options
-    set_item_mode_options(grid)
+            set_buttons(grid, category, item)
+
+    my_body = grid.everything["my body"]
+    set_mode_options(grid)
+    set_timers(grid)
     return my_body

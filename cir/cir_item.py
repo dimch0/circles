@@ -13,7 +13,7 @@ class Item(object):
     It includes the open_menu method.
     """
 
-    def __init__(self, name=None, pos=(), color=None, uncolor=None, image=None, border=0):
+    def __init__(self, name=None, pos=(), color=None, uncolor=None, image=None, timer=None, border=0):
         # --------------------------------------------------------------- #
         #                            BASICS                               #
         # --------------------------------------------------------------- #
@@ -50,6 +50,7 @@ class Item(object):
         #                              STATS                              #
         # --------------------------------------------------------------- #
         self.uses = 1
+        self.timer = timer
 
     # --------------------------------------------------------------- #
     #                                                                 #

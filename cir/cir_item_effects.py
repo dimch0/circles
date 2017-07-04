@@ -7,7 +7,11 @@
 #######################################################################################################################
 import copy
 
-
+# --------------------------------------------------------------- #
+#                                                                 #
+#                         BASIC EFFECTS                           #
+#                                                                 #
+# --------------------------------------------------------------- #
 def produce(grid, product, position):
     """
     Produces an item from the everything dict
@@ -17,19 +21,20 @@ def produce(grid, product, position):
     :return: the new item
     """
     new_item = None
-    if position not in grid.occupado_tiles and position in grid.revealed_tiles:
-        for name, item in grid.everything.items():
-            if name == product:
-                new_item = copy.deepcopy(item)
-                new_item.img = item.img
-                new_item.default_img = item.default_img
-                new_item.pos = position
-                new_item.available = True
-                grid.items.append(new_item)
+    for name, item in grid.everything.items():
+        if name == product:
+            new_item = copy.deepcopy(item)
+            new_item.img = item.img
+            new_item.default_img = item.default_img
+            new_item.pos = position
+            new_item.available = True
+            grid.items.append(new_item)
     return new_item
 
 # --------------------------------------------------------------- #
+#                                                                 #
 #                         MOUSE MODES                             #
+#                                                                 #
 # --------------------------------------------------------------- #
 def laino_mode_click(grid, clicked_circle):
     """
@@ -37,7 +42,8 @@ def laino_mode_click(grid, clicked_circle):
     :param grid: grid instance
     :param clicked_circle: the clicked circle
     """
-    produce(grid, "shit", clicked_circle)
+    if clicked_circle not in grid.occupado_tiles and clicked_circle in grid.revealed_tiles:
+        produce(grid, "shit", clicked_circle)
 
 
 def shit_mode_click(grid, clicked_circle):
@@ -49,9 +55,11 @@ def shit_mode_click(grid, clicked_circle):
     for bag_item in grid.mode_vs_options["bag"]:
         if bag_item.name == grid.mouse_mode:
             if bag_item.uses:
-                produce(grid, "shit", clicked_circle)
-                bag_item.uses -= 1
-                return 1
+                if clicked_circle not in grid.occupado_tiles and clicked_circle in grid.revealed_tiles:
+                    produce(grid, "shit", clicked_circle)
+                    bag_item.uses -= 1
+                    return 1
+
 
 # --------------------------------------------------------------- #
 #                           BAG EFFECTS                           #
@@ -76,7 +84,6 @@ def empty_bag(grid):
     """ Empties the bag if an item's uses are exhausted """
     for bag_item in grid.mode_vs_options["bag"]:
         if bag_item.uses == 0:
-            print "DEBUG", [ib.name for ib in grid.mode_vs_options["bag"]]
             grid.mode_vs_options["bag"].remove(bag_item)
             empty_placeholder = copy.deepcopy(grid.everything["bag_placeholder"])
             empty_placeholder.color = grid.everything["bag_placeholder"].color
@@ -84,3 +91,10 @@ def empty_bag(grid):
             if grid.mouse_mode == bag_item.name:
                 grid.clean_mouse()
             return 1
+
+
+# --------------------------------------------------------------- #
+#                                                                 #
+#                         TIMER EFFECTS                           #
+#                                                                 #
+# --------------------------------------------------------------- #

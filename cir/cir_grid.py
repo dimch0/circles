@@ -13,13 +13,13 @@ from math import sqrt
 CONFIG_JSON_FILE = "data/cir_config.json"
 
 class Grid(object):
-    """
-    master class for the grid
-    """
-    def __init__(self):
+    """ master class for the grid """
+
+    def __init__(self, pygame=None):
         # -------------------------------------------------- #
         #                      SETTINGS                      #
         # -------------------------------------------------- #
+        self.pygame = pygame
         self.cathetus = 0
         self.display_width = 0
         self.display_height = 0
@@ -41,13 +41,16 @@ class Grid(object):
         self.revealed_tiles = [self.center_tile]
         self.revealed_radius = []
         # -------------------------------------------------- #
-        #                      ITEMS                         #
+        #                   CURRENT ROOM                     #
         # -------------------------------------------------- #
         self.items = []
-        self.timers = []
         self.buttons = []
+        # -------------------------------------------------- #
+        #                    ALL ITEMS                       #
+        # -------------------------------------------------- #
         self.everything = {}
         self.mode_vs_options = {}
+        self.timer_vs_items = {}
         # -------------------------------------------------- #
         #                      MOUSE                         #
         # -------------------------------------------------- #
@@ -57,8 +60,13 @@ class Grid(object):
         # -------------------------------------------------- #
         #                      THEME                         #
         # -------------------------------------------------- #
-        self.bkg_color = self.dark_grey
-        self.rev_color = self.grey
+        self.fog_color = self.dark_grey
+        self.room_color = self.grey
+
+
+    def set_game_display(self):
+        self.game_display = self.pygame.display.set_mode((self.display_width, self.display_height))
+
 
     def set_config(self):
         """
@@ -78,9 +86,9 @@ class Grid(object):
         self.cathetus = int(sqrt(((2 * self.tile_radius) ** 2) - (self.tile_radius ** 2)))
         self.display_width = (self.cathetus * self.cols) + (self.tile_radius * 2)
         self.display_height = self.rows * self.tile_radius
+        self.set_game_display()
+        self.pygame.display.set_caption(self.caption)
 
-    def set_game_display(self, pygame):
-        self.game_display = pygame.display.set_mode((self.display_width, self.display_height))
 
     @property
     def tiles(self):
