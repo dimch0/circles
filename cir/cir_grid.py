@@ -38,8 +38,8 @@ class Grid(object):
         self.playing_tiles = []
         self.set_playing_tiles()
         self._occupado_tiles = []
-        self.revealed_tiles = [self.center_tile]
         self.revealed_radius = []
+        self.revealed_tiles = [self.center_tile]
         # -------------------------------------------------- #
         #                   CURRENT ROOM                     #
         # -------------------------------------------------- #
