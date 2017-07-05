@@ -17,12 +17,6 @@ class ButtonItem(Item):
         self._text = self.name
         self._text_rect = None
 
-        # if self.name and self.text_color:
-        #     print "HERE"
-        #     self.text = self.font.render(self.name, True, self.text_color)
-        #     self.text_rect = self.text.get_rect()
-        #     self.text_rect.center = self.pos
-
     @property
     def text(self):
         self._text = self.font.render(self.name, True, self.text_color)

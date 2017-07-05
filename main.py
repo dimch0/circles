@@ -55,7 +55,11 @@ def game_loop():
     GAME_EXIT = False
     START_TIME = time.time()
 
+
     while not GAME_EXIT:
+
+
+
         # Mouse
         MOUSE_POS = pygame.mouse.get_pos()
         # Seconds in game
@@ -78,6 +82,7 @@ def game_loop():
                 #                             'Esc'                               #
                 # --------------------------------------------------------------- #
                 if event.key == pygame.K_ESCAPE:
+                    grid.current_room = 0
                     if not grid.game_menu:
                         grid.game_menu = True
                     elif grid.game_menu and grid.seconds_in_game > 0:
@@ -115,7 +120,6 @@ def game_loop():
 
                     elif event.key == pygame.K_b:
                         room_1_items = grid.items
-                        room_1_timers = grid.timers
                         room_1_revealed_tiles = grid.revealed_tiles
                         room_1_revealed_radius = grid.revealed_radius
                         my_body.pos = grid.center_tile
@@ -131,7 +135,6 @@ def game_loop():
 
                     elif event.key == pygame.K_k:
                         grid.items = room_1_items
-                        grid.timers = room_1_timers
                         grid.revealed_tiles = room_1_revealed_tiles
                         grid.revealed_radius = room_1_revealed_radius
                         print "k"
@@ -303,12 +306,24 @@ def game_loop():
         #                           CHANGE VARS                           #
         #                                                                 #
         # --------------------------------------------------------------- #
+
+        # TODO: Filter room items
+        if not my_body in grid.items:
+            grid.items.append(my_body)
+        # if grid.current_room == 0:
+        #     grid.items.append(grid.everything["play"])
+        #     grid.items.append(grid.everything["replay"])
+        #     grid.items.append(grid.everything["quit"])
+        # else:
+        #     grid.items.remove(grid.everything["play"])
+        #     grid.items.remove(grid.everything["replay"])
+        #     grid.items.remove(grid.everything["quit"])
         # Check bag
         if "bag" in grid.everything.keys():
             cir_item_effects.empty_bag(grid)
         # Lifespan timer
         if grid.everything['lifespan'].is_over:
-            # TODO: Escape restarting
+            # TODO: Avoid rerunning the script
             grid.game_over = True
             sys.argv.append('Game Over')
             os.execv(sys.executable, [sys.executable] + sys.argv)
@@ -339,27 +354,13 @@ def game_loop():
 #                                                                 #
 # --------------------------------------------------------------- #
 if __name__ == '__main__':
-    # --------------------------------------------------------------- #
-    #                           Loading                               #
-    # --------------------------------------------------------------- #
+    # Loading
     scenario = cir_utils.set_scenario(sys.argv)
     grid = cir_grid.Grid(pygame)
     images = cir_cosmetic.Images(grid, pygame)
     fonts = cir_cosmetic.Fonts(grid, pygame)
     my_body = cir_loader.load_items(grid, images, fonts, scenario)
-    # --------------------------------------------------------------- #
-    #                           Current room                          #
-    # --------------------------------------------------------------- #
-    grid.items.append(my_body)
-    # --------------------------------------------------------------- #
-    #                           Settings                              #
-    # --------------------------------------------------------------- #
-    if 'Game Over' in sys.argv:
-        grid.everything["play"].available = False
-        grid.everything["replay"].available = True
-    if 'Scenario_2' in sys.argv:
-        grid.game_menu = False
-    # --------------------------------------------------------------- #
-    #                           Start                                 #
-    # --------------------------------------------------------------- #
+    # Settings
+    cir_utils.set_argv(grid, sys.argv)
+    # Start
     game_loop()

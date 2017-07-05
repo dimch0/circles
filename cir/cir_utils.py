@@ -114,3 +114,10 @@ def set_scenario(SYS_ARGV):
         if "Scenario" in argument:
             result = argument
     return result
+
+def set_argv(grid, argv):
+    if 'Game Over' in argv:
+        grid.everything["play"].available = False
+        grid.everything["replay"].available = True
+    if 'Scenario_2' in argv:
+        grid.game_menu = False

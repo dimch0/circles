@@ -104,7 +104,8 @@ def load_data(grid, images, fonts, SCENARIO):
                         "time_color"  : getattr(grid, row[col_idx["time_color"]]) if len(row[col_idx["time_color"]]) > 0 else None,
                         "modable"     : row[col_idx["modable"]] if len(row[col_idx["modable"]]) > 0 else None,
                         "collectable" : row[col_idx["collectable"]] if len(row[col_idx["collectable"]]) > 0 else None,
-                        "uses"        : int(row[col_idx["uses"]]) if len(row[col_idx["uses"]]) > 0 else None
+                        "uses"        : int(row[col_idx["uses"]]) if len(row[col_idx["uses"]]) > 0 else None,
+                        "room"        : int(row[col_idx["room"]]) if len(row[col_idx["room"]]) > 0 else None
                     }
                     # Create an item
                     item = create_new_item(grid, type, attributes)

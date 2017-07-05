@@ -7,6 +7,7 @@
 #######################################################################################################################
 import json
 from cir_utils import in_circle, inside_polygon
+from cir_cosmetic import Fonts
 from math import sqrt
 
 
@@ -41,8 +42,10 @@ class Grid(object):
         self.revealed_radius = []
         self.revealed_tiles = [self.center_tile]
         # -------------------------------------------------- #
-        #                   CURRENT ROOM                     #
+        #                        ROOM                        #
         # -------------------------------------------------- #
+        self.current_room = 0
+        # TODO: make menu room 0
         self.items = []
         self.buttons = []
         # -------------------------------------------------- #
@@ -120,7 +123,7 @@ class Grid(object):
 
     @property
     def occupado_tiles(self):
-        self._occupado_tiles = list(set([item.pos for item in self.items if item.pos]))
+        self._occupado_tiles = list(set([item.pos for item in self.items if item.pos and item.available]))
         return self._occupado_tiles
 
     def find_center_tile(self):
@@ -193,3 +196,30 @@ class Grid(object):
         self.mouse_mode = option.name
         if option.img and option.modable:
             self.mouse_img = option.img
+
+    # --------------------------------------------------------------- #
+    #                             ROOMS                               #
+    # --------------------------------------------------------------- #
+    """
+    def save_room(self, room_number):
+        save_path = "" join room_number
+        save_json = {"items"     : self.items,
+                     "rev_tiles" : self.revealed_tiles,
+                     "rev_radius": self.revealed_radius}
+        with open(room_number) as f:
+            json.dump(save_json)
+
+    def load_room(self, room_number):
+        # TODO: Apply room specific color theme
+        save_path = "" join room_number
+        with open(room_number) as f:
+            loaded = json.load(save_json)
+        self.items = loaded["items"]
+        self.revealed_tiles = loaded["rev_tiles"]
+        self.revealed_radius = loaded["rev_radius"]
+
+    def change_room(self, room_number):
+        self.save_room(self.current_room)
+        self.current_room = room_number
+        self.load_room(self.current_room)
+    """
