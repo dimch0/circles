@@ -123,7 +123,7 @@ class Grid(object):
 
     @property
     def occupado_tiles(self):
-        self._occupado_tiles = list(set([item.pos for item in self.items if item.pos and item.available]))
+        self._occupado_tiles = list(set([item.pos for item in self.items if item.pos]))
         return self._occupado_tiles
 
     def find_center_tile(self):
