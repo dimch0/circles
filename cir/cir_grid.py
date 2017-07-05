@@ -39,15 +39,16 @@ class Grid(object):
         self.playing_tiles = []
         self.set_playing_tiles()
         self._occupado_tiles = []
-        self.revealed_radius = []
+        self.revealed_radius = [((self.center_tile), self.tile_radius)]
         self.revealed_tiles = [self.center_tile]
         # -------------------------------------------------- #
         #                        ROOM                        #
         # -------------------------------------------------- #
-        self.current_room = 0
+        self.current_room = 1
         # TODO: make menu room 0
         self.items = []
         self.buttons = []
+        self.rooms = {}
         # -------------------------------------------------- #
         #                    ALL ITEMS                       #
         # -------------------------------------------------- #
@@ -171,6 +172,16 @@ class Grid(object):
                 (self_x - self.cathetus, self_y - self.tile_radius)
                ]
 
+    def set_rev_tiles(self):
+        self.revealed_tiles = []
+        for tile in self.tiles:
+            for rev_rad in self.revealed_radius:
+                if in_circle(rev_rad[0], rev_rad[1], tile):
+                    if tile in self.playing_tiles and tile not in self.revealed_tiles:
+                        self.revealed_tiles.append(tile)
+        return self.revealed_tiles
+
+
     def clean_placeholders(self, item):
         """ Cleans the placeholders (eg for mitosis) """
         if item.name == "placeholder":
@@ -200,6 +211,31 @@ class Grid(object):
     # --------------------------------------------------------------- #
     #                             ROOMS                               #
     # --------------------------------------------------------------- #
+    def load_room(self, my_body):
+        if self.current_room in self.rooms.keys():
+            room = self.rooms[self.current_room]
+            self.items = room["items"]
+            self.revealed_radius = room["revealed_radius"]
+        elif not self.current_room in self.rooms.keys():
+            print "Clean room"
+            self.rooms[self.current_room] = {
+            "items"          : [],
+            "revealed_radius": [],
+            }
+        if not my_body in self.items:
+            self.items.append(my_body)
+        if not (my_body.pos, self.tile_radius) in self.revealed_radius:
+            self.revealed_radius.append((my_body.pos, self.tile_radius))
+        self.set_rev_tiles()
+
+    def change_room(self, room):
+        self.rooms[self.current_room] = {
+            "items": self.items,
+            "revealed_radius": self.revealed_radius
+        }
+        self.current_room = room
+
+
     """
     def save_room(self, room_number):
         save_path = "" join room_number

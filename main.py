@@ -11,28 +11,28 @@
 # TODO: Time modifier
 # TODO: Tile names
 # TODO: Item generation
-# TODO: Make game menu separate loop
+# TODO: Make game menu = room 0
 # TODO: Indicate uses
 # TODO: Create mini map
 # TODO: Define signal function
 # TODO: Log statistics during a lifespan
-# TODO: Room transition
 # TODO: Create spirit mode, calculate karma
 # TODO: Log messages on screen
-# TODO: Create save button
+# TODO: Create / load button
+# TODO: Create installation .exe file
+# --------------------------------------------------------------- #
+#                            Animation                            #
+# --------------------------------------------------------------- #
 # TODO: Animate item generation
 # TODO: Animate item activation
-# TODO: Create installation .exe file
+# TODO: Animate menu opening
+# TODO: Animate room transition
+# TODO: Animate circle kiss
+# TODO: Animate instructions
 # --------------------------------------------------------------- #
 #                            Bug fixes                            #
 # --------------------------------------------------------------- #
 # TODO: Fix movement track
-# --------------------------------------------------------------- #
-#                            Optional                             #
-# --------------------------------------------------------------- #
-# TODO: Animate circle kiss
-# TODO: Animate instructions
-
 
 import os
 import sys
@@ -119,24 +119,16 @@ def game_loop():
                         print "l"
 
                     elif event.key == pygame.K_b:
-                        room_1_items = grid.items
-                        room_1_revealed_tiles = grid.revealed_tiles
-                        room_1_revealed_radius = grid.revealed_radius
-                        my_body.pos = grid.center_tile
-                        grid.items = [my_body]
-                        grid.revealed_tiles = [grid.center_tile]
-                        grid.revealed_radius = []
+                        grid.change_room(2)
                         print "b"
 
                     elif event.key == pygame.K_r:
-                        my_body.img = images.galab
-                        my_body.default_img = my_body.img
+                        grid.change_room(1)
                         print "r"
 
                     elif event.key == pygame.K_k:
-                        grid.items = room_1_items
-                        grid.revealed_tiles = room_1_revealed_tiles
-                        grid.revealed_radius = room_1_revealed_radius
+                        my_body.img = images.galab
+                        my_body.default_img = my_body.img
                         print "k"
 
                     # Movement Population
@@ -307,17 +299,9 @@ def game_loop():
         #                                                                 #
         # --------------------------------------------------------------- #
 
-        # TODO: Filter room items
-        if not my_body in grid.items:
-            grid.items.append(my_body)
-        # if grid.current_room == 0:
-        #     grid.items.append(grid.everything["play"])
-        #     grid.items.append(grid.everything["replay"])
-        #     grid.items.append(grid.everything["quit"])
-        # else:
-        #     grid.items.remove(grid.everything["play"])
-        #     grid.items.remove(grid.everything["replay"])
-        #     grid.items.remove(grid.everything["quit"])
+        # Rooms
+        grid.load_room(my_body)
+
         # Check bag
         if "bag" in grid.everything.keys():
             cir_item_effects.empty_bag(grid)

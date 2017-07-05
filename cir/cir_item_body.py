@@ -73,10 +73,10 @@ class BodyItem(MobileItem):
             #if revealed[0] in grid.playing_tiles:
               grid.revealed_radius.append(revealed)
 
-        for tile in grid.tiles:
-            if in_circle(self.pos, radar_radius, tile) and tile not in grid.revealed_tiles:
-                if not tile in grid.revealed_tiles:
-                    if tile in grid.playing_tiles:
-                        grid.revealed_tiles.append(tile)
+        # for tile in grid.tiles:
+        #     if in_circle(self.pos, radar_radius, tile) and tile not in grid.revealed_tiles:
+        #         if not tile in grid.revealed_tiles:
+        #             if tile in grid.playing_tiles:
+        #                 grid.revealed_tiles.append(tile)
 
         return radar_radius, thick
