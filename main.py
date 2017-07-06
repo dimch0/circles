@@ -9,7 +9,6 @@
 #                            Features                             #
 # --------------------------------------------------------------- #
 # TODO: Time modifier
-# TODO: Tile names
 # TODO: Item generation
 # TODO: Make game menu = room 0
 # TODO: Indicate uses
@@ -18,7 +17,9 @@
 # TODO: Log statistics during a lifespan
 # TODO: Create spirit mode, calculate karma
 # TODO: Log messages on screen
-# TODO: Create / load button
+# TODO: Create save button
+# TODO: Create load button
+# TODO: Create resume button
 # TODO: Create installation .exe file
 # --------------------------------------------------------------- #
 #                            Animation                            #
@@ -44,9 +45,8 @@ from cir import cir_grid
 from cir import cir_draw
 from cir import cir_utils
 from cir import cir_loader
-from cir import cir_item_effects
 from cir import cir_cosmetic
-
+from cir import cir_item_effects
 
 
 def game_loop():
@@ -118,13 +118,17 @@ def game_loop():
                         os.execv(sys.executable, [sys.executable] + sys.argv)
                         print "l"
 
-                    elif event.key == pygame.K_b:
-                        grid.change_room(2)
-                        print "b"
-
-                    elif event.key == pygame.K_r:
+                    elif event.key == pygame.K_1:
                         grid.change_room(1)
-                        print "r"
+                        print "1"
+
+                    elif event.key == pygame.K_2:
+                        grid.change_room(2)
+                        print "2"
+
+                    elif event.key == pygame.K_3:
+                        grid.change_room(3)
+                        print "3"
 
                     elif event.key == pygame.K_k:
                         my_body.img = images.galab
@@ -299,8 +303,9 @@ def game_loop():
         #                                                                 #
         # --------------------------------------------------------------- #
 
-        # Rooms
-        grid.load_room(my_body)
+        # My_body to room
+        if not my_body in grid.items:
+           grid.items.append(my_body)
 
         # Check bag
         if "bag" in grid.everything.keys():
@@ -344,6 +349,7 @@ if __name__ == '__main__':
     images = cir_cosmetic.Images(grid, pygame)
     fonts = cir_cosmetic.Fonts(grid, pygame)
     my_body = cir_loader.load_items(grid, images, fonts, scenario)
+    grid.load_current_room()
     # Settings
     cir_utils.set_argv(grid, sys.argv)
     # Start

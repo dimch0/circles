@@ -173,11 +173,11 @@ class Grid(object):
                ]
 
     def set_rev_tiles(self):
-        self.revealed_tiles = []
+        # self.revealed_tiles = []
         for tile in self.tiles:
-            for rev_rad in self.revealed_radius:
-                if in_circle(rev_rad[0], rev_rad[1], tile):
-                    if tile in self.playing_tiles and tile not in self.revealed_tiles:
+            if tile in self.playing_tiles and tile not in self.revealed_tiles:
+                for rev_rad in self.revealed_radius:
+                    if in_circle(rev_rad[0], rev_rad[1], tile):
                         self.revealed_tiles.append(tile)
         return self.revealed_tiles
 
@@ -192,9 +192,6 @@ class Grid(object):
                         self.items.remove(item)
                     except Exception as e:
                         print "ERROR", e
-                        print "ERROR name", item.name
-                        print "ERROR pos", item.pos
-                        print "ERROR available", item.available
 
     # --------------------------------------------------------------- #
     #                             MOUSE                               #
@@ -211,30 +208,28 @@ class Grid(object):
     # --------------------------------------------------------------- #
     #                             ROOMS                               #
     # --------------------------------------------------------------- #
-    def load_room(self, my_body):
-        if self.current_room in self.rooms.keys():
-            room = self.rooms[self.current_room]
-            self.items = room["items"]
-            self.revealed_radius = room["revealed_radius"]
-        elif not self.current_room in self.rooms.keys():
-            print "Clean room"
+    def load_current_room(self):
+        if not self.current_room in self.rooms.keys():
             self.rooms[self.current_room] = {
             "items"          : [],
             "revealed_radius": [],
             }
-        if not my_body in self.items:
-            self.items.append(my_body)
-        if not (my_body.pos, self.tile_radius) in self.revealed_radius:
-            self.revealed_radius.append((my_body.pos, self.tile_radius))
+        self.items = self.rooms[self.current_room]["items"]
+        self.revealed_radius = self.rooms[self.current_room]["revealed_radius"]
+        self.revealed_tiles = []
         self.set_rev_tiles()
 
-    def change_room(self, room):
+
+    def save_current_room(self):
         self.rooms[self.current_room] = {
             "items": self.items,
             "revealed_radius": self.revealed_radius
         }
-        self.current_room = room
 
+    def change_room(self, room):
+        self.save_current_room()
+        self.current_room = room
+        self.load_current_room()
 
     """
     def save_room(self, room_number):

@@ -6,7 +6,7 @@
 #################                                                                                     #################
 #######################################################################################################################
 from cir_item_mobile import MobileItem
-from cir_utils import in_circle
+
 
 class BodyItem(MobileItem):
     """
@@ -63,20 +63,15 @@ class BodyItem(MobileItem):
         """
         radar_radius, thick = None, None
         if self.radar_track:
-            # for track in self.radar_track:
             radar_radius, thick = self.radar_track[0]
             self.radar_track.pop(0)
 
         # Mark tiles as revealed
         revealed = ((self.pos), radar_radius)
         if not revealed in grid.revealed_radius:
-            #if revealed[0] in grid.playing_tiles:
               grid.revealed_radius.append(revealed)
 
-        # for tile in grid.tiles:
-        #     if in_circle(self.pos, radar_radius, tile) and tile not in grid.revealed_tiles:
-        #         if not tile in grid.revealed_tiles:
-        #             if tile in grid.playing_tiles:
-        #                 grid.revealed_tiles.append(tile)
+        # Set tiles
+        grid.set_rev_tiles()
 
         return radar_radius, thick

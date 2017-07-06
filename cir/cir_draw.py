@@ -37,6 +37,7 @@ def draw_background(grid):
 
 def draw_hover(pygame, grid, MOUSE_POS, tile):
     """ Highlights the hovered tile """
+
     if cir_utils.in_circle(tile, grid.tile_radius, MOUSE_POS):
         pygame.draw.circle(grid.game_display,
                            grid.white,
@@ -46,17 +47,18 @@ def draw_hover(pygame, grid, MOUSE_POS, tile):
 
 
 def draw_img(grid, item):
+    """ Blit image on display """
+
     if item.img and item.available:
-        # pdb.set_trace()
         if item.img.get_width() == grid.tile_radius:
             grid.game_display.blit(item.img, set_emoji_pos(item.pos, grid))
-            # print "Here"
         else:
             grid.game_display.blit(item.img, set_img_pos(item.pos, grid))
 
 
 def draw_radar(pygame, grid, item):
     """ Radar animation """
+
     radar_radius, thick = item.radar(grid)
     if radar_radius and thick:
         pygame.draw.circle(grid.game_display,
@@ -67,7 +69,8 @@ def draw_radar(pygame, grid, item):
 
 
 def draw_revealed_radius(pygame, grid):
-    """ Drawing the revealed areas """
+    """ Drawing the revealed areas (radius) """
+
     for revealed in grid.revealed_radius:
         pygame.draw.circle(grid.game_display,
                            grid.room_color,
@@ -166,6 +169,7 @@ def draw_grid(pygame, grid):
 
 
 def draw_mask(pygame, grid):
+    """ Draws the mas around the playing board """
     rect1 = [
         (0,0),
         (grid.center_tile[0] - ((4 * grid.cathetus) + (grid.cathetus / 2) + 5), (grid.display_height))

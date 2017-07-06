@@ -64,6 +64,25 @@ def set_col_idx(header):
     return result
 
 
+def set_pos(grid, number):
+    """
+    Calculate the position as following:
+    The number is split to a list of digits
+    The first digit is always 1 - that is the center tile
+    Each digit after it is the index of an adjacent tile to the previous tile
+    :param grid: grid instance
+    :param number: column value
+    :return: the final position
+    """
+    position = None
+    indexes = [int(n) for n in number]
+    if indexes:
+        position = grid.center_tile
+    if len(indexes) > 1:
+        for idx in indexes[1:]:
+            position = grid.adj_tiles(position)[idx]
+    return position
+
 def load_data(grid, images, fonts, SCENARIO):
     """
     This function loads all items and menu options from external data file.
@@ -93,7 +112,7 @@ def load_data(grid, images, fonts, SCENARIO):
                         "border_width": int(row[col_idx["border_width"]]) if len(row[col_idx["border_width"]]) > 0 else 1,
                         "border_color": getattr(grid, row[col_idx["border_color"]]) if len(row[col_idx["border_color"]]) > 0 else None,
                         "name"        : row[col_idx["name"]] if len(row[col_idx["name"]]) > 0 else None,
-                        "pos"         : eval(row[col_idx["pos"]]) if len(row[col_idx["pos"]]) > 0 else None,
+                        "pos"         : set_pos(grid, row[col_idx["pos"]]) if len(row[col_idx["pos"]]) > 0 else None,
                         "color"       : getattr(grid, row[col_idx["color"]]) if len(row[col_idx["color"]]) > 0 else None,
                         "img"         : getattr(images, row[col_idx["img"]]) if len(row[col_idx["img"]]) > 0 else None,
                         "speed"       : int(row[col_idx["speed"]]) if len(row[col_idx["speed"]]) > 0 else None,
@@ -143,6 +162,15 @@ def set_buttons(grid, category, item):
         if not item in grid_attribute:
             grid_attribute.append(item)
 
+def set_rooms(grid, item):
+    if item.room not in [None, ""]:
+        if item.room not in grid.rooms.keys():
+            grid.rooms[item.room] = {
+                "items"          : [],
+                "revealed_radius": []
+            }
+        grid.rooms[item.room]["items"].append(item)
+
 
 def load_items(grid, images, fonts, scenario):
     """
@@ -152,6 +180,7 @@ def load_items(grid, images, fonts, scenario):
     for item, type, category in load_data(grid, images, fonts, scenario):
         # Everything
         grid.everything[item.name] = item
+        set_rooms(grid, item)
         # Mode options
         if type == "mode_option":
             add_optoin_to_mode(grid, category, item)
