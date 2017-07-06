@@ -1,5 +1,5 @@
 {
-  "SETTINGS": {
+  "CONSTANTS": {
     "tile_radius": 30,
     "rows"       : 24,
     "cols"       : 24,
@@ -13,7 +13,7 @@
     "show_playing_tiles": false
   },
 
-  "DIRECTORIES": {
+  "PATHS": {
     "caption"  : "cir",
     "img_dir"  : "img",
     "font_file": "./fonts/HelveticaNeueMed.ttf",
