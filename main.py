@@ -332,7 +332,8 @@ def game_loop():
                 grid.clean_placeholders(item)
 
         # FPS
-        pygame.time.Clock().tick(grid.fps)
+        grid.clock.tick(grid.fps)
+
     # END
     pygame.quit()
     quit()

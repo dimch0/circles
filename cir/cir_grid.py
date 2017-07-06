@@ -30,6 +30,7 @@ class Grid(object):
         self.game_over = False
         self.seconds_in_game = 0
         self.seconds_in_pause = 0
+        self.clock = pygame.time.Clock()
         # -------------------------------------------------- #
         #                      TILES                         #
         # -------------------------------------------------- #
