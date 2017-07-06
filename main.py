@@ -302,39 +302,41 @@ def game_loop():
         #                           CHANGE VARS                           #
         #                                                                 #
         # --------------------------------------------------------------- #
+        if not grid.game_menu:
 
-        # My_body to room
-        if not my_body in grid.items:
-           grid.items.append(my_body)
+            # My_body to room
+            if not my_body in grid.items:
+               grid.items.append(my_body)
 
-        # Check bag
-        if "bag" in grid.everything.keys():
-            cir_item_effects.empty_bag(grid)
-        # Lifespan timer
-        if grid.everything['lifespan'].is_over:
-            # TODO: Avoid rerunning the script
-            grid.game_over = True
-            sys.argv.append('Game Over')
-            os.execv(sys.executable, [sys.executable] + sys.argv)
+            # Check bag
+            if "bag" in grid.everything.keys():
+                cir_item_effects.empty_bag(grid)
+            # Lifespan timer
+            if grid.everything['lifespan'].is_over:
+                # TODO: Avoid rerunning the script
+                grid.game_over = True
+                sys.argv.append('Game Over')
+                os.execv(sys.executable, [sys.executable] + sys.argv)
 
-        # Items
-        for item in grid.items:
-            if item.available:
-                # Overlap
-                item.overlapping(grid)
-                # Movement
-                if item.move_track:
-                    item.move()
-                if item.timer:
-                    item.timer.tick()
+            # Items
+            for item in grid.items:
+                if item.available:
+                    # Overlap
+                    item.overlapping(grid)
+                    # Movement
+                    if item.move_track:
+                        item.move()
+                    if item.timer:
+                        item.timer.tick()
+                    # Clean placeholders
+                    grid.clean_placeholders(item)
 
-                # Clean placeholders
-                grid.clean_placeholders(item)
 
-        # FPS
+    # --------------------------------------------------------------- #
+    #                          FINISH LOOP                            #
+    # --------------------------------------------------------------- #
         grid.clock.tick(grid.fps)
 
-    # END
     pygame.quit()
     quit()
 
