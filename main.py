@@ -57,18 +57,14 @@ from cir import cir_item_effects
 
 def game_loop():
     """ Main game loop """
+
     print "Game started"
     GAME_EXIT = False
     START_TIME = time.time()
 
-
     while not GAME_EXIT:
 
-
-
-        # Mouse
         MOUSE_POS = pygame.mouse.get_pos()
-        # Seconds in game
         cir_utils.seconds_in_game(grid, START_TIME)
         # --------------------------------------------------------------- #
         #                                                                 #
@@ -139,7 +135,7 @@ def game_loop():
                         print "3"
 
                     elif event.key == pygame.K_k:
-                        my_body.img = images.galab
+                        my_body.img = images.alien1
                         my_body.default_img = my_body.img
                         print "k"
 
@@ -387,7 +383,7 @@ if __name__ == '__main__':
 
     # TESTING
     lst = grid.everything["lifespan"]
-    for x in [1, 5, 30]:
+    for x in [1, 5, 60]:
         lst.duration = x
         print "duration        :", lst.duration
         print "number of steps :", lst.number_of_steps
