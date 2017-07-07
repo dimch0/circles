@@ -62,7 +62,9 @@ def shit_mode_click(grid, clicked_circle):
 
 
 # --------------------------------------------------------------- #
-#                           BAG EFFECTS                           #
+#                                                                 #
+#                           BAG MODES                             #
+#                                                                 #
 # --------------------------------------------------------------- #
 def collect(grid, item):
     """ Collect item: add it to bag options """
@@ -98,3 +100,26 @@ def empty_bag(grid):
 #                         TIMER EFFECTS                           #
 #                                                                 #
 # --------------------------------------------------------------- #
+
+
+
+
+
+# --------------------------------------------------------------- #
+#                                                                 #
+#                          EXIT EFFECTS                           #
+#                                                                 #
+# --------------------------------------------------------------- #
+def enter_restoran(grid, my_body, item):
+    if my_body.pos in grid.adj_tiles(item.pos):
+        my_body.move_track = my_body.move_to_tile(grid, my_body.pos, item.pos)
+        grid.change_room(2)
+    else:
+        print "TOO FAR"
+
+def exit_restoran(grid, my_body, item):
+    if my_body.pos in grid.adj_tiles(item.pos):
+        my_body.move_track = my_body.move_to_tile(grid, my_body.pos, item.pos)
+        grid.change_room(1)
+    else:
+        print "TOO FAR"

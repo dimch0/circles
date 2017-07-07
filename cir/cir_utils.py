@@ -59,7 +59,8 @@ def debug_print_click(grid, MOUSE_POS, clicked_circle, my_body):
     """  Debug print on click event  """
     if grid.show_debug:
             print(""">>>>>> click: {0}, tile: {1}
-        mode        : {2}
+        mouse mode  : {10}
+        my_body mode: {2}
         menu        : {3}
         grid items  : {4}
         occupado:   : {5}
@@ -78,6 +79,7 @@ def debug_print_click(grid, MOUSE_POS, clicked_circle, my_body):
                    my_body.move_track,
                    len(grid.tiles),
                    my_body.speed,
+                   grid.mouse_mode
                    )
                   )
 

@@ -9,8 +9,8 @@
 #                            Features                             #
 # --------------------------------------------------------------- #
 # TODO: Time modifier
+# TODO: Timeer cool down
 # TODO: Item generation
-# TODO: Make game menu = room 0
 # TODO: Indicate uses
 # TODO: Create mini map
 # TODO: Define signal function
@@ -21,6 +21,7 @@
 # TODO: Create load button
 # TODO: Create resume button
 # TODO: Create installation .exe file
+# TODO: Add moving image
 # --------------------------------------------------------------- #
 #                            Animation                            #
 # --------------------------------------------------------------- #
@@ -30,10 +31,12 @@
 # TODO: Animate room transition
 # TODO: Animate circle kiss
 # TODO: Animate instructions
+# TODO: Animate moving circle
 # --------------------------------------------------------------- #
 #                            Bug fixes                            #
 # --------------------------------------------------------------- #
 # TODO: Fix movement track
+# TODO: Fix overlap only on current menu item
 
 import os
 import sys
@@ -41,6 +44,9 @@ import time
 import pygame
 pygame.init()
 
+# --------------------------------------------------------------- #
+#                           CIR modules                           #
+# --------------------------------------------------------------- #
 from cir import cir_grid
 from cir import cir_draw
 from cir import cir_utils
@@ -82,7 +88,6 @@ def game_loop():
                 #                             'Esc'                               #
                 # --------------------------------------------------------------- #
                 if event.key == pygame.K_ESCAPE:
-                    grid.current_room = 0
                     if not grid.game_menu:
                         grid.game_menu = True
                     elif grid.game_menu and grid.seconds_in_game > 0:
@@ -103,14 +108,17 @@ def game_loop():
 
                     elif event.key == pygame.K_t:
                             # Lifespan timer
-                            lst = grid.everything["lifespan"]
+                            delta = 5
+                            lst.duration += delta
+                            print "number_of_steps_delta", int(delta / lst.time_step)
+                            # lst.step -= 20
+                            lst.filled_steps -= int(delta / lst.time_step)
+                            print "duration        :", lst.duration
+                            print "number of steps :", lst.number_of_steps
                             print "step            :", lst.step
                             print "filled steps    :", lst.filled_steps
-                            print "number of steps :", lst.number_of_steps
                             print "len of step     :", lst.len_step
                             print "-"*35
-                            lst.step -= 20
-                            lst.filled_steps += 20
 
                     elif event.key == pygame.K_l:
                         grid.game_over = True
@@ -179,6 +187,7 @@ def game_loop():
                                     #                            BAG MODE                             #
                                     # --------------------------------------------------------------- #
                                     if grid.mouse_mode == "bag":
+                                        print "HERE", grid.mouse_mode, item.name, item.collectable
                                         cir_item_effects.collect(grid, item)
 
                                     # Set in_menu for the items with menu (my_body)
@@ -188,6 +197,7 @@ def game_loop():
                                     # Option clicked
                                     if item.in_menu:
                                         grid.clean_mouse()
+
                                 # --------------------------------------------------------------- #
                                 #                       CLICK ITEM OPTIONS                        #
                                 # --------------------------------------------------------------- #
@@ -202,12 +212,22 @@ def game_loop():
                                                 #                       CLICK DEFAULT OPTIONS                     #
                                                 # --------------------------------------------------------------- #
                                                 if option in item.default_options:
+                                                    # bag
                                                     if option.name == "bag":
                                                         print "Gimme the loot!"
+                                                    # mitosis
                                                     elif option.name == "mitosis":
                                                         item.mitosis(grid)
+                                                    # enter restoran
+                                                    elif option.name == "enter_restoran":
+                                                        cir_item_effects.enter_restoran(grid, my_body, item)
+                                                    elif option.name == "exit_restoran":
+                                                        cir_item_effects.exit_restoran(grid, my_body, item)
                                                     # Setting the mode
                                                     item.set_mode(grid, option)
+
+
+
                                                 # --------------------------------------------------------------- #
                                                 #                        CLICK SUB-OPTIONS                        #
                                                 # --------------------------------------------------------------- #
@@ -302,7 +322,7 @@ def game_loop():
         #                           CHANGE VARS                           #
         #                                                                 #
         # --------------------------------------------------------------- #
-        if not grid.game_menu:
+        if grid.current_room != 0:
 
             # My_body to room
             if not my_body in grid.items:
@@ -320,16 +340,20 @@ def game_loop():
 
             # Items
             for item in grid.items:
+
+                if item.timer:
+                    item.timer.tick()
+
                 if item.available:
                     # Overlap
                     item.overlapping(grid)
                     # Movement
                     if item.move_track:
                         item.move()
-                    if item.timer:
-                        item.timer.tick()
                     # Clean placeholders
                     grid.clean_placeholders(item)
+
+
 
 
     # --------------------------------------------------------------- #
@@ -355,5 +379,17 @@ if __name__ == '__main__':
     grid.load_current_room()
     # Settings
     cir_utils.set_argv(grid, sys.argv)
+
+    # TESTING
+    lst = grid.everything["lifespan"]
+    for x in [1, 5, 30]:
+        lst.duration = x
+        print "duration        :", lst.duration
+        print "number of steps :", lst.number_of_steps
+        print "step            :", lst.step
+        print "filled steps    :", lst.filled_steps
+        # print "len of step     :", lst.len_step
+        print "-" * 35
+
     # Start
     game_loop()

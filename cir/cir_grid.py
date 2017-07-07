@@ -174,7 +174,7 @@ class Grid(object):
                ]
 
     def set_rev_tiles(self):
-        # self.revealed_tiles = []
+        """ Reveal tiles in the revealed areas (radius) """
         for tile in self.tiles:
             if tile in self.playing_tiles and tile not in self.revealed_tiles:
                 for rev_rad in self.revealed_radius:

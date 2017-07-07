@@ -71,7 +71,10 @@ class BodyItem(MobileItem):
         if not revealed in grid.revealed_radius:
               grid.revealed_radius.append(revealed)
 
-        # Set tiles
+        # Set revealed tiles and items
         grid.set_rev_tiles()
+        for item in grid.items:
+            if item.pos in grid.revealed_tiles:
+               item.available = True
 
         return radar_radius, thick
