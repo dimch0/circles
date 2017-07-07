@@ -205,9 +205,13 @@ def game_loop():
                                     if item.options:
                                         for option in item.options:
                                             if clicked_circle == option.pos:
-                                                # Mouse mode
+
+                                                # --------------------------------------------------------------- #
+                                                #                           Mouse mode                            #
+                                                # --------------------------------------------------------------- #
                                                 if option.modable:
                                                     grid.set_mouse_mode(option)
+
                                                 # --------------------------------------------------------------- #
                                                 #                       CLICK DEFAULT OPTIONS                     #
                                                 # --------------------------------------------------------------- #
@@ -225,7 +229,6 @@ def game_loop():
                                                         cir_item_effects.exit_restoran(grid, my_body, item)
                                                     # Setting the mode
                                                     item.set_mode(grid, option)
-
 
 
                                                 # --------------------------------------------------------------- #
@@ -331,9 +334,10 @@ def game_loop():
             # Check bag
             if "bag" in grid.everything.keys():
                 cir_item_effects.empty_bag(grid)
+
             # Lifespan timer
+            # TODO: Avoid rerunning the script
             if grid.everything['lifespan'].is_over:
-                # TODO: Avoid rerunning the script
                 grid.game_over = True
                 sys.argv.append('Game Over')
                 os.execv(sys.executable, [sys.executable] + sys.argv)
@@ -341,19 +345,20 @@ def game_loop():
             # Items
             for item in grid.items:
 
+                # Timers
                 if item.timer:
                     item.timer.tick()
 
                 if item.available:
-                    # Overlap
-                    item.overlapping(grid)
+
                     # Movement
                     if item.move_track:
                         item.move()
+
                     # Clean placeholders
                     grid.clean_placeholders(item)
-
-
+                    # Overlap
+                    item.overlapping(grid)
 
 
     # --------------------------------------------------------------- #
