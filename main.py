@@ -218,11 +218,10 @@ def game_loop():
                                                     # mitosis
                                                     elif option.name == "mitosis":
                                                         item.mitosis(grid)
-                                                    # enter restoran
-                                                    elif option.name == "enter_restoran":
-                                                        cir_item_effects.enter_restoran(grid, my_body, item)
-                                                    elif option.name == "exit_restoran":
-                                                        cir_item_effects.exit_restoran(grid, my_body, item)
+                                                    # enter / exit
+                                                    elif any(a for a in ["enter_", "exit_"] if a in option.name):
+                                                        cir_item_effects.enter_exit(grid, my_body, item, option)
+
                                                     # Setting the mode
                                                     item.set_mode(grid, option)
 
