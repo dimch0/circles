@@ -36,7 +36,6 @@
 #                            Bug fixes                            #
 # --------------------------------------------------------------- #
 # TODO: Fix movement track
-# TODO: Fix overlap only on current menu item
 
 import os
 import sys
@@ -96,9 +95,9 @@ def game_loop():
                     #                            'Space'                              #
                     # --------------------------------------------------------------- #
                     if event.key == pygame.K_SPACE:
+
                         # Radar Population
-                        if not my_body.move_track and not my_body.in_menu and not my_body.radar_track:
-                            my_body.gen_radar_track(grid)
+                        my_body.gen_radar_track(grid)
                         # Debug
                         cir_utils.debug_print_space(grid)
 
@@ -135,7 +134,7 @@ def game_loop():
                         print "3"
 
                     elif event.key == pygame.K_k:
-                        my_body.img = images.alien1
+                        my_body.img = images.alien1s
                         my_body.default_img = my_body.img
                         print "k"
 
@@ -239,11 +238,14 @@ def game_loop():
                                                         print "sniff hair"
                                                     elif option.name == "medi":
                                                         item.range += 3
-                                                        item.change_speed(10)
+                                                        my_body.gen_radar_track(grid)
+                                                        item.range -= 3
                                                     elif option.name == "audio":
                                                         item.range += 1
                                                     elif option.name == "eat":
                                                         item.change_speed(-1)
+                                                    elif option.name == "touch":
+                                                        item.change_speed(10)
                                                     # Close menu when sub-option selected
                                                     item.set_in_menu(grid, False)
                                                 # Close menu if option has no sub-options

@@ -31,8 +31,6 @@ class BodyItem(MobileItem):
         # self.stress = 0
         # self.status = []
 
-    # TODO: Link timer to body
-
     def gen_radar_track(self, grid):
         """
         :param grid: grid object
@@ -40,18 +38,20 @@ class BodyItem(MobileItem):
         with the radius, thickness:
         (31, 10), (32, 10), (33, 10)
         """
-        radar_thickness = range(1, (grid.tile_radius / 3) + 1)
-        radar_thickness.reverse()
-        radar_limit = (grid.tile_radius * 2 * self.range) + grid.tile_radius + 1
-        radar_radius = range(grid.tile_radius , radar_limit)
-        radar_delimiter = (radar_radius[-1] - radar_radius[0]) / radar_thickness[0]
-        result = []
 
-        for thick in radar_thickness:
-            for rad_delim in range(radar_delimiter + 1):
-                result.append(thick)
+        if not self.move_track and not self.radar_track:
+            radar_thickness = range(1, (grid.tile_radius / 3) + 1)
+            radar_thickness.reverse()
+            radar_limit = (grid.tile_radius * 2 * self.range) + grid.tile_radius + 1
+            radar_radius = range(grid.tile_radius , radar_limit)
+            radar_delimiter = (radar_radius[-1] - radar_radius[0]) / radar_thickness[0]
+            result = []
 
-        self.radar_track = zip(radar_radius, result)
+            for thick in radar_thickness:
+                for rad_delim in range(radar_delimiter + 1):
+                    result.append(thick)
+
+            self.radar_track = zip(radar_radius, result)
         return self.radar_track
 
     def radar(self, grid):
