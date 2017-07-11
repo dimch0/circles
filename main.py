@@ -166,6 +166,9 @@ def game_loop():
                             cir_item_effects.laino_mode_click(grid, clicked_circle)
                         elif grid.mouse_mode == "shit":
                             cir_item_effects.shit_mode_click(grid, clicked_circle)
+                        elif grid.mouse_mode == "see":
+                            cir_item_effects.produce(grid, "observer", clicked_circle)
+                            grid.everything["observer"].timer.restart()
 
                         # --------------------------------------------------------------- #
                         #                          CLICK ON ITEMS                         #
@@ -229,7 +232,7 @@ def game_loop():
                                                         item.gen_move_track(grid, grid.mode_vs_options[item.mode].index(option))
                                                     # see
                                                     elif option.name == "see":
-                                                        item.range += 3
+                                                        # item.range += 3
                                                         print "seen"
                                                     # smel
                                                     elif option.name == "smel":
@@ -340,21 +343,7 @@ def game_loop():
                 grid.game_over = True
                 sys.argv.append('Game Over')
                 os.execv(sys.executable, [sys.executable] + sys.argv)
-            # Eyespan timer
-            obs = grid.everything["observer"]
-            if obs.timer.is_over:
-                if not obs.move_track:
-                    obs.gen_radar_track(grid)
 
-                if len(obs.radar_track) == 1:
-                    import random
-                    legal_moves = []
-                    for obs_adj in grid.adj_tiles(obs.pos):
-                        if obs_adj in grid.playing_tiles and obs_adj not in grid.occupado_tiles:
-                            legal_moves.append(obs_adj)
-                    if legal_moves:
-                        obs.move_track = obs.move_to_tile(grid, obs.pos, random.choice(legal_moves))
-                        obs.timer.restart()
 
 
 
@@ -370,6 +359,22 @@ def game_loop():
                 # Timers
                 if item.timer:
                     item.timer.tick()
+
+                # Eyespan timer
+                if item.name == "observer":
+                    if item.timer.is_over:
+                        if not item.move_track:
+                            item.gen_radar_track(grid)
+
+                        if len(item.radar_track) == 1:
+                            import random
+                            legal_moves = []
+                            for item_adj in grid.adj_tiles(item.pos):
+                                if item_adj in grid.playing_tiles and item_adj not in grid.occupado_tiles:
+                                    legal_moves.append(item_adj)
+                            if legal_moves:
+                                item.move_track = item.move_to_tile(grid, item.pos, random.choice(legal_moves))
+                                item.timer.restart()
 
                 if item.available:
 
