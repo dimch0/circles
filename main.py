@@ -36,6 +36,7 @@
 #                            Bug fixes                            #
 # --------------------------------------------------------------- #
 # TODO: Fix movement track
+# TODO: Fix closing menu on eye radar
 
 import os
 import sys
