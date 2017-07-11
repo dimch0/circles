@@ -327,7 +327,7 @@ def game_loop():
         #                           CHANGE VARS                           #
         #                                                                 #
         # --------------------------------------------------------------- #
-        if grid.current_room != 0:
+        if not grid.game_menu:
 
             # My_body to room
             if not my_body in grid.items:
