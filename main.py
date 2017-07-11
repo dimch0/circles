@@ -114,25 +114,20 @@ def game_loop():
                             print "filled steps    :", lst.filled_steps
                             print "len of step     :", lst.len_step
                             print "-"*35
-
                     elif event.key == pygame.K_l:
                         grid.game_over = True
                         sys.argv.append('Scenario_2')
                         os.execv(sys.executable, [sys.executable] + sys.argv)
                         print "l"
-
                     elif event.key == pygame.K_1:
                         grid.change_room(1)
                         print "1"
-
                     elif event.key == pygame.K_2:
                         grid.change_room(2)
                         print "2"
-
                     elif event.key == pygame.K_3:
                         grid.change_room(3)
                         print "3"
-
                     elif event.key == pygame.K_k:
                         my_body.img = images.alien1s
                         my_body.default_img = my_body.img
@@ -229,21 +224,28 @@ def game_loop():
                                                 #                        CLICK SUB-OPTIONS                        #
                                                 # --------------------------------------------------------------- #
                                                 elif option in grid.mode_vs_options[item.mode]:
+                                                    # move
                                                     if item.mode == "move":
                                                         item.gen_move_track(grid, grid.mode_vs_options[item.mode].index(option))
+                                                    # see
                                                     elif option.name == "see":
                                                         item.range += 3
                                                         print "seen"
+                                                    # smel
                                                     elif option.name == "smel":
                                                         print "sniff hair"
+                                                    # medi
                                                     elif option.name == "medi":
                                                         item.range += 3
                                                         my_body.gen_radar_track(grid)
                                                         item.range -= 3
+                                                    # audio
                                                     elif option.name == "audio":
                                                         item.range += 1
+                                                    # eat
                                                     elif option.name == "eat":
                                                         item.change_speed(-1)
+                                                    # touch
                                                     elif option.name == "touch":
                                                         item.change_speed(10)
                                                     # Close menu when sub-option selected
@@ -308,7 +310,7 @@ def game_loop():
                         item.rotate_reverse(pygame)
                     # Timers
                     if item.timer:
-                        cir_draw.draw_timers(pygame, grid, my_body)
+                        cir_draw.draw_timers(pygame, grid, item)
 
             # Mouse
             if grid.mouse_mode:
@@ -338,10 +340,33 @@ def game_loop():
                 grid.game_over = True
                 sys.argv.append('Game Over')
                 os.execv(sys.executable, [sys.executable] + sys.argv)
+            # Eyespan timer
+            obs = grid.everything["observer"]
+            if obs.timer.is_over:
+                if not obs.move_track:
+                    obs.gen_radar_track(grid)
+
+                if len(obs.radar_track) == 1:
+                    import random
+                    legal_moves = []
+                    for obs_adj in grid.adj_tiles(obs.pos):
+                        if obs_adj in grid.playing_tiles and obs_adj not in grid.occupado_tiles:
+                            legal_moves.append(obs_adj)
+                    if legal_moves:
+                        obs.move_track = obs.move_to_tile(grid, obs.pos, random.choice(legal_moves))
+                        obs.timer.restart()
+
+
+
+
+
+
+
+
+
 
             # Items
             for item in grid.items:
-
                 # Timers
                 if item.timer:
                     item.timer.tick()
@@ -384,14 +409,14 @@ if __name__ == '__main__':
 
     # TESTING
     lst = grid.everything["lifespan"]
-    for x in [1, 5, 60]:
-        lst.duration = x
-        print "duration        :", lst.duration
-        print "number of steps :", lst.number_of_steps
-        print "step            :", lst.step
-        print "filled steps    :", lst.filled_steps
-        # print "len of step     :", lst.len_step
-        print "-" * 35
+    lst.duration = 60
+    # for x in [1, 5, 60]:
+    #     lst.duration = x
+    #     print "duration        :", lst.duration
+    #     print "number of steps :", lst.number_of_steps
+    #     print "step            :", lst.step
+    #     print "filled steps    :", lst.filled_steps
+    #     print "-" * 35
 
     # Start
     game_loop()

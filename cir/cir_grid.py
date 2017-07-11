@@ -11,7 +11,7 @@ from cir_cosmetic import Fonts
 from math import sqrt
 
 
-CONFIG_JSON_FILE = "data/cir_config.json"
+CONFIG_JSON_FILE = "data/config.json"
 
 class Grid(object):
     """ master class for the grid """
@@ -75,7 +75,7 @@ class Grid(object):
 
     def set_config(self):
         """
-        Setting attributes from the cir_config.json file
+        Setting attributes from the config.json file
         and calculating the display metrics
         """
         try:

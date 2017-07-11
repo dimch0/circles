@@ -69,7 +69,7 @@ class BodyItem(MobileItem):
         # Mark tiles as revealed
         revealed = ((self.pos), radar_radius)
         if not revealed in grid.revealed_radius:
-              grid.revealed_radius.append(revealed)
+            grid.revealed_radius.append(revealed)
 
         # Set revealed tiles and items
         grid.set_rev_tiles()

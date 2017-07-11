@@ -110,22 +110,6 @@ def empty_bag(grid):
 #                          EXIT EFFECTS                           #
 #                                                                 #
 # --------------------------------------------------------------- #
-# def enter_restoran(grid, my_body, item):
-#     if my_body.pos in grid.adj_tiles(item.pos):
-#         my_body.move_track = my_body.move_to_tile(grid, my_body.pos, item.pos)
-#         grid.change_room(2)
-#     else:
-#         print "TOO FAR"
-#
-# def exit_restoran(grid, my_body, item):
-#     if my_body.pos in grid.adj_tiles(item.pos):
-#         my_body.move_track = my_body.move_to_tile(grid, my_body.pos, item.pos)
-#         grid.change_room(1)
-#     else:
-#         print "TOO FAR"
-
-
-
 def enter_exit(grid, my_body, item, option):
     """ Gets the room number from the option name """
     room_number = None

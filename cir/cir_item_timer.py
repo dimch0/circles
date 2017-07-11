@@ -25,11 +25,11 @@ class TimerItem(MobileItem):
         self.start_time = start_time
 
         # CONSTANTS
-        self.step = 1
         self.start_rad = 90
         self.time_step = 0.0157
 
         # METRICS
+        self.step = 1
         self.filled_steps = self.start_rad
         self._number_of_steps = int(self.duration / self.time_step)
         self._len_step = None
@@ -64,6 +64,13 @@ class TimerItem(MobileItem):
                     2 * self.timer_tile_radius,
                     2 * self.timer_tile_radius]
         return self._rect
+
+    def restart(self):
+        """ Restarts the timer """
+        self._is_over = False
+        self.step = 1
+        self.filled_steps = self.start_rad
+        self.start_time = None
 
     def tick(self):
         """ Starts the timer, increasing the step and filled_steps """
