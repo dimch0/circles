@@ -411,7 +411,9 @@ def game_loop():
 if __name__ == '__main__':
     # Loading
     scenario = cir_utils.set_scenario(sys.argv)
+
     grid = cir_grid.Grid(pygame)
+    grid.game_menu = False
     images = cir_cosmetic.Images(grid, pygame)
     fonts = cir_cosmetic.Fonts(grid, pygame)
     my_body = cir_loader.load_items(grid, images, fonts, scenario)
@@ -421,13 +423,13 @@ if __name__ == '__main__':
 
     # TESTING
     lst = grid.everything["lifespan"]
-    lst.duration = 3
-    print "duration        :", lst.duration
-    print "current step    :", lst.step
-    print "number of steps :", lst.number_of_steps
-    print "start  rad      :", lst.start_rad
-    print "filled rad      :", lst.filled_rad
-    print "-" * 35
+    lst.duration = 60
+    # print "duration        :", lst.duration
+    # print "current step    :", lst.step
+    # print "number of steps :", lst.number_of_steps
+    # print "start  rad      :", lst.start_rad
+    # print "filled rad      :", lst.filled_rad
+    # print "-" * 35
 
 
     # Start

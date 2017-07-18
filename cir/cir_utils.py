@@ -51,7 +51,8 @@ def seconds_in_game(grid, START_TIME):
     # TODO: FIX START TIME AND PAUSE SECONDS
     if not grid.game_menu:
         if time.time() + grid.seconds_in_pause > (START_TIME + grid.seconds_in_game) - grid.seconds_in_pause:
-            # print "second: {0}".format(grid.seconds_in_game)
+            if grid.show_seconds:
+                print "second: {0}".format(grid.seconds_in_game)
             grid.seconds_in_game += 1
 
 
