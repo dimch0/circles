@@ -9,7 +9,7 @@
 #                            Features                             #
 # --------------------------------------------------------------- #
 # TODO: Time modifier
-# TODO: Timeer cool down
+# TODO: Timer cool down
 # TODO: Item generation
 # TODO: Indicate uses
 # TODO: Create mini map
@@ -22,6 +22,7 @@
 # TODO: Create resume button
 # TODO: Create installation .exe file
 # TODO: Add moving image
+# TODO: Improve movement by checking each next tile while direction
 # --------------------------------------------------------------- #
 #                            Animation                            #
 # --------------------------------------------------------------- #
