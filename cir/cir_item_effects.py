@@ -107,12 +107,19 @@ def empty_bag(grid):
 
 # --------------------------------------------------------------- #
 #                                                                 #
-#                          EXIT EFFECTS                           #
+#                       ENTER / EXIT EFFECTS                      #
 #                                                                 #
 # --------------------------------------------------------------- #
 def enter_exit(grid, my_body, item, option):
-    """ Gets the room number from the option name """
+    """
+    Changes the current room
+    :param grid: grid instance
+    :param my_body: my_body instance
+    :param item: enter / exit item
+    :param option: option of the above item -> holds the room number
+    """
     room_number = None
+
     if "enter_" in option.name:
         room_number = option.name.replace("enter_", "")
         room_number = int(room_number)
@@ -124,4 +131,4 @@ def enter_exit(grid, my_body, item, option):
         my_body.move_track = my_body.move_to_tile(grid, my_body.pos, item.pos)
         grid.change_room(room_number)
     else:
-        print "TOO FAR"
+        print "it far"

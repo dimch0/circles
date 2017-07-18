@@ -9,6 +9,7 @@
 #                            Features                             #
 # --------------------------------------------------------------- #
 # TODO: Time modifier
+# TODO: Improve movement by checking each next tile while direction
 # TODO: Timer cool down
 # TODO: Item generation
 # TODO: Indicate uses
@@ -21,11 +22,10 @@
 # TODO: Create load button
 # TODO: Create resume button
 # TODO: Create installation .exe file
-# TODO: Add moving image
-# TODO: Improve movement by checking each next tile while direction
 # --------------------------------------------------------------- #
 #                            Animation                            #
 # --------------------------------------------------------------- #
+# TODO: Add moving image
 # TODO: Animate item generation
 # TODO: Animate item activation
 # TODO: Animate menu opening
@@ -109,36 +109,40 @@ def game_loop():
                         cir_utils.debug_print_space(grid)
 
                     elif event.key == pygame.K_t:
-                            # Lifespan timer
-                            delta = 5
-                            lst.duration += delta
-                            print "number_of_steps_delta", int(delta / lst.time_step)
-                            # lst.step -= 20
-                            lst.filled_steps -= int(delta / lst.time_step)
-                            print "duration        :", lst.duration
-                            print "number of steps :", lst.number_of_steps
-                            print "step            :", lst.step
-                            print "filled steps    :", lst.filled_steps
-                            print "len of step     :", lst.len_step
-                            print "-"*35
+                        print "key t"
+                        # Lifespan timer
+                        delta = 5
+                        lst.duration += delta
+                        lst.filled_rad += int(delta / lst.time_step)
+                        print "duration        :", lst.duration
+                        print "current step    :", lst.step
+                        print "number of steps :", lst.number_of_steps
+                        print "start  rad      :", lst.start_rad
+                        print "filled rad      :", lst.filled_rad
+                        print "-" * 35
+
                     elif event.key == pygame.K_l:
+                        print "key l"
                         grid.game_over = True
                         sys.argv.append('Scenario_2')
                         os.execv(sys.executable, [sys.executable] + sys.argv)
-                        print "l"
+
                     elif event.key == pygame.K_1:
+                        print "key 1"
                         grid.change_room(1)
-                        print "1"
+
                     elif event.key == pygame.K_2:
+                        print "key 2"
                         grid.change_room(2)
-                        print "2"
+
                     elif event.key == pygame.K_3:
+                        print "key 3"
                         grid.change_room(3)
-                        print "3"
+
                     elif event.key == pygame.K_k:
+                        print "key k"
                         my_body.img = images.alien1s
                         my_body.default_img = my_body.img
-                        print "k"
 
                     # Movement Population
                     elif not my_body.in_menu:
@@ -360,7 +364,7 @@ def game_loop():
             # Items
             for item in grid.items:
                 # Timers
-                if item.timer:
+                if item.timer and item.available:
                     item.timer.tick()
 
                 # Eyespan timer
@@ -417,14 +421,14 @@ if __name__ == '__main__':
 
     # TESTING
     lst = grid.everything["lifespan"]
-    lst.duration = 60
-    # for x in [1, 5, 60]:
-    #     lst.duration = x
-    #     print "duration        :", lst.duration
-    #     print "number of steps :", lst.number_of_steps
-    #     print "step            :", lst.step
-    #     print "filled steps    :", lst.filled_steps
-    #     print "-" * 35
+    lst.duration = 3
+    print "duration        :", lst.duration
+    print "current step    :", lst.step
+    print "number of steps :", lst.number_of_steps
+    print "start  rad      :", lst.start_rad
+    print "filled rad      :", lst.filled_rad
+    print "-" * 35
+
 
     # Start
     game_loop()

@@ -146,13 +146,12 @@ def draw_body(pygame, grid, MOUSE_POS, item):
 
 def draw_timers(pygame, grid, item):
     """ Draws current state of a timer """
-    # pygame.draw.CIR(grid.game_display, timer.color, timer.pos, grid.tile_radius, 0)
     if item.timer.available:
         item.timer.pos = item.pos
         pygame.draw.arc(grid.game_display,
                         item.timer.time_color,
                         item.timer.rect,
-                        math.radians(item.timer.filled_steps),
+                        math.radians(item.timer.filled_rad),
                         math.radians(item.timer.start_rad),
                         2)
 

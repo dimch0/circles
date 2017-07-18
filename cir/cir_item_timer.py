@@ -30,11 +30,16 @@ class TimerItem(MobileItem):
 
         # METRICS
         self.step = 1
-        self.filled_steps = self.start_rad
+
+        self.filled_rad = self.start_rad
+
         self._number_of_steps = int(self.duration / self.time_step)
         self._len_step = None
         self._is_over = False
 
+        # NEW
+        self.tick_track = []
+        self.filled = None
 
     @property
     def number_of_steps(self):
@@ -69,15 +74,24 @@ class TimerItem(MobileItem):
         """ Restarts the timer """
         self._is_over = False
         self.step = 1
-        self.filled_steps = self.start_rad
+        self.filled_rad = self.start_rad
         self.start_time = None
 
     def tick(self):
-        """ Starts the timer, increasing the step and filled_steps """
+        """ Starts the timer, increasing the step and filled_rad """
         if self.available:
             if not self.start_time:
                 self.start_time = time.time()
             if self.start_time and not self.step == self.number_of_steps:
                 if time.time() > (self.start_time + (self.time_step * self.step)):
-                    self.filled_steps += self.len_step
+                    self.filled_rad += self.len_step
                     self.step += 1
+
+        # print "HMM:", self.name, self.filled_rad
+
+    def tick_this(self):
+        """
+        :return: move self.pos per point in move_track
+        """
+        self.filled = self.tick_track[0]
+        self.tick_track.pop(0)
