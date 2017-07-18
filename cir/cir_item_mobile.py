@@ -20,12 +20,6 @@ class MobileItem(Item):
         self.speed += modifier
         if self.speed < 0:
             self.speed = 0
-        if self.speed is 1:
-            self.speed = 2
-        if self.speed is 2 and modifier < 0:
-            self.speed = 0
-        # if self.speed > 8:
-        #     self.speed = 8
 
 
     # --------------------------------------------------------------- #
@@ -35,39 +29,33 @@ class MobileItem(Item):
     # --------------------------------------------------------------- #
     def move_to_tile(self, grid, Tile_A, Tile_B):
         """
-        This method moves the item from the current position to Tile_B.
+        This method moves the item from Tile_A to Tile_B.
         :param Tile_B: coordinates of destination point B (x, y)
         :return: a list of steps from point A to point B
         number of steps depends on the speed and the distance
         """
         result = []
-        # Movement only allowed in revealed_tiles and not occupado_tiles
-        # if Tile_B in grid.revealed_tiles and Tile_B not in grid._occupado_tiles and self.speed > 0:
         if self.speed > 0:
-            ax = Tile_A[0]
-            ay = Tile_A[1]
-            bx = Tile_B[0]
-            by = Tile_B[1]
-            # TODO: debug step generation
-            dx, dy = (bx - ax, by - ay)
-            # distance = int(sqrt(dx ** 2 + dy ** 2))
             distance = 2 * grid.tile_radius
-            # steps_number = int(ceil(2 * distance / (2 * self.speed)))
-            steps_number = 2 * distance / (2 * self.speed)
-            # step_size = int(distance / steps_number)
-            if steps_number > 0:
-                stepx, stepy = int(dx / steps_number), int(dy / steps_number)
-                for i in range(steps_number + 1):
-                    step = (int(ax + (stepx * i)), int(ay + (stepy * i)))
-                    result.append(step)
+            steps = distance / self.speed
+            x1 = Tile_A[0]
+            y1 = Tile_A[1]
+            x2 = Tile_B[0]
+            y2 = Tile_B[1]
+            for step in range(1, steps):
+                a = float(step) / steps
+                x = int((1 - a) * x1 + a * x2)
+                y = int((1 - a) * y1 + a * y2)
+                result.append((x, y))
             result.append(Tile_B)
         return result
 
     def gen_move_track(self, grid, direction_idx):
         """
+        Generates a legal move track
         :param direction_idx: index of the 6 directions (0-5)
         :param options: options
-        :return: a list of all available tiles in northeast direction_idx
+        :return: a list of all available tiles in direction_idx
         """
         result = []
         Point_A = self.pos

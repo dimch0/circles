@@ -35,7 +35,6 @@
 # --------------------------------------------------------------- #
 #                            Bug fixes                            #
 # --------------------------------------------------------------- #
-# TODO: Fix movement track
 # TODO: Fix closing menu on eye radar
 
 import os
@@ -251,7 +250,7 @@ def game_loop():
                                                         item.change_speed(-1)
                                                     # touch
                                                     elif option.name == "touch":
-                                                        item.change_speed(10)
+                                                        item.change_speed(1)
                                                     # Close menu when sub-option selected
                                                     item.set_in_menu(grid, False)
                                                 # Close menu if option has no sub-options
@@ -269,6 +268,9 @@ def game_loop():
         #                                                                 #
         # --------------------------------------------------------------- #
         cir_draw.draw_background(grid)
+
+
+
         # --------------------------------------------------------------- #
         #                           GAME MENU                             #
         # --------------------------------------------------------------- #
@@ -287,6 +289,7 @@ def game_loop():
             # Playing board:
             if grid.show_playing_tiles:
                 cir_draw.draw_playing_tiles(pygame, grid)
+
 
             # --------------------------------------------------------------- #
             #                             ANIMATIONS                          #
@@ -344,14 +347,6 @@ def game_loop():
                 grid.game_over = True
                 sys.argv.append('Game Over')
                 os.execv(sys.executable, [sys.executable] + sys.argv)
-
-
-
-
-
-
-
-
 
 
 
