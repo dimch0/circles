@@ -9,7 +9,9 @@
 #                            Features                             #
 # --------------------------------------------------------------- #
 # TODO: Time modifier
+# TODO: make seconds in game a timer
 # TODO: Improve movement by checking each next tile while direction
+# TODO: Check if two circles are crossing
 # TODO: Timer cool down
 # TODO: Item generation
 # TODO: Indicate uses
@@ -109,38 +111,37 @@ def game_loop():
                         cir_utils.debug_print_space(grid)
 
                     elif event.key == pygame.K_t:
-                        print "key t"
+                        print ">>>> key t"
                         # Lifespan timer
-                        delta = 5
-                        lst.duration += delta
-                        lst.filled_rad += int(delta / lst.time_step)
+                        lst.update(5)
                         print "duration        :", lst.duration
-                        print "current step    :", lst.step
+                        print "current    step :", lst.step
                         print "number of steps :", lst.number_of_steps
-                        print "start  rad      :", lst.start_rad
-                        print "filled rad      :", lst.filled_rad
+                        print "start   degrees :", lst.start_degrees
+                        print "filled  degrees :", lst.filled_degrees
+                        print "step    degrees :", lst.step_degrees
                         print "-" * 35
 
                     elif event.key == pygame.K_l:
-                        print "key l"
+                        print ">>>> key l"
                         grid.game_over = True
                         sys.argv.append('Scenario_2')
                         os.execv(sys.executable, [sys.executable] + sys.argv)
 
                     elif event.key == pygame.K_1:
-                        print "key 1"
+                        print ">>>> key 1"
                         grid.change_room(1)
 
                     elif event.key == pygame.K_2:
-                        print "key 2"
+                        print ">>>> key 2"
                         grid.change_room(2)
 
                     elif event.key == pygame.K_3:
-                        print "key 3"
+                        print ">>>> key 3"
                         grid.change_room(3)
 
                     elif event.key == pygame.K_k:
-                        print "key k"
+                        print ">>>> key k"
                         my_body.img = images.alien1s
                         my_body.default_img = my_body.img
 
@@ -423,7 +424,7 @@ if __name__ == '__main__':
 
     # TESTING
     lst = grid.everything["lifespan"]
-    lst.duration = 60
+    lst.duration = 5
     # print "duration        :", lst.duration
     # print "current step    :", lst.step
     # print "number of steps :", lst.number_of_steps

@@ -151,8 +151,8 @@ def draw_timers(pygame, grid, item):
         pygame.draw.arc(grid.game_display,
                         item.timer.time_color,
                         item.timer.rect,
-                        math.radians(item.timer.filled_rad),
-                        math.radians(item.timer.start_rad),
+                        math.radians(item.timer.filled_degrees),
+                        math.radians(item.timer.start_degrees),
                         2)
 
 
