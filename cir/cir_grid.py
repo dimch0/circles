@@ -32,7 +32,7 @@ class Grid(object):
         self.seconds_in_pause = 0
         self.clock = pygame.time.Clock()
         # -------------------------------------------------- #
-        #                      TILES                         #
+        #                        TILES                       #
         # -------------------------------------------------- #
         self._tiles = []
         self.center_tile = None
@@ -43,7 +43,7 @@ class Grid(object):
         self.revealed_radius = [((self.center_tile), self.tile_radius)]
         self.revealed_tiles = [self.center_tile]
         # -------------------------------------------------- #
-        #                        ROOM                        #
+        #                        ROOMS                       #
         # -------------------------------------------------- #
         self.current_room = 1
         # TODO: make menu room 0
@@ -51,19 +51,19 @@ class Grid(object):
         self.buttons = []
         self.rooms = {}
         # -------------------------------------------------- #
-        #                    ALL ITEMS                       #
+        #                        ITEMS                       #
         # -------------------------------------------------- #
         self.everything = {}
         self.mode_vs_options = {}
         self.timer_vs_items = {}
         # -------------------------------------------------- #
-        #                      MOUSE                         #
+        #                        MOUSE                       #
         # -------------------------------------------------- #
         self.mouse_mode = None
         self.mouse_img = None
         self.mode_img = None
         # -------------------------------------------------- #
-        #                      THEME                         #
+        #                        THEME                       #
         # -------------------------------------------------- #
         self.fog_color = self.dark_grey
         self.room_color = self.grey
@@ -209,7 +209,16 @@ class Grid(object):
     # --------------------------------------------------------------- #
     #                             ROOMS                               #
     # --------------------------------------------------------------- #
+    def save_current_room(self):
+        """ Saves the current room to self.rooms """
+        self.rooms[self.current_room] = {
+            "items": self.items,
+            "revealed_radius": self.revealed_radius
+        }
+
     def load_current_room(self):
+        """ loads the current room from self.rooms
+        or an empty room if the number is not in self.rooms """
         if not self.current_room in self.rooms.keys():
             self.rooms[self.current_room] = {
             "items"          : [],
@@ -220,38 +229,8 @@ class Grid(object):
         self.revealed_tiles = []
         self.set_rev_tiles()
 
-
-    def save_current_room(self):
-        self.rooms[self.current_room] = {
-            "items": self.items,
-            "revealed_radius": self.revealed_radius
-        }
-
     def change_room(self, room):
+        """ Saves the current room and loads a new room """
         self.save_current_room()
         self.current_room = room
         self.load_current_room()
-
-    """
-    def save_room(self, room_number):
-        save_path = "" join room_number
-        save_json = {"items"     : self.items,
-                     "rev_tiles" : self.revealed_tiles,
-                     "rev_radius": self.revealed_radius}
-        with open(room_number) as f:
-            json.dump(save_json)
-
-    def load_room(self, room_number):
-        # TODO: Apply room specific color theme
-        save_path = "" join room_number
-        with open(room_number) as f:
-            loaded = json.load(save_json)
-        self.items = loaded["items"]
-        self.revealed_tiles = loaded["rev_tiles"]
-        self.revealed_radius = loaded["rev_radius"]
-
-    def change_room(self, room_number):
-        self.save_room(self.current_room)
-        self.current_room = room_number
-        self.load_room(self.current_room)
-    """
