@@ -137,7 +137,7 @@ def lifespan_over_effect(grid, sys, os):
     sys.argv.append('Game Over')
     os.execv(sys.executable, [sys.executable] + sys.argv)
 
-
+# observer
 def observer_effect(grid, item):
     if not item.move_track:
         item.gen_radar_track(grid)
