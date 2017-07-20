@@ -6,6 +6,7 @@
 #################                                                                                     #################
 #######################################################################################################################
 import copy
+import random
 
 # --------------------------------------------------------------- #
 #                                                                 #
@@ -97,16 +98,6 @@ def empty_bag(grid):
 
 # --------------------------------------------------------------- #
 #                                                                 #
-#                         TIMER EFFECTS                           #
-#                                                                 #
-# --------------------------------------------------------------- #
-
-
-
-
-
-# --------------------------------------------------------------- #
-#                                                                 #
 #                       ENTER / EXIT EFFECTS                      #
 #                                                                 #
 # --------------------------------------------------------------- #
@@ -132,3 +123,31 @@ def enter_exit(grid, my_body, item, option):
         grid.change_room(room_number)
     else:
         print "it far"
+
+
+# --------------------------------------------------------------- #
+#                                                                 #
+#                         TIMER EFFECTS                           #
+#                                                                 #
+# --------------------------------------------------------------- #
+# lifespan
+def lifespan_over_effect(grid, sys, os):
+    # TODO: Avoid rerunning the script
+    grid.game_over = True
+    sys.argv.append('Game Over')
+    os.execv(sys.executable, [sys.executable] + sys.argv)
+
+
+def observer_effect(grid, item):
+    if not item.move_track:
+        item.gen_radar_track(grid)
+
+    if len(item.radar_track) == 1:
+        legal_moves = []
+        for item_adj in grid.adj_tiles(item.pos):
+            if item_adj in grid.playing_tiles and item_adj not in grid.occupado_tiles:
+                legal_moves.append(item_adj)
+
+        if legal_moves:
+            item.move_track = item.move_to_tile(grid, item.pos, random.choice(legal_moves))
+            item.timer.restart()

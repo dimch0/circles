@@ -9,14 +9,14 @@
 #                            Features                             #
 # --------------------------------------------------------------- #
 # TODO: Time modifier
-# TODO: make seconds in game a timer
+# TODO: Create a reversed timer
+# TODO: Create timer for seconds in game
 # TODO: Improve movement by checking each next tile while direction
 # TODO: Check if two circles are crossing
-# TODO: Timer cool down
-# TODO: Item generation
 # TODO: Indicate uses
+# TODO: Item generation
 # TODO: Create mini map
-# TODO: Define signal function
+# TODO: Create signal function
 # TODO: Log statistics during a lifespan
 # TODO: Create spirit mode, calculate karma
 # TODO: Log messages on screen
@@ -38,7 +38,7 @@
 # --------------------------------------------------------------- #
 #                            Bug fixes                            #
 # --------------------------------------------------------------- #
-# TODO: Fix closing menu on eye radar
+# TODO: Fix closing menu on eye radar / Proposa: add clickable
 
 
 # --------------------------------------------------------------- #
@@ -73,6 +73,7 @@ def game_loop():
     while not GAME_EXIT:
 
         MOUSE_POS = pygame.mouse.get_pos()
+        current_tile = grid.mouse_in_tile(MOUSE_POS) if grid.mouse_in_tile(MOUSE_POS) else None
         cir_utils.seconds_in_game(grid, START_TIME)
         # --------------------------------------------------------------- #
         #                                                                 #
@@ -113,7 +114,7 @@ def game_loop():
                     elif event.key == pygame.K_t:
                         print ">>>> key t"
                         # Lifespan timer
-                        lst.update(5)
+                        lst.update(-1)
                         print "duration        :", lst.duration
                         print "current    step :", lst.step
                         print "number of steps :", lst.number_of_steps
@@ -142,8 +143,9 @@ def game_loop():
 
                     elif event.key == pygame.K_k:
                         print ">>>> key k"
-                        my_body.img = images.alien1s
+                        my_body.img = images.alien1
                         my_body.default_img = my_body.img
+                        my_body.speed = 10
 
                     # Movement Population
                     elif not my_body.in_menu:
@@ -154,15 +156,15 @@ def game_loop():
             #                          CLICK EVENTS                           #
             #                                                                 #
             # --------------------------------------------------------------- #
+
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                clicked_circle = grid.mouse_in_tile(MOUSE_POS)
-                if clicked_circle:
+                if current_tile:
                     # --------------------------------------------------------------- #
                     #                            GAME MENU                            #
                     # --------------------------------------------------------------- #
                     if grid.game_menu:
                         for button in grid.buttons:
-                            if clicked_circle == button.pos and button.available:
+                            if current_tile == button.pos and button.available:
                                 if button.name in ["play", "replay"]:
                                     grid.game_menu = False
                                     if grid.game_over:
@@ -175,11 +177,11 @@ def game_loop():
                         #                        MOUSE MODES CLICK                        #
                         # --------------------------------------------------------------- #
                         if grid.mouse_mode == "laino":
-                            cir_item_effects.laino_mode_click(grid, clicked_circle)
+                            cir_item_effects.laino_mode_click(grid, current_tile)
                         elif grid.mouse_mode == "shit":
-                            cir_item_effects.shit_mode_click(grid, clicked_circle)
+                            cir_item_effects.shit_mode_click(grid, current_tile)
                         elif grid.mouse_mode == "see":
-                            cir_item_effects.produce(grid, "observer", clicked_circle)
+                            cir_item_effects.produce(grid, "observer", current_tile)
                             grid.everything["observer"].timer.restart()
 
                         # --------------------------------------------------------------- #
@@ -187,7 +189,7 @@ def game_loop():
                         # --------------------------------------------------------------- #
                         for item in grid.items:
                             if item.available:
-                                if clicked_circle == item.pos:
+                                if current_tile == item.pos:
                                     # --------------------------------------------------------------- #
                                     #                            BAG MODE                             #
                                     # --------------------------------------------------------------- #
@@ -196,7 +198,7 @@ def game_loop():
                                         cir_item_effects.collect(grid, item)
 
                                     # Set in_menu for the items with menu (my_body)
-                                    item.check_in_menu(grid, clicked_circle)
+                                    item.check_in_menu(grid, current_tile)
                                     # Setting option positions
                                     item.set_option_pos(grid)
                                     # Option clicked
@@ -206,10 +208,10 @@ def game_loop():
                                 # --------------------------------------------------------------- #
                                 #                       CLICK ITEM OPTIONS                        #
                                 # --------------------------------------------------------------- #
-                                elif clicked_circle in grid.adj_tiles(item.pos) and item.in_menu:
+                                elif current_tile in grid.adj_tiles(item.pos) and item.in_menu:
                                     if item.options:
                                         for option in item.options:
-                                            if clicked_circle == option.pos:
+                                            if current_tile == option.pos:
 
                                                 # --------------------------------------------------------------- #
                                                 #                           Mouse mode                            #
@@ -269,10 +271,10 @@ def game_loop():
                                                 if option.name not in grid.mode_vs_options.keys():
                                                     item.set_in_menu(grid, False)
                                 # Clicked outside
-                                elif (clicked_circle != item.pos) and (clicked_circle not in grid.adj_tiles(item.pos)):
+                                elif (current_tile != item.pos) and (current_tile not in grid.adj_tiles(item.pos)):
                                     item.set_in_menu(grid, False)
                 # Debug print
-                cir_utils.debug_print_click(grid, MOUSE_POS, clicked_circle, my_body)
+                cir_utils.debug_print_click(grid, MOUSE_POS, current_tile, my_body)
 
         # --------------------------------------------------------------- #
         #                                                                 #
@@ -354,13 +356,8 @@ def game_loop():
                 cir_item_effects.empty_bag(grid)
 
             # Lifespan timer
-            # TODO: Avoid rerunning the script
             if grid.everything['lifespan'].is_over:
-                grid.game_over = True
-                sys.argv.append('Game Over')
-                os.execv(sys.executable, [sys.executable] + sys.argv)
-
-
+                cir_item_effects.lifespan_over_effect(grid, sys, os)
 
             # Items
             for item in grid.items:
@@ -371,21 +368,9 @@ def game_loop():
                 # Eyespan timer
                 if item.name == "observer":
                     if item.timer.is_over:
-                        if not item.move_track:
-                            item.gen_radar_track(grid)
-
-                        if len(item.radar_track) == 1:
-                            import random
-                            legal_moves = []
-                            for item_adj in grid.adj_tiles(item.pos):
-                                if item_adj in grid.playing_tiles and item_adj not in grid.occupado_tiles:
-                                    legal_moves.append(item_adj)
-                            if legal_moves:
-                                item.move_track = item.move_to_tile(grid, item.pos, random.choice(legal_moves))
-                                item.timer.restart()
+                        cir_item_effects.observer_effect(grid,item)
 
                 if item.available:
-
                     # Movement
                     if item.move_track:
                         item.move()
@@ -424,14 +409,7 @@ if __name__ == '__main__':
 
     # TESTING
     lst = grid.everything["lifespan"]
-    lst.duration = 5
-    # print "duration        :", lst.duration
-    # print "current step    :", lst.step
-    # print "number of steps :", lst.number_of_steps
-    # print "start  rad      :", lst.start_rad
-    # print "filled rad      :", lst.filled_rad
-    # print "-" * 35
-
+    lst.duration = 60
 
     # Start
     game_loop()
