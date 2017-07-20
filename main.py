@@ -114,13 +114,13 @@ def game_loop():
                     elif event.key == pygame.K_t:
                         print ">>>> key t"
                         # Lifespan timer
-                        lst.update(-1)
-                        print "duration        :", lst.duration
-                        print "current    step :", lst.step
-                        print "number of steps :", lst.number_of_steps
-                        print "start   degrees :", lst.start_degrees
-                        print "filled  degrees :", lst.filled_degrees
-                        print "step    degrees :", lst.step_degrees
+                        lst.update(5)
+                        # print "duration        :", lst.duration
+                        # print "current    step :", lst.step
+                        # print "number of steps :", lst.number_of_steps
+                        # print "start   degrees :", lst.start_degrees
+                        # print "filled  degrees :", lst.filled_degrees
+                        # print "step    degrees :", lst.step_degrees
                         print "-" * 35
 
                     elif event.key == pygame.K_l:
@@ -409,7 +409,7 @@ if __name__ == '__main__':
 
     # TESTING
     lst = grid.everything["lifespan"]
-    lst.duration = 60
+    lst.duration = 10
 
     # Start
     game_loop()

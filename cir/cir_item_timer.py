@@ -78,7 +78,8 @@ class TimerItem(MobileItem):
                 self.start_time = time.time()
             if not self.is_over:
                 if time.time() > (self.start_time + (self.time_step * self.step)):
-                    self.filled_degrees = self.start_degrees + (self.step_degrees * self.step)
+                    # self.filled_degrees = self.start_degrees + (self.step_degrees * self.step)
+                    self.filled_degrees += self.step_degrees
                     self.step += 1
 
 
@@ -87,7 +88,20 @@ class TimerItem(MobileItem):
         Updates the timer with delta seconds
         :param delta: change of timer in seconds
         """
+        print "OLD DEGREES", self.filled_degrees
         old_number_of_steps = self.number_of_steps
+
+
+        delta_degrees = None
+        delta_steps = delta * self.steps_per_sec
+        # if delta_steps:
+        #     delta_degrees = -float(360) / delta_steps
+        # print delta_degrees
+
         self.duration += delta
         self.step = int((self.step * self.number_of_steps) / old_number_of_steps)
-        self.filled_degrees = self.start_degrees + (self.step_degrees * self.step)
+        # self.filled_degrees += self.start_degrees + (self.step_degrees * delta_steps)
+        # self.filled_degrees = self.start_degrees + (self.step_degrees * self.step)
+        # self.filled_degrees += 20
+        print "NEW DEGREES", self.filled_degrees
+
