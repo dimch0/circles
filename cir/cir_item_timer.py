@@ -29,8 +29,8 @@ class TimerItem(MobileItem):
         self.duration = duration
         self.step = 1
         self.start_time = None
+        self._number_of_steps = 1
         self._step_degrees = None
-        self._number_of_steps = None
         self._filled_degrees = self.start_degrees
         self._is_over = False
 
@@ -48,8 +48,11 @@ class TimerItem(MobileItem):
 
     @property
     def filled_degrees(self):
-        self._filled_degrees = self.start_degrees + (self.step_degrees * self.step)
-        return self._filled_degrees
+        try:
+            self._filled_degrees = self.start_degrees + (self.step_degrees * self.step)
+            return self._filled_degrees
+        except Exception as e:
+            print "ERROR", e
 
     @property
     def is_over(self):
@@ -73,7 +76,6 @@ class TimerItem(MobileItem):
         """ Restarts the timer """
         self._is_over = False
         self.step = 1
-        self.filled_degrees = self.start_degrees
         self.start_time = None
 
     def tick(self):
@@ -91,11 +93,11 @@ class TimerItem(MobileItem):
         Updates the timer with delta seconds
         :param delta: change of timer in seconds
         """
-        old_number_of_steps = self.number_of_steps
-        delta_steps = delta * self.steps_per_sec
+        steps_before = self.number_of_steps
+        steps_delta  = delta * self.steps_per_sec
         self.duration += delta
-        self._filled_degrees = int((self.step * self.number_of_steps) / old_number_of_steps) - \
-                              (self.step_degrees * delta_steps)
+        self._filled_degrees = int((self.step * self.number_of_steps) / steps_before) - \
+                              (self.step_degrees * steps_delta)
 
         print "duration        :", self.duration
         print self.start_time
