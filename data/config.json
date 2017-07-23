@@ -1,14 +1,14 @@
 {
   "CONSTANTS": {
     "tile_radius": 30,
-    "rows"       : 8,
-    "cols"       : 8,
+    "rows"       : 10,
+    "cols"       : 10,
     "fps"        : 60
     },
 
   "VISIBILITY": {
     "show_grid"         : false,
-    "show_debug"        : 1,
+    "show_debug"        : 0,
     "show_seconds"      : true,
     "show_movement"     : false,
     "show_playing_tiles": false
