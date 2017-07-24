@@ -7,11 +7,11 @@
     },
 
   "VISIBILITY": {
-    "show_grid"         : false,
+    "show_grid"         : 0,
     "show_debug"        : 1,
-    "show_seconds"      : true,
-    "show_movement"     : false,
-    "show_playing_tiles": false
+    "show_seconds"      : 1,
+    "show_movement"     : 0,
+    "show_playing_tiles": 0
   },
 
   "PATHS": {

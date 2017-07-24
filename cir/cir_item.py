@@ -82,6 +82,7 @@ class Item(object):
         if track:
             self.rot_track = track
             if not self.rot_revert:
+                print self.direction
                 if idx == 3:
                     self.rot_revert = range(-step, -end_point * 3, -step)
                 else:

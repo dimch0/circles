@@ -120,7 +120,7 @@ def enter_exit(grid, my_body, item, option):
         room_number = int(room_number)
 
     if my_body.pos in grid.adj_tiles(item.pos) and room_number:
-        my_body.move_track = my_body.move_to_tile(grid, my_body.pos, item.pos)
+        my_body.move_track = my_body.move_to_tile(grid, item.pos)
         grid.change_room(room_number)
     else:
         print "it far"
@@ -150,5 +150,6 @@ def observer_effect(grid, item):
                 legal_moves.append(item_adj)
 
         if legal_moves:
-            item.move_track = item.move_to_tile(grid, item.pos, random.choice(legal_moves))
+            # item.move_track = item.move_to_tile(grid, item.pos, random.choice(legal_moves))
+            item.move_track = item.move_to_tile(grid, random.choice(legal_moves))
             item.timer.restart()

@@ -27,58 +27,49 @@ class MobileItem(Item):
     #                             MOVEMENT                            #
     #                                                                 #
     # --------------------------------------------------------------- #
-    def move_to_tile(self, grid, Tile_A, Tile_B):
+    def move_to_tile(self, grid, target_tile):
         """
-        This method moves the item from Tile_A to Tile_B.
-        :param Tile_B: coordinates of destination point B (x, y)
+        This method generates steps from the item pos to target_tile.
+        :param target_tile: coordinates of destination point B (x, y)
         :return: a list of steps from point A to point B
         number of steps depends on the speed and the distance
         """
+
         result = []
         if self.speed > 0:
             distance = 2 * grid.tile_radius
             steps = distance / self.speed
-            x1 = Tile_A[0]
-            y1 = Tile_A[1]
-            x2 = Tile_B[0]
-            y2 = Tile_B[1]
+            from_tile_x = self.pos[0]
+            from_tile_y = self.pos[1]
+            target_tile_x = target_tile[0]
+            target_tile_y = target_tile[1]
             for step in range(1, steps):
                 a = float(step) / steps
-                x = int((1 - a) * x1 + a * x2)
-                y = int((1 - a) * y1 + a * y2)
-                result.append((x, y))
-            result.append(Tile_B)
+                step_x = int((1 - a) * from_tile_x + a * target_tile_x)
+                step_y = int((1 - a) * from_tile_y + a * target_tile_y)
+                new_step = (step_x, step_y)
+                result.append(new_step)
+            result.append(target_tile)
         return result
 
-    def gen_move_track(self, grid, direction_idx):
+    def gen_move_track(self, grid):
         """
-        Generates a legal move track
-        :param direction_idx: index of the 6 directions (0-5)
+        Generates a legal move track in the current direction
         :param options: options
         :return: a list of all available tiles in direction_idx
         """
-        result = []
-        Point_A = self.pos
-        # pdb.set_trace()
-        Point_B = grid.adj_tiles(self.pos)[direction_idx]
-        if self.speed > 0:
-            for fields in range(1, 26):
-                if Point_B in grid.playing_tiles:
-                    if Point_B not in grid.occupado_tiles and Point_B in grid.revealed_tiles:
-                        for new_steps in self.move_to_tile(grid, Point_A, Point_B):
-                            if not new_steps in result:
-                                result.append(new_steps)
-                    else:
-                        self.move_track = result
-                        return result
-                Point_A = Point_B
-                Point_B = grid.adj_tiles(Point_A)[direction_idx]
-            self.move_track = result
-        return result
+        if self.direction != None and not self.move_track:
+            target_tile = grid.adj_tiles(self.pos)[self.direction]
+            if self.speed > 0:
+                if target_tile in grid.revealed_tiles and target_tile not in grid.occupado_tiles:
+                    self.move_track = self.move_to_tile(grid, target_tile)
+                else:
+                    self.direction = None
+            else:
+                self.direction = None
 
-
-    def gen_movement_arrows(self, pygame, grid, event):
-        """ Generates steps to move my body - gen_move_track() """
+    def gen_direction(self, pygame, grid, event):
+        """ Generates item direction from 0-6 on pressed key """
         arrows = [
             pygame.K_w,
             pygame.K_e,
@@ -90,10 +81,10 @@ class MobileItem(Item):
 
         for idx, arrow in enumerate(arrows):
             if event.key == arrow:
-                if not self.move_track and not self.radar_track and not self.rot_revert and not self.rot_track:
-                    if not self.rot_track:
-                        self.gen_rot_track(idx)
-                        self.gen_move_track(grid, idx)
+                if not (self.radar_track or self.rot_revert or self.rot_track):
+                    self.direction = idx
+                    self.gen_rot_track(self.direction)
+
 
     def move(self):
         """
@@ -147,7 +138,7 @@ class MobileItem(Item):
                 image=self.img,
 
             )
-            new_copy.move_track = self.move_to_tile(grid, new_copy.pos, empty_tile)
+            new_copy.move_track = self.move_to_tile(grid, empty_tile)
             grid.items.append(new_copy)
 
     def mitosis(self, grid):

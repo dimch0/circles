@@ -10,7 +10,6 @@
 # --------------------------------------------------------------- #
 # TODO: Create a reversed timer
 # TODO: Create timer for seconds in game
-# TODO: Improve movement by checking each next tile while direction
 # TODO: Check if two circles are crossing
 # TODO: Indicate uses
 # TODO: Item generation
@@ -37,7 +36,8 @@
 #                            Bug fixes                            #
 # --------------------------------------------------------------- #
 # TODO: Fix closing menu on eye radar / Proposa: add clickable
-
+# TODO: Fix revert image rotation
+# TODO: Fix speed click double mitosis
 
 # --------------------------------------------------------------- #
 #                            Imports                              #
@@ -141,7 +141,7 @@ def game_loop():
 
                     # Movement Population
                     elif not my_body.in_menu:
-                        my_body.gen_movement_arrows(pygame, grid, event)
+                        my_body.gen_direction(pygame, grid, event)
 
             # --------------------------------------------------------------- #
             #                                                                 #
@@ -373,6 +373,8 @@ def game_loop():
 
                 if item.available:
                     # Movement
+                    if item.direction != None:
+                        item.gen_move_track(grid)
                     if item.move_track:
                         item.move()
 
@@ -410,7 +412,7 @@ if __name__ == '__main__':
     grid.rooms[grid.current_room]["revealed_radius"].append(((my_body.pos), grid.tile_radius))
     grid.load_current_room()
 
-    # Settings
+    # Settingst
     cir_utils.set_argv(grid, sys.argv)
 
     # TESTING
