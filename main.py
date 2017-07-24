@@ -350,7 +350,7 @@ def game_loop():
 
             # My_body to room
             if not my_body in grid.items:
-               grid.items.append(my_body)
+                grid.items.append(my_body)
 
             # Check bag
             if "bag" in grid.everything.keys():
@@ -400,18 +400,22 @@ if __name__ == '__main__':
     scenario = cir_utils.set_scenario(sys.argv)
 
     grid = cir_grid.Grid(pygame)
+    print "DEBUG 1", grid.revealed_radius
     grid.game_menu = False
     images = cir_cosmetic.Images(grid, pygame)
     fonts = cir_cosmetic.Fonts(grid, pygame)
     my_body = cir_loader.load_items(grid, images, fonts, scenario)
-    my_body.color = grid.white
+
     my_body.gen_birth_track(grid)
+    grid.rooms[grid.current_room]["revealed_radius"].append(((my_body.pos), grid.tile_radius))
     grid.load_current_room()
+
     # Settings
     cir_utils.set_argv(grid, sys.argv)
 
     # TESTING
     lst = grid.everything["lifespan"]
     lst.duration = 10
+
     # Start
     game_loop()

@@ -70,7 +70,6 @@ def draw_radar(pygame, grid, item):
 
 def draw_revealed_radius(pygame, grid):
     """ Drawing the revealed areas (radius) """
-
     for revealed in grid.revealed_radius:
         pygame.draw.circle(grid.game_display,
                            grid.room_color,
