@@ -29,6 +29,7 @@ def produce(grid, product, position):
             new_item.default_img = item.default_img
             new_item.pos = position
             new_item.available = True
+            new_item.gen_birth_track(grid)
             grid.items.append(new_item)
     return new_item
 

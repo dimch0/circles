@@ -34,7 +34,8 @@ class Grid(object):
         # -------------------------------------------------- #
         #                        TILES                       #
         # -------------------------------------------------- #
-        self._tiles = []
+        self.tiles = []
+        self.set_display()
         self.center_tile = None
         self.find_center_tile()
         self.playing_tiles = []
@@ -46,7 +47,6 @@ class Grid(object):
         #                        ROOMS                       #
         # -------------------------------------------------- #
         self.current_room = 1
-        # TODO: make menu room 0
         self.items = []
         self.buttons = []
         self.rooms = {}
@@ -72,7 +72,6 @@ class Grid(object):
     def set_game_display(self):
         self.game_display = self.pygame.display.set_mode((self.display_width, self.display_height))
 
-
     def set_config(self):
         """
         Setting attributes from the config.json file
@@ -87,29 +86,40 @@ class Grid(object):
         except Exception as e:
             print "ERROR, could not set config:", e
 
-        ##### Setting the display metrics ####
-        self.cathetus = int(sqrt(((2 * self.tile_radius) ** 2) - (self.tile_radius ** 2)))
-        self.display_width = (self.cathetus * self.cols) + (self.tile_radius * 2)
-        self.display_height = self.rows * self.tile_radius
-        self.set_game_display()
-        self.pygame.display.set_caption(self.caption)
-
-
-    @property
-    def tiles(self):
+    def get_tiles(self):
         """
         Generating the grid tiles
         """
+        self.tiles = []
         for x in range(0, self.cols + 1):
             for y in range(1, self.rows):
                 if x % 2 == y % 2:
                     centre_x = self.tile_radius + (x * self.cathetus)
                     centre_y = y * self.tile_radius
                     centre = (centre_x, centre_y)
-                    if not centre in self._tiles:
-                        self._tiles.append(centre)
-        return self._tiles
+                    if not centre in self.tiles:
+                        self.tiles.append(centre)
 
+    def set_display (self):
+        ##### Setting the display metrics ####
+        self.cathetus = int(sqrt(((2 * self.tile_radius) ** 2) - (self.tile_radius ** 2)))
+        self.display_width = (self.cathetus * self.cols) + (self.tile_radius * 2)
+        self.display_height = self.rows * self.tile_radius
+        self.set_game_display()
+        self.pygame.display.set_caption(self.caption)
+        self.get_tiles()
+
+    def find_center_tile(self):
+        """
+        :return: the center tile (x, y) of the grid
+        """
+        mid_x = int(self.display_width / 2)
+        mid_y = int(self.display_height / 2)
+        for tile in self.tiles:
+            if in_circle(tile, self.tile_radius, (mid_x, mid_y)):
+                self.center_tile = tile
+                break
+        return self.center_tile
 
     def mouse_in_tile(self, MOUSE_POS):
         """
@@ -128,17 +138,7 @@ class Grid(object):
         self._occupado_tiles = list(set([item.pos for item in self.items if item.pos]))
         return self._occupado_tiles
 
-    def find_center_tile(self):
-        """
-        :return: the center tile (x, y) of the grid
-        """
-        mid_x = int(self.display_width / 2)
-        mid_y = int(self.display_height / 2)
-        for tile in self.tiles:
-            if in_circle(tile, self.tile_radius, (mid_x, mid_y)):
-                self.center_tile = tile
-                break
-        return self.center_tile
+
 
     def set_playing_tiles(self):
         """

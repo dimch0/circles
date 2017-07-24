@@ -46,6 +46,7 @@ class Item(object):
         self.radar_track = []
         self.rot_track = []
         self.rot_revert = []
+        self.birth_track = []
         # --------------------------------------------------------------- #
         #                              STATS                              #
         # --------------------------------------------------------------- #
@@ -85,6 +86,9 @@ class Item(object):
                     self.rot_revert = range(-step, -end_point * 3, -step)
                 else:
                     self.rot_revert = cir_utils.negative_list(self.rot_track)
+
+    def gen_birth_track(self, grid):
+        self.birth_track = range(1, grid.tile_radius)
 
     def rotate(self, pygame):
         """ Rotates the image """

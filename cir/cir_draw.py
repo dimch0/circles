@@ -129,10 +129,21 @@ def draw_menu_buttons(pygame, grid, MOUSE_POS):
             draw_hover(pygame, grid, MOUSE_POS, button.pos)
 
 
+def draw_birth(grid, pygame, item):
+    """ Draws the birth of an item """
+    birth_step = item.birth_track[0]
+    pygame.draw.circle(grid.game_display,
+                       item.color,
+                       item.pos,
+                       birth_step,
+                       0)
+    item.birth_track.pop(0)
+
+
 def draw_body(pygame, grid, MOUSE_POS, item):
     """ Draws each body and it's image if available """
     # for item in grid.bodies:
-    if item.available:
+    if item.available and not item.birth_track:
         if item.color:
             pygame.draw.circle(grid.game_display,
                                item.color,

@@ -8,7 +8,7 @@
 
   "VISIBILITY": {
     "show_grid"         : false,
-    "show_debug"        : 0,
+    "show_debug"        : 1,
     "show_seconds"      : true,
     "show_movement"     : false,
     "show_playing_tiles": false

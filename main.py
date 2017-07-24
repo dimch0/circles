@@ -8,7 +8,6 @@
 # --------------------------------------------------------------- #
 #                            Features                             #
 # --------------------------------------------------------------- #
-# TODO: Time modifier
 # TODO: Create a reversed timer
 # TODO: Create timer for seconds in game
 # TODO: Improve movement by checking each next tile while direction
@@ -28,7 +27,6 @@
 #                            Animation                            #
 # --------------------------------------------------------------- #
 # TODO: Add moving image
-# TODO: Animate item generation
 # TODO: Animate item activation
 # TODO: Animate menu opening
 # TODO: Animate room transition
@@ -302,8 +300,17 @@ def game_loop():
             # --------------------------------------------------------------- #
             #                             ANIMATIONS                          #
             # --------------------------------------------------------------- #
+            # TESTING
+
+
+
             # Items
             for item in grid.items:
+
+                # Birth
+                if item.birth_track:
+                    cir_draw.draw_birth(grid, pygame, item)
+
                 if item.available:
 
                     # Radar
@@ -397,6 +404,8 @@ if __name__ == '__main__':
     images = cir_cosmetic.Images(grid, pygame)
     fonts = cir_cosmetic.Fonts(grid, pygame)
     my_body = cir_loader.load_items(grid, images, fonts, scenario)
+    my_body.color = grid.white
+    my_body.gen_birth_track(grid)
     grid.load_current_room()
     # Settings
     cir_utils.set_argv(grid, sys.argv)
@@ -404,6 +413,5 @@ if __name__ == '__main__':
     # TESTING
     lst = grid.everything["lifespan"]
     lst.duration = 10
-
     # Start
     game_loop()
