@@ -6,8 +6,8 @@
 #################                                                                                     #################
 #######################################################################################################################
 import json
-from cir_utils import in_circle, inside_polygon
-from cir_cosmetic import Fonts
+import time
+from cir_utils import in_circle, inside_polygon, intersecting
 from math import sqrt
 
 
@@ -28,6 +28,7 @@ class Grid(object):
         self.set_config()
         self.game_menu = True
         self.game_over = False
+        self.start_time = None
         self.seconds_in_game = 0
         self.seconds_in_pause = 0
         self.clock = pygame.time.Clock()
@@ -135,10 +136,29 @@ class Grid(object):
 
     @property
     def occupado_tiles(self):
-        self._occupado_tiles = list(set([item.pos for item in self.items if item.pos]))
+        """ Playing tiles intersecting with any items """
+        result = []
+        for tile in self.playing_tiles:
+            for item in self.items:
+                circle_1 = (tile, self.tile_radius)
+                circle_2 = (item.pos, self.tile_radius)
+                if intersecting(circle_1, circle_2):
+                    result.append(tile)
+
+        self._occupado_tiles = set(result)
+
         return self._occupado_tiles
 
-
+    # def update_occupado_tiles(self):
+    #     """ Playing tiles intersecting with any items """
+    #     result = []
+    #     for tile in self.playing_tiles:
+    #         for item in self.items:
+    #             circle_1 = (tile, self.tile_radius)
+    #             circle_2 = (item.pos, self.tile_radius)
+    #             if intersecting(circle_1, circle_2):
+    #                 result.append(tile)
+    #     self.occupado_tiles = set(result)
 
     def set_playing_tiles(self):
         """
@@ -234,3 +254,19 @@ class Grid(object):
         self.save_current_room()
         self.current_room = room
         self.load_current_room()
+
+    # --------------------------------------------------------------- #
+    #                            SECONDS                              #
+    # --------------------------------------------------------------- #
+    def seconds_in_game_tick(self):
+        """ Counts the seconds in the game """
+
+        if time.time() > self.start_time + self.seconds_in_game + self.seconds_in_pause:
+            if not self.game_menu:
+                self.seconds_in_game += 1
+                if self.show_seconds:
+                    print "Game second: {0}".format(self.seconds_in_game)
+            else:
+                self.seconds_in_pause += 1
+                if self.show_seconds:
+                    print "Pause second: {0}".format(self.seconds_in_pause)

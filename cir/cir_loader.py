@@ -119,7 +119,7 @@ def load_data(grid, images, fonts, SCENARIO):
                         "range"       : int(row[col_idx["range"]]) if len(row[col_idx["range"]]) > 0 else None,
                         "font"        : getattr(fonts, row[col_idx["font"]]) if len(row[col_idx["font"]]) > 0 else None,
                         "text_color"  : getattr(grid, row[col_idx["text_color"]]) if len(row[col_idx["text_color"]]) > 0 else None,
-                        "duration"    : int(row[col_idx["duration"]]) if len(row[col_idx["duration"]]) > 0 else None,
+                        "duration"    : float(row[col_idx["duration"]]) if len(row[col_idx["duration"]]) > 0 else None,
                         "time_color"  : getattr(grid, row[col_idx["time_color"]]) if len(row[col_idx["time_color"]]) > 0 else None,
                         "modable"     : row[col_idx["modable"]] if len(row[col_idx["modable"]]) > 0 else None,
                         "collectable" : row[col_idx["collectable"]] if len(row[col_idx["collectable"]]) > 0 else None,
@@ -152,7 +152,7 @@ def set_timers(grid):
     for name, item in grid.everything.items():
         for item_name, timer in grid.timer_vs_items.items():
             if item.name == item_name:
-                item.timer = timer
+                item.timers[timer.name] = timer
 
 
 def set_buttons(grid, category, item):
@@ -161,6 +161,7 @@ def set_buttons(grid, category, item):
         grid_attribute = getattr(grid, category)
         if not item in grid_attribute:
             grid_attribute.append(item)
+
 
 def set_rooms(grid, item):
     if item.room not in [None, ""]:
@@ -190,7 +191,7 @@ def load_items(grid, images, fonts, scenario):
         else:
             set_buttons(grid, category, item)
 
-    my_body = grid.everything["my body"]
+    my_body = grid.everything["my_body"]
     set_mode_options(grid)
     set_timers(grid)
     return my_body

@@ -70,21 +70,20 @@ class MobileItem(Item):
 
     def gen_direction(self, pygame, grid, event):
         """ Generates item direction from 0-6 on pressed key """
-        arrows = [
-            pygame.K_w,
-            pygame.K_e,
-            pygame.K_d,
-            pygame.K_s,
-            pygame.K_a,
-            pygame.K_q
-        ]
-
-        for idx, arrow in enumerate(arrows):
-            if event.key == arrow:
-                if not (self.radar_track or self.rot_revert or self.rot_track):
-                    self.direction = idx
-                    self.gen_rot_track(self.direction)
-
+        if self.direction == None:
+            arrows = [
+                pygame.K_w,
+                pygame.K_e,
+                pygame.K_d,
+                pygame.K_s,
+                pygame.K_a,
+                pygame.K_q
+            ]
+            for idx, arrow in enumerate(arrows):
+                if event.key == arrow:
+                    if not (self.radar_track or self.rot_revert or self.rot_track):
+                        self.direction = idx
+                        self.gen_rot_track(self.direction)
 
     def move(self):
         """

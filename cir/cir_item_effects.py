@@ -5,6 +5,8 @@
 #################                                                                                     #################
 #################                                                                                     #################
 #######################################################################################################################
+import os
+import sys
 import copy
 import random
 
@@ -33,32 +35,33 @@ def produce(grid, product, position):
             grid.items.append(new_item)
     return new_item
 
+
 # --------------------------------------------------------------- #
 #                                                                 #
 #                         MOUSE MODES                             #
 #                                                                 #
 # --------------------------------------------------------------- #
-def laino_mode_click(grid, clicked_circle):
+def laino_mode_click(grid, current_tile):
     """
     For mode 'laino', if clicked produces an item
     :param grid: grid instance
-    :param clicked_circle: the clicked circle
+    :param current_tile: the clicked circle
     """
-    if clicked_circle not in grid.occupado_tiles and clicked_circle in grid.revealed_tiles:
-        produce(grid, "shit", clicked_circle)
+    if current_tile not in grid.occupado_tiles and current_tile in grid.revealed_tiles:
+        produce(grid, "shit", current_tile)
 
 
-def shit_mode_click(grid, clicked_circle):
+def shit_mode_click(grid, current_circle):
     """
     For mode 'shit', if clicked produces an item and exhausts mode uses
     :param grid: grid instance
-    :param clicked_circle: the clicked circle
+    :param current_circle: the clicked circle
     """
     for bag_item in grid.mode_vs_options["bag"]:
         if bag_item.name == grid.mouse_mode:
             if bag_item.uses:
-                if clicked_circle not in grid.occupado_tiles and clicked_circle in grid.revealed_tiles:
-                    produce(grid, "shit", clicked_circle)
+                if current_circle not in grid.occupado_tiles: #and current_circle in grid.revealed_tiles:
+                    produce(grid, "shit", current_circle)
                     bag_item.uses -= 1
                     return 1
 
@@ -83,6 +86,7 @@ def collect(grid, item):
                 item.available = False
                 grid.items.remove(item)
                 return 1
+
 
 def empty_bag(grid):
     """ Empties the bag if an item's uses are exhausted """
@@ -131,15 +135,20 @@ def enter_exit(grid, my_body, item, option):
 #                         TIMER EFFECTS                           #
 #                                                                 #
 # --------------------------------------------------------------- #
+def birth_time_over_effect(item, timer):
+    """ Birth timer effect """
+    if item.birth_track:
+        item.birth_track.pop(0)
+        timer.restart()
+
 # lifespan
-def lifespan_over_effect(grid, sys, os):
-    # TODO: Avoid rerunning the script
+def my_body_lifespan_over_effect(grid):
     grid.game_over = True
-    sys.argv.append('Game Over')
-    os.execv(sys.executable, [sys.executable] + sys.argv)
+    # sys.argv.append('Game Over')
+    # os.execv(sys.executable, [sys.executable] + sys.argv)
 
 # observer
-def observer_effect(grid, item):
+def observer_lifespan_over_effect(grid, item):
     if not item.move_track:
         item.gen_radar_track(grid)
 
@@ -152,4 +161,94 @@ def observer_effect(grid, item):
         if legal_moves:
             # item.move_track = item.move_to_tile(grid, item.pos, random.choice(legal_moves))
             item.move_track = item.move_to_tile(grid, random.choice(legal_moves))
-            item.timer.restart()
+            item.timers["observer_lifespan"].restart()
+
+
+
+
+def timer_effect(grid, item, timer):
+    """ Timer effects  """
+    if timer.is_over:
+        # Lifespan my_body
+        if timer.name == "my_body_lifespan":
+                my_body_lifespan_over_effect(grid)
+        # Lifespan observer
+        elif timer.name == "observer_lifespan":
+                observer_lifespan_over_effect(grid, item)
+        # birth time
+        elif "birth_time" in timer.name:
+            birth_time_over_effect(item, timer)
+
+# --------------------------------------------------------------- #
+#                        MOUSE MODE CLICK                         #
+# --------------------------------------------------------------- #
+def mouse_mode_click(grid, current_tile):
+    if grid.mouse_mode == "laino":
+        laino_mode_click(grid, current_tile)
+    elif grid.mouse_mode == "shit":
+        shit_mode_click(grid, current_tile)
+    elif grid.mouse_mode == "see":
+        if current_tile not in grid.occupado_tiles and current_tile in grid.revealed_tiles:
+            produce(grid, "observer", current_tile)
+            grid.everything["observer"].timers["observer_lifespan"].restart()
+
+
+# --------------------------------------------------------------- #
+#                    MOUSE MODE CLICK ON ITEM                     #
+# --------------------------------------------------------------- #
+def mouse_mode_click_item(grid, item):
+    if grid.mouse_mode == "bag":
+        collect(grid, item)
+
+
+def click_options(grid, item, option, my_body):
+    # --------------------------------------------------------------- #
+    #                       CLICK DEFAULT OPTIONS                     #
+    # --------------------------------------------------------------- #
+    if option in item.default_options:
+        # bag
+        if option.name == "bag":
+            print "Gimme the loot!"
+        # mitosis
+        elif option.name == "mitosis":
+            item.mitosis(grid)
+        # enter / exit
+        elif any(a for a in ["enter_", "exit_"] if a in option.name):
+            enter_exit(grid, my_body, item, option)
+
+        # Setting the mode
+        item.set_mode(grid, option)
+
+    # --------------------------------------------------------------- #
+    #                        CLICK SUB-OPTIONS                        #
+    # --------------------------------------------------------------- #
+    elif option in grid.mode_vs_options[item.mode]:
+        # move
+        if item.mode == "move":
+            item.gen_move_track(grid, grid.mode_vs_options[item.mode].index(option))
+        # see
+        elif option.name == "see":
+            # item.range += 3
+            print "seen"
+        # smel
+        elif option.name == "smel":
+            print "sniff hair"
+        # medi
+        elif option.name == "medi":
+            item.range += 3
+            my_body.gen_radar_track(grid)
+            item.range -= 3
+        # audio
+        elif option.name == "audio":
+            item.range += 1
+        # eat
+        elif option.name == "eat":
+            item.change_speed(-1)
+        # touch
+        elif option.name == "touch":
+            item.change_speed(1)
+        # Close menu when sub-option selected
+        item.set_in_menu(grid, False)
+    # Close menu if option has no sub-options
+    if option.name not in grid.mode_vs_options.keys():
+        item.set_in_menu(grid, False)

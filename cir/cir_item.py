@@ -42,17 +42,18 @@ class Item(object):
         # --------------------------------------------------------------- #
         self.direction = None
         self.last_direction = None
+        self.birth_time = None
         self.move_track = []
         self.radar_track = []
         self.rot_track = []
         self.rot_revert = []
         self.birth_track = []
+        self.timers = {}
         # --------------------------------------------------------------- #
         #                              STATS                              #
         # --------------------------------------------------------------- #
         self.room = None
         self.uses = 1
-        self.timer = timer
 
     # --------------------------------------------------------------- #
     #                                                                 #
@@ -82,7 +83,6 @@ class Item(object):
         if track:
             self.rot_track = track
             if not self.rot_revert:
-                print self.direction
                 if idx == 3:
                     self.rot_revert = range(-step, -end_point * 3, -step)
                 else:

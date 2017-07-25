@@ -1,7 +1,7 @@
 #######################################################################################################################
 #################                                                                                     #################
 #################                                                                                     #################
-#################                                 TimerItem class                                     #################
+#################                                  TimerItem class                                    #################
 #################                                                                                     #################
 #################                                                                                     #################
 #######################################################################################################################
@@ -33,6 +33,7 @@ class TimerItem(MobileItem):
         self._step_degrees = None
         self._filled_degrees = self.start_degrees
         self._is_over = False
+        self.reversed = False
 
     @property
     def number_of_steps(self):
@@ -49,8 +50,12 @@ class TimerItem(MobileItem):
     @property
     def filled_degrees(self):
         try:
-            self._filled_degrees = self.start_degrees + (self.step_degrees * self.step)
-            return self._filled_degrees
+            if not self.reversed:
+                self._filled_degrees = self.start_degrees + (self.step_degrees * self.step)
+                return self._filled_degrees
+            else:
+                self._filled_degrees = self.start_degrees + (self.step_degrees * (self.number_of_steps - self.step))
+                return self._filled_degrees
         except Exception as e:
             print "ERROR", e
 
@@ -99,12 +104,10 @@ class TimerItem(MobileItem):
         self._filled_degrees = int((self.step * self.number_of_steps) / steps_before) - \
                               (self.step_degrees * steps_delta)
 
-        print "duration        :", self.duration
-        print self.start_time
+        # print "duration        :", self.duration
         # print "current    step :", self.step
         # print "number of steps :", self.number_of_steps
         # print "start   degrees :", self.start_degrees
         # print "filled  degrees :", self.filled_degrees
         # print "step    degrees :", self.step_degrees
         # print "-" * 35
-

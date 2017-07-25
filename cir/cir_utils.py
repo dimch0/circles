@@ -5,7 +5,7 @@
 #################                                                                                     #################
 #################                                                                                     #################
 #######################################################################################################################
-import time
+import math
 
 def in_circle(center, radius, point):
     """
@@ -18,6 +18,22 @@ def in_circle(center, radius, point):
     x, y = point[0], point[1]
     square_dist = (center_x - x) ** 2 + (center_y - y) ** 2
     return square_dist <= radius ** 2
+
+
+def intersecting(circle_1, circle_2):
+    """
+    Given two circles described by the 3-tuples (x-coordinates, y-coordinates, radius)
+    :param circle_1: ((x1, y1), r1)
+    :param circle_2: ((x1, y1), r1)
+    :return: Boolean
+    """
+    x1 = circle_1[0][0]
+    y1 = circle_1[0][1]
+    r1 = circle_1[1] - 1
+    x2 = circle_2[0][0]
+    y2 = circle_2[0][1]
+    r2 = circle_2[1] - 1
+    return math.pow(abs(x1 - x2),2) + math.pow(abs(y1 - y2),2) < math.pow((r1 + r2),2)
 
 
 def inside_polygon(poly, point):
@@ -44,16 +60,6 @@ def inside_polygon(poly, point):
                         inside = not inside
         p1x, p1y = p2x, p2y
     return inside
-
-
-def seconds_in_game(grid, START_TIME):
-    """ Counts the seconds in the game """
-    # TODO: FIX START TIME AND PAUSE SECONDS
-    if not grid.game_menu:
-        if time.time() + grid.seconds_in_pause > (START_TIME + grid.seconds_in_game) - grid.seconds_in_pause:
-            if grid.show_seconds:
-                print "second: {0}".format(grid.seconds_in_game)
-            grid.seconds_in_game += 1
 
 
 def debug_print_click(grid, MOUSE_POS, clicked_circle, my_body):

@@ -130,13 +130,17 @@ def draw_menu_buttons(pygame, grid, MOUSE_POS):
 
 def draw_birth(grid, pygame, item):
     """ Draws the birth of an item """
-    birth_step = item.birth_track[0]
-    pygame.draw.circle(grid.game_display,
-                       item.color,
-                       item.pos,
-                       birth_step,
-                       0)
-    item.birth_track.pop(0)
+    if item.birth_track:
+        birth_step = item.birth_track[0]
+        pygame.draw.circle(grid.game_display,
+                           item.color,
+                           item.pos,
+                           birth_step,
+                           0)
+
+        for timer_name in item.timers.keys():
+            if "birth_time" not in timer_name:
+                item.birth_track.pop(0)
 
 
 def draw_body(pygame, grid, MOUSE_POS, item):
@@ -156,14 +160,16 @@ def draw_body(pygame, grid, MOUSE_POS, item):
 
 def draw_timers(pygame, grid, item):
     """ Draws current state of a timer """
-    if item.timer.available:
-        item.timer.pos = item.pos
-        pygame.draw.arc(grid.game_display,
-                        item.timer.time_color,
-                        item.timer.rect,
-                        math.radians(item.timer.filled_degrees),
-                        math.radians(item.timer.start_degrees),
-                        2)
+    for timer in item.timers.values():
+        if timer.available:
+            if timer.time_color:
+                timer.pos = item.pos
+                pygame.draw.arc(grid.game_display,
+                                timer.time_color,
+                                timer.rect,
+                                math.radians(timer.filled_degrees),
+                                math.radians(timer.start_degrees),
+                                2)
 
 
 def draw_grid(pygame, grid):
@@ -233,7 +239,6 @@ def draw_mouse_image(pygame, grid, MOUSE_POS):
 
 def draw_movement(pygame, grid, item):
     """ DEBUG: Shows the movement in cyan and the correct track in red """
-    pygame.draw.line(grid.game_display, grid.azure, item.move_track[0], item.move_track[-1], 1)
     for move_step in item.move_track:
         pygame.draw.circle(grid.game_display,
                            grid.white,
