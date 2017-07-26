@@ -5,15 +5,17 @@
 #################                                                                                     #################
 #################                                                                                     #################
 #######################################################################################################################
+import json
 import cir_utils
+
+CONFIG_JSON_FILE = "data/config.json"
+
 
 class Item(object):
     """
     This is the base class for all CIR items
     It includes the open_menu method.
     """
-
-    # def __init__(self, name=None, pos=(), color=None, image=None, timer=None, border=0):
     def __init__(self):
         # --------------------------------------------------------------- #
         #                            BASICS                               #
@@ -22,6 +24,8 @@ class Item(object):
         self.pos = ()
         self.color = None
         self.img = None
+        self.radius = None
+        self.set_radius()
         self.border = 0
         self.border_color = None
         self.border_width = None
@@ -57,6 +61,19 @@ class Item(object):
         self.rot_revert = []
         self.birth_track = []
 
+    def set_radius(self):
+        """
+        Setting attributes from the config.json file
+        and calculating the display metrics
+        """
+        try:
+            with open(CONFIG_JSON_FILE) as jsonfile:
+                conf = json.load(jsonfile)
+                self.radius = conf["CONSTANTS"]["tile_radius"]
+
+        except Exception as e:
+            print "ERROR, could not set config:", e
+
     # --------------------------------------------------------------- #
     #                                                                 #
     #                           ROTATION                              #
@@ -90,8 +107,8 @@ class Item(object):
                 else:
                     self.rot_revert = cir_utils.negative_list(self.rot_track)
 
-    def gen_birth_track(self, grid):
-        self.birth_track = range(1, grid.tile_radius)
+    def gen_birth_track(self):
+        self.birth_track = range(1, self.radius)
 
     def rotate(self, pygame):
         """ Rotates the image """

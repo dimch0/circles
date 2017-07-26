@@ -29,7 +29,7 @@ def produce(grid, product, position):
             produced_item.default_img = item.default_img
             produced_item.pos = position
             produced_item.available = True
-            produced_item.gen_birth_track(grid)
+            produced_item.gen_birth_track()
             grid.items.append(produced_item)
     return produced_item
 
@@ -104,7 +104,7 @@ def empty_bag(grid):
 #                       ENTER / EXIT EFFECTS                      #
 #                                                                 #
 # --------------------------------------------------------------- #
-def enter_exit(grid, my_body, item, option):
+def exit_room(grid, my_body, item, option):
     """
     Changes the current room
     :param grid: grid instance
@@ -114,18 +114,19 @@ def enter_exit(grid, my_body, item, option):
     """
     room_number = None
 
-    if "enter_" in option.name:
-        room_number = option.name.replace("enter_", "")
-        room_number = int(room_number)
-    elif "exit_" in option.name:
-        room_number = option.name.replace("exit_", "")
+    if "Enter_" in option.name:
+        room_number = option.name.replace("Enter_", "")
         room_number = int(room_number)
 
     if my_body.pos in grid.adj_tiles(item.pos) and room_number:
         my_body.move_track = my_body.move_to_tile(grid, item.pos)
         grid.change_room(room_number)
+        my_body.pos = item.pos
+        grid.rooms[grid.current_room]["revealed_radius"].append(((item.pos), grid.tile_radius))
+        my_body.gen_birth_track()
     else:
         print "it far"
+
 
 
 # --------------------------------------------------------------- #
@@ -155,7 +156,6 @@ def observer_lifespan_over_effect(grid, item):
                 legal_moves.append(item_adj)
 
         if legal_moves:
-            # item.move_track = item.move_to_tile(grid, item.pos, random.choice(legal_moves))
             item.move_track = item.move_to_tile(grid, random.choice(legal_moves))
             item.lifespan.restart()
 
@@ -171,11 +171,11 @@ def timer_effect(grid, item):
             elif item.name == "observer":
                 observer_lifespan_over_effect(grid, item)
 
-    if item.birth_time:
-        item.birth_time.tick()
-        if item.birth_time.is_over:
-            # print item.name, item.birth_time.duration
-            birth_time_over_effect(item)
+    if item.birth_track:
+        if item.birth_time and not isinstance(item.birth_time, float):
+            item.birth_time.tick()
+            if item.birth_time.is_over:
+                birth_time_over_effect(item)
 
 
 # --------------------------------------------------------------- #
@@ -214,9 +214,12 @@ def click_options(grid, item, option, my_body):
         elif option.name == "mitosis":
             item.mitosis(grid)
 
+        elif option.name == "move":
+            item.change_speed(1)
+
         # enter / exit
-        elif any(a for a in ["enter_", "exit_"] if a in option.name):
-            enter_exit(grid, my_body, item, option)
+        elif "Enter_" in option.name:
+            exit_room(grid, my_body, item, option)
 
         # Setting the mode
         item.set_mode(grid, option)
@@ -227,30 +230,31 @@ def click_options(grid, item, option, my_body):
     elif option in grid.mode_vs_options[item.mode]:
         # see
         if option.name == "see":
-            # item.range += 3
-            print "seen"
+            print "Seen"
 
         # smel
         elif option.name == "smel":
-            print "sniff hair"
+            print "Sniff hair"
 
         # medi
         elif option.name == "medi":
+            print "Ommmm"
             item.range += 3
             my_body.gen_radar_track(grid)
             item.range -= 3
 
         # audio
         elif option.name == "audio":
+            print "Who"
             item.range += 1
 
         # eat
         elif option.name == "eat":
-            item.change_speed(-1)
+            print "Nom Nom Nom"
 
         # touch
         elif option.name == "touch":
-            item.change_speed(1)
+            print "Can't touch this"
 
         # Close menu when sub-option selected
         item.set_in_menu(grid, False)

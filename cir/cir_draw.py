@@ -255,12 +255,13 @@ def draw_playing_tiles(pygame, grid):
                                grid.tile_radius,
                                1)
 
+
+
 # --------------------------------------------------------------- #
 #                                                                 #
 #                           BACKGROUND                            #
 #                                                                 #
 # --------------------------------------------------------------- #
-
 def draw_background_stuff(pygame, grid):
     """ Drawing deeper level background stuff """
 
@@ -281,13 +282,6 @@ def draw_background_stuff(pygame, grid):
     # Playing board:
     if grid.show_playing_tiles:
         draw_playing_tiles(pygame, grid)
-
-
-
-
-
-
-
 
 
 # --------------------------------------------------------------- #

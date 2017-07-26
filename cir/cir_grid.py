@@ -147,16 +147,6 @@ class Grid(object):
         self._occupado_tiles = set(result)
         return self._occupado_tiles
 
-    # def update_occupado_tiles(self):
-    #     """ Playing tiles intersecting with any items """
-    #     result = []
-    #     for tile in self.playing_tiles:
-    #         for item in self.items:
-    #             circle_1 = (tile, self.tile_radius)
-    #             circle_2 = (item.pos, self.tile_radius)
-    #             if intersecting(circle_1, circle_2):
-    #                 result.append(tile)
-    #     self.occupado_tiles = set(result)
 
     def set_playing_tiles(self):
         """
@@ -237,6 +227,8 @@ class Grid(object):
     def load_current_room(self):
         """ loads the current room from self.rooms
         or an empty room if the number is not in self.rooms """
+
+
         if not self.current_room in self.rooms.keys():
             self.rooms[self.current_room] = {
             "items"          : [],

@@ -23,15 +23,15 @@
 #                            Animation                            #
 # --------------------------------------------------------------- #
 # TODO: Animate item activation
-# TODO: Animate menu opening
 # TODO: Animate room transition
 # TODO: Animate circle kiss
-# TODO: Animate instructions
+# TODO: Animate demo
 # --------------------------------------------------------------- #
 #                            Bug fixes                            #
-# --------------------------------------------------------------- #s
+# --------------------------------------------------------------- #
 # TODO: Fix revert image rotation
 # TODO: Fix occupado property lag
+# TODO: Fix enter from above
 # --------------------------------------------------------------- #
 #                            Imports                              #
 # --------------------------------------------------------------- #
@@ -48,7 +48,9 @@ from cir import cir_effects
 
 def game_loop(game_over, scenario="Scenario_1"):
     # --------------------------------------------------------------- #
+    #                                                                 #
     #                            LOADING                              #
+    #                                                                 #
     # --------------------------------------------------------------- #
     grid = cir_grid.Grid(pygame)
     images = cir_cosmetic.Images(grid, pygame)
@@ -58,17 +60,17 @@ def game_loop(game_over, scenario="Scenario_1"):
 
     grid.rooms[grid.current_room]["revealed_radius"].append(((my_body.pos), grid.tile_radius))
     grid.load_current_room()
-    my_body.gen_birth_track(grid)
+    my_body.gen_birth_track()
 
     if game_over:
         grid.everything["play"].available = False
         grid.everything["replay"].available = True
-    if "Scenario_2":
+    if scenario == "Scenario_2":
         grid.game_menu = False
-    # --------------------------------------------------------------- #
-    #                              TEST                               #
-    # --------------------------------------------------------------- #
+
+    # TEST
     my_body.lifespan.duration = 10
+
 
     print "Game started"
     while not grid.game_over:
@@ -96,6 +98,9 @@ def game_loop(game_over, scenario="Scenario_1"):
                 if event.key == pygame.K_ESCAPE:
                     if not grid.game_menu:
                         grid.game_menu = True
+                        # for but in grid.buttons:
+                        #     if but.name == "replay":
+                        #         but.name = "play"
                         if grid.everything["replay"].available:
                             grid.everything["play"].available = True
                             grid.everything["replay"].available = False
@@ -115,13 +120,25 @@ def game_loop(game_over, scenario="Scenario_1"):
 
                     elif event.key == pygame.K_t:
                         print ">>>> key t"
-                        # Lifespan timer
                         my_body.lifespan.update(5)
+                        print my_body.lifespan.duration
+
+                    elif event.key == pygame.K_p:
+                        print ">>>> key p"
+                        my_body.lifespan.update(-1)
+                        print my_body.lifespan.duration
 
                     elif event.key == pygame.K_l:
                         print ">>>> key l"
                         scenario = 'Scenario_2'
                         grid.game_over = True
+
+                    elif event.key == pygame.K_k:
+                        print ">>>> key k"
+                        my_body.img = images.alien1
+                        my_body.default_img = my_body.img
+                        my_body.speed = 10
+
 
                     elif event.key == pygame.K_1:
                         print ">>>> key 1"
@@ -135,11 +152,6 @@ def game_loop(game_over, scenario="Scenario_1"):
                         print ">>>> key 3"
                         grid.change_room(3)
 
-                    elif event.key == pygame.K_k:
-                        print ">>>> key k"
-                        my_body.img = images.alien1
-                        my_body.default_img = my_body.img
-                        my_body.speed = 10
 
                     # Movement Population
                     elif not my_body.in_menu:
