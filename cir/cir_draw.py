@@ -113,6 +113,10 @@ def draw_item_options(pygame, grid, MOUSE_POS, item):
 def draw_menu_buttons(pygame, grid, MOUSE_POS):
     """ Drawing the buttons in the game menu """
 
+    # Background
+    draw_background(grid)
+
+    # Buttons
     for button in grid.buttons:
         if button.available:
             if button.color:
@@ -250,3 +254,83 @@ def draw_playing_tiles(pygame, grid):
                                grid.gelb, tile,
                                grid.tile_radius,
                                1)
+
+# --------------------------------------------------------------- #
+#                                                                 #
+#                           BACKGROUND                            #
+#                                                                 #
+# --------------------------------------------------------------- #
+
+def draw_background_stuff(pygame, grid):
+    """ Drawing deeper level background stuff """
+
+    # Background
+    draw_background(grid)
+
+    # Revealed radius
+    if grid.revealed_radius:
+        draw_revealed_radius(pygame, grid)
+
+    # Mask
+    draw_mask(pygame, grid)
+
+    # Grid
+    if grid.show_grid:
+        draw_grid(pygame, grid)
+
+    # Playing board:
+    if grid.show_playing_tiles:
+        draw_playing_tiles(pygame, grid)
+
+
+
+
+
+
+
+
+
+# --------------------------------------------------------------- #
+#                                                                 #
+#                           ANIMATIONS                            #
+#                                                                 #
+# --------------------------------------------------------------- #
+def draw_animations(pygame, grid, MOUSE_POS):
+    """ Main drawing function """
+    for item in grid.items:
+        if item.available:
+
+            # Birth
+            draw_birth(grid, pygame, item)
+
+            # Radar
+            if item.radar_track:
+                draw_radar(pygame, grid, item)
+
+            # Items
+            draw_body(pygame, grid, MOUSE_POS, item)
+
+            # Show movement track in color
+            if grid.show_movement and len(item.move_track) > 1:
+                draw_movement(pygame, grid, item)
+
+            # Image rotation
+            if item.rot_track:
+                item.rotate(pygame)
+
+            # Item reverse rotation
+            if item.last_rotation and not item.move_track and not item.direction:
+                item.rotate_reverse(pygame)
+
+            # Timers
+            draw_timers(pygame, grid, item)
+
+    # Item options
+    for item in grid.items:
+        if item.available:
+            if item.in_menu:
+                draw_item_options(pygame, grid, MOUSE_POS, item)
+
+    # Mouse
+    if grid.mouse_mode:
+        draw_mouse_image(pygame, grid, MOUSE_POS)

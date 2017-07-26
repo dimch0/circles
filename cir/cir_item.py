@@ -49,7 +49,7 @@ class Item(object):
         #                            ANIMATION                            #
         # --------------------------------------------------------------- #
         self.direction = None
-        self.last_direction = None
+        self.last_rotation = None
         self.birth_time = 0.03
         self.move_track = []
         self.radar_track = []
@@ -98,13 +98,13 @@ class Item(object):
         self.img = cir_utils.rot_center(pygame, self.default_img, self.rot_track[0])
 
         if len(self.rot_track) == 1:
-            self.last_direction = self.rot_track[-1]
+            self.last_rotation = self.rot_track[-1]
         self.rot_track.pop(0)
 
     def rotate_reverse(self, pygame):
         """ Returns the image to start position """
-        if self.last_direction:
-            self.img = cir_utils.rot_center(pygame, self.default_img, self.last_direction)
+        if self.last_rotation:
+            self.img = cir_utils.rot_center(pygame, self.default_img, self.last_rotation)
 
         if self.rot_revert:
             self.img = cir_utils.rot_center(pygame, self.img, self.rot_revert[0])
@@ -112,7 +112,7 @@ class Item(object):
 
         elif not self.rot_revert:
             self.img = self.default_img
-            self.last_direction = False
+            self.last_rotation = False
 
     # --------------------------------------------------------------- #
     #                                                                 #

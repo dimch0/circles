@@ -9,6 +9,7 @@
 #                            Features                             #
 # --------------------------------------------------------------- #
 # TODO: Indicate uses
+# TODO: Implement timer for radar wave
 # TODO: Item generation
 # TODO: Create mini map
 # TODO: Create signal function
@@ -26,13 +27,11 @@
 # TODO: Animate room transition
 # TODO: Animate circle kiss
 # TODO: Animate instructions
-# TODO: Animate moving circle
 # --------------------------------------------------------------- #
 #                            Bug fixes                            #
 # --------------------------------------------------------------- #s
 # TODO: Fix revert image rotation
-# TODO: Fix occupado lag calculation propertyq
-
+# TODO: Fix occupado property lag
 # --------------------------------------------------------------- #
 #                            Imports                              #
 # --------------------------------------------------------------- #
@@ -48,7 +47,6 @@ from cir import cir_effects
 
 
 def game_loop(game_over, scenario="Scenario_1"):
-    """ Main game loop """
     # --------------------------------------------------------------- #
     #                            LOADING                              #
     # --------------------------------------------------------------- #
@@ -58,18 +56,19 @@ def game_loop(game_over, scenario="Scenario_1"):
     my_body = cir_loader.load_items(grid, images, fonts, scenario)
     grid.start_time = time.time()
 
-
+    grid.rooms[grid.current_room]["revealed_radius"].append(((my_body.pos), grid.tile_radius))
+    grid.load_current_room()
+    my_body.gen_birth_track(grid)
 
     if game_over:
         grid.everything["play"].available = False
         grid.everything["replay"].available = True
-
+    if "Scenario_2":
+        grid.game_menu = False
     # --------------------------------------------------------------- #
     #                              TEST                               #
     # --------------------------------------------------------------- #
-    grid.rooms[grid.current_room]["revealed_radius"].append(((my_body.pos), grid.tile_radius))
-    grid.load_current_room()
-    my_body.gen_birth_track(grid)
+    my_body.lifespan.duration = 10
 
     print "Game started"
     while not grid.game_over:
@@ -85,7 +84,8 @@ def game_loop(game_over, scenario="Scenario_1"):
         # --------------------------------------------------------------- #
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                grid.game_over = True
+                pygame.quit()
+                quit()
             # --------------------------------------------------------------- #
             #                            KEY EVENTS                           #
             # --------------------------------------------------------------- #
@@ -140,11 +140,6 @@ def game_loop(game_over, scenario="Scenario_1"):
                         my_body.img = images.alien1
                         my_body.default_img = my_body.img
                         my_body.speed = 10
-                        if scenario == "Scenario_2":
-                            grid.everything["bokluk"].pos = (
-                                grid.everything["bokluk"].pos[0] - 1,
-                                grid.everything["bokluk"].pos[1])
-                            print grid.everything["bokluk"].pos
 
                     # Movement Population
                     elif not my_body.in_menu:
@@ -212,9 +207,11 @@ def game_loop(game_over, scenario="Scenario_1"):
                                                 #                      OPTIONS / SUB-OPTIONS                      #
                                                 # --------------------------------------------------------------- #
                                                 cir_effects.click_options(grid, item, option, my_body)
+
                                 # Clicked outside
                                 elif (current_tile != item.pos) and (current_tile not in grid.adj_tiles(item.pos)):
                                     item.set_in_menu(grid, False)
+
                 # Debug print
                 cir_utils.debug_print_click(grid, MOUSE_POS, current_tile, my_body)
 
@@ -223,69 +220,16 @@ def game_loop(game_over, scenario="Scenario_1"):
         #                             DRAWING                             #
         #                                                                 #
         # --------------------------------------------------------------- #
-        cir_draw.draw_background(grid)
-
         # Game Menu
         if grid.game_menu:
             if grid.buttons:
                 cir_draw.draw_menu_buttons(pygame, grid, MOUSE_POS)
         else:
-            # Revealed radius
-            if grid.revealed_radius:
-                cir_draw.draw_revealed_radius(pygame, grid)
-            # Mask
-            cir_draw.draw_mask(pygame, grid)
-            # Grid
-            if grid.show_grid:
-                cir_draw.draw_grid(pygame, grid)
-            # Playing board:
-            if grid.show_playing_tiles:
-                cir_draw.draw_playing_tiles(pygame, grid)
+            # BACKGROUND
+            cir_draw.draw_background_stuff(pygame, grid)
+            # ANIMATIONS
+            cir_draw.draw_animations(pygame, grid, MOUSE_POS)
 
-
-            # --------------------------------------------------------------- #
-            #                             ANIMATIONS                          #
-            # --------------------------------------------------------------- #
-            # TEST
-
-
-
-            for item in grid.items:
-
-                if item.available:
-                    # Birth
-                    cir_draw.draw_birth(grid, pygame, item)
-                    # Radar
-                    if item.radar_track:
-                        cir_draw.draw_radar(pygame, grid, item)
-                    # Items
-                    cir_draw.draw_body(pygame, grid, MOUSE_POS, item)
-                    # Item options
-                    if item.in_menu:
-                        cir_draw.draw_item_options(pygame, grid, MOUSE_POS, item)
-                    # Show movement track in color
-                    if grid.show_movement and len(item.move_track) > 1:
-                        cir_draw.draw_movement(pygame, grid, item)
-                    # Image rotation
-                    if item.rot_track:
-                        item.rotate(pygame)
-                    # Item reverse rotation
-                    if item.last_direction and not item.move_track:
-                        item.rotate_reverse(pygame)
-                    # Timers
-                    cir_draw.draw_timers(pygame, grid, item)
-
-            # Item options
-            for item in grid.items:
-                if item.available:
-                    if item.in_menu:
-                        cir_draw.draw_item_options(pygame, grid, MOUSE_POS, item)
-
-            # Mouse
-            if grid.mouse_mode:
-                cir_draw.draw_mouse_image(pygame, grid, MOUSE_POS)
-
-        # End drawing
         pygame.display.update()
 
         # --------------------------------------------------------------- #

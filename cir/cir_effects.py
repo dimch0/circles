@@ -188,9 +188,8 @@ def mouse_mode_click(grid, current_tile):
         shit_mode_click(grid, current_tile)
     elif grid.mouse_mode == "see":
         if current_tile not in grid.occupado_tiles and current_tile in grid.revealed_tiles:
-            produce(grid, "observer", current_tile)
-            # TODO fix below line
-            # grid.everything["observer"].lifespan.restart()
+            new_observer = produce(grid, "observer", current_tile)
+            new_observer.lifespan.restart()
 
 
 # --------------------------------------------------------------- #
@@ -206,12 +205,15 @@ def click_options(grid, item, option, my_body):
     #                       CLICK DEFAULT OPTIONS                     #
     # --------------------------------------------------------------- #
     if option in item.default_options:
+
         # bag
         if option.name == "bag":
             print "Gimme the loot!"
+
         # mitosis
         elif option.name == "mitosis":
             item.mitosis(grid)
+
         # enter / exit
         elif any(a for a in ["enter_", "exit_"] if a in option.name):
             enter_exit(grid, my_body, item, option)
@@ -223,32 +225,36 @@ def click_options(grid, item, option, my_body):
     #                        CLICK SUB-OPTIONS                        #
     # --------------------------------------------------------------- #
     elif option in grid.mode_vs_options[item.mode]:
-        # move
-        if item.mode == "move":
-            item.gen_move_track(grid, grid.mode_vs_options[item.mode].index(option))
         # see
-        elif option.name == "see":
+        if option.name == "see":
             # item.range += 3
             print "seen"
+
         # smel
         elif option.name == "smel":
             print "sniff hair"
+
         # medi
         elif option.name == "medi":
             item.range += 3
             my_body.gen_radar_track(grid)
             item.range -= 3
+
         # audio
         elif option.name == "audio":
             item.range += 1
+
         # eat
         elif option.name == "eat":
             item.change_speed(-1)
+
         # touch
         elif option.name == "touch":
             item.change_speed(1)
+
         # Close menu when sub-option selected
         item.set_in_menu(grid, False)
+
     # Close menu if option has no sub-options
     if option.name not in grid.mode_vs_options.keys():
         item.set_in_menu(grid, False)
