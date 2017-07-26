@@ -31,7 +31,6 @@
 # --------------------------------------------------------------- #
 # TODO: Fix revert image rotation
 # TODO: Fix occupado property lag
-# TODO: Fix enter from above
 # --------------------------------------------------------------- #
 #                            Imports                              #
 # --------------------------------------------------------------- #
@@ -57,10 +56,6 @@ def game_loop(game_over, scenario="Scenario_1"):
     fonts = cir_cosmetic.Fonts(grid, pygame)
     my_body = cir_loader.load_items(grid, images, fonts, scenario)
     grid.start_time = time.time()
-
-    grid.rooms[grid.current_room]["revealed_radius"].append(((my_body.pos), grid.tile_radius))
-    grid.load_current_room()
-    my_body.gen_birth_track()
 
     if game_over:
         grid.everything["play"].available = False

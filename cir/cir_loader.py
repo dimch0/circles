@@ -198,7 +198,11 @@ def load_items(grid, images, fonts, scenario):
         else:
             set_buttons(grid, category, item)
 
-    my_body = grid.everything["my_body"]
     set_mode_options(grid)
     set_timers(grid)
+    my_body = grid.everything["my_body"]
+    my_body.gen_birth_track()
+    grid.rooms[grid.current_room]["revealed_radius"].append(((my_body.pos), grid.tile_radius))
+    grid.load_current_room()
+
     return my_body

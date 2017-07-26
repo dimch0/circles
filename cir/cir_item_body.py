@@ -39,7 +39,7 @@ class BodyItem(MobileItem):
         (31, 10), (32, 10), (33, 10)
         """
 
-        if not self.move_track and not self.radar_track:
+        if not self.move_track and not self.radar_track and not self.birth_track:
             radar_thickness = range(1, (grid.tile_radius / 3) + 1)
             radar_thickness.reverse()
             radar_limit = (grid.tile_radius * 2 * self.range) + grid.tile_radius + 1

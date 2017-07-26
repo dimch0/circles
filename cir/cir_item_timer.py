@@ -84,12 +84,12 @@ class TimerItem(Item):
 
     def tick(self):
         """ Starts the timer, increasing the step and filled_degrees """
-        # if self.available:
-        if not self.start_time:
-            self.start_time = time.time()
-        if not self.is_over:
-            if time.time() > (self.start_time + (self.time_step * self.step)):
-                self.step += 1
+        if self.available:
+            if not self.start_time:
+                self.start_time = time.time()
+            if not self.is_over:
+                if time.time() > (self.start_time + (self.time_step * self.step)):
+                    self.step += 1
 
 
     def update(self, delta):

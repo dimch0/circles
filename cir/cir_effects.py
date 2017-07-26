@@ -119,11 +119,13 @@ def exit_room(grid, my_body, item, option):
         room_number = int(room_number)
 
     if my_body.pos in grid.adj_tiles(item.pos) and room_number:
-        my_body.move_track = my_body.move_to_tile(grid, item.pos)
-        grid.change_room(room_number)
-        my_body.pos = item.pos
-        grid.rooms[grid.current_room]["revealed_radius"].append(((item.pos), grid.tile_radius))
         my_body.gen_birth_track()
+        my_body.move_track = my_body.move_to_tile(grid, item.pos)
+        my_body.pos = item.pos
+        my_body.gen_birth_track()
+        grid.change_room(room_number)
+        my_body.available = True
+        grid.rooms[grid.current_room]["revealed_radius"].append(((item.pos), grid.tile_radius))
     else:
         print "it far"
 

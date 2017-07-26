@@ -70,7 +70,7 @@ class MobileItem(Item):
 
     def gen_direction(self, pygame, grid, event):
         """ Generates item direction from 0-6 on pressed key """
-        if self.direction == None:
+        if self.direction == None and not self.birth_track:
             arrows = [
                 pygame.K_w,
                 pygame.K_e,
