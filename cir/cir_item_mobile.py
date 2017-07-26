@@ -6,15 +6,15 @@
 #################                                                                                     #################
 #######################################################################################################################
 from cir_item import Item
-
+from cir_item_timer import TimerItem
 
 class MobileItem(Item):
     """
     This is the base class for all CIR items
     """
-    def __init__(self, speed=2, **kwargs):
-        super(MobileItem, self).__init__(**kwargs)
-        self.speed = speed
+    def __init__(self):
+        super(MobileItem, self).__init__()
+        self.speed = 1
 
     def change_speed(self, modifier):
         self.speed += modifier
@@ -123,20 +123,23 @@ class MobileItem(Item):
         """
         empty_tile = self.check_for_empty_tile(grid)
         if empty_tile:
-            occupado_placeholder = Item(
-                name="placeholder",
-                pos=empty_tile,
-            )
+            occupado_placeholder = Item()
+            occupado_placeholder.name = "placeholder"
+            occupado_placeholder.pos = empty_tile
+            occupado_placeholder.birth_time = TimerItem()
+            occupado_placeholder.birth_time.duration = 0
             grid.items.append(occupado_placeholder)
 
-            new_copy = MobileItem(
-                speed=self.speed,
-                name="new copy",
-                pos=self.pos,
-                color=self.color,
-                image=self.img,
-
-            )
+            new_copy = MobileItem()
+            new_copy.img = self.img
+            new_copy.speed = self.speed
+            new_copy.name = "new copy"
+            new_copy.pos = self.pos
+            new_copy.color = self.color
+            new_copy.birth_time = None
+            # new_copy.birth_time = TimerItem()
+            # new_copy.birth_time.duration = 0.03
+            # new_copy.gen_birth_track(grid)
             new_copy.move_track = self.move_to_tile(grid, empty_tile)
             grid.items.append(new_copy)
 

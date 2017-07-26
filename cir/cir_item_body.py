@@ -12,9 +12,9 @@ class BodyItem(MobileItem):
     """
     This class holds all attributes and metrics of your body
     """
-    def __init__(self, range=1, **kwargs):
-        super(BodyItem, self).__init__(**kwargs)
-        self.range = range
+    def __init__(self):
+        super(BodyItem, self).__init__()
+        self.range = 1
         # self.muscle = 1
         # self.mind = 0
         # self.ego = 0

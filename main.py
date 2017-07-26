@@ -32,50 +32,46 @@
 # --------------------------------------------------------------- #s
 # TODO: Fix revert image rotation
 # TODO: Fix occupado lag calculation propertyq
+
 # --------------------------------------------------------------- #
 #                            Imports                              #
 # --------------------------------------------------------------- #
-import os
-import sys
 import time
-# --------------------------------------------------------------- #
-#                             Pygame                              #
-# --------------------------------------------------------------- #
 import pygame
 pygame.init()
-# --------------------------------------------------------------- #
-#                           CIR modules                           #
-# --------------------------------------------------------------- #
 from cir import cir_grid
 from cir import cir_draw
 from cir import cir_utils
 from cir import cir_loader
 from cir import cir_cosmetic
-from cir import cir_item_effects
+from cir import cir_effects
 
 
-def game_loop(game_over):
+def game_loop(game_over, scenario="Scenario_1"):
     """ Main game loop """
-
-    # TODO: If grid.game_over show replay buttons
-
-    print "Game started"
-    scenario = cir_utils.set_scenario(sys.argv)
+    # --------------------------------------------------------------- #
+    #                            LOADING                              #
+    # --------------------------------------------------------------- #
     grid = cir_grid.Grid(pygame)
-
     images = cir_cosmetic.Images(grid, pygame)
     fonts = cir_cosmetic.Fonts(grid, pygame)
     my_body = cir_loader.load_items(grid, images, fonts, scenario)
     grid.start_time = time.time()
-    my_body.gen_birth_track(grid)
-    grid.rooms[grid.current_room]["revealed_radius"].append(((my_body.pos), grid.tile_radius))
-    grid.load_current_room()
+
+
+
     if game_over:
         grid.everything["play"].available = False
         grid.everything["replay"].available = True
 
-    my_body.timers["my_body_lifespan"].duration = 3
+    # --------------------------------------------------------------- #
+    #                              TEST                               #
+    # --------------------------------------------------------------- #
+    grid.rooms[grid.current_room]["revealed_radius"].append(((my_body.pos), grid.tile_radius))
+    grid.load_current_room()
+    my_body.gen_birth_track(grid)
 
+    print "Game started"
     while not grid.game_over:
 
         MOUSE_POS = pygame.mouse.get_pos()
@@ -91,9 +87,7 @@ def game_loop(game_over):
             if event.type == pygame.QUIT:
                 grid.game_over = True
             # --------------------------------------------------------------- #
-            #                                                                 #
             #                            KEY EVENTS                           #
-            #                                                                 #
             # --------------------------------------------------------------- #
             elif event.type == pygame.KEYDOWN:
                 # --------------------------------------------------------------- #
@@ -122,20 +116,12 @@ def game_loop(game_over):
                     elif event.key == pygame.K_t:
                         print ">>>> key t"
                         # Lifespan timer
-                        my_body.timers["my_body_lifespan"].update(5)
-                        if scenario == "Scenario_2":
-                            circle_1 = (my_body.pos, grid.tile_radius)
-                            circle_2 = (grid.everything["bokluk"].pos, grid.tile_radius)
-                            print cir_utils.intersecting(circle_1, circle_2)
-
+                        my_body.lifespan.update(5)
 
                     elif event.key == pygame.K_l:
                         print ">>>> key l"
-
-                        sys.argv.append('Scenario_2')
+                        scenario = 'Scenario_2'
                         grid.game_over = True
-                        grid.game_over = True
-                        # os.execv(sys.executable, [sys.executable] + sys.argv)
 
                     elif event.key == pygame.K_1:
                         print ">>>> key 1"
@@ -187,7 +173,7 @@ def game_loop(game_over):
                         # --------------------------------------------------------------- #
                         #                         MOUSE MODE CLICK                        #
                         # --------------------------------------------------------------- #
-                        cir_item_effects.mouse_mode_click(grid, current_tile)
+                        cir_effects.mouse_mode_click(grid, current_tile)
 
                         # --------------------------------------------------------------- #
                         #                          CLICK ON ITEMS                         #
@@ -198,7 +184,7 @@ def game_loop(game_over):
                                     # --------------------------------------------------------------- #
                                     #                    MOUSE MODE CLICK ON ITEM                     #
                                     # --------------------------------------------------------------- #
-                                    cir_item_effects.mouse_mode_click_item(grid, item)
+                                    cir_effects.mouse_mode_click_item(grid, item)
 
                                     # --------------------------------------------------------------- #
                                     #                           MENU OPTIONS                          #
@@ -225,7 +211,7 @@ def game_loop(game_over):
                                                 # --------------------------------------------------------------- #
                                                 #                      OPTIONS / SUB-OPTIONS                      #
                                                 # --------------------------------------------------------------- #
-                                                cir_item_effects.click_options(grid, item, option, my_body)
+                                                cir_effects.click_options(grid, item, option, my_body)
                                 # Clicked outside
                                 elif (current_tile != item.pos) and (current_tile not in grid.adj_tiles(item.pos)):
                                     item.set_in_menu(grid, False)
@@ -287,8 +273,7 @@ def game_loop(game_over):
                     if item.last_direction and not item.move_track:
                         item.rotate_reverse(pygame)
                     # Timers
-                    if item.timers:
-                        cir_draw.draw_timers(pygame, grid, item)
+                    cir_draw.draw_timers(pygame, grid, item)
 
             # Item options
             for item in grid.items:
@@ -309,25 +294,29 @@ def game_loop(game_over):
         #                                                                 #
         # --------------------------------------------------------------- #
         if not grid.game_menu:
+
             # My_body to room
             if not my_body in grid.items:
                 grid.items.append(my_body)
+
             # Check bag
             if "bag" in grid.everything.keys():
-                cir_item_effects.empty_bag(grid)
+                cir_effects.empty_bag(grid)
+
             # Items
             for item in grid.items:
+
                 # Timers
-                if item.timers:
-                    for timer in item.timers.values():
-                        timer.tick()
-                        cir_item_effects.timer_effect(grid, item, timer)
+                cir_effects.timer_effect(grid, item)
+
                 if item.available:
+
                     # Movement
                     if item.direction != None:
                         item.gen_move_track(grid)
                     if item.move_track:
                         item.move()
+
                     # Clean placeholders
                     grid.clean_placeholders(item)
                     # Overlap
@@ -337,7 +326,7 @@ def game_loop(game_over):
         grid.clock.tick(grid.fps)
 
     if grid.game_over:
-        game_loop(grid.game_over)
+        game_loop(grid.game_over, scenario)
 
     pygame.quit()
     quit()

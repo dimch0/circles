@@ -144,9 +144,7 @@ class Grid(object):
                 circle_2 = (item.pos, self.tile_radius)
                 if intersecting(circle_1, circle_2):
                     result.append(tile)
-
         self._occupado_tiles = set(result)
-
         return self._occupado_tiles
 
     # def update_occupado_tiles(self):

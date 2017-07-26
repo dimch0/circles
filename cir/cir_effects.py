@@ -5,8 +5,6 @@
 #################                                                                                     #################
 #################                                                                                     #################
 #######################################################################################################################
-import os
-import sys
 import copy
 import random
 
@@ -23,17 +21,17 @@ def produce(grid, product, position):
     :param position: new position
     :return: the new item
     """
-    new_item = None
+    produced_item = None
     for name, item in grid.everything.items():
         if name == product:
-            new_item = copy.deepcopy(item)
-            new_item.img = item.img
-            new_item.default_img = item.default_img
-            new_item.pos = position
-            new_item.available = True
-            new_item.gen_birth_track(grid)
-            grid.items.append(new_item)
-    return new_item
+            produced_item = copy.deepcopy(item)
+            produced_item.img = item.img
+            produced_item.default_img = item.default_img
+            produced_item.pos = position
+            produced_item.available = True
+            produced_item.gen_birth_track(grid)
+            grid.items.append(produced_item)
+    return produced_item
 
 
 # --------------------------------------------------------------- #
@@ -135,17 +133,15 @@ def enter_exit(grid, my_body, item, option):
 #                         TIMER EFFECTS                           #
 #                                                                 #
 # --------------------------------------------------------------- #
-def birth_time_over_effect(item, timer):
+def birth_time_over_effect(item):
     """ Birth timer effect """
     if item.birth_track:
         item.birth_track.pop(0)
-        timer.restart()
+        item.birth_time.restart()
 
 # lifespan
 def my_body_lifespan_over_effect(grid):
     grid.game_over = True
-    # sys.argv.append('Game Over')
-    # os.execv(sys.executable, [sys.executable] + sys.argv)
 
 # observer
 def observer_lifespan_over_effect(grid, item):
@@ -161,23 +157,26 @@ def observer_lifespan_over_effect(grid, item):
         if legal_moves:
             # item.move_track = item.move_to_tile(grid, item.pos, random.choice(legal_moves))
             item.move_track = item.move_to_tile(grid, random.choice(legal_moves))
-            item.timers["observer_lifespan"].restart()
+            item.lifespan.restart()
 
 
-
-
-def timer_effect(grid, item, timer):
+def timer_effect(grid, item):
     """ Timer effects  """
-    if timer.is_over:
-        # Lifespan my_body
-        if timer.name == "my_body_lifespan":
+    if item.lifespan:
+        item.lifespan.tick()
+
+        if item.lifespan.is_over:
+            if item.name == "my_body":
                 my_body_lifespan_over_effect(grid)
-        # Lifespan observer
-        elif timer.name == "observer_lifespan":
+            elif item.name == "observer":
                 observer_lifespan_over_effect(grid, item)
-        # birth time
-        elif "birth_time" in timer.name:
-            birth_time_over_effect(item, timer)
+
+    if item.birth_time:
+        item.birth_time.tick()
+        if item.birth_time.is_over:
+            # print item.name, item.birth_time.duration
+            birth_time_over_effect(item)
+
 
 # --------------------------------------------------------------- #
 #                        MOUSE MODE CLICK                         #
@@ -190,7 +189,8 @@ def mouse_mode_click(grid, current_tile):
     elif grid.mouse_mode == "see":
         if current_tile not in grid.occupado_tiles and current_tile in grid.revealed_tiles:
             produce(grid, "observer", current_tile)
-            grid.everything["observer"].timers["observer_lifespan"].restart()
+            # TODO fix below line
+            # grid.everything["observer"].lifespan.restart()
 
 
 # --------------------------------------------------------------- #

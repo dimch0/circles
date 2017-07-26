@@ -79,9 +79,10 @@ def debug_print_click(grid, MOUSE_POS, clicked_circle, my_body):
                    clicked_circle,
                    my_body.mode,
                    my_body.in_menu,
-                   [(item.name, item.pos) for item in grid.items],
-                   [ot for ot in grid.occupado_tiles],
-                   # len(grid._occupado_tiles),
+                   # [(item.name, item.pos) for item in grid.items],
+                   len(grid.items),
+                   # [ot for ot in grid.occupado_tiles],
+                   len(grid._occupado_tiles),
                    len(grid.playing_tiles),
                    my_body.move_track,
                    len(grid.tiles),
@@ -114,19 +115,3 @@ def rot_center(pygame, image, angle):
     rot_rect.center = rot_image.get_rect().center
     rot_image = rot_image.subsurface(rot_rect).copy()
     return rot_image
-
-
-def set_scenario(SYS_ARGV):
-    """ Setting the scenario """
-    result = "Scenario_1"
-    for argument in SYS_ARGV:
-        if "Scenario" in argument:
-            result = argument
-    return result
-
-def set_argv(grid, argv):
-    if 'Game Over' in argv:
-        grid.everything["play"].available = False
-        grid.everything["replay"].available = True
-    if 'Scenario_2' in argv:
-        grid.game_menu = False

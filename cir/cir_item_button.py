@@ -9,11 +9,11 @@ class ButtonItem(Item):
     """
     This is the base class for all CIR items
     """
-    def __init__(self, font=None, text_color=None, **kwargs):
-        super(ButtonItem, self).__init__(**kwargs)
+    def __init__(self):
+        super(ButtonItem, self).__init__()
 
-        self.font = font
-        self.text_color = text_color
+        self.font = None
+        self.text_color = None
         self._text = self.name
         self._text_rect = None
 

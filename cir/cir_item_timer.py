@@ -6,18 +6,17 @@
 #################                                                                                     #################
 #######################################################################################################################
 import time
-from cir_item_mobile import MobileItem
+from cir_item import Item
 
 
-class TimerItem(MobileItem):
+class TimerItem(Item):
     """ This is the base class for all timer items """
 
-    def __init__(self, duration=0, time_color=None, tile_radius=None, **kwargs):
-        super(TimerItem, self).__init__(**kwargs)
+    def __init__(self):
+        super(TimerItem, self).__init__()
 
         # VISUAL
-        self.time_color = time_color
-        self.timer_tile_radius = tile_radius
+        self.timer_tile_radius = None
         self._rect = []
 
         # CONSTANTS
@@ -26,14 +25,14 @@ class TimerItem(MobileItem):
         self.start_degrees = 90
 
         # METRICS
-        self.duration = duration
+        self.duration = 0
         self.step = 1
         self.start_time = None
         self._number_of_steps = 1
         self._step_degrees = None
         self._filled_degrees = self.start_degrees
         self._is_over = False
-        self.reversed = False
+        self.reversed = True
 
     @property
     def number_of_steps(self):

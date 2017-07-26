@@ -119,12 +119,12 @@ def load_data(grid, images, fonts, SCENARIO):
                         "range"       : int(row[col_idx["range"]]) if len(row[col_idx["range"]]) > 0 else None,
                         "font"        : getattr(fonts, row[col_idx["font"]]) if len(row[col_idx["font"]]) > 0 else None,
                         "text_color"  : getattr(grid, row[col_idx["text_color"]]) if len(row[col_idx["text_color"]]) > 0 else None,
-                        "duration"    : float(row[col_idx["duration"]]) if len(row[col_idx["duration"]]) > 0 else None,
                         "time_color"  : getattr(grid, row[col_idx["time_color"]]) if len(row[col_idx["time_color"]]) > 0 else None,
                         "modable"     : row[col_idx["modable"]] if len(row[col_idx["modable"]]) > 0 else None,
                         "collectable" : row[col_idx["collectable"]] if len(row[col_idx["collectable"]]) > 0 else None,
                         "uses"        : int(row[col_idx["uses"]]) if len(row[col_idx["uses"]]) > 0 else None,
-                        "room"        : int(row[col_idx["room"]]) if len(row[col_idx["room"]]) > 0 else None
+                        "room"        : int(row[col_idx["room"]]) if len(row[col_idx["room"]]) > 0 else None,
+                        "lifespan"    : float(row[col_idx["lifespan"]]) if len(row[col_idx["lifespan"]]) > 0 else None,
                     }
                     # Create an item
                     item = create_new_item(grid, type, attributes)
@@ -150,9 +150,18 @@ def set_mode_options(grid):
 def set_timers(grid):
     """ Assign all options from grid.mode_vs_options to grid.items """
     for name, item in grid.everything.items():
-        for item_name, timer in grid.timer_vs_items.items():
-            if item.name == item_name:
-                item.timers[timer.name] = timer
+
+        if item.lifespan:
+            timer = cir_item_timer.TimerItem()
+            timer.timer_tile_radius = grid.tile_radius
+            timer.duration = item.lifespan
+            timer.color = item.time_color
+            item.lifespan = timer
+
+        if item.birth_time:
+            timer = cir_item_timer.TimerItem()
+            timer.duration = item.birth_time
+            item.birth_time = timer
 
 
 def set_buttons(grid, category, item):
@@ -185,8 +194,6 @@ def load_items(grid, images, fonts, scenario):
         # Mode options
         if type == "mode_option":
             add_optoin_to_mode(grid, category, item)
-        elif type == "timer":
-            grid.timer_vs_items[category] = item
         # Buttons
         else:
             set_buttons(grid, category, item)

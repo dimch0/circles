@@ -138,10 +138,6 @@ def draw_birth(grid, pygame, item):
                            birth_step,
                            0)
 
-        for timer_name in item.timers.keys():
-            if "birth_time" not in timer_name:
-                item.birth_track.pop(0)
-
 
 def draw_body(pygame, grid, MOUSE_POS, item):
     """ Draws each body and it's image if available """
@@ -160,16 +156,15 @@ def draw_body(pygame, grid, MOUSE_POS, item):
 
 def draw_timers(pygame, grid, item):
     """ Draws current state of a timer """
-    for timer in item.timers.values():
-        if timer.available:
-            if timer.time_color:
-                timer.pos = item.pos
-                pygame.draw.arc(grid.game_display,
-                                timer.time_color,
-                                timer.rect,
-                                math.radians(timer.filled_degrees),
-                                math.radians(timer.start_degrees),
-                                2)
+    if item.lifespan:
+        if item.lifespan.available and item.time_color:
+            item.lifespan.pos = item.pos
+            pygame.draw.arc(grid.game_display,
+                            item.time_color,
+                            item.lifespan.rect,
+                            math.radians(item.lifespan.filled_degrees),
+                            math.radians(item.lifespan.start_degrees),
+                            2)
 
 
 def draw_grid(pygame, grid):

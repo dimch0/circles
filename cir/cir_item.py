@@ -13,15 +13,16 @@ class Item(object):
     It includes the open_menu method.
     """
 
-    def __init__(self, name=None, pos=(), color=None, uncolor=None, image=None, timer=None, border=0):
+    # def __init__(self, name=None, pos=(), color=None, image=None, timer=None, border=0):
+    def __init__(self):
         # --------------------------------------------------------------- #
         #                            BASICS                               #
         # --------------------------------------------------------------- #
-        self.name = name
-        self.pos = pos
-        self.color = color
-        self.img = image
-        self.border = border
+        self.name = None
+        self.pos = ()
+        self.color = None
+        self.img = None
+        self.border = 0
         self.border_color = None
         self.border_width = None
         self.default_color = self.color
@@ -38,22 +39,23 @@ class Item(object):
         self.default_options = []
         self.overlap = []
         # --------------------------------------------------------------- #
+        #                              STATS                              #
+        # --------------------------------------------------------------- #
+        self.lifespan = None
+        self.time_color = None
+        self.room = None
+        self.uses = 1
+        # --------------------------------------------------------------- #
         #                            ANIMATION                            #
         # --------------------------------------------------------------- #
         self.direction = None
         self.last_direction = None
-        self.birth_time = None
+        self.birth_time = 0.03
         self.move_track = []
         self.radar_track = []
         self.rot_track = []
         self.rot_revert = []
         self.birth_track = []
-        self.timers = {}
-        # --------------------------------------------------------------- #
-        #                              STATS                              #
-        # --------------------------------------------------------------- #
-        self.room = None
-        self.uses = 1
 
     # --------------------------------------------------------------- #
     #                                                                 #

@@ -7,10 +7,10 @@
     },
 
   "VISIBILITY": {
-    "show_grid"         : 1,
+    "show_grid"         : 0,
     "show_debug"        : 0,
     "show_seconds"      : 0,
-    "show_movement"     : 1,
+    "show_movement"     : 0,
     "show_playing_tiles": 0
   },
 
