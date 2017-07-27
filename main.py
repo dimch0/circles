@@ -28,6 +28,7 @@
 # --------------------------------------------------------------- #
 #                            Bug fixes                            #
 # --------------------------------------------------------------- #
+# TODO: Fix destruction
 # TODO: Fix occupado property lag
 # --------------------------------------------------------------- #
 #                            Imports                              #
@@ -41,7 +42,7 @@ from cir import cir_utils
 from cir import cir_loader
 from cir import cir_cosmetic
 from cir import cir_effects
-
+import pylint
 
 def game_loop(game_over, scenario="Scenario_1"):
     # --------------------------------------------------------------- #
@@ -261,6 +262,9 @@ def game_loop(game_over, scenario="Scenario_1"):
 
                 # Enter
                 cir_effects.enter_room(grid, my_body, item)
+
+                # Destruction
+                cir_effects.destruction(grid, item)
 
                 if item.available:
 

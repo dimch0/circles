@@ -5,11 +5,7 @@
 #################                                                                                     #################
 #################                                                                                     #################
 #######################################################################################################################
-import json
 import cir_utils
-
-CONFIG_JSON_FILE = "data/config.json"
-
 
 class Item(object):
     """
@@ -25,7 +21,6 @@ class Item(object):
         self.color = None
         self.img = None
         self.radius = None
-        self.set_radius()
         self.border = 0
         self.border_color = None
         self.border_width = None
@@ -60,19 +55,7 @@ class Item(object):
         self.rot_track = []
         self.rot_revert = []
         self.birth_track = []
-
-    def set_radius(self):
-        """
-        Setting attributes from the config.json file
-        and calculating the display metrics
-        """
-        try:
-            with open(CONFIG_JSON_FILE) as jsonfile:
-                conf = json.load(jsonfile)
-                self.radius = conf["CONSTANTS"]["tile_radius"]
-
-        except Exception as e:
-            print "ERROR, could not set config:", e
+        self.needs_to_be_destroyed = False
 
     # --------------------------------------------------------------- #
     #                                                                 #

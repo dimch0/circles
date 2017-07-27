@@ -34,6 +34,21 @@ def produce(grid, product, position):
     return produced_item
 
 
+def destroy(grid, item):
+    if item in grid.items and not item.name == "my_body":
+        item.in_menu = False
+        item.gen_birth_track()
+        item.birth_track.reverse()
+        item.needs_to_be_destroyed = True
+
+
+
+def destruction(grid, item):
+    if item.needs_to_be_destroyed and not item.birth_track:
+        item.available = False
+        grid.items.remove(item)
+
+
 # --------------------------------------------------------------- #
 #                                                                 #
 #                         MOUSE MODES                             #
@@ -62,6 +77,13 @@ def shit_mode_click(grid, current_circle):
                     produce(grid, "shit", current_circle)
                     bag_item.uses -= 1
                     return 1
+
+
+def eat_mode_effect(grid, current_tile):
+    """ eat that shit """
+    for item in grid.items:
+        if current_tile == item.pos:
+            destroy(grid, item)
 
 
 # --------------------------------------------------------------- #
@@ -196,6 +218,8 @@ def mouse_mode_click(grid, current_tile):
         if current_tile not in grid.occupado_tiles and current_tile in grid.revealed_tiles:
             new_observer = produce(grid, "observer", current_tile)
             new_observer.lifespan.restart()
+    elif grid.mouse_mode == "eat":
+        eat_mode_effect(grid, current_tile)
 
 
 # --------------------------------------------------------------- #

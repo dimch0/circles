@@ -53,6 +53,7 @@ def create_new_item(grid, type, attributes):
     except Exception as e:
         print "Error, could not set attribute: {0}".format(e)
 
+    dummy.radius = grid.tile_radius
     return dummy
 
 def set_col_idx(header):
