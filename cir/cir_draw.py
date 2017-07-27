@@ -64,8 +64,8 @@ def draw_radar(pygame, grid, item):
         pygame.draw.circle(grid.game_display,
                            grid.white,
                            item.pos,
-                           radar_radius,
-                           thick)
+                           int(radar_radius),
+                           int(thick))
 
 
 def draw_revealed_radius(pygame, grid):
@@ -74,7 +74,8 @@ def draw_revealed_radius(pygame, grid):
         pygame.draw.circle(grid.game_display,
                            grid.room_color,
                            revealed[0],
-                           revealed[1], 0)
+                           int(revealed[1]),
+                           0)
         printed = revealed
         if printed:
             for to_be_printed in grid.revealed_radius:

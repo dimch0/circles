@@ -217,7 +217,7 @@ def click_options(grid, item, option, my_body):
             item.mitosis(grid)
 
         elif option.name == "move":
-            item.change_speed(1)
+            item.change_speed(0.1)
 
         # enter / exit
         elif "Enter_" in option.name:

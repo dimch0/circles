@@ -9,7 +9,6 @@
 #                            Features                             #
 # --------------------------------------------------------------- #
 # TODO: Indicate uses
-# TODO: Implement timer for radar wave
 # TODO: Item generation
 # TODO: Create mini map
 # TODO: Create signal function
@@ -111,10 +110,11 @@ def game_loop(game_over, scenario="Scenario_1"):
                         # Radar Population
                         my_body.gen_radar_track(grid)
                         # Debug
-                        cir_utils.debug_print_space(grid)
+                        cir_utils.debug_print_space(grid, my_body)
 
                     elif event.key == pygame.K_t:
                         print ">>>> key t"
+                        my_body.vibe_speed += 0.1
                         my_body.lifespan.update(5)
                         print my_body.lifespan.duration
 

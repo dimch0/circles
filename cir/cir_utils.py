@@ -62,6 +62,20 @@ def inside_polygon(poly, point):
     return inside
 
 
+
+def drange(start, stop, step):
+    r = start
+    while r < stop:
+        yield r
+        r += step
+
+
+def get_list_drange(start, stop, step):
+    i0 = drange(start, stop, step)
+    result = [x for x in i0]
+    return result
+
+
 def debug_print_click(grid, MOUSE_POS, clicked_circle, my_body):
     """  Debug print on click event  """
     if grid.show_debug:
@@ -91,14 +105,16 @@ def debug_print_click(grid, MOUSE_POS, clicked_circle, my_body):
                    )
                   )
 
-def debug_print_space(grid):
+def debug_print_space(grid, my_body):
     """  Debug print on space bar event  """
     if grid.show_debug:
         print(""">>>> space
-    revealed tiles: {0}
+    revealed tiles : {0}
     revealed_radius: {1}
+    vibe speed     : {2}
     """.format(len(grid.revealed_tiles),
                len(grid.revealed_radius),
+               my_body.vibe_speed
               )
              )
 

@@ -38,11 +38,12 @@ class MobileItem(Item):
         result = []
         if self.speed > 0:
             distance = 2 * grid.tile_radius
-            steps = distance / self.speed
+            steps = int(distance / self.speed)
             from_tile_x = self.pos[0]
             from_tile_y = self.pos[1]
             target_tile_x = target_tile[0]
             target_tile_y = target_tile[1]
+
             for step in range(1, steps):
                 a = float(step) / steps
                 step_x = int((1 - a) * from_tile_x + a * target_tile_x)
