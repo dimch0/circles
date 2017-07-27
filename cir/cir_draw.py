@@ -292,6 +292,24 @@ def draw_background_stuff(pygame, grid):
 # --------------------------------------------------------------- #
 def draw_animations(pygame, grid, MOUSE_POS):
     """ Main drawing function """
+    # TEST PLACE
+
+
+    pygame.draw.lines(grid.game_display,
+                      grid.dark_grey,
+                      False,
+                      [(693, 450), (795, 510)],
+                      grid.tile_radius * 2)
+
+    pygame.draw.lines(grid.game_display,
+                      grid.dark_grey,
+                      False,
+                      [(540, 480), (540, 540)],
+                      grid.tile_radius * 2)
+
+
+
+
     for item in grid.items:
         if item.available:
 

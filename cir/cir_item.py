@@ -54,7 +54,7 @@ class Item(object):
         # --------------------------------------------------------------- #
         self.direction = None
         self.last_rotation = None
-        self.birth_time = 0.03
+        self.birth_time = 0.05
         self.move_track = []
         self.radar_track = []
         self.rot_track = []
