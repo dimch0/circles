@@ -54,7 +54,7 @@ class Item(object):
         # --------------------------------------------------------------- #
         self.direction = None
         self.last_rotation = None
-        self.birth_time = 0.05
+        self.birth_time = 0.033
         self.move_track = []
         self.radar_track = []
         self.rot_track = []
@@ -224,9 +224,11 @@ class Item(object):
                     if olapped_item.pos == option.pos and olapped_item.available:
                         if not olapped_item in self.overlap:
                             self.overlap.append(olapped_item)
+                            grid.overlapped.append(olapped_item)
                             olapped_item.available = False
         else:
             if self.overlap:
                 for item in self.overlap:
                     item.available = True
+                    grid.overlapped.remove(item)
                     self.overlap.remove(item)

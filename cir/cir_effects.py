@@ -104,7 +104,22 @@ def empty_bag(grid):
 #                       ENTER / EXIT EFFECTS                      #
 #                                                                 #
 # --------------------------------------------------------------- #
-def exit_room(grid, my_body, item, option):
+def enter_room(grid, my_body, item):
+    if "Exit_" in item.name or "Enter_" in item.name:
+        room_number = None
+        for option in item.options:
+            if "Enter_" in option.name:
+                room_number = option.name.replace("Enter_", "")
+                room_number = int(room_number)
+
+        if my_body.pos == item.pos and grid.needs_to_change_room:
+            grid.change_room(room_number)
+            my_body.available = True
+            my_body.gen_birth_track()
+            grid.rooms[grid.current_room]["revealed_radius"].append(((item.pos), grid.tile_radius))
+
+
+def exit_room(grid, my_body, item):
     """
     Changes the current room
     :param grid: grid instance
@@ -112,20 +127,9 @@ def exit_room(grid, my_body, item, option):
     :param item: enter / exit item
     :param option: option of the above item -> holds the room number
     """
-    room_number = None
-
-    if "Enter_" in option.name:
-        room_number = option.name.replace("Enter_", "")
-        room_number = int(room_number)
-
-    if my_body.pos in grid.adj_tiles(item.pos) and room_number:
-        my_body.gen_birth_track()
+    if my_body.pos in grid.adj_tiles(item.pos):
         my_body.move_track = my_body.move_to_tile(grid, item.pos)
-        my_body.pos = item.pos
-        my_body.gen_birth_track()
-        grid.change_room(room_number)
-        my_body.available = True
-        grid.rooms[grid.current_room]["revealed_radius"].append(((item.pos), grid.tile_radius))
+        grid.needs_to_change_room = True
     else:
         print "it far"
 
@@ -221,7 +225,7 @@ def click_options(grid, item, option, my_body):
 
         # enter / exit
         elif "Enter_" in option.name:
-            exit_room(grid, my_body, item, option)
+            exit_room(grid, my_body, item)
 
         # Setting the mode
         item.set_mode(grid, option)

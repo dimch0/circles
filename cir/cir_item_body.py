@@ -82,6 +82,8 @@ class BodyItem(MobileItem):
         grid.set_rev_tiles()
         for item in grid.items:
             if item.pos in grid.revealed_tiles:
-               item.available = True
+                if not item.available and not item in grid.overlapped:
+                    item.available = True
+                    item.gen_birth_track()
 
         return radar_radius, thick

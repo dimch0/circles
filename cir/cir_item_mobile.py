@@ -90,7 +90,7 @@ class MobileItem(Item):
         """
         :return: move self.pos per point in move_track
         """
-        if self.move_track:
+        if self.move_track and not self.birth_track:
             self.pos = self.move_track[0]
             self.move_track.pop(0)
 

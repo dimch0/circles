@@ -8,7 +8,6 @@
 # --------------------------------------------------------------- #
 #                            Features                             #
 # --------------------------------------------------------------- #
-# TODO: Indicate uses
 # TODO: Item generation
 # TODO: Create mini map
 # TODO: Create signal function
@@ -21,6 +20,7 @@
 # --------------------------------------------------------------- #
 #                            Animation                            #
 # --------------------------------------------------------------- #
+# TODO: Indicate uses
 # TODO: Animate item activation
 # TODO: Animate room transition
 # TODO: Animate circle kiss
@@ -28,7 +28,6 @@
 # --------------------------------------------------------------- #
 #                            Bug fixes                            #
 # --------------------------------------------------------------- #
-# TODO: Fix revert image rotation
 # TODO: Fix occupado property lag
 # --------------------------------------------------------------- #
 #                            Imports                              #
@@ -63,7 +62,7 @@ def game_loop(game_over, scenario="Scenario_1"):
         grid.game_menu = False
 
     # TEST
-    my_body.lifespan.duration = 10
+    my_body.lifespan.duration = 600
 
 
     print "Game started"
@@ -259,6 +258,9 @@ def game_loop(game_over, scenario="Scenario_1"):
 
                 # Timers
                 cir_effects.timer_effect(grid, item)
+
+                # Enter
+                cir_effects.enter_room(grid, my_body, item)
 
                 if item.available:
 

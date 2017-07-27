@@ -51,12 +51,14 @@ class Grid(object):
         self.items = []
         self.buttons = []
         self.rooms = {}
+        self.needs_to_change_room = False
         # -------------------------------------------------- #
         #                        ITEMS                       #
         # -------------------------------------------------- #
         self.everything = {}
         self.mode_vs_options = {}
         self.timer_vs_items = {}
+        self.overlapped = []
         # -------------------------------------------------- #
         #                        MOUSE                       #
         # -------------------------------------------------- #
@@ -244,6 +246,7 @@ class Grid(object):
         self.save_current_room()
         self.current_room = room
         self.load_current_room()
+        self.needs_to_change_room = False
 
     # --------------------------------------------------------------- #
     #                            SECONDS                              #
