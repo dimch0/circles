@@ -76,6 +76,20 @@ def get_list_drange(start, stop, step):
     return result
 
 
+def get_next_point(pointA, pointB, dist):
+
+    x1 = pointA[0]
+    y1 = pointA[1]
+    x2 = pointB[0]
+    y2 = pointB[1]
+
+    new_x = x1 * (1 - dist) + x2 * dist
+    new_y = y1 * (1 - dist) + y2 * dist
+    new_step = (new_x, new_y)
+
+    return new_step
+
+
 def debug_print_click(grid, MOUSE_POS, clicked_circle, my_body):
     """  Debug print on click event  """
     if grid.show_debug:

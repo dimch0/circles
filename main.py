@@ -22,7 +22,6 @@
 # --------------------------------------------------------------- #
 # TODO: Indicate uses
 # TODO: Animate item activation
-# TODO: Animate room transition
 # TODO: Animate circle kiss
 # TODO: Animate demo
 # --------------------------------------------------------------- #
@@ -235,7 +234,7 @@ def game_loop(game_over, scenario="Scenario_1"):
             # BACKGROUND
             cir_draw.draw_background_stuff(pygame, grid)
             # ANIMATIONS
-            cir_draw.draw_animations(pygame, grid, MOUSE_POS)
+            cir_draw.draw_animations(pygame, grid, MOUSE_POS, my_body)
 
         pygame.display.update()
 

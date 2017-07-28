@@ -9,9 +9,6 @@ from cir_item_mobile import MobileItem
 from cir_utils import get_list_drange
 
 
-
-
-
 class BodyItem(MobileItem):
     """
     This class holds all attributes and metrics of your body
@@ -37,6 +34,11 @@ class BodyItem(MobileItem):
         # self.stress = 0
         # self.status = []
 
+    # --------------------------------------------------------------- #
+    #                                                                 #
+    #                             RADAR                               #
+    #                                                                 #
+    # --------------------------------------------------------------- #
     def gen_radar_track(self, grid):
         """
         :param grid: grid object
@@ -87,3 +89,15 @@ class BodyItem(MobileItem):
                     item.gen_birth_track()
 
         return radar_radius, thick
+
+
+# --------------------------------------------------------------- #
+#                                                                 #
+#                            SIGNAL                               #
+#                                                                 #
+# --------------------------------------------------------------- #
+# TODO: Define position of mouse and direction to fire
+    def get_aiming_direction(self, MOUSE_POS):
+        pass
+
+

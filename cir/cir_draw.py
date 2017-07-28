@@ -49,7 +49,7 @@ def draw_hover(pygame, grid, MOUSE_POS, tile):
 def draw_img(grid, item):
     """ Blit image on display """
 
-    if item.img and item.available:
+    if item.img and item.available and not item.birth_track:
         if item.img.get_width() == grid.tile_radius:
             grid.game_display.blit(item.img, set_emoji_pos(item.pos, grid))
         else:
@@ -133,30 +133,26 @@ def draw_menu_buttons(pygame, grid, MOUSE_POS):
             draw_hover(pygame, grid, MOUSE_POS, button.pos)
 
 
-def draw_birth(grid, pygame, item):
-    """ Draws the birth of an item """
-    if item.birth_track:
-        birth_step = item.birth_track[0]
-        pygame.draw.circle(grid.game_display,
-                           item.color,
-                           item.pos,
-                           birth_step,
-                           0)
-
-
 def draw_body(pygame, grid, MOUSE_POS, item):
     """ Draws each body and it's image if available """
     # for item in grid.bodies:
-    if item.available and not item.birth_track:
-        if item.color:
-            pygame.draw.circle(grid.game_display,
-                               item.color,
-                               item.pos,
-                               grid.tile_radius,
-                               item.border)
-        if item.img:
-            draw_img(grid, item)
+    if item.available and item.color:
+        if item.birth_track:
+            radius = item.birth_track[0]
+        elif not item.birth_track:
+            radius = grid.tile_radius
+
+        pygame.draw.circle(grid.game_display,
+                           item.color,
+                           item.pos,
+                           radius,
+                           item.border)
+
+        # Draw activation here
+
+        draw_img(grid, item)
         draw_hover(pygame, grid, MOUSE_POS, item.pos)
+
 
 
 def draw_timers(pygame, grid, item):
@@ -290,10 +286,44 @@ def draw_background_stuff(pygame, grid):
 #                           ANIMATIONS                            #
 #                                                                 #
 # --------------------------------------------------------------- #
-def draw_animations(pygame, grid, MOUSE_POS):
+def draw_animations(pygame, grid, MOUSE_POS, my_body):
     """ Main drawing function """
     # TEST PLACE
 
+    dist = 2
+    pointA = MOUSE_POS
+    pointB = my_body.pos
+    pointC = cir_utils.get_next_point(pointA, pointB, dist)
+    pointD = None
+
+    difx = (pointB[0] - pointA[0])
+    dify = (pointB[1] - pointB[0])
+
+    import math
+    DDIST = 1
+    d = math.sqrt((math.pow(difx, 2) + math.pow(dify, 2)))
+    t = DDIST / d
+
+    dx = int((1 - t) * pointA[0] + t * pointB[0])
+    dy = int((1 - t) * pointB[0] + t * pointB[1])
+    pointD = (dx, dy)
+
+
+    pygame.draw.line(grid.game_display,
+                     grid.white,
+                     pointA,
+                     pointC,
+                     4)
+    pygame.draw.line(grid.game_display,
+                     grid.red,
+                     pointB,
+                     pointC,
+                     2)
+    pygame.draw.circle(grid.game_display,
+                       grid.black,
+                       pointD,
+                       5,
+                       0)
 
     # pygame.draw.lines(grid.game_display,
     #                   grid.dark_grey,
@@ -304,9 +334,6 @@ def draw_animations(pygame, grid, MOUSE_POS):
 
     for item in grid.items:
         if item.available:
-
-            # Birth
-            draw_birth(grid, pygame, item)
 
             # Radar
             if item.radar_track:

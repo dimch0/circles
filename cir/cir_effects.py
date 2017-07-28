@@ -43,6 +43,7 @@ def destroy(grid, item):
 
 
 
+
 def destruction(grid, item):
     if item.needs_to_be_destroyed and not item.birth_track:
         item.available = False
