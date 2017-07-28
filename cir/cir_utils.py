@@ -90,6 +90,33 @@ def get_next_point(pointA, pointB, dist):
     return new_step
 
 
+def get_mirror_point(pointA, pointB):
+
+    # TESTING STILL IN PROGRESS
+
+    dist = 2
+    pointA = pointA
+    pointB = pointB
+    pointC = get_next_point(pointA, pointB, dist)
+    pointD = None
+
+    ax = pointA[0]
+    ay = pointA[1]
+    bx = pointB[0]
+    by = pointB[1]
+    cx = pointC[0]
+    cy = pointC[1]
+
+    ddist = 10
+    d = math.sqrt((bx - cx) * (bx - cx)) + ((by - cy) * (by - cy))
+
+    t = 1
+
+    dx = int(((1 - t) * pointB[0]) + (t * pointC[0]))
+    dy = int(((1 - t) * pointB[1]) + (t * pointC[1]))
+
+    return (dx, dy)
+
 def debug_print_click(grid, MOUSE_POS, clicked_circle, my_body):
     """  Debug print on click event  """
     if grid.show_debug:

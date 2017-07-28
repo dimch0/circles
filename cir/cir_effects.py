@@ -7,27 +7,32 @@
 #######################################################################################################################
 import copy
 import random
+import cir_utils
 
 # --------------------------------------------------------------- #
 #                                                                 #
 #                         BASIC EFFECTS                           #
 #                                                                 #
 # --------------------------------------------------------------- #
-def produce(grid, product, position):
+def produce(grid, product, pos, radius=None, birth=None):
     """
     Produces an item from the everything dict
     :param grid: grid instance
     :param product: name of the item from the everything dict
-    :param position: new position
+    :param pos: new position
     :return: the new item
     """
     produced_item = None
     for name, item in grid.everything.items():
         if name == product:
+            if radius:
+                item.radius = radius
+            if birth:
+                item.birth_time.duration = birth
             produced_item = copy.deepcopy(item)
             produced_item.img = item.img
             produced_item.default_img = item.default_img
-            produced_item.pos = position
+            produced_item.pos = pos
             produced_item.available = True
             produced_item.gen_birth_track()
             grid.items.append(produced_item)
@@ -35,7 +40,7 @@ def produce(grid, product, position):
 
 
 def destroy(grid, item):
-    if item in grid.items and not item.name == "my_body":
+    if item in grid.items and not item.name == "my_body" and not item.birth_track:
         item.in_menu = False
         item.gen_birth_track()
         item.birth_track.reverse()
@@ -46,8 +51,16 @@ def destroy(grid, item):
 
 def destruction(grid, item):
     if item.needs_to_be_destroyed and not item.birth_track:
-        item.available = False
-        grid.items.remove(item)
+        # Signal
+        if item.name == "signal":
+            if not item.move_track:
+                item.available = False
+                grid.items.remove(item)
+        else:
+            item.available = False
+            grid.items.remove(item)
+
+
 
 
 # --------------------------------------------------------------- #
@@ -81,10 +94,23 @@ def shit_mode_click(grid, current_circle):
 
 
 def eat_mode_effect(grid, current_tile):
-    """ eat that shit """
+    """ Eat that shit """
     for item in grid.items:
         if current_tile == item.pos:
             destroy(grid, item)
+
+
+def echo_mode_effect(grid, current_tile, my_body):
+    """ Signal effect """
+    signal = produce(grid,
+                     "signal",
+                     my_body.pos,
+                     radius = 8,
+                     birth = 0)
+
+    target_tile = cir_utils.get_mirror_point(current_tile, my_body.pos)
+    signal.move_track = signal.move_to_tile(grid, target_tile)
+
 
 
 # --------------------------------------------------------------- #
@@ -189,6 +215,19 @@ def observer_lifespan_over_effect(grid, item):
             item.lifespan.restart()
 
 
+def signal_lifespan_over_effect(grid, item):
+    print item.birth_track
+    destroy(grid, item)
+
+
+    # def destroy(grid, item):
+    #     if item in grid.items and not item.name == "my_body":
+    #         item.in_menu = False
+    #         item.gen_birth_track()
+    #         item.birth_track.reverse()
+    #         item.needs_to_be_destroyed = True
+
+
 def timer_effect(grid, item):
     """ Timer effects  """
     if item.lifespan:
@@ -199,6 +238,8 @@ def timer_effect(grid, item):
                 my_body_lifespan_over_effect(grid)
             elif item.name == "observer":
                 observer_lifespan_over_effect(grid, item)
+            elif item.name == "signal":
+                signal_lifespan_over_effect(grid, item)
 
     if item.birth_track:
         if item.birth_time and not isinstance(item.birth_time, float):
@@ -210,7 +251,7 @@ def timer_effect(grid, item):
 # --------------------------------------------------------------- #
 #                        MOUSE MODE CLICK                         #
 # --------------------------------------------------------------- #
-def mouse_mode_click(grid, current_tile):
+def mouse_mode_click(grid, current_tile, my_body):
     if grid.mouse_mode == "laino":
         laino_mode_click(grid, current_tile)
     elif grid.mouse_mode == "shit":
@@ -221,7 +262,8 @@ def mouse_mode_click(grid, current_tile):
             new_observer.lifespan.restart()
     elif grid.mouse_mode == "eat":
         eat_mode_effect(grid, current_tile)
-
+    elif grid.mouse_mode == "echo":
+        echo_mode_effect(grid, current_tile, my_body)
 
 # --------------------------------------------------------------- #
 #                    MOUSE MODE CLICK ON ITEM                     #
@@ -231,6 +273,11 @@ def mouse_mode_click_item(grid, item):
         collect(grid, item)
 
 
+# --------------------------------------------------------------- #
+#                                                                 #
+#                            BODY MODES                           #
+#                                                                 #
+# --------------------------------------------------------------- #
 def click_options(grid, item, option, my_body):
     # --------------------------------------------------------------- #
     #                       CLICK DEFAULT OPTIONS                     #
@@ -246,6 +293,10 @@ def click_options(grid, item, option, my_body):
             item.mitosis(grid)
 
         elif option.name == "move":
+            item.change_speed(0.1)
+
+        elif option.name == "echo":
+            # activate signal mode
             item.change_speed(0.1)
 
         # enter / exit

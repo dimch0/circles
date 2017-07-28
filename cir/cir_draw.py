@@ -140,13 +140,13 @@ def draw_body(pygame, grid, MOUSE_POS, item):
         if item.birth_track:
             radius = item.birth_track[0]
         elif not item.birth_track:
-            radius = grid.tile_radius
+            radius = item.radius
 
         pygame.draw.circle(grid.game_display,
                            item.color,
                            item.pos,
                            radius,
-                           item.border)
+                           0)
 
         # Draw activation here
 
@@ -166,6 +166,20 @@ def draw_timers(pygame, grid, item):
                             math.radians(item.lifespan.filled_degrees),
                             math.radians(item.lifespan.start_degrees),
                             2)
+
+def draw_aim(pygame, grid, MOUSE_POS, my_body):
+    """ Aim """
+    if my_body.mode == "echo":
+        aim_point = cir_utils.get_mirror_point(MOUSE_POS, my_body.pos)
+        pygame.draw.circle(grid.game_display,
+                           grid.black,
+                           aim_point,
+                           5,
+                           0)
+
+
+
+
 
 
 def draw_grid(pygame, grid):
@@ -281,6 +295,10 @@ def draw_background_stuff(pygame, grid):
         draw_playing_tiles(pygame, grid)
 
 
+
+
+
+
 # --------------------------------------------------------------- #
 #                                                                 #
 #                           ANIMATIONS                            #
@@ -290,40 +308,6 @@ def draw_animations(pygame, grid, MOUSE_POS, my_body):
     """ Main drawing function """
     # TEST PLACE
 
-    dist = 2
-    pointA = MOUSE_POS
-    pointB = my_body.pos
-    pointC = cir_utils.get_next_point(pointA, pointB, dist)
-    pointD = None
-
-    difx = (pointB[0] - pointA[0])
-    dify = (pointB[1] - pointB[0])
-
-    import math
-    DDIST = 1
-    d = math.sqrt((math.pow(difx, 2) + math.pow(dify, 2)))
-    t = DDIST / d
-
-    dx = int((1 - t) * pointA[0] + t * pointB[0])
-    dy = int((1 - t) * pointB[0] + t * pointB[1])
-    pointD = (dx, dy)
-
-
-    pygame.draw.line(grid.game_display,
-                     grid.white,
-                     pointA,
-                     pointC,
-                     4)
-    pygame.draw.line(grid.game_display,
-                     grid.red,
-                     pointB,
-                     pointC,
-                     2)
-    pygame.draw.circle(grid.game_display,
-                       grid.black,
-                       pointD,
-                       5,
-                       0)
 
     # pygame.draw.lines(grid.game_display,
     #                   grid.dark_grey,
@@ -331,6 +315,9 @@ def draw_animations(pygame, grid, MOUSE_POS, my_body):
     #                   [(693, 450), (795, 510)],
     #                   grid.tile_radius * 2)
 
+
+    # Aim
+    draw_aim(pygame, grid, MOUSE_POS, my_body)
 
     for item in grid.items:
         if item.available:

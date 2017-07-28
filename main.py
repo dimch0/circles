@@ -27,7 +27,7 @@
 # --------------------------------------------------------------- #
 #                            Bug fixes                            #
 # --------------------------------------------------------------- #
-# TODO: Fix destruction
+# TODO: Fix menu item with active mouse mode on other items
 # TODO: Fix occupado property lag
 # --------------------------------------------------------------- #
 #                            Imports                              #
@@ -174,7 +174,7 @@ def game_loop(game_over, scenario="Scenario_1"):
                         # --------------------------------------------------------------- #
                         #                         MOUSE MODE CLICK                        #
                         # --------------------------------------------------------------- #
-                        cir_effects.mouse_mode_click(grid, current_tile)
+                        cir_effects.mouse_mode_click(grid, current_tile, my_body)
 
                         # --------------------------------------------------------------- #
                         #                          CLICK ON ITEMS                         #

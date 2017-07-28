@@ -138,6 +138,7 @@ class MobileItem(Item):
             new_copy.pos = self.pos
             new_copy.color = self.color
             new_copy.birth_time = None
+            new_copy.radius = self.radius
             # new_copy.birth_time = TimerItem()
             # new_copy.birth_time.duration = 0.03
             # new_copy.gen_birth_track(grid)
