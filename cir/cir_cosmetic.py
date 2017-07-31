@@ -44,7 +44,8 @@ class Images(object):
                     else:
                         image = pygame.transform.scale(image, (grid.tile_radius * 2, grid.tile_radius * 2))
 
-                    setattr(self, name, image)
+                    if not 'insta' in img_file:
+                        setattr(self, name, image)
 
         except Exception as e:
             print "ERROR, could not set image as attribute:", e
