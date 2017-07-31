@@ -102,14 +102,15 @@ def eat_mode_effect(grid, current_tile):
 
 def echo_mode_effect(grid, current_tile, my_body):
     """ Signal effect """
-    signal = produce(grid,
-                     "signal",
-                     my_body.pos,
-                     radius = 8,
-                     birth = 0)
+    if not cir_utils.in_circle(my_body.pos, my_body.radius, current_tile):
+        signal = produce(grid,
+                         "signal",
+                         my_body.pos,
+                         radius = int(grid.tile_radius / 3),
+                         birth = 0)
 
-    target_tile = cir_utils.get_mirror_point(current_tile, my_body.pos)
-    signal.move_track = signal.move_to_tile(grid, target_tile)
+        target_tile = cir_utils.get_mirror_point(current_tile, my_body.pos)
+        signal.move_track = signal.move_to_tile(grid, target_tile)
 
 
 
@@ -216,16 +217,7 @@ def observer_lifespan_over_effect(grid, item):
 
 
 def signal_lifespan_over_effect(grid, item):
-    print item.birth_track
     destroy(grid, item)
-
-
-    # def destroy(grid, item):
-    #     if item in grid.items and not item.name == "my_body":
-    #         item.in_menu = False
-    #         item.gen_birth_track()
-    #         item.birth_track.reverse()
-    #         item.needs_to_be_destroyed = True
 
 
 def timer_effect(grid, item):

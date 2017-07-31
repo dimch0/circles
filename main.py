@@ -62,7 +62,7 @@ def game_loop(game_over, scenario="Scenario_1"):
         grid.game_menu = False
 
     # TEST
-    my_body.lifespan.duration = 5
+    my_body.lifespan.duration = 300
 
 
     print "Game started"

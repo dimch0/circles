@@ -170,7 +170,8 @@ def draw_timers(pygame, grid, item):
 def draw_aim(pygame, grid, MOUSE_POS, my_body):
     """ Aim """
     if my_body.mode == "echo":
-        aim_point = cir_utils.get_mirror_point(MOUSE_POS, my_body.pos)
+        aim_point = my_body.get_aiming_direction(MOUSE_POS)
+        # aim_point = cir_utils.get_mirror_point(MOUSE_POS, my_body.pos)
         pygame.draw.circle(grid.game_display,
                            grid.black,
                            aim_point,
@@ -317,7 +318,7 @@ def draw_animations(pygame, grid, MOUSE_POS, my_body):
 
 
     # Aim
-    draw_aim(pygame, grid, MOUSE_POS, my_body)
+    # draw_aim(pygame, grid, MOUSE_POS, my_body)
 
     for item in grid.items:
         if item.available:

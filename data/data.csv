@@ -8,7 +8,7 @@ Scenario_1 Scenario_2,1,observer,body,enemy,,,,,light_grey,emoji_eye_y,144,,,,2,
 Scenario_1 Scenario_2,,kiss,mode_option,lover,TRUE,TRUE,,,cyclama,emoji_lips_y,,,,,,,,,,
 Scenario_1 Scenario_2,,mitosis,mode_option,my_body,TRUE,,,,dark_grey,mitosis,,,,,,,,,,
 Scenario_1 Scenario_2,,echo,mode_option,my_body,TRUE,TRUE,,,dark_grey,bow,,,,,,,,,,
-Scenario_1 Scenario_2,,signal,body,items,TRUE,,,,white,,,,,,10,1,,,,0.5
+Scenario_1 Scenario_2,,signal,body,items,TRUE,,,,white,,,,,,1,1,,,,0.5
 Scenario_1 Scenario_2,,bag,mode_option,my_body,TRUE,TRUE,,,dark_grey,plastic_bag,,,,,,,,,,
 Scenario_1 Scenario_2,,move,mode_option,my_body,TRUE,,,,dark_grey,emoji_feet,,,,,,,,,,
 Scenario_1 Scenario_2,,laino,mode_option,my_body,TRUE,TRUE,,,dark_grey,laino2,,,,,,,,,,
