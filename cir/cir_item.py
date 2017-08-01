@@ -17,10 +17,12 @@ class Item(object):
         #                            BASICS                               #
         # --------------------------------------------------------------- #
         self.name = None
+        self.type = None
         self.pos = ()
         self.color = None
         self.img = None
         self.radius = None
+        self.default_radius = self.radius
         self.border = 0
         self.border_color = None
         self.border_width = None
@@ -55,6 +57,7 @@ class Item(object):
         self.rot_track = []
         self.rot_revert = []
         self.birth_track = []
+        self.fat_track = []
         self.needs_to_be_destroyed = False
 
     # --------------------------------------------------------------- #
@@ -92,6 +95,20 @@ class Item(object):
 
     def gen_birth_track(self):
         self.birth_track = range(1, self.radius)
+
+
+    def gen_fat(self):
+        if not self.fat_track:
+            result = []
+            reverse_result = []
+            for fat in range(self.radius / 4):
+                result.append(self.radius + fat)
+                reverse_result.append(self.radius + fat)
+
+            reverse_result.reverse()
+            final_result = result + reverse_result
+            final_result.append(self.default_radius)
+            self.fat_track = final_result
 
     def rotate(self, pygame):
         """ Rotates the image """

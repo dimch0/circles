@@ -137,15 +137,21 @@ def draw_body(pygame, grid, MOUSE_POS, item):
     """ Draws each body and it's image if available """
     # for item in grid.bodies:
     if item.available and item.color:
+
         if item.birth_track:
-            radius = item.birth_track[0]
-        elif not item.birth_track:
-            radius = item.radius
+            item.radius = item.birth_track[0]
+        elif not item.birth_track and item.fat_track:
+            print item.fat_track
+            item.radius = item.fat_track[0]
+            item.fat_track.pop(0)
+
+        # if not item.birth_track:
+        #     radius = item.radius
 
         pygame.draw.circle(grid.game_display,
                            item.color,
                            item.pos,
-                           radius,
+                           item.radius,
                            0)
 
         # Draw activation here

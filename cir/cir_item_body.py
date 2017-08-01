@@ -61,6 +61,7 @@ class BodyItem(MobileItem):
                     result.append(thick)
 
             self.radar_track = zip(radar_radius, result)
+            self.gen_fat()
         return self.radar_track
 
     def radar(self, grid):

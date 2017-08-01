@@ -22,7 +22,6 @@
 # --------------------------------------------------------------- #
 # TODO: Indicate uses
 # TODO: Animate item activation
-# TODO: Animate circle kiss
 # TODO: Animate demo
 # --------------------------------------------------------------- #
 #                            Bug fixes                            #
@@ -116,6 +115,10 @@ def game_loop(game_over, scenario="Scenario_1"):
                         my_body.vibe_speed += 0.1
                         my_body.lifespan.update(5)
                         print my_body.lifespan.duration
+
+                    elif event.key == pygame.K_f:
+                        print ">>>> key f"
+                        my_body.gen_fat()
 
                     elif event.key == pygame.K_p:
                         print ">>>> key p"
@@ -266,6 +269,12 @@ def game_loop(game_over, scenario="Scenario_1"):
                 cir_effects.destruction(grid, item)
 
                 if item.available:
+
+                    # Kissing circles
+                    if item.type == 'body':
+                        for adj_item in grid.items:
+                            if adj_item.type == 'body' and adj_item.pos in grid.adj_tiles(item.pos):
+                                item.gen_fat()
 
                     # Movement
                     if item.direction != None:

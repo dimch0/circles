@@ -50,10 +50,13 @@ def create_new_item(grid, type, attributes):
                 if attribute == "color":
                     if hasattr(dummy, "default_color"):
                         setattr(dummy, "default_color", value)
+
     except Exception as e:
         print "Error, could not set attribute: {0}".format(e)
 
     dummy.radius = grid.tile_radius
+    dummy.default_radius = dummy.radius
+
     # DEBUG PRINT
     return dummy
 
@@ -109,6 +112,7 @@ def load_data(grid, images, fonts, SCENARIO):
                     #                        ATTRIBUTES DICT                          #
                     # --------------------------------------------------------------- #
                     attributes = {
+                        "type"        : row[col_idx["type"]],
                         "available"   : bool(row[col_idx["available"]]) if len(row[col_idx["available"]]) > 0 else None,
                         "border"      : row[col_idx["border"]] if len(row[col_idx["border"]]) > 0 else 0,
                         "border_width": int(row[col_idx["border_width"]]) if len(row[col_idx["border_width"]]) > 0 else 1,
