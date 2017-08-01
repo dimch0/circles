@@ -16,8 +16,8 @@ class TimerItem(Item):
         super(TimerItem, self).__init__()
 
         # VISUAL
-        self.timer_tile_radius = None
-        self._rect = []
+        # self.timer_tile_radius = None
+        # self._rect = []
 
         # CONSTANTS
         self.time_step = 0.0157
@@ -65,16 +65,6 @@ class TimerItem(Item):
             if self.step > self.number_of_steps:
                 self._is_over = True
         return self._is_over
-
-    @property
-    def rect(self):
-        """ This defines the rect argument for the arch drawing """
-        if self.timer_tile_radius:
-            self._rect = [self.pos[0] - self.timer_tile_radius,
-                          self.pos[1] - self.timer_tile_radius,
-                          2 * self.timer_tile_radius,
-                          2 * self.timer_tile_radius]
-        return self._rect
 
     def restart(self):
         """ Restarts the timer """

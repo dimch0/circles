@@ -179,19 +179,24 @@ class MobileItem(Item):
 #                            SIGNAL                               #
 #                                                                 #
 # --------------------------------------------------------------- #
-    def get_aiming_direction(self, grid, MOUSE_POS):
+    def get_aiming_direction(self, grid, MOUSE_POS, current_tile):
         """  Currently gives the opposite mirror point of the mouse """
         # MIRROR POINT
-        # aim_point = get_mirror_point(MOUSE_POS, self.pos)
+        # aim_point = get_mirror_point(current_tile, self.pos)
+
         opposite_tile = None
         aim_dir_idx = None
-
-        for dir_idx, adj_tile in enumerate(grid.adj_tiles(self.pos)):
-            if not opposite_tile:
-                opposite_tile = adj_tile
-                aim_dir_idx = dir_idx
-            elif cir_utils.dist_between(MOUSE_POS, adj_tile) > cir_utils.dist_between(MOUSE_POS, opposite_tile):
-                opposite_tile = adj_tile
-                aim_dir_idx = dir_idx
+        if current_tile:
+            start_point = current_tile
+        else:
+            start_point = MOUSE_POS
+        if start_point:
+            for dir_idx, adj_tile in enumerate(grid.adj_tiles(self.pos)):
+                if not opposite_tile:
+                    opposite_tile = adj_tile
+                    aim_dir_idx = dir_idx
+                elif cir_utils.dist_between(start_point, adj_tile) > cir_utils.dist_between(start_point, opposite_tile):
+                    opposite_tile = adj_tile
+                    aim_dir_idx = dir_idx
 
         return [opposite_tile, aim_dir_idx]

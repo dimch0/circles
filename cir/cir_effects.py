@@ -91,7 +91,7 @@ def eat_mode_effect(grid, current_tile):
             destroy(grid, item)
 
 
-def echo_mode_effect(grid, current_tile, my_body):
+def echo_mode_effect(grid, current_tile, my_body, MOUSE_POS):
     """ Signal effect """
     if not cir_utils.in_circle(my_body.pos, my_body.radius, current_tile) and not my_body.move_track:
         signal = produce(grid,
@@ -99,18 +99,17 @@ def echo_mode_effect(grid, current_tile, my_body):
                          my_body.pos,
                          radius = int(grid.tile_radius / 3),
                          birth = 0)
+        signal.direction = signal.get_aiming_direction(grid, current_tile, MOUSE_POS)[1]
 
-        # target_tile = cir_utils.get_mirror_point(current_tile, my_body.pos)
-        # signal.move_track = signal.move_to_tile(grid, target_tile)
-
-        signal.direction = signal.get_aiming_direction(grid, current_tile)[1]
 
 def signal_hit(gird, item, my_body):
     hit = False
     if item.name == "signal":
-        if (item.pos in gird.occupado_tiles and not item.pos == my_body.pos) or item.direction == None:
+        if (item.pos in gird.occupado_tiles and not item.intersects(my_body)) or item.direction == None:
             hit = True
+            print "Hit!"
     return hit
+
 
 def signal_hit_effect(grid, item):
     item.in_menu = False
@@ -249,7 +248,7 @@ def timer_effect(grid, item):
 # --------------------------------------------------------------- #
 #                        MOUSE MODE CLICK                         #
 # --------------------------------------------------------------- #
-def mouse_mode_click(grid, current_tile, my_body):
+def mouse_mode_click(grid, current_tile, my_body, MOUSE_POS):
     if grid.mouse_mode == "laino":
         laino_mode_click(grid, current_tile)
     elif grid.mouse_mode == "shit":
@@ -261,7 +260,7 @@ def mouse_mode_click(grid, current_tile, my_body):
     elif grid.mouse_mode == "eat":
         eat_mode_effect(grid, current_tile)
     elif grid.mouse_mode == "echo":
-        echo_mode_effect(grid, current_tile, my_body)
+        echo_mode_effect(grid, current_tile, my_body, MOUSE_POS)
 
 # --------------------------------------------------------------- #
 #                    MOUSE MODE CLICK ON ITEM                     #
@@ -294,8 +293,7 @@ def click_options(grid, item, option, my_body):
             item.change_speed(0.1)
 
         elif option.name == "echo":
-            # activate signal mode
-            item.change_speed(0.1)
+            print "Echo!"
 
         # enter / exit
         elif "Enter_" in option.name:

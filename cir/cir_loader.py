@@ -159,7 +159,8 @@ def set_timers(grid):
 
         if item.lifespan:
             timer = cir_item_timer.TimerItem()
-            timer.timer_tile_radius = grid.tile_radius
+            timer.radius = grid.tile_radius
+            timer.default_radius = grid.tile_radius
             timer.duration = item.lifespan
             timer.color = item.time_color
             item.lifespan = timer
@@ -168,6 +169,8 @@ def set_timers(grid):
             timer = cir_item_timer.TimerItem()
             timer.duration = item.birth_time
             item.birth_time = timer
+
+
 
 
 def set_buttons(grid, category, item):

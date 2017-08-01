@@ -65,7 +65,7 @@ def game_loop(game_over, scenario="Scenario_1"):
         grid.game_menu = False
 
     # TEST
-    my_body.lifespan.duration = 300
+    my_body.lifespan.duration = 120
 
 
     print "Game started"
@@ -181,7 +181,7 @@ def game_loop(game_over, scenario="Scenario_1"):
                         # --------------------------------------------------------------- #
                         #                         MOUSE MODE CLICK                        #
                         # --------------------------------------------------------------- #
-                        cir_effects.mouse_mode_click(grid, current_tile, my_body)
+                        cir_effects.mouse_mode_click(grid, current_tile, my_body, MOUSE_POS)
 
                         # --------------------------------------------------------------- #
                         #                          CLICK ON ITEMS                         #
@@ -241,7 +241,7 @@ def game_loop(game_over, scenario="Scenario_1"):
             # BACKGROUND
             cir_draw.draw_background_stuff(pygame, grid)
             # ANIMATIONS
-            cir_draw.draw_animations(pygame, grid, MOUSE_POS, my_body)
+            cir_draw.draw_animations(pygame, grid, MOUSE_POS, my_body, current_tile)
 
         pygame.display.update()
 

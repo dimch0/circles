@@ -23,6 +23,7 @@ class Item(object):
         self.img = None
         self.radius = None
         self.default_radius = self.radius
+        self._rect = []
         self.border = 0
         self.border_color = None
         self.border_width = None
@@ -59,6 +60,19 @@ class Item(object):
         self.birth_track = []
         self.fat_track = []
         self.needs_to_be_destroyed = False
+
+
+    @property
+    def rect(self):
+        """ This defines the rect argument for the arch drawing """
+        if self.radius and self.pos:
+            self._rect = [self.pos[0] - self.radius,
+                          self.pos[1] - self.radius,
+                          2 * self.radius,
+                          2 * self.radius]
+        else:
+            self._rect = []
+        return self._rect
 
     # --------------------------------------------------------------- #
     #                                                                 #

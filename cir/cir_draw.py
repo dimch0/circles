@@ -169,17 +169,51 @@ def draw_timers(pygame, grid, item):
                             math.radians(item.lifespan.start_degrees),
                             2)
 
-def draw_aim(pygame, grid, MOUSE_POS, my_body):
+def draw_aim(pygame, grid, current_tile, my_body, MOUSE_POS):
     """ Aim """
     if my_body.mode == "echo":
-        aim_point = my_body.get_aiming_direction(grid, MOUSE_POS)[0]
-        # aim_point = cir_utils.get_mirror_point(MOUSE_POS, my_body.pos)
+        aim_point = my_body.get_aiming_direction(grid, current_tile, MOUSE_POS)[0]
+        aim_dir_idx = my_body.get_aiming_direction(grid, current_tile, MOUSE_POS)[1]
+        # aim_point = cir_utils.get_mirror_point(current_tile, my_body.pos)
         pygame.draw.circle(grid.game_display,
-                           grid.black,
+                           grid.white,
                            aim_point,
-                           5,
+                           1,
                            0)
 
+        bow_dist = my_body.radius / 3
+        aim_rect = [my_body.rect[0] - bow_dist,
+                    my_body.rect[1] - bow_dist,
+                    my_body.rect[2] + bow_dist * 2,
+                    my_body.rect[3] + bow_dist * 2]
+
+        if aim_dir_idx == 0:
+            angle1, angle2 = 60, 120
+        elif aim_dir_idx == 1:
+            angle1, angle2 = 360, 60
+        elif aim_dir_idx == 2:
+            angle1, angle2 = 300, 360
+        elif aim_dir_idx == 3:
+            angle1, angle2 = 240, 300
+        elif aim_dir_idx == 4:
+            angle1, angle2 = 180, 240
+        elif aim_dir_idx == 5:
+            angle1, angle2 = 120, 180
+
+
+        pygame.draw.arc(grid.game_display,
+                        grid.white,
+                        aim_rect,
+                        math.radians(angle1),
+                        math.radians(angle2),
+                        1)
+        # pygame.draw.line(grid.game_display,
+        #                  grid.white,
+        #                  my_body.pos,
+        #                  aim_point,
+        #                  1
+        #
+        # )
 
 
 
@@ -307,7 +341,7 @@ def draw_background_stuff(pygame, grid):
 #                           ANIMATIONS                            #
 #                                                                 #
 # --------------------------------------------------------------- #
-def draw_animations(pygame, grid, MOUSE_POS, my_body):
+def draw_animations(pygame, grid, MOUSE_POS, my_body, current_tile):
     """ Main drawing function """
     # TEST PLACE
 
@@ -320,7 +354,7 @@ def draw_animations(pygame, grid, MOUSE_POS, my_body):
 
 
     # Aim
-    draw_aim(pygame, grid, MOUSE_POS, my_body)
+    draw_aim(pygame, grid, current_tile, my_body, MOUSE_POS)
 
     for item in grid.items:
         if item.available:
