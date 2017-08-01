@@ -10,25 +10,28 @@
 # --------------------------------------------------------------- #
 # TODO: Item generation
 # TODO: Create mini map
-# TODO: Create signal function
+# TODO: Create inside body view (maybe room 99)
 # TODO: Log statistics during a lifespan
-# TODO: Create spirit mode, calculate karma
 # TODO: Log messages on screen
+# TODO: Create spirit mode, calculate karma
 # TODO: Create save button
 # TODO: Create load button
 # TODO: Create installation .exe file
 # --------------------------------------------------------------- #
 #                            Animation                            #
 # --------------------------------------------------------------- #
-# TODO: Indicate uses
+# TODO: Indicate uses / meters
 # TODO: Animate item activation
 # TODO: Animate demo
+# TODO: Add sounds
 # --------------------------------------------------------------- #
 #                            Bug fixes                            #
 # --------------------------------------------------------------- #
 # TODO: Fix menu item with active mouse mode on other items
-# TODO: Fix discard on menu of adj item
+# TODO: Fix discard on menu of overlapping adj item
 # TODO: Fix occupado property lag
+# TODO: Fix destruction of a copy
+# TODO: Indicate signal items by category / type (Create a signal class)
 # --------------------------------------------------------------- #
 #                            Imports                              #
 # --------------------------------------------------------------- #
