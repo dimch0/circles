@@ -42,25 +42,16 @@ def produce(grid, product, pos, radius=None, birth=None):
 def destroy(grid, item):
     if item in grid.items and not item.name == "my_body" and not item.birth_track:
         item.in_menu = False
+        item.move_track = []
         item.gen_birth_track()
         item.birth_track.reverse()
         item.needs_to_be_destroyed = True
 
 
-
-
 def destruction(grid, item):
     if item.needs_to_be_destroyed and not item.birth_track:
-        # Signal
-        if item.name == "signal":
-            if not item.move_track:
-                item.available = False
-                grid.items.remove(item)
-        else:
-            item.available = False
-            grid.items.remove(item)
-
-
+        item.available = False
+        grid.items.remove(item)
 
 
 # --------------------------------------------------------------- #
@@ -102,16 +93,31 @@ def eat_mode_effect(grid, current_tile):
 
 def echo_mode_effect(grid, current_tile, my_body):
     """ Signal effect """
-    if not cir_utils.in_circle(my_body.pos, my_body.radius, current_tile):
+    if not cir_utils.in_circle(my_body.pos, my_body.radius, current_tile) and not my_body.move_track:
         signal = produce(grid,
                          "signal",
                          my_body.pos,
                          radius = int(grid.tile_radius / 3),
                          birth = 0)
 
-        target_tile = cir_utils.get_mirror_point(current_tile, my_body.pos)
-        signal.move_track = signal.move_to_tile(grid, target_tile)
+        # target_tile = cir_utils.get_mirror_point(current_tile, my_body.pos)
+        # signal.move_track = signal.move_to_tile(grid, target_tile)
 
+        signal.direction = signal.get_aiming_direction(grid, current_tile)[1]
+
+def signal_hit(gird, item, my_body):
+    hit = False
+    if item.name == "signal":
+        if (item.pos in gird.occupado_tiles and not item.pos == my_body.pos) or item.direction == None:
+            hit = True
+    return hit
+
+def signal_hit_effect(grid, item):
+    item.in_menu = False
+    item.move_track = []
+    item.gen_birth_track()
+    item.birth_track.reverse()
+    item.needs_to_be_destroyed = True
 
 
 # --------------------------------------------------------------- #

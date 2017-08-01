@@ -141,12 +141,8 @@ def draw_body(pygame, grid, MOUSE_POS, item):
         if item.birth_track:
             item.radius = item.birth_track[0]
         elif not item.birth_track and item.fat_track:
-            print item.fat_track
             item.radius = item.fat_track[0]
             item.fat_track.pop(0)
-
-        # if not item.birth_track:
-        #     radius = item.radius
 
         pygame.draw.circle(grid.game_display,
                            item.color,
@@ -154,7 +150,7 @@ def draw_body(pygame, grid, MOUSE_POS, item):
                            item.radius,
                            0)
 
-        # Draw activation here
+        # Draw activation / deactivation here
 
         draw_img(grid, item)
         draw_hover(pygame, grid, MOUSE_POS, item.pos)
@@ -176,7 +172,7 @@ def draw_timers(pygame, grid, item):
 def draw_aim(pygame, grid, MOUSE_POS, my_body):
     """ Aim """
     if my_body.mode == "echo":
-        aim_point = my_body.get_aiming_direction(MOUSE_POS)
+        aim_point = my_body.get_aiming_direction(grid, MOUSE_POS)[0]
         # aim_point = cir_utils.get_mirror_point(MOUSE_POS, my_body.pos)
         pygame.draw.circle(grid.game_display,
                            grid.black,
@@ -324,7 +320,7 @@ def draw_animations(pygame, grid, MOUSE_POS, my_body):
 
 
     # Aim
-    # draw_aim(pygame, grid, MOUSE_POS, my_body)
+    draw_aim(pygame, grid, MOUSE_POS, my_body)
 
     for item in grid.items:
         if item.available:

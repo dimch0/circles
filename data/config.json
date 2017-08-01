@@ -1,6 +1,6 @@
 {
   "CONSTANTS": {
-    "tile_radius": 20,
+    "tile_radius": 30,
     "rows"       : 24,
     "cols"       : 24,
     "fps"        : 60
@@ -10,7 +10,7 @@
     "show_grid"         : 0,
     "show_debug"        : 0,
     "show_seconds"      : 0,
-    "show_movement"     : 1,
+    "show_movement"     : 0,
     "show_playing_tiles": 0
   },
 

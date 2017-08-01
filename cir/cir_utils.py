@@ -7,6 +7,15 @@
 #######################################################################################################################
 import math
 
+
+def dist_between(pointA, pointB):
+    x1 = pointA[0]
+    y1 = pointA[1]
+    x2 = pointB[0]
+    y2 = pointB[1]
+
+    return math.sqrt(((x2 - x1)*(x2 - x1)) + ((y2 - y1)*(y2 - y1)))
+
 def in_circle(center, radius, point):
     """
     :param center: center of the CIR

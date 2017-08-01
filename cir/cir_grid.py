@@ -142,10 +142,11 @@ class Grid(object):
         result = []
         for tile in self.playing_tiles:
             for item in self.items:
-                circle_1 = (tile, self.tile_radius)
-                circle_2 = (item.pos, self.tile_radius)
-                if intersecting(circle_1, circle_2):
-                    result.append(tile)
+                if not item.name == "signal":
+                    circle_1 = (tile, self.tile_radius)
+                    circle_2 = (item.pos, self.tile_radius)
+                    if intersecting(circle_1, circle_2):
+                        result.append(tile)
         self._occupado_tiles = set(result)
         return self._occupado_tiles
 

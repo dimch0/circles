@@ -92,21 +92,6 @@ class BodyItem(MobileItem):
         return radar_radius, thick
 
 
-# --------------------------------------------------------------- #
-#                                                                 #
-#                            SIGNAL                               #
-#                                                                 #
-# --------------------------------------------------------------- #
-    def get_aiming_direction(self, MOUSE_POS):
-        """  Currently gives the opposite mirror point of the mouse """
-        aim_point = get_mirror_point(MOUSE_POS, self.pos)
 
-        # x1 = MOUSE_POS[0]
-        # y1 = MOUSE_POS[1]
-        # x2 = self.pos[0]
-        # y2 = self.pos[1]
-        # m = (y1 - y2) / (x1 - x2)
-
-        return aim_point
 
 

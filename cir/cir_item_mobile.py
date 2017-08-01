@@ -7,6 +7,7 @@
 #######################################################################################################################
 from cir_item import Item
 from cir_item_timer import TimerItem
+import cir_utils
 
 class MobileItem(Item):
     """
@@ -59,15 +60,28 @@ class MobileItem(Item):
         :param options: options
         :return: a list of all available tiles in direction_idx
         """
-        if self.direction != None and not self.move_track:
-            target_tile = grid.adj_tiles(self.pos)[self.direction]
-            if self.speed > 0:
-                if target_tile in grid.revealed_tiles and target_tile not in grid.occupado_tiles:
-                    self.move_track = self.move_to_tile(grid, target_tile)
+        if not self.name == "signal":
+            if self.direction != None and not self.move_track:
+                target_tile = grid.adj_tiles(self.pos)[self.direction]
+                if self.speed > 0:
+                    if target_tile in grid.revealed_tiles and target_tile not in grid.occupado_tiles:
+                        self.move_track = self.move_to_tile(grid, target_tile)
+                    else:
+                        self.direction = None
                 else:
                     self.direction = None
-            else:
-                self.direction = None
+
+        # TODO: Identify signal
+        else:
+            if self.direction != None and not self.move_track:
+                target_tile = grid.adj_tiles(self.pos)[self.direction]
+                if self.speed > 0:
+                    if target_tile in grid.revealed_tiles:
+                        self.move_track = self.move_to_tile(grid, target_tile)
+                    else:
+                        self.direction = None
+                else:
+                    self.direction = None
 
     def gen_direction(self, pygame, grid, event):
         """ Generates item direction from 0-6 on pressed key """
@@ -160,3 +174,24 @@ class MobileItem(Item):
                 if item_a.speed:
                     item_a.cell_division(grid)
 
+# --------------------------------------------------------------- #
+#                                                                 #
+#                            SIGNAL                               #
+#                                                                 #
+# --------------------------------------------------------------- #
+    def get_aiming_direction(self, grid, MOUSE_POS):
+        """  Currently gives the opposite mirror point of the mouse """
+        # MIRROR POINT
+        # aim_point = get_mirror_point(MOUSE_POS, self.pos)
+        opposite_tile = None
+        aim_dir_idx = None
+
+        for dir_idx, adj_tile in enumerate(grid.adj_tiles(self.pos)):
+            if not opposite_tile:
+                opposite_tile = adj_tile
+                aim_dir_idx = dir_idx
+            elif cir_utils.dist_between(MOUSE_POS, adj_tile) > cir_utils.dist_between(MOUSE_POS, opposite_tile):
+                opposite_tile = adj_tile
+                aim_dir_idx = dir_idx
+
+        return [opposite_tile, aim_dir_idx]

@@ -232,3 +232,10 @@ class Item(object):
                     item.available = True
                     grid.overlapped.remove(item)
                     self.overlap.remove(item)
+
+
+    def intersects(self, item2):
+        """ Checks and returns a bool if this item is intersecting with item2 """
+        cir1 = (self.pos, self.radius)
+        cir2 = (item2.pos, item2.radius)
+        return cir_utils.intersecting(cir1, cir2)

@@ -27,6 +27,7 @@
 #                            Bug fixes                            #
 # --------------------------------------------------------------- #
 # TODO: Fix menu item with active mouse mode on other items
+# TODO: Fix discard on menu of adj item
 # TODO: Fix occupado property lag
 # --------------------------------------------------------------- #
 #                            Imports                              #
@@ -281,6 +282,10 @@ def game_loop(game_over, scenario="Scenario_1"):
                         item.gen_move_track(grid)
                     if item.move_track:
                         item.move()
+
+                    # Signal hit
+                    if cir_effects.signal_hit(grid, item, my_body):
+                        cir_effects.signal_hit_effect(grid, item)
 
                     # Clean placeholders
                     grid.clean_placeholders(item)
