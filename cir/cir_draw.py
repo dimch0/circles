@@ -172,14 +172,7 @@ def draw_timers(pygame, grid, item):
 def draw_aim(pygame, grid, current_tile, my_body, MOUSE_POS):
     """ Aim """
     if my_body.mode == "echo":
-        aim_point = my_body.get_aiming_direction(grid, current_tile, MOUSE_POS)[0]
         aim_dir_idx = my_body.get_aiming_direction(grid, current_tile, MOUSE_POS)[1]
-        # aim_point = cir_utils.get_mirror_point(current_tile, my_body.pos)
-        pygame.draw.circle(grid.game_display,
-                           grid.white,
-                           aim_point,
-                           1,
-                           0)
 
         bow_dist = my_body.radius / 3
         aim_rect = [my_body.rect[0] - bow_dist,
@@ -207,16 +200,6 @@ def draw_aim(pygame, grid, current_tile, my_body, MOUSE_POS):
                         math.radians(angle1),
                         math.radians(angle2),
                         1)
-        # pygame.draw.line(grid.game_display,
-        #                  grid.white,
-        #                  my_body.pos,
-        #                  aim_point,
-        #                  1
-        #
-        # )
-
-
-
 
 
 def draw_grid(pygame, grid):

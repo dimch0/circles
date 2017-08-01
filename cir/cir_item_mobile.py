@@ -153,9 +153,9 @@ class MobileItem(Item):
             new_copy.color = self.color
             new_copy.birth_time = None
             new_copy.radius = self.radius
-            # new_copy.birth_time = TimerItem()
-            # new_copy.birth_time.duration = 0.03
-            # new_copy.gen_birth_track(grid)
+            new_copy.birth_time = TimerItem()
+            new_copy.birth_time.duration = 0.03
+            new_copy.gen_birth_track()
             new_copy.move_track = self.move_to_tile(grid, empty_tile)
             grid.items.append(new_copy)
 
@@ -164,6 +164,7 @@ class MobileItem(Item):
         :param grid: grid instance
         :return:
         """
+        number_of_copies = 1
         # Ready copies
         for item in grid.items:
             if item.name == "new copy":

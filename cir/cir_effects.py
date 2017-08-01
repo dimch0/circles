@@ -84,14 +84,14 @@ def shit_mode_click(grid, current_circle):
                     return 1
 
 
-def eat_mode_effect(grid, current_tile):
+def eat_mode_click(grid, current_tile):
     """ Eat that shit """
     for item in grid.items:
         if current_tile == item.pos:
             destroy(grid, item)
 
 
-def echo_mode_effect(grid, current_tile, my_body, MOUSE_POS):
+def echo_mode_click(grid, current_tile, my_body, MOUSE_POS):
     """ Signal effect """
     if not cir_utils.in_circle(my_body.pos, my_body.radius, current_tile) and not my_body.move_track:
         signal = produce(grid,
@@ -235,8 +235,6 @@ def timer_effect(grid, item):
                 my_body_lifespan_over_effect(grid)
             elif item.name == "observer":
                 observer_lifespan_over_effect(grid, item)
-            elif item.name == "signal":
-                signal_lifespan_over_effect(grid, item)
 
     if item.birth_track:
         if item.birth_time and not isinstance(item.birth_time, float):
@@ -258,9 +256,9 @@ def mouse_mode_click(grid, current_tile, my_body, MOUSE_POS):
             new_observer = produce(grid, "observer", current_tile)
             new_observer.lifespan.restart()
     elif grid.mouse_mode == "eat":
-        eat_mode_effect(grid, current_tile)
+        eat_mode_click(grid, current_tile)
     elif grid.mouse_mode == "echo":
-        echo_mode_effect(grid, current_tile, my_body, MOUSE_POS)
+        echo_mode_click(grid, current_tile, my_body, MOUSE_POS)
 
 # --------------------------------------------------------------- #
 #                    MOUSE MODE CLICK ON ITEM                     #
