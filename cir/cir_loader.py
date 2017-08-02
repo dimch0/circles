@@ -29,8 +29,8 @@ def create_new_item(grid, type, attributes):
         elif type == "timer":
             dummy = cir_item_timer.TimerItem()
             dummy.timer_tile_radius = grid.tile_radius
-        elif type == "button":
-            dummy = cir_item_button.ButtonItem()
+        # elif type == "button":
+        #     dummy = cir_item_button.ButtonItem()
         elif type in ["mobile", "signal"]:
             dummy = cir_item_mobile.MobileItem()
         elif type in ["mode_option", "simple"]:
@@ -123,8 +123,6 @@ def load_data(grid, images, fonts, SCENARIO):
                         "img"         : getattr(images, row[col_idx["img"]]) if len(row[col_idx["img"]]) > 0 else None,
                         "speed"       : int(row[col_idx["speed"]]) if len(row[col_idx["speed"]]) > 0 else None,
                         "range"       : int(row[col_idx["range"]]) if len(row[col_idx["range"]]) > 0 else None,
-                        "font"        : getattr(fonts, row[col_idx["font"]]) if len(row[col_idx["font"]]) > 0 else None,
-                        "text_color"  : getattr(grid, row[col_idx["text_color"]]) if len(row[col_idx["text_color"]]) > 0 else None,
                         "time_color"  : getattr(grid, row[col_idx["time_color"]]) if len(row[col_idx["time_color"]]) > 0 else None,
                         "modable"     : row[col_idx["modable"]] if len(row[col_idx["modable"]]) > 0 else None,
                         "collectable" : row[col_idx["collectable"]] if len(row[col_idx["collectable"]]) > 0 else None,
@@ -173,12 +171,22 @@ def set_timers(grid):
 
 
 
-def set_buttons(grid, category, item):
+def set_buttons(grid, fonts):
     """ Assign all items to the grid object """
-    if category == "buttons":
-        grid_attribute = getattr(grid, category)
-        if not item in grid_attribute:
-            grid_attribute.append(item)
+
+    for name in ["play", "quit"]:
+        butt = cir_item_button.ButtonItem()
+        butt.name = name
+        butt.color = grid.grey
+        butt.font = getattr(fonts, 'small')
+        butt.text_color = grid.white
+        if name == "play":
+            butt.pos = set_pos(grid, '10')
+        elif name == "quit":
+            butt.pos = set_pos(grid, '13')
+
+        grid.buttons.append(butt)
+        grid.everything[butt.name] = butt
 
 
 def set_rooms(grid, item):
@@ -203,10 +211,8 @@ def load_items(grid, images, fonts, scenario):
         # Mode options
         if type == "mode_option":
             add_optoin_to_mode(grid, category, item)
-        # Buttons
-        else:
-            set_buttons(grid, category, item)
 
+    set_buttons(grid, fonts)
     set_mode_options(grid)
     set_timers(grid)
     my_body = grid.everything["my_body"]

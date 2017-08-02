@@ -10,9 +10,9 @@
 # --------------------------------------------------------------- #
 # TODO: Item generation
 # TODO: Log messages on screen
-# TODO: Create map room 401
+# TODO: Create map (screenshot all rooms) room 401
 # TODO: Create inside body view room 400
-# TODO: Create spirit mode room 402
+# TODO: Create spirit mode NEW SCENARIO
 # TODO: Log statistics during a lifespan, calculate karma
 # TODO: Create save button
 # TODO: Create load button
@@ -55,8 +55,8 @@ def game_loop(game_over, scenario="Scenario_1"):
     grid.start_time = time.time()
 
     if game_over:
-        grid.everything["play"].available = False
-        grid.everything["replay"].available = True
+        grid.everything["play"].name = "replay"
+        # grid.everything["replay"].available = True
     if scenario == "Scenario_2":
         grid.game_menu = False
 
@@ -92,12 +92,8 @@ def game_loop(game_over, scenario="Scenario_1"):
                 if event.key == pygame.K_ESCAPE:
                     if not grid.game_menu:
                         grid.game_menu = True
-                        # for but in grid.buttons:
-                        #     if but.name == "replay":
-                        #         but.name = "play"
-                        if grid.everything["replay"].available:
-                            grid.everything["play"].available = True
-                            grid.everything["replay"].available = False
+                        if grid.everything["play"].name == "replay":
+                            grid.everything["play"].name = "play"
                     elif grid.game_menu and grid.seconds_in_game > 0:
                         grid.game_menu = False
 

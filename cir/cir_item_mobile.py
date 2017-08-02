@@ -8,6 +8,7 @@
 from cir_item import Item
 from cir_item_timer import TimerItem
 import cir_utils
+from cir_effects import produce
 
 class MobileItem(Item):
     """
@@ -113,27 +114,23 @@ class MobileItem(Item):
     #                             MITOSIS                             #
     #                                                                 #
     # --------------------------------------------------------------- #
-    def check_for_empty_tile(self, grid):
+    def check_for_empty_adj_tile(self, grid):
         """
         Checks for an empty adj tile
         :param grid: grid instance
         :return: the first available empty tile (1, 1) or None
         """
         empty_tile = None
-        print "INSIDE EMPTY"
+
         for idx, tile in enumerate(grid.adj_tiles(self.pos)):
             if tile in grid.revealed_tiles:
                 if tile not in grid.occupado_tiles:
-                    for item in grid.items:
-                        cir1 = (tile, grid.tile_radius)
-                        cir2 = (item.pos, item.radius)
-                        if not cir_utils.intersecting(cir1, cir2):
-                            empty_tile = tile
-                            break
-        print "RETURN EMPTY"
+                    empty_tile = tile
+                    break
         return empty_tile
 
-    def cell_division(self, grid):
+
+    def cell_division(self, grid, empty_tile):
         """
         Creates a placeholder in the empty tile.
         Than creates a copy of the item and moves it into the placehoder.
@@ -141,7 +138,6 @@ class MobileItem(Item):
         :param grid: grid instance
         :return:
         """
-        empty_tile = self.check_for_empty_tile(grid)
         if empty_tile:
             occupado_placeholder = Item()
             occupado_placeholder.name = "placeholder"
@@ -150,36 +146,42 @@ class MobileItem(Item):
             occupado_placeholder.birth_time.duration = 0
             grid.items.append(occupado_placeholder)
 
-            new_copy = MobileItem()
-            grid.items.append(new_copy)
-            new_copy.img = self.img
-            new_copy.speed = self.speed
-            new_copy.name = "new copy"
-            new_copy.pos = self.pos
-            new_copy.color = self.color
-            new_copy.birth_time = None
-            new_copy.radius = self.radius
-            new_copy.birth_time = TimerItem()
-            new_copy.birth_time.duration = 0.03
-            new_copy.gen_birth_track()
+            new_copy = produce(grid, self.name, self.pos)
+            print new_copy
+            # new_copy.name = "new copy"
+            # new_copy = MobileItem()
+            # new_copy.img = self.img
+            # new_copy.speed = self.speed
+            # new_copy.name = "new copy"
+            # new_copy.pos = self.pos
+            # new_copy.color = self.color
+            # new_copy.birth_time = None
+            # new_copy.radius = self.radius
+            # new_copy.birth_time = TimerItem()
+            # new_copy.birth_time.duration = 0.03
+            # new_copy.gen_birth_track()
             new_copy.move_track = self.move_to_tile(grid, empty_tile)
-            grid.items.append(new_copy)
+            # grid.items.append(new_copy)
+
 
     def mitosis(self, grid):
         """
         :param grid: grid instance
         :return:
         """
+        copies = [item for item in grid.items if self.name in item.name]
         # Ready copies
         for item in grid.items:
+            print "START MITO", item.name
             if item.name == "new copy":
                 item.name = str(self.name + " - copy")
 
-        for item_a in grid.items:
-            if item_a.name in [self.name, str(self.name + " - copy")]:
-                if item_a.speed and not item_a.birth_track and not item_a.move_track:
-                    item_a.cell_division(grid)
-
+            if item.name in [self.name, str(self.name + " - copy")]:
+                empty_tile = item.check_for_empty_adj_tile(grid)
+                if empty_tile:
+                    if item.speed and not item.birth_track and not item.move_track:
+                        item.cell_division(grid, empty_tile)
+            print "FINISH MITO", item.name
 
 
 # --------------------------------------------------------------- #

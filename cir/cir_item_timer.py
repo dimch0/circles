@@ -77,7 +77,6 @@ class TimerItem(Item):
                 if time.time() > (self.start_time + (self.time_step * self.step)):
                     self.step += 1
 
-
     def update(self, delta):
         """
         Updates the timer with delta seconds
