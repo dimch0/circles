@@ -15,10 +15,6 @@ class TimerItem(Item):
     def __init__(self):
         super(TimerItem, self).__init__()
 
-        # VISUAL
-        # self.timer_tile_radius = None
-        # self._rect = []
-
         # CONSTANTS
         self.time_step = 0.0157
         self.steps_per_sec = 63

@@ -215,41 +215,42 @@ def draw_grid(pygame, grid):
 
 def draw_mask(pygame, grid):
     """ Draws the mas around the playing board """
-    rect1 = [
-        (0,0),
-        (grid.center_tile[0] - ((4 * grid.cathetus) + (grid.cathetus / 2) + 5), (grid.display_height))
-            ]
-    rect2 = [
-        (grid.center_tile[0] + ((4 * grid.cathetus) + (grid.cathetus / 2) + 5), 0),
-        (grid.center_tile[0], grid.display_height)
-            ]
-    tri1 = [
-        (grid.center_tile[0] - ((4 * grid.cathetus) + (grid.cathetus / 2) + 5), (grid.center_tile[0] - 14 * grid.tile_radius)),
-        (grid.center_tile[0] - ((4 * grid.cathetus) + (grid.cathetus / 2) + 5), 0),
-        (grid.center_tile[0] + ((2 * grid.cathetus) + (grid.cathetus / 2) + 5), 0)
-    ]
-    tri2 = [
-        (grid.center_tile[0] + ((4 * grid.cathetus) + (grid.cathetus / 2) + 5), (grid.center_tile[0] - 14 * grid.tile_radius)),
-        (grid.center_tile[0] + ((4 * grid.cathetus) + (grid.cathetus / 2) + 5), 0),
-        (grid.center_tile[0] - ((2 * grid.cathetus) + (grid.cathetus / 2) + 5), 0)
-    ]
-    tri3 = [
-        (grid.center_tile[0] - ((4 * grid.cathetus) + (grid.cathetus / 2) + 5), (grid.center_tile[0] - 5 * grid.tile_radius)),
-        (grid.center_tile[0] - ((4 * grid.cathetus) + (grid.cathetus / 2) + 5), grid.display_height),
-        (grid.center_tile[0] + ((2 * grid.cathetus) + (grid.cathetus / 2) + 5), grid.display_height)
-    ]
-    tri4 = [
-        (grid.center_tile[0] + ((4 * grid.cathetus) + (grid.cathetus / 2) + 5), (grid.center_tile[0] - 5 * grid.tile_radius)),
-        (grid.center_tile[0] + ((4 * grid.cathetus) + (grid.cathetus / 2) + 5), grid.display_height),
-        (grid.center_tile[0] - ((2 * grid.cathetus) + (grid.cathetus / 2) + 5), grid.display_height)
-    ]
+    if grid.cols == 24 and grid.rows == 24:
+        rect1 = [
+            (0,0),
+            (grid.center_tile[0] - ((4 * grid.cathetus) + (grid.cathetus / 2) + 5), (grid.display_height))
+                ]
+        rect2 = [
+            (grid.center_tile[0] + ((4 * grid.cathetus) + (grid.cathetus / 2) + 5), 0),
+            (grid.center_tile[0], grid.display_height)
+                ]
+        tri1 = [
+            (grid.center_tile[0] - ((4 * grid.cathetus) + (grid.cathetus / 2) + 5), (grid.center_tile[0] - 14 * grid.tile_radius)),
+            (grid.center_tile[0] - ((4 * grid.cathetus) + (grid.cathetus / 2) + 5), 0),
+            (grid.center_tile[0] + ((2 * grid.cathetus) + (grid.cathetus / 2) + 5), 0)
+        ]
+        tri2 = [
+            (grid.center_tile[0] + ((4 * grid.cathetus) + (grid.cathetus / 2) + 5), (grid.center_tile[0] - 14 * grid.tile_radius)),
+            (grid.center_tile[0] + ((4 * grid.cathetus) + (grid.cathetus / 2) + 5), 0),
+            (grid.center_tile[0] - ((2 * grid.cathetus) + (grid.cathetus / 2) + 5), 0)
+        ]
+        tri3 = [
+            (grid.center_tile[0] - ((4 * grid.cathetus) + (grid.cathetus / 2) + 5), (grid.center_tile[0] - 5 * grid.tile_radius)),
+            (grid.center_tile[0] - ((4 * grid.cathetus) + (grid.cathetus / 2) + 5), grid.display_height),
+            (grid.center_tile[0] + ((2 * grid.cathetus) + (grid.cathetus / 2) + 5), grid.display_height)
+        ]
+        tri4 = [
+            (grid.center_tile[0] + ((4 * grid.cathetus) + (grid.cathetus / 2) + 5), (grid.center_tile[0] - 5 * grid.tile_radius)),
+            (grid.center_tile[0] + ((4 * grid.cathetus) + (grid.cathetus / 2) + 5), grid.display_height),
+            (grid.center_tile[0] - ((2 * grid.cathetus) + (grid.cathetus / 2) + 5), grid.display_height)
+        ]
 
-    pygame.draw.rect(grid.game_display, grid.fog_color, rect1, 0)
-    pygame.draw.rect(grid.game_display, grid.fog_color, rect2, 0)
-    pygame.draw.polygon(grid.game_display, grid.fog_color, tri1, 0)
-    pygame.draw.polygon(grid.game_display, grid.fog_color, tri2, 0)
-    pygame.draw.polygon(grid.game_display, grid.fog_color, tri3, 0)
-    pygame.draw.polygon(grid.game_display, grid.fog_color, tri4, 0)
+        pygame.draw.rect(grid.game_display, grid.fog_color, rect1, 0)
+        pygame.draw.rect(grid.game_display, grid.fog_color, rect2, 0)
+        pygame.draw.polygon(grid.game_display, grid.fog_color, tri1, 0)
+        pygame.draw.polygon(grid.game_display, grid.fog_color, tri2, 0)
+        pygame.draw.polygon(grid.game_display, grid.fog_color, tri3, 0)
+        pygame.draw.polygon(grid.game_display, grid.fog_color, tri4, 0)
 
 
 def draw_mouse_image(pygame, grid, MOUSE_POS):

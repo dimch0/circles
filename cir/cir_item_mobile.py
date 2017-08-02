@@ -60,7 +60,7 @@ class MobileItem(Item):
         :param options: options
         :return: a list of all available tiles in direction_idx
         """
-        if not self.name == "signal":
+        if not self.type == "signal":
             if self.direction != None and not self.move_track:
                 target_tile = grid.adj_tiles(self.pos)[self.direction]
                 if self.speed > 0:
@@ -120,12 +120,17 @@ class MobileItem(Item):
         :return: the first available empty tile (1, 1) or None
         """
         empty_tile = None
-
+        print "INSIDE EMPTY"
         for idx, tile in enumerate(grid.adj_tiles(self.pos)):
             if tile in grid.revealed_tiles:
                 if tile not in grid.occupado_tiles:
-                    empty_tile = tile
-                    break
+                    for item in grid.items:
+                        cir1 = (tile, grid.tile_radius)
+                        cir2 = (item.pos, item.radius)
+                        if not cir_utils.intersecting(cir1, cir2):
+                            empty_tile = tile
+                            break
+        print "RETURN EMPTY"
         return empty_tile
 
     def cell_division(self, grid):
@@ -146,6 +151,7 @@ class MobileItem(Item):
             grid.items.append(occupado_placeholder)
 
             new_copy = MobileItem()
+            grid.items.append(new_copy)
             new_copy.img = self.img
             new_copy.speed = self.speed
             new_copy.name = "new copy"
@@ -164,7 +170,6 @@ class MobileItem(Item):
         :param grid: grid instance
         :return:
         """
-        number_of_copies = 1
         # Ready copies
         for item in grid.items:
             if item.name == "new copy":
@@ -172,8 +177,10 @@ class MobileItem(Item):
 
         for item_a in grid.items:
             if item_a.name in [self.name, str(self.name + " - copy")]:
-                if item_a.speed:
+                if item_a.speed and not item_a.birth_track and not item_a.move_track:
                     item_a.cell_division(grid)
+
+
 
 # --------------------------------------------------------------- #
 #                                                                 #

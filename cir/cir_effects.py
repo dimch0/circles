@@ -104,7 +104,7 @@ def echo_mode_click(grid, current_tile, my_body, MOUSE_POS):
 
 def signal_hit(gird, item, my_body):
     hit = False
-    if item.name == "signal":
+    if item.type == "signal":
         if (item.pos in gird.occupado_tiles and not item.intersects(my_body)) or item.direction == None:
             hit = True
             print "Hit!"

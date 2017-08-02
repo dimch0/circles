@@ -35,6 +35,7 @@ class Item(object):
         self.in_menu = False
         self.modable = False
         self.available = True
+        self.clickable = True
         self.collectable = False
         self.mode = self.name
         self.options = []
@@ -202,7 +203,7 @@ class Item(object):
         """
 
         # Clicked on item
-        if clicked_circle == self.pos and self.name in grid.mode_vs_options.keys():
+        if clicked_circle == self.pos and self.name in grid.mode_vs_options.keys() and self.clickable and not (self.name != "my_body" and grid.mouse_mode):
             # If default mode:
             if self.mode is self.name:
                 if not self.in_menu:
@@ -217,7 +218,7 @@ class Item(object):
                     self.set_in_menu(grid, True)
 
         # Clicked outside
-        elif (clicked_circle != self.pos) and (clicked_circle not in grid.adj_tiles(self.pos)):
+        elif (clicked_circle != self.pos) and (clicked_circle not in grid.adj_tiles(self.pos)) and self.clickable:
             self.set_in_menu(grid, False)
 
 
@@ -239,11 +240,11 @@ class Item(object):
                         if not olapped_item in self.overlap:
                             self.overlap.append(olapped_item)
                             grid.overlapped.append(olapped_item)
-                            olapped_item.available = False
+                            olapped_item.clickable = False
         else:
             if self.overlap:
                 for item in self.overlap:
-                    item.available = True
+                    item.clickable = True
                     grid.overlapped.remove(item)
                     self.overlap.remove(item)
 

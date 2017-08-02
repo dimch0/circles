@@ -31,7 +31,7 @@ def create_new_item(grid, type, attributes):
             dummy.timer_tile_radius = grid.tile_radius
         elif type == "button":
             dummy = cir_item_button.ButtonItem()
-        elif type == "mobile":
+        elif type in ["mobile", "signal"]:
             dummy = cir_item_mobile.MobileItem()
         elif type in ["mode_option", "simple"]:
             dummy = cir_item.Item()

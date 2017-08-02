@@ -9,11 +9,11 @@
 #                            Features                             #
 # --------------------------------------------------------------- #
 # TODO: Item generation
-# TODO: Create mini map
-# TODO: Create inside body view (maybe room 99)
-# TODO: Log statistics during a lifespan
 # TODO: Log messages on screen
-# TODO: Create spirit mode, calculate karma
+# TODO: Create map room 401
+# TODO: Create inside body view room 400
+# TODO: Create spirit mode room 402
+# TODO: Log statistics during a lifespan, calculate karma
 # TODO: Create save button
 # TODO: Create load button
 # TODO: Create installation .exe file
@@ -27,11 +27,7 @@
 # --------------------------------------------------------------- #
 #                            Bug fixes                            #
 # --------------------------------------------------------------- #
-# TODO: Fix menu item with active mouse mode on other items
-# TODO: Fix discard on menu of overlapping adj item
-# TODO: Fix occupado property lag
-# TODO: Fix destruction of a copy
-# TODO: Indicate signal items by category / type (Create a signal class)
+# TODO: Fix mitosis (occ prop lag, overlap, birth fat)
 # --------------------------------------------------------------- #
 #                            Imports                              #
 # --------------------------------------------------------------- #
@@ -64,8 +60,10 @@ def game_loop(game_over, scenario="Scenario_1"):
     if scenario == "Scenario_2":
         grid.game_menu = False
 
-    # TEST
-    my_body.lifespan.duration = 120
+    # --------------------------------------------------------------- #
+    #                         TEST TESTING PLACE                      #
+    # --------------------------------------------------------------- #
+    my_body.lifespan.duration = 40
 
 
     print "Game started"
@@ -169,7 +167,7 @@ def game_loop(game_over, scenario="Scenario_1"):
                     # Game Menu
                     if grid.game_menu:
                         for button in grid.buttons:
-                            if current_tile == button.pos and button.available:
+                            if current_tile == button.pos and button.clickable:
                                 if button.name in ["play", "replay"]:
                                     grid.game_menu = False
                                     if grid.game_over:
@@ -187,7 +185,7 @@ def game_loop(game_over, scenario="Scenario_1"):
                         #                          CLICK ON ITEMS                         #
                         # --------------------------------------------------------------- #
                         for item in grid.items:
-                            if item.available:
+                            if item.clickable:
                                 if current_tile == item.pos:
                                     # --------------------------------------------------------------- #
                                     #                    MOUSE MODE CLICK ON ITEM                     #
