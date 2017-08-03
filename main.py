@@ -9,6 +9,7 @@
 #                            Features                             #
 # --------------------------------------------------------------- #
 # TODO: Item generation
+# TODO: Level Editor
 # TODO: Log messages on screen
 # TODO: Create map (screenshot all rooms) room 401
 # TODO: Create inside body view room 400

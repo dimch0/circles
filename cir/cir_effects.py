@@ -40,7 +40,7 @@ def produce(grid, product, pos, radius=None, birth=None):
 
 
 def destroy(grid, item):
-    if item in grid.items and not item.name == "my_body" and not item.birth_track:
+    if item in grid.items and not item.birth_track:
         item.in_menu = False
         if item.lifespan:
             item.lifespan = None
@@ -55,6 +55,8 @@ def destruction(grid, item):
     if item.needs_to_be_destroyed and not item.birth_track:
         item.available = False
         grid.items.remove(item)
+        if item.name == "my_body":
+            grid.game_over = True
 
 
 # --------------------------------------------------------------- #
@@ -90,7 +92,7 @@ def shit_mode_click(grid, current_circle):
 def eat_mode_click(grid, current_tile):
     """ Eat that shit """
     for item in grid.items:
-        if current_tile == item.pos:
+        if current_tile == item.pos and not item.name == "my_body":
             destroy(grid, item)
 
 
@@ -294,6 +296,9 @@ def click_options(grid, item, option, my_body):
 
         elif option.name == "move":
             item.change_speed(0.1)
+
+        elif option.name == "suicide":
+            destroy(grid, item)
 
         elif option.name == "echo":
             print "Echo!"
