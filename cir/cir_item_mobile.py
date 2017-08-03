@@ -9,6 +9,7 @@ from cir_item import Item
 from cir_item_timer import TimerItem
 import cir_utils
 from cir_effects import produce
+import copy
 
 class MobileItem(Item):
     """
@@ -123,10 +124,12 @@ class MobileItem(Item):
         empty_tile = None
 
         for idx, tile in enumerate(grid.adj_tiles(self.pos)):
-            if tile in grid.revealed_tiles:
-                if tile not in grid.occupado_tiles:
-                    empty_tile = tile
-                    break
+            if not empty_tile:
+                if tile in grid.revealed_tiles:
+                    if tile not in grid.occupado_tiles:
+                        empty_tile = tile
+                        break
+
         return empty_tile
 
 
@@ -146,22 +149,25 @@ class MobileItem(Item):
             occupado_placeholder.birth_time.duration = 0
             grid.items.append(occupado_placeholder)
 
-            new_copy = produce(grid, self.name, self.pos)
-            print new_copy
-            # new_copy.name = "new copy"
+#            new_copy = produce(grid, self.name, self.pos)
             # new_copy = MobileItem()
-            # new_copy.img = self.img
-            # new_copy.speed = self.speed
-            # new_copy.name = "new copy"
-            # new_copy.pos = self.pos
-            # new_copy.color = self.color
-            # new_copy.birth_time = None
-            # new_copy.radius = self.radius
-            # new_copy.birth_time = TimerItem()
-            # new_copy.birth_time.duration = 0.03
-            # new_copy.gen_birth_track()
+            new_copy = copy.deepcopy(self)
+
+            new_copy.img = self.img
+            new_copy.speed = self.speed
+            new_copy.name = "new copy"
+            new_copy.pos = self.pos
+            new_copy.color = self.color
+            new_copy.birth_time = None
+            new_copy.radius = self.radius
+            new_copy.birth_time = TimerItem()
+            new_copy.birth_time.duration = 0
+            new_copy.gen_birth_track()
             new_copy.move_track = self.move_to_tile(grid, empty_tile)
-            # grid.items.append(new_copy)
+            grid.items.append(new_copy)
+            new_copy.lifespan.duration = 10
+            new_copy.lifespan.restart()
+
 
 
     def mitosis(self, grid):
@@ -169,7 +175,7 @@ class MobileItem(Item):
         :param grid: grid instance
         :return:
         """
-        copies = [item for item in grid.items if self.name in item.name]
+        # copies = [item for item in grid.items if self.name in item.name]
         # Ready copies
         for item in grid.items:
             print "START MITO", item.name

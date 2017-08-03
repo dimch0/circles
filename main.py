@@ -63,7 +63,7 @@ def game_loop(game_over, scenario="Scenario_1"):
     # --------------------------------------------------------------- #
     #                         TEST TESTING PLACE                      #
     # --------------------------------------------------------------- #
-    my_body.lifespan.duration = 40
+    my_body.lifespan.duration = 60
 
 
     print "Game started"

@@ -42,9 +42,12 @@ def produce(grid, product, pos, radius=None, birth=None):
 def destroy(grid, item):
     if item in grid.items and not item.name == "my_body" and not item.birth_track:
         item.in_menu = False
+        if item.lifespan:
+            item.lifespan = None
         item.move_track = []
         item.gen_birth_track()
         item.birth_track.reverse()
+
         item.needs_to_be_destroyed = True
 
 
@@ -235,6 +238,8 @@ def timer_effect(grid, item):
                 my_body_lifespan_over_effect(grid)
             elif item.name == "observer":
                 observer_lifespan_over_effect(grid, item)
+            else:
+                destroy(grid, item)
 
     if item.birth_track:
         if item.birth_time and not isinstance(item.birth_time, float):

@@ -245,8 +245,9 @@ class Item(object):
             if self.overlap:
                 for item in self.overlap:
                     item.clickable = True
-                    grid.overlapped.remove(item)
                     self.overlap.remove(item)
+                    if item in grid.overlapped:
+                        grid.overlapped.remove(item)
 
 
     def intersects(self, item2):
