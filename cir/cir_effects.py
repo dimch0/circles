@@ -9,15 +9,13 @@ import copy
 import random
 import cir_utils
 import time
-import cir_loader
-from cir_item_timer import TimerItem
 
 # --------------------------------------------------------------- #
 #                                                                 #
 #                         BASIC EFFECTS                           #
 #                                                                 #
 # --------------------------------------------------------------- #
-def produce(grid, product_name, pos, scenario, radius=None, birth=None,):
+def produce(grid, product_name, pos, loader, radius=None, birth=None,):
     """
     Produces an item from the everything dict
     :param grid: grid instance
@@ -26,7 +24,7 @@ def produce(grid, product_name, pos, scenario, radius=None, birth=None,):
     :return: the new item
     """
 
-    new_item = cir_loader.load_item(grid, scenario, product_name)
+    new_item = loader.load_item(product_name)
 
     if radius:
         new_item.radius = radius
@@ -85,17 +83,17 @@ def destruction(grid, item):
 #                         MOUSE MODES                             #
 #                                                                 #
 # --------------------------------------------------------------- #
-def laino_mode_click(grid, current_tile, scenario):
+def laino_mode_click(grid, current_tile, loader):
     """
     For mode 'laino', if clicked produces an item
     :param grid: grid instance
     :param current_tile: the clicked circle
     """
     if current_tile not in grid.occupado_tiles and current_tile in grid.revealed_tiles:
-        produce(grid, "product_shit", current_tile, scenario)
+        produce(grid, "product_shit", current_tile, loader)
 
 
-def shit_mode_click(grid, current_circle, scenario):
+def shit_mode_click(grid, current_circle, loader):
     """
     For mode 'shit', if clicked produces an item and exhausts mode uses
     :param grid: grid instance
@@ -105,7 +103,7 @@ def shit_mode_click(grid, current_circle, scenario):
         if bag_item.name == grid.mouse_mode:
             if bag_item.uses:
                 if current_circle not in grid.occupado_tiles: #and current_circle in grid.revealed_tiles:
-                    produce(grid, "shit", current_circle, scenario)
+                    produce(grid, "shit", current_circle, loader)
                     bag_item.uses -= 1
                     return 1
 
@@ -117,7 +115,7 @@ def eat_mode_click(grid, current_tile):
             destroy(grid, item)
 
 
-def echo_mode_click(grid, current_tile, my_body, MOUSE_POS, scenario):
+def echo_mode_click(grid, current_tile, my_body, MOUSE_POS, loader):
     """ Signal effect """
     if not cir_utils.in_circle(my_body.pos, my_body.radius, current_tile) and not my_body.move_track:
         signal = produce(grid,
@@ -125,7 +123,7 @@ def echo_mode_click(grid, current_tile, my_body, MOUSE_POS, scenario):
                          my_body.pos,
                          radius = int(grid.tile_radius / 3),
                          birth = 0,
-                         scenario = scenario)
+                         loader = loader)
         signal.direction = signal.get_aiming_direction(grid, current_tile, MOUSE_POS)[1]
 
 
@@ -276,22 +274,22 @@ def timer_effect(grid, item):
 # --------------------------------------------------------------- #
 #                        MOUSE MODE CLICK                         #
 # --------------------------------------------------------------- #
-def mouse_mode_click(grid, current_tile, my_body, MOUSE_POS, scenario):
+def mouse_mode_click(grid, current_tile, my_body, MOUSE_POS, loader):
     if grid.mouse_mode in ["laino", "EDITOR2"]:
-        laino_mode_click(grid, current_tile, scenario)
+        laino_mode_click(grid, current_tile, loader)
     elif grid.mouse_mode in ["shit"]:
-        shit_mode_click(grid, current_tile, scenario)
+        shit_mode_click(grid, current_tile, loader)
     elif grid.mouse_mode in ["see", "EDITOR1"]:
         if current_tile not in grid.occupado_tiles and current_tile in grid.revealed_tiles:
-            new_observer = produce(grid, "observer", current_tile, scenario)
+            new_observer = produce(grid, "observer", current_tile, loader)
             new_observer.lifespan.restart()
     elif grid.mouse_mode in ["EDITOR3"]:
         if current_tile not in grid.occupado_tiles and current_tile in grid.revealed_tiles:
-            produce(grid, "block_of_steel", current_tile, scenario)
+            produce(grid, "block_of_steel", current_tile, loader)
     elif grid.mouse_mode in ["eat", "EDITOR7"]:
         eat_mode_click(grid, current_tile)
     elif grid.mouse_mode == "echo":
-        echo_mode_click(grid, current_tile, my_body, MOUSE_POS, scenario)
+        echo_mode_click(grid, current_tile, my_body, MOUSE_POS, loader)
 
 # --------------------------------------------------------------- #
 #                    MOUSE MODE CLICK ON ITEM                     #

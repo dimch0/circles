@@ -34,6 +34,7 @@ class Grid(object):
         self.clock = pygame.time.Clock()
         self.images = None
         self.fonts = None
+        self.scenario = None
         # -------------------------------------------------- #
         #                        TILES                       #
         # -------------------------------------------------- #

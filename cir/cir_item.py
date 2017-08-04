@@ -7,6 +7,7 @@
 #######################################################################################################################
 import cir_utils
 
+
 class Item(object):
     """
     This is the base class for all CIR items

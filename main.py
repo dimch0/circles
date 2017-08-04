@@ -53,9 +53,12 @@ def game_loop(game_over, scenario="Scenario_1"):
     #                                                                 #
     # --------------------------------------------------------------- #
     grid = cir_grid.Grid(pygame)
+    grid.scenario = scenario
     grid.images = cir_cosmetic.Images(grid, pygame)
     grid.fonts = cir_cosmetic.Fonts(grid, pygame)
-    my_body = cir_loader.load_items(grid, scenario)
+    loader = cir_loader.DataLoader()
+    loader.grid = grid
+    my_body = loader.load_items()
     grid.start_time = time.time()
 
     if game_over:
@@ -184,7 +187,7 @@ def game_loop(game_over, scenario="Scenario_1"):
                         # --------------------------------------------------------------- #
                         #                         MOUSE MODE CLICK                        #
                         # --------------------------------------------------------------- #
-                        cir_effects.mouse_mode_click(grid, current_tile, my_body, MOUSE_POS, scenario)
+                        cir_effects.mouse_mode_click(grid, current_tile, my_body, MOUSE_POS, loader)
 
                         # --------------------------------------------------------------- #
                         #                          CLICK ON ITEMS                         #
