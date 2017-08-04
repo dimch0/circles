@@ -68,8 +68,8 @@ def game_loop(game_over, scenario="Scenario_1"):
     # --------------------------------------------------------------- #
     my_body.lifespan.duration = 60
 
-
     print "Game started"
+
     while not grid.game_over:
 
         current_tile = grid.mouse_in_tile(pygame.mouse.get_pos())
@@ -102,9 +102,11 @@ def game_loop(game_over, scenario="Scenario_1"):
                     #                            'Space'                              #
                     # --------------------------------------------------------------- #
                     if event.key == pygame.K_SPACE:
-                        # Radar Population
+
+                        # GEN RADAR
                         my_body.gen_radar_track(grid)
-                        # Debug
+
+                        # DEBUG PRINT
                         cir_utils.debug_print_space(grid, my_body)
 
                     elif event.key == pygame.K_t:
@@ -155,19 +157,17 @@ def game_loop(game_over, scenario="Scenario_1"):
                         grid.change_room(3)
 
 
-                    # Movement Population
+                    # GENERATE MOVEMENT
                     elif not my_body.in_menu:
                         my_body.gen_direction(pygame, grid, event)
 
             # --------------------------------------------------------------- #
-            #                                                                 #
             #                          CLICK EVENTS                           #
-            #                                                                 #
             # --------------------------------------------------------------- #
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if current_tile:
 
-                    # Game Menu
+                    # GAME MENU
                     if grid.game_menu:
                         for button in grid.buttons:
                             if current_tile == button.pos and button.clickable:
@@ -190,7 +190,8 @@ def game_loop(game_over, scenario="Scenario_1"):
                         for item in grid.items:
                             if item.clickable:
                                 if current_tile == item.pos:
-                                    # Setting the mouse mode
+
+                                    # SET MOUSE MODE
                                     if item.modable:
                                         grid.set_mouse_mode(item)
                                     # --------------------------------------------------------------- #
@@ -201,11 +202,11 @@ def game_loop(game_over, scenario="Scenario_1"):
                                     # --------------------------------------------------------------- #
                                     #                           MENU OPTIONS                          #
                                     # --------------------------------------------------------------- #
-                                    # Set in_menu for the items with menu (my_body)
+                                    # SET IN MENU
                                     item.check_in_menu(grid, current_tile)
-                                    # Setting option positions
+                                    # SET OPTS POS
                                     item.set_option_pos(grid)
-                                    # Option clicked
+                                    # OPT CLICKED
                                     if item.in_menu:
                                         grid.clean_mouse()
 
@@ -217,7 +218,7 @@ def game_loop(game_over, scenario="Scenario_1"):
                                         for option in item.options:
                                             if current_tile == option.pos:
 
-                                                # Setting the mouse mode
+                                                # SET MOUSE MODE
                                                 if option.modable:
                                                     grid.set_mouse_mode(option)
                                                 # --------------------------------------------------------------- #
@@ -225,17 +226,17 @@ def game_loop(game_over, scenario="Scenario_1"):
                                                 # --------------------------------------------------------------- #
                                                 effects.click_options(item, option, my_body)
 
-                                # Clicked outside
+                                # CLICKED OUTSIDE
                                 elif (current_tile != item.pos) and (current_tile not in grid.adj_tiles(item.pos)):
                                     item.set_in_menu(grid, False)
 
-                # Debug print
+                # DEBUG PRINT
                 cir_utils.debug_print_click(grid, current_tile, my_body)
 
         # --------------------------------------------------------------- #
         #                             DRAWING                             #
         # --------------------------------------------------------------- #
-        # Game Menu
+        # GAME MENU
         if grid.game_menu:
             if grid.buttons:
                 drawer.draw_menu_buttons(current_tile)
