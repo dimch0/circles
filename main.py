@@ -29,9 +29,8 @@
 # --------------------------------------------------------------- #
 #                            Bug fixes                            #
 # --------------------------------------------------------------- #
-# TODO: Fix mitosis (occ prop lag, overlap, birth fat)
+# TODO: Fix mitosis (occ prop lag, overlap, birth fat) Move to effects
 # TODO: Fix item collection
-# TODO: Fix item creation
 # --------------------------------------------------------------- #
 #                            Imports                              #
 # --------------------------------------------------------------- #
@@ -43,8 +42,8 @@ from cir import cir_grid
 from cir import cir_cosmetic
 from cir.cir_draw import GameDrawer
 from cir.cir_loader import DataLoader
-from cir import cir_effects
-import pylint
+from cir.cir_effects import GameEffects
+
 
 def game_loop(game_over, scenario="Scenario_1"):
     # --------------------------------------------------------------- #
@@ -52,12 +51,13 @@ def game_loop(game_over, scenario="Scenario_1"):
     #                            LOADING                              #
     #                                                                 #
     # --------------------------------------------------------------- #
-    grid = cir_grid.Grid(pygame, scenario)
-    grid.images = cir_cosmetic.Images(grid, pygame)
-    grid.fonts = cir_cosmetic.Fonts(grid, pygame)
-    loader = DataLoader(grid)
-    drawer = GameDrawer(grid, pygame)
-    my_body = loader.load_items()
+    grid            = cir_grid.Grid(pygame, scenario)
+    grid.images     = cir_cosmetic.Images(grid, pygame)
+    grid.fonts      = cir_cosmetic.Fonts(grid, pygame)
+    loader          = DataLoader(grid)
+    drawer          = GameDrawer(grid, pygame)
+    effects         = GameEffects(grid, loader)
+    my_body         = loader.load_items()
     grid.start_time = time.time()
 
     if game_over:
@@ -74,8 +74,8 @@ def game_loop(game_over, scenario="Scenario_1"):
     print "Game started"
     while not grid.game_over:
 
-        MOUSE_POS = pygame.mouse.get_pos()
-        current_tile = grid.mouse_in_tile(MOUSE_POS) if grid.mouse_in_tile(MOUSE_POS) else None
+        current_tile = grid.mouse_in_tile(pygame.mouse.get_pos())
+
         grid.seconds_in_game_tick()
 
         # --------------------------------------------------------------- #
@@ -186,7 +186,7 @@ def game_loop(game_over, scenario="Scenario_1"):
                         # --------------------------------------------------------------- #
                         #                         MOUSE MODE CLICK                        #
                         # --------------------------------------------------------------- #
-                        cir_effects.mouse_mode_click(grid, current_tile, my_body, MOUSE_POS, loader)
+                        effects.mouse_mode_click(current_tile, my_body)
 
                         # --------------------------------------------------------------- #
                         #                          CLICK ON ITEMS                         #
@@ -200,7 +200,7 @@ def game_loop(game_over, scenario="Scenario_1"):
                                     # --------------------------------------------------------------- #
                                     #                    MOUSE MODE CLICK ON ITEM                     #
                                     # --------------------------------------------------------------- #
-                                    cir_effects.mouse_mode_click_item(grid, item)
+                                    effects.mouse_mode_click_item(item)
 
                                     # --------------------------------------------------------------- #
                                     #                           MENU OPTIONS                          #
@@ -227,14 +227,14 @@ def game_loop(game_over, scenario="Scenario_1"):
                                                 # --------------------------------------------------------------- #
                                                 #                      OPTIONS / SUB-OPTIONS                      #
                                                 # --------------------------------------------------------------- #
-                                                cir_effects.click_options(grid, item, option, my_body)
+                                                effects.click_options(item, option, my_body)
 
                                 # Clicked outside
                                 elif (current_tile != item.pos) and (current_tile not in grid.adj_tiles(item.pos)):
                                     item.set_in_menu(grid, False)
 
                 # Debug print
-                cir_utils.debug_print_click(grid, MOUSE_POS, current_tile, my_body)
+                cir_utils.debug_print_click(grid, current_tile, my_body)
 
         # --------------------------------------------------------------- #
         #                                                                 #
@@ -244,12 +244,12 @@ def game_loop(game_over, scenario="Scenario_1"):
         # Game Menu
         if grid.game_menu:
             if grid.buttons:
-                drawer.draw_menu_buttons(MOUSE_POS)
+                drawer.draw_menu_buttons(current_tile)
         else:
             # BACKGROUND
             drawer.draw_background_stuff()
             # ANIMATIONS
-            drawer.draw_animations(MOUSE_POS, my_body, current_tile)
+            drawer.draw_animations(my_body, current_tile)
 
         pygame.display.update()
 
@@ -266,19 +266,19 @@ def game_loop(game_over, scenario="Scenario_1"):
 
             # Check bag
             if "bag" in grid.everything.keys():
-                cir_effects.empty_bag(grid)
+                effects.empty_bag()
 
             # Items
             for item in grid.items:
 
                 # Timers
-                cir_effects.timer_effect(grid, item)
+                effects.timer_effect(item)
 
                 # Enter
-                cir_effects.enter_room(grid, my_body, item)
+                effects.enter_room(my_body, item)
 
                 # Destruction
-                cir_effects.destruction(grid, item)
+                effects.destruction(item)
 
                 if item.available:
 
@@ -295,8 +295,8 @@ def game_loop(game_over, scenario="Scenario_1"):
                         item.move()
 
                     # Signal hit
-                    if cir_effects.signal_hit(grid, item, my_body):
-                        cir_effects.signal_hit_effect(grid, item)
+                    if effects.signal_hit(item, my_body):
+                        effects.signal_hit_effect(item)
 
                     # Clean placeholders
                     grid.clean_placeholders(item)

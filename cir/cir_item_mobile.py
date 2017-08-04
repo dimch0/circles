@@ -8,8 +8,8 @@
 from cir_item import Item
 from cir_item_timer import TimerItem
 import cir_utils
-from cir_effects import produce
 import copy
+
 
 class MobileItem(Item):
     """
@@ -111,9 +111,7 @@ class MobileItem(Item):
             self.move_track.pop(0)
 
     # --------------------------------------------------------------- #
-    #                                                                 #
-    #                             MITOSIS                             #
-    #                                                                 #
+    #                    CHECK FOR EMPTY ADJ TILE                     #
     # --------------------------------------------------------------- #
     def check_for_empty_adj_tile(self, grid):
         """
@@ -133,85 +131,25 @@ class MobileItem(Item):
         return empty_tile
 
 
-    def cell_division(self, grid, empty_tile):
-        """
-        Creates a placeholder in the empty tile.
-        Than creates a copy of the item and moves it into the placehoder.
-        They're being cleaned with the clean_placehoder function.
-        :param grid: grid instance
-        :return:
-        """
-        if empty_tile:
-            occupado_placeholder = Item()
-            occupado_placeholder.name = "placeholder"
-            occupado_placeholder.pos = empty_tile
-            occupado_placeholder.birth_time = TimerItem()
-            occupado_placeholder.birth_time.duration = 0
-            grid.items.append(occupado_placeholder)
-
-#            new_copy = produce(grid, self.name, self.pos)
-            # new_copy = MobileItem()
-            new_copy = copy.deepcopy(self)
-
-            new_copy.img = self.img
-            new_copy.speed = self.speed
-            new_copy.name = "new copy"
-            new_copy.pos = self.pos
-            new_copy.color = self.color
-            new_copy.birth_time = None
-            new_copy.radius = self.radius
-            new_copy.birth_time = TimerItem()
-            new_copy.birth_time.duration = 0
-            new_copy.gen_birth_track()
-            new_copy.move_track = self.move_to_tile(grid, empty_tile)
-            grid.items.append(new_copy)
-            new_copy.lifespan.duration = 10
-            new_copy.lifespan.restart()
-
-
-
-    def mitosis(self, grid):
-        """
-        :param grid: grid instance
-        :return:
-        """
-        # copies = [item for item in grid.items if self.name in item.name]
-        # Ready copies
-        for item in grid.items:
-            print "START MITO", item.name
-            if item.name == "new copy":
-                item.name = str(self.name + " - copy")
-
-            if item.name in [self.name, str(self.name + " - copy")]:
-                empty_tile = item.check_for_empty_adj_tile(grid)
-                if empty_tile:
-                    if item.speed and not item.birth_track and not item.move_track:
-                        item.cell_division(grid, empty_tile)
-            print "FINISH MITO", item.name
-
-
 # --------------------------------------------------------------- #
 #                                                                 #
 #                            SIGNAL                               #
 #                                                                 #
 # --------------------------------------------------------------- #
-    def get_aiming_direction(self, grid, MOUSE_POS, current_tile):
+    def get_aiming_direction(self, grid, current_tile):
         """  Currently gives the opposite mirror point of the mouse """
         # MIRROR POINT
         # aim_point = get_mirror_point(current_tile, self.pos)
 
         opposite_tile = None
         aim_dir_idx = None
+
         if current_tile:
-            start_point = current_tile
-        else:
-            start_point = MOUSE_POS
-        if start_point:
             for dir_idx, adj_tile in enumerate(grid.adj_tiles(self.pos)):
                 if not opposite_tile:
                     opposite_tile = adj_tile
                     aim_dir_idx = dir_idx
-                elif cir_utils.dist_between(start_point, adj_tile) > cir_utils.dist_between(start_point, opposite_tile):
+                elif cir_utils.dist_between(current_tile, adj_tile) > cir_utils.dist_between(current_tile, opposite_tile):
                     opposite_tile = adj_tile
                     aim_dir_idx = dir_idx
 

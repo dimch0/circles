@@ -41,6 +41,7 @@ class Grid(object):
         self.tiles = []
         self.set_display()
         self.center_tile = None
+        self.previous_tile = None
         self.find_center_tile()
         self.playing_tiles = []
         self.set_playing_tiles()
@@ -137,6 +138,12 @@ class Grid(object):
         for tile in self.tiles:
             if in_circle(tile, self.tile_radius, MOUSE_POS):
                 current_tile = tile
+
+        if current_tile:
+            self.previous_tile = current_tile
+        else:
+            current_tile = self.previous_tile
+
         return current_tile
 
     @property

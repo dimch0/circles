@@ -43,10 +43,10 @@ class GameDrawer(object):
         self.grid.game_display.fill(self.grid.fog_color)
 
 
-    def draw_hover(self, MOUSE_POS, tile):
+    def draw_hover(self, current_tile, tile):
         """ Highlights the hovered tile """
 
-        if cir_utils.in_circle(tile, self.grid.tile_radius, MOUSE_POS):
+        if cir_utils.in_circle(tile, self.grid.tile_radius, current_tile):
             self.pygame.draw.circle(self.grid.game_display,
                                self.grid.white,
                                tile,
@@ -93,7 +93,7 @@ class GameDrawer(object):
                                 self.grid.revealed_radius.remove(printed)
 
 
-    def draw_item_options(self, MOUSE_POS, item):
+    def draw_item_options(self, current_tile, item):
         """ Draws the item menu options """
 
         for option in item.options:
@@ -106,10 +106,10 @@ class GameDrawer(object):
                                        0)
                 if option.img:
                     self.draw_img(option)
-                self.draw_hover(MOUSE_POS, option.pos)
+                self.draw_hover(current_tile, option.pos)
 
 
-    def draw_menu_buttons(self, MOUSE_POS):
+    def draw_menu_buttons(self, current_tile):
         """ Drawing the buttons in the game menu """
 
         # Background
@@ -128,10 +128,10 @@ class GameDrawer(object):
                     self.draw_img(button)
                 if button.text:
                     self.grid.game_display.blit(button.text, button.text_rect)
-                self.draw_hover(MOUSE_POS, button.pos)
+                self.draw_hover(current_tile, button.pos)
 
 
-    def draw_body(self, MOUSE_POS, item):
+    def draw_body(self, current_tile, item):
         """ Draws each body and it's image if available """
         # for item in grid.bodies:
         if item.available and item.color:
@@ -151,7 +151,7 @@ class GameDrawer(object):
             # Draw activation / deactivation here
 
             self.draw_img(item)
-            self.draw_hover(MOUSE_POS, item.pos)
+            self.draw_hover(current_tile, item.pos)
 
 
 
@@ -167,10 +167,10 @@ class GameDrawer(object):
                                 math.radians(item.lifespan.start_degrees),
                                 2)
 
-    def draw_aim(self, current_tile, my_body, MOUSE_POS):
+    def draw_aim(self, current_tile, my_body):
         """ Aim """
         if my_body.mode == "echo":
-            aim_dir_idx = my_body.get_aiming_direction(self.grid, current_tile, MOUSE_POS)[1]
+            aim_dir_idx = my_body.get_aiming_direction(self.grid, current_tile)[1]
 
             bow_dist = my_body.radius / 3
             aim_rect = [my_body.rect[0] - bow_dist,
@@ -252,9 +252,8 @@ class GameDrawer(object):
             self.pygame.draw.polygon(self.grid.game_display, self.grid.fog_color, tri4, 0)
 
 
-    def draw_mouse_image(self, MOUSE_POS):
+    def draw_mouse_image(self, current_tile):
         """ Draws the Mouse image"""
-        current_tile = self.grid.mouse_in_tile(MOUSE_POS)
         if current_tile and self.grid.mouse_img:
             self.pygame.draw.circle(self.grid.game_display,
                                self.grid.white,
@@ -324,7 +323,7 @@ class GameDrawer(object):
     #                           ANIMATIONS                            #
     #                                                                 #
     # --------------------------------------------------------------- #
-    def draw_animations(self, MOUSE_POS, my_body, current_tile):
+    def draw_animations(self, my_body, current_tile):
         """ Main drawing function """
         # TEST PLACE
 
@@ -337,7 +336,7 @@ class GameDrawer(object):
 
 
         # Aim
-        self.draw_aim(current_tile, my_body, MOUSE_POS)
+        self.draw_aim(current_tile, my_body)
 
         for item in self.grid.items:
             if item.available:
@@ -347,7 +346,7 @@ class GameDrawer(object):
                     self.draw_radar(item)
 
                 # Items
-                self.draw_body(MOUSE_POS, item)
+                self.draw_body(current_tile, item)
 
                 # Show movement track in color
                 if self.grid.show_movement and len(item.move_track) > 1:
@@ -368,8 +367,8 @@ class GameDrawer(object):
         for item in self.grid.items:
             if item.available:
                 if item.in_menu:
-                    self.draw_item_options(MOUSE_POS, item)
+                    self.draw_item_options(current_tile, item)
 
         # Mouse
         if self.grid.mouse_mode:
-            self.draw_mouse_image(MOUSE_POS)
+            self.draw_mouse_image(current_tile)

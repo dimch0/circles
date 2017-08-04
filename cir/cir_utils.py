@@ -126,11 +126,11 @@ def get_mirror_point(pointA, pointB):
 
     return (dx, dy)
 
-def debug_print_click(grid, MOUSE_POS, clicked_circle, my_body):
+def debug_print_click(grid, current_circle, my_body):
     """  Debug print on click event  """
     if grid.show_debug:
-            print(""">>>>>> click: {0}, tile: {1}
-        mouse mode  : {10}
+            print(""">>>>>> click tile: {0},
+        mouse mode  : {1}
         my_body mode: {2}
         menu        : {3}
         grid items  : {4}
@@ -138,20 +138,17 @@ def debug_print_click(grid, MOUSE_POS, clicked_circle, my_body):
         playing     : {6}
         move track  : {7}
         all tiles   : {8}
-        speed       : {9}
-        """.format(MOUSE_POS,
-                   clicked_circle,
+        """.format(current_circle,
+                   grid.mouse_mode,
                    my_body.mode,
                    my_body.in_menu,
-                   [(item.name, item.pos) for item in grid.items],
-                   # len(grid.items),
+                   # [(item.name, item.pos) for item in grid.items],
+                   len(grid.items),
                    # [ot for ot in grid.occupado_tiles],
                    len(grid._occupado_tiles),
                    len(grid.playing_tiles),
                    my_body.move_track,
-                   len(grid.tiles),
-                   my_body.speed,
-                   grid.mouse_mode
+                   len(grid.tiles)
                    )
                   )
 
