@@ -434,3 +434,56 @@ class GameEffects(object):
         # Close menu if option has no sub-options
         if option.name not in self.grid.mode_vs_options.keys():
             item.set_in_menu(self.grid, False)
+
+
+
+    # --------------------------------------------------------------- #
+    #                                                                 #
+    #                           CHANGE VARS                           #
+    #                                                                 #
+    # --------------------------------------------------------------- #
+    def change_vars(self, my_body):
+        if not self.grid.game_menu:
+
+            # My_body to room
+            if not my_body in self.grid.items:
+                self.grid.items.append(my_body)
+
+            # Check bag
+            if "bag" in self.grid.everything.keys():
+                self.empty_bag()
+
+            # Items
+            for item in self.grid.items:
+
+                # Timers
+                self.timer_effect(item)
+
+                # Enter
+                self.enter_room(my_body, item)
+
+                # Destruction
+                self.destruction(item)
+
+                if item.available:
+
+                    # Kissing circles
+                    if item.type == 'body':
+                        for adj_item in self.grid.items:
+                            if adj_item.type == 'body' and adj_item.pos in self.grid.adj_tiles(item.pos):
+                                item.gen_fat()
+
+                    # Movement
+                    if item.direction != None:
+                        item.gen_move_track(self.grid)
+                    if item.move_track:
+                        item.move()
+
+                    # Signal hit
+                    if self.signal_hit(item, my_body):
+                        self.signal_hit_effect(item)
+
+                    # Clean placeholders
+                    self.grid.clean_placeholders(item)
+                    # Overlap
+                    item.overlapping(self.grid)

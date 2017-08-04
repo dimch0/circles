@@ -47,9 +47,7 @@ from cir.cir_effects import GameEffects
 
 def game_loop(game_over, scenario="Scenario_1"):
     # --------------------------------------------------------------- #
-    #                                                                 #
     #                            LOADING                              #
-    #                                                                 #
     # --------------------------------------------------------------- #
     grid            = cir_grid.Grid(pygame, scenario)
     grid.images     = cir_cosmetic.Images(grid, pygame)
@@ -79,9 +77,7 @@ def game_loop(game_over, scenario="Scenario_1"):
         grid.seconds_in_game_tick()
 
         # --------------------------------------------------------------- #
-        #                                                                 #
         #                            EVENTS                               #
-        #                                                                 #
         # --------------------------------------------------------------- #
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -237,9 +233,7 @@ def game_loop(game_over, scenario="Scenario_1"):
                 cir_utils.debug_print_click(grid, current_tile, my_body)
 
         # --------------------------------------------------------------- #
-        #                                                                 #
         #                             DRAWING                             #
-        #                                                                 #
         # --------------------------------------------------------------- #
         # Game Menu
         if grid.game_menu:
@@ -254,56 +248,11 @@ def game_loop(game_over, scenario="Scenario_1"):
         pygame.display.update()
 
         # --------------------------------------------------------------- #
-        #                                                                 #
         #                           CHANGE VARS                           #
-        #                                                                 #
         # --------------------------------------------------------------- #
-        if not grid.game_menu:
+        effects.change_vars(my_body)
 
-            # My_body to room
-            if not my_body in grid.items:
-                grid.items.append(my_body)
-
-            # Check bag
-            if "bag" in grid.everything.keys():
-                effects.empty_bag()
-
-            # Items
-            for item in grid.items:
-
-                # Timers
-                effects.timer_effect(item)
-
-                # Enter
-                effects.enter_room(my_body, item)
-
-                # Destruction
-                effects.destruction(item)
-
-                if item.available:
-
-                    # Kissing circles
-                    if item.type == 'body':
-                        for adj_item in grid.items:
-                            if adj_item.type == 'body' and adj_item.pos in grid.adj_tiles(item.pos):
-                                item.gen_fat()
-
-                    # Movement
-                    if item.direction != None:
-                        item.gen_move_track(grid)
-                    if item.move_track:
-                        item.move()
-
-                    # Signal hit
-                    if effects.signal_hit(item, my_body):
-                        effects.signal_hit_effect(item)
-
-                    # Clean placeholders
-                    grid.clean_placeholders(item)
-                    # Overlap
-                    item.overlapping(grid)
-
-        # Finish Loop
+        # FINISH LOOP
         grid.clock.tick(grid.fps)
 
     if grid.game_over:
@@ -313,9 +262,7 @@ def game_loop(game_over, scenario="Scenario_1"):
     quit()
 
 # --------------------------------------------------------------- #
-#                                                                 #
 #                              MAIN                               #
-#                                                                 #
 # --------------------------------------------------------------- #
 if __name__ == '__main__':
     game_loop(game_over=False)
