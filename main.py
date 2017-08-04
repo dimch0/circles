@@ -38,11 +38,11 @@
 import time
 import pygame
 pygame.init()
-from cir import cir_grid
-from cir import cir_draw
 from cir import cir_utils
-from cir import cir_loader
+from cir import cir_grid
 from cir import cir_cosmetic
+from cir.cir_draw import GameDrawer
+from cir.cir_loader import DataLoader
 from cir import cir_effects
 import pylint
 
@@ -52,12 +52,11 @@ def game_loop(game_over, scenario="Scenario_1"):
     #                            LOADING                              #
     #                                                                 #
     # --------------------------------------------------------------- #
-    grid = cir_grid.Grid(pygame)
-    grid.scenario = scenario
+    grid = cir_grid.Grid(pygame, scenario)
     grid.images = cir_cosmetic.Images(grid, pygame)
     grid.fonts = cir_cosmetic.Fonts(grid, pygame)
-    loader = cir_loader.DataLoader()
-    loader.grid = grid
+    loader = DataLoader(grid)
+    drawer = GameDrawer(grid, pygame)
     my_body = loader.load_items()
     grid.start_time = time.time()
 
@@ -245,12 +244,12 @@ def game_loop(game_over, scenario="Scenario_1"):
         # Game Menu
         if grid.game_menu:
             if grid.buttons:
-                cir_draw.draw_menu_buttons(pygame, grid, MOUSE_POS)
+                drawer.draw_menu_buttons(MOUSE_POS)
         else:
             # BACKGROUND
-            cir_draw.draw_background_stuff(pygame, grid)
+            drawer.draw_background_stuff()
             # ANIMATIONS
-            cir_draw.draw_animations(pygame, grid, MOUSE_POS, my_body, current_tile)
+            drawer.draw_animations(MOUSE_POS, my_body, current_tile)
 
         pygame.display.update()
 

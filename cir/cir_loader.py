@@ -15,8 +15,8 @@ import cir_item_mobile
 
 class DataLoader(object):
 
-    def __init__(self):
-        self.grid = None
+    def __init__(self, grid=None):
+        self.grid = grid
 
 
     def create_new_item(self, type, attributes):

@@ -16,7 +16,7 @@ CONFIG_JSON_FILE = "data/config.json"
 class Grid(object):
     """ master class for the grid """
 
-    def __init__(self, pygame=None):
+    def __init__(self, pygame=None, scenario=None):
         # -------------------------------------------------- #
         #                      SETTINGS                      #
         # -------------------------------------------------- #
@@ -34,7 +34,7 @@ class Grid(object):
         self.clock = pygame.time.Clock()
         self.images = None
         self.fonts = None
-        self.scenario = None
+        self.scenario = scenario
         # -------------------------------------------------- #
         #                        TILES                       #
         # -------------------------------------------------- #
