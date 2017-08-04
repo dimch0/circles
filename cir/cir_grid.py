@@ -32,6 +32,8 @@ class Grid(object):
         self.seconds_in_game = 0
         self.seconds_in_pause = 0
         self.clock = pygame.time.Clock()
+        self.images = None
+        self.fonts = None
         # -------------------------------------------------- #
         #                        TILES                       #
         # -------------------------------------------------- #
@@ -264,3 +266,11 @@ class Grid(object):
                 self.seconds_in_pause += 1
                 if self.show_seconds:
                     print "Pause second: {0}".format(self.seconds_in_pause)
+
+    # --------------------------------------------------------------- #
+    #                            BUTTONS                              #
+    # --------------------------------------------------------------- #
+    def rename_button(self, old_name, new_name):
+        for button in self.buttons:
+            if button.name == old_name:
+                button.name = new_name

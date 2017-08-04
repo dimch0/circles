@@ -95,17 +95,7 @@ def draw_item_options(pygame, grid, MOUSE_POS, item):
                                    option.color,
                                    option.pos,
                                    grid.tile_radius,
-                                   option.border)
-            if option.border_color:
-                border_color = option.border_color
-            else:
-                border_color = grid.room_color
-            pygame.draw.circle(grid.game_display,
-                               border_color,
-                               option.pos,
-                               grid.tile_radius,
-                               option.border_width)
-
+                                   0)
             if option.img:
                 draw_img(grid, option)
             draw_hover(pygame, grid, MOUSE_POS, option.pos)
@@ -125,7 +115,7 @@ def draw_menu_buttons(pygame, grid, MOUSE_POS):
                                    button.color,
                                    button.pos,
                                    grid.tile_radius,
-                                   button.border)
+                                   0)
             if button.img:
                 draw_img(grid, button)
             if button.text:

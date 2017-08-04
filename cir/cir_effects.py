@@ -8,13 +8,16 @@
 import copy
 import random
 import cir_utils
+import time
+import cir_loader
+from cir_item_timer import TimerItem
 
 # --------------------------------------------------------------- #
 #                                                                 #
 #                         BASIC EFFECTS                           #
 #                                                                 #
 # --------------------------------------------------------------- #
-def produce(grid, product, pos, radius=None, birth=None):
+def produce(grid, product_name, pos, scenario, radius=None, birth=None,):
     """
     Produces an item from the everything dict
     :param grid: grid instance
@@ -22,21 +25,39 @@ def produce(grid, product, pos, radius=None, birth=None):
     :param pos: new position
     :return: the new item
     """
-    produced_item = None
-    for name, item in grid.everything.items():
-        if name == product:
-            if radius:
-                item.radius = radius
-            if birth:
-                item.birth_time.duration = birth
-            produced_item = copy.deepcopy(item)
-            produced_item.img = item.img
-            produced_item.default_img = item.default_img
-            produced_item.pos = pos
-            produced_item.available = True
-            produced_item.gen_birth_track()
-            grid.items.append(produced_item)
-    return produced_item
+
+    new_item = cir_loader.load_item(grid, scenario, product_name)
+
+    if radius:
+        new_item.radius = radius
+    if birth:
+        new_item.birth_time.duration = birth
+    new_item.pos = pos
+    new_item.default_img = new_item.img
+    new_item.name = new_item.name + str(time.time())
+    new_item.available = True
+    new_item.gen_birth_track()
+
+    grid.items.append(new_item)
+    return new_item
+
+    # new_item = None
+    # for name, item in grid.everything.items():
+    #     if name == product_name:
+    #         new_item = copy.deepcopy(item)
+    #         if radius:
+    #             new_item.radius = radius
+    #         if birth:
+    #             new_item.birth_time.duration = birth
+    #         new_item.name = new_item.name + str(time.time())
+    #         new_item.img = item.img
+    #         new_item.default_img = item.default_img
+    #         new_item.pos = pos
+    #         new_item.available = True
+    #         new_item.gen_birth_track()
+    #         new_item.lifespan = item.lifespan
+    #         new_item.marked_for_destruction = False
+    #         grid.items.append(new_item)
 
 
 def destroy(grid, item):
@@ -48,11 +69,11 @@ def destroy(grid, item):
         item.gen_birth_track()
         item.birth_track.reverse()
 
-        item.needs_to_be_destroyed = True
+        item.marked_for_destruction = True
 
 
 def destruction(grid, item):
-    if item.needs_to_be_destroyed and not item.birth_track:
+    if item.marked_for_destruction and not item.birth_track:
         item.available = False
         grid.items.remove(item)
         if item.name == "my_body":
@@ -64,17 +85,17 @@ def destruction(grid, item):
 #                         MOUSE MODES                             #
 #                                                                 #
 # --------------------------------------------------------------- #
-def laino_mode_click(grid, current_tile):
+def laino_mode_click(grid, current_tile, scenario):
     """
     For mode 'laino', if clicked produces an item
     :param grid: grid instance
     :param current_tile: the clicked circle
     """
     if current_tile not in grid.occupado_tiles and current_tile in grid.revealed_tiles:
-        produce(grid, "shit", current_tile)
+        produce(grid, "product_shit", current_tile, scenario)
 
 
-def shit_mode_click(grid, current_circle):
+def shit_mode_click(grid, current_circle, scenario):
     """
     For mode 'shit', if clicked produces an item and exhausts mode uses
     :param grid: grid instance
@@ -84,7 +105,7 @@ def shit_mode_click(grid, current_circle):
         if bag_item.name == grid.mouse_mode:
             if bag_item.uses:
                 if current_circle not in grid.occupado_tiles: #and current_circle in grid.revealed_tiles:
-                    produce(grid, "shit", current_circle)
+                    produce(grid, "shit", current_circle, scenario)
                     bag_item.uses -= 1
                     return 1
 
@@ -92,18 +113,19 @@ def shit_mode_click(grid, current_circle):
 def eat_mode_click(grid, current_tile):
     """ Eat that shit """
     for item in grid.items:
-        if current_tile == item.pos and not item.name == "my_body":
+        if current_tile == item.pos and not item.name == "my_body" and not "EDITOR" in item.name:
             destroy(grid, item)
 
 
-def echo_mode_click(grid, current_tile, my_body, MOUSE_POS):
+def echo_mode_click(grid, current_tile, my_body, MOUSE_POS, scenario):
     """ Signal effect """
     if not cir_utils.in_circle(my_body.pos, my_body.radius, current_tile) and not my_body.move_track:
         signal = produce(grid,
                          "signal",
                          my_body.pos,
                          radius = int(grid.tile_radius / 3),
-                         birth = 0)
+                         birth = 0,
+                         scenario = scenario)
         signal.direction = signal.get_aiming_direction(grid, current_tile, MOUSE_POS)[1]
 
 
@@ -121,7 +143,7 @@ def signal_hit_effect(grid, item):
     item.move_track = []
     item.gen_birth_track()
     item.birth_track.reverse()
-    item.needs_to_be_destroyed = True
+    item.marked_for_destruction = True
 
 
 # --------------------------------------------------------------- #
@@ -223,7 +245,8 @@ def observer_lifespan_over_effect(grid, item):
 
         if legal_moves:
             item.move_track = item.move_to_tile(grid, random.choice(legal_moves))
-            item.lifespan.restart()
+            if item.lifespan:
+                item.lifespan.restart()
 
 
 def signal_lifespan_over_effect(grid, item):
@@ -238,7 +261,7 @@ def timer_effect(grid, item):
         if item.lifespan.is_over:
             if item.name == "my_body":
                 my_body_lifespan_over_effect(grid)
-            elif item.name == "observer":
+            elif "observer" in item.name:
                 observer_lifespan_over_effect(grid, item)
             else:
                 destroy(grid, item)
@@ -253,19 +276,22 @@ def timer_effect(grid, item):
 # --------------------------------------------------------------- #
 #                        MOUSE MODE CLICK                         #
 # --------------------------------------------------------------- #
-def mouse_mode_click(grid, current_tile, my_body, MOUSE_POS):
-    if grid.mouse_mode == "laino":
-        laino_mode_click(grid, current_tile)
-    elif grid.mouse_mode == "shit":
-        shit_mode_click(grid, current_tile)
-    elif grid.mouse_mode == "see":
+def mouse_mode_click(grid, current_tile, my_body, MOUSE_POS, scenario):
+    if grid.mouse_mode in ["laino", "EDITOR2"]:
+        laino_mode_click(grid, current_tile, scenario)
+    elif grid.mouse_mode in ["shit"]:
+        shit_mode_click(grid, current_tile, scenario)
+    elif grid.mouse_mode in ["see", "EDITOR1"]:
         if current_tile not in grid.occupado_tiles and current_tile in grid.revealed_tiles:
-            new_observer = produce(grid, "observer", current_tile)
+            new_observer = produce(grid, "observer", current_tile, scenario)
             new_observer.lifespan.restart()
-    elif grid.mouse_mode == "eat":
+    elif grid.mouse_mode in ["EDITOR3"]:
+        if current_tile not in grid.occupado_tiles and current_tile in grid.revealed_tiles:
+            produce(grid, "block_of_steel", current_tile, scenario)
+    elif grid.mouse_mode in ["eat", "EDITOR7"]:
         eat_mode_click(grid, current_tile)
     elif grid.mouse_mode == "echo":
-        echo_mode_click(grid, current_tile, my_body, MOUSE_POS)
+        echo_mode_click(grid, current_tile, my_body, MOUSE_POS, scenario)
 
 # --------------------------------------------------------------- #
 #                    MOUSE MODE CLICK ON ITEM                     #

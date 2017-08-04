@@ -60,7 +60,7 @@ class Item(object):
         self.rot_revert = []
         self.birth_track = []
         self.fat_track = []
-        self.needs_to_be_destroyed = False
+        self.marked_for_destruction = False
 
 
     @property

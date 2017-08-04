@@ -18,6 +18,7 @@
 # TODO: Create save button
 # TODO: Create load button
 # TODO: Create installation .exe file
+# TODO: Create reverse get position
 # --------------------------------------------------------------- #
 #                            Animation                            #
 # --------------------------------------------------------------- #
@@ -29,6 +30,8 @@
 #                            Bug fixes                            #
 # --------------------------------------------------------------- #
 # TODO: Fix mitosis (occ prop lag, overlap, birth fat)
+# TODO: Fix item collection
+# TODO: Fix item creation
 # --------------------------------------------------------------- #
 #                            Imports                              #
 # --------------------------------------------------------------- #
@@ -50,14 +53,13 @@ def game_loop(game_over, scenario="Scenario_1"):
     #                                                                 #
     # --------------------------------------------------------------- #
     grid = cir_grid.Grid(pygame)
-    images = cir_cosmetic.Images(grid, pygame)
-    fonts = cir_cosmetic.Fonts(grid, pygame)
-    my_body = cir_loader.load_items(grid, images, fonts, scenario)
+    grid.images = cir_cosmetic.Images(grid, pygame)
+    grid.fonts = cir_cosmetic.Fonts(grid, pygame)
+    my_body = cir_loader.load_items(grid, scenario)
     grid.start_time = time.time()
 
     if game_over:
-        grid.everything["play"].name = "replay"
-        # grid.everything["replay"].available = True
+        grid.rename_button("play", "replay")
     if scenario == "Scenario_2":
         grid.game_menu = False
 
@@ -93,8 +95,7 @@ def game_loop(game_over, scenario="Scenario_1"):
                 if event.key == pygame.K_ESCAPE:
                     if not grid.game_menu:
                         grid.game_menu = True
-                        if grid.everything["play"].name == "replay":
-                            grid.everything["play"].name = "play"
+                        grid.rename_button("replay", "play")
                     elif grid.game_menu and grid.seconds_in_game > 0:
                         grid.game_menu = False
 
@@ -103,7 +104,6 @@ def game_loop(game_over, scenario="Scenario_1"):
                     #                            'Space'                              #
                     # --------------------------------------------------------------- #
                     if event.key == pygame.K_SPACE:
-
                         # Radar Population
                         my_body.gen_radar_track(grid)
                         # Debug
@@ -114,6 +114,14 @@ def game_loop(game_over, scenario="Scenario_1"):
                         my_body.vibe_speed += 0.1
                         my_body.lifespan.update(5)
                         print my_body.lifespan.duration
+
+                    elif event.key == pygame.K_KP_ENTER:
+                        print "EDITOR MODE"
+                        my_body.lifespan = None
+                        for editor in grid.everything.values():
+                            if "EDITOR" in editor.name:
+                                if not editor in grid.items:
+                                    grid.items.append(editor)
 
                     elif event.key == pygame.K_f:
                         print ">>>> key f"
@@ -131,7 +139,7 @@ def game_loop(game_over, scenario="Scenario_1"):
 
                     elif event.key == pygame.K_k:
                         print ">>>> key k"
-                        my_body.img = images.alien1
+                        my_body.img = grid.images.alien1
                         my_body.default_img = my_body.img
                         my_body.speed = 10
 
@@ -176,7 +184,7 @@ def game_loop(game_over, scenario="Scenario_1"):
                         # --------------------------------------------------------------- #
                         #                         MOUSE MODE CLICK                        #
                         # --------------------------------------------------------------- #
-                        cir_effects.mouse_mode_click(grid, current_tile, my_body, MOUSE_POS)
+                        cir_effects.mouse_mode_click(grid, current_tile, my_body, MOUSE_POS, scenario)
 
                         # --------------------------------------------------------------- #
                         #                          CLICK ON ITEMS                         #
@@ -184,6 +192,9 @@ def game_loop(game_over, scenario="Scenario_1"):
                         for item in grid.items:
                             if item.clickable:
                                 if current_tile == item.pos:
+                                    # Setting the mouse mode
+                                    if item.modable:
+                                        grid.set_mouse_mode(item)
                                     # --------------------------------------------------------------- #
                                     #                    MOUSE MODE CLICK ON ITEM                     #
                                     # --------------------------------------------------------------- #

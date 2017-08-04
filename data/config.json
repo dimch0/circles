@@ -18,7 +18,7 @@
     "caption"  : "cir",
     "img_dir"  : "img",
     "sound_dir": "sound",
-    "data_file": "./data/data.csv",
+    "data_file": "./data/data2.csv",
     "font_file": "./fonts/HelveticaNeueMed.ttf"
   },
 

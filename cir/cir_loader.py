@@ -13,6 +13,13 @@ import cir_item_button
 import cir_item_mobile
 
 
+
+class DataLoader(object):
+
+    def __init__(self):
+        self.grid = None
+
+
 def create_new_item(grid, type, attributes):
     """
     This function creates an item of a class by the given type.
@@ -88,12 +95,11 @@ def set_pos(grid, number):
             position = grid.adj_tiles(position)[idx]
     return position
 
-def load_data(grid, images, fonts, SCENARIO):
+def load_data(grid, SCENARIO):
     """
     This function loads all items and menu options from external data file.
     :param grid:  grid instance
     :param images:  images instance
-    :param fonts:  fonts instance
     :param SCENARIO:  scenario number
     :return: item object, type and category
     """
@@ -114,13 +120,10 @@ def load_data(grid, images, fonts, SCENARIO):
                     attributes = {
                         "type"        : row[col_idx["type"]],
                         "available"   : bool(row[col_idx["available"]]) if len(row[col_idx["available"]]) > 0 else None,
-                        "border"      : row[col_idx["border"]] if len(row[col_idx["border"]]) > 0 else 0,
-                        "border_width": int(row[col_idx["border_width"]]) if len(row[col_idx["border_width"]]) > 0 else 1,
-                        "border_color": getattr(grid, row[col_idx["border_color"]]) if len(row[col_idx["border_color"]]) > 0 else None,
                         "name"        : row[col_idx["name"]] if len(row[col_idx["name"]]) > 0 else None,
                         "pos"         : set_pos(grid, row[col_idx["pos"]]) if len(row[col_idx["pos"]]) > 0 else None,
                         "color"       : getattr(grid, row[col_idx["color"]]) if len(row[col_idx["color"]]) > 0 else None,
-                        "img"         : getattr(images, row[col_idx["img"]]) if len(row[col_idx["img"]]) > 0 else None,
+                        "img"         : getattr(grid.images, row[col_idx["img"]]) if len(row[col_idx["img"]]) > 0 else None,
                         "speed"       : int(row[col_idx["speed"]]) if len(row[col_idx["speed"]]) > 0 else None,
                         "range"       : int(row[col_idx["range"]]) if len(row[col_idx["range"]]) > 0 else None,
                         "time_color"  : getattr(grid, row[col_idx["time_color"]]) if len(row[col_idx["time_color"]]) > 0 else None,
@@ -169,16 +172,30 @@ def set_timers(grid):
             item.birth_time = timer
 
 
+def set_timer(grid, item):
+    """ Assign all options from grid.mode_vs_options to grid.items """
+    if item.lifespan:
+        timer = cir_item_timer.TimerItem()
+        timer.radius = grid.tile_radius
+        timer.default_radius = grid.tile_radius
+        timer.duration = item.lifespan
+        timer.color = item.time_color
+        item.lifespan = timer
+
+    if item.birth_time:
+        timer = cir_item_timer.TimerItem()
+        timer.duration = item.birth_time
+        item.birth_time = timer
 
 
-def set_buttons(grid, fonts):
+def set_buttons(grid):
     """ Assign all items to the grid object """
 
     for name in ["play", "quit"]:
         butt = cir_item_button.ButtonItem()
         butt.name = name
         butt.color = grid.grey
-        butt.font = getattr(fonts, 'small')
+        butt.font = getattr(grid.fonts, 'small')
         butt.text_color = grid.white
         if name == "play":
             butt.pos = set_pos(grid, '10')
@@ -199,22 +216,33 @@ def set_rooms(grid, item):
         grid.rooms[item.room]["items"].append(item)
 
 
-def load_items(grid, images, fonts, scenario):
+def load_item(grid, scenario, item_name):
+    new_item = None
+    for item, type, category in load_data(grid, scenario):
+        if item.name == item_name:
+            new_item = item
+            set_timer(grid, new_item)
+            return new_item
+
+
+
+
+def load_items(grid, scenario):
     """
     Loading all modes, buttons, timers, my_body
     :return: my_body
     """
-    for item, type, category in load_data(grid, images, fonts, scenario):
+    for item, type, category in load_data(grid, scenario):
         # Everything
         grid.everything[item.name] = item
         set_rooms(grid, item)
+        set_timer(grid, item)
         # Mode options
         if type == "mode_option":
             add_optoin_to_mode(grid, category, item)
 
-    set_buttons(grid, fonts)
+    set_buttons(grid)
     set_mode_options(grid)
-    set_timers(grid)
     my_body = grid.everything["my_body"]
     my_body.gen_birth_track()
     grid.rooms[grid.current_room]["revealed_radius"].append(((my_body.pos), grid.tile_radius))

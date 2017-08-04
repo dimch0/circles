@@ -6,7 +6,9 @@
 #################                                                                                     #################
 #######################################################################################################################
 from cir_item_mobile import MobileItem
+from cir_item_timer import TimerItem
 from cir_utils import get_list_drange, get_mirror_point
+
 
 
 class BodyItem(MobileItem):
@@ -91,6 +93,15 @@ class BodyItem(MobileItem):
 
         return radar_radius, thick
 
+
+    # def set_lifespan(self, grid):
+    #     if self.lifespan:
+    #         timer = TimerItem()
+    #         timer.radius = grid.tile_radius
+    #         timer.default_radius = grid.tile_radius
+    #         timer.duration = self.lifespan
+    #         timer.color = self.time_color
+    #         self.lifespan = timer
 
 
 
