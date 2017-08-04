@@ -29,7 +29,7 @@
 # --------------------------------------------------------------- #
 #                            Bug fixes                            #
 # --------------------------------------------------------------- #
-# TODO: Fix mitosis (occ prop lag, overlap, birth fat) Move to effects
+# TODO: Fix mitosis (lag, overlap)
 # TODO: Fix item collection
 # --------------------------------------------------------------- #
 #                            Imports                              #

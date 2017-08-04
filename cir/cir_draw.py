@@ -99,11 +99,22 @@ class GameDrawer(object):
         for option in item.options:
             if option.available:
                 if option.color:
+
+
                     self.pygame.draw.circle(self.grid.game_display,
                                        option.color,
                                        option.pos,
                                        self.grid.tile_radius,
                                        0)
+
+                    if item.mode == "bag":
+                        self.pygame.draw.circle(self.grid.game_display,
+                                           self.grid.yellowgrey,
+                                           option.pos,
+                                           self.grid.tile_radius,
+                                           5)
+
+
                 if option.img:
                     self.draw_img(option)
                 self.draw_hover(current_tile, option.pos)
@@ -198,7 +209,7 @@ class GameDrawer(object):
                                 aim_rect,
                                 math.radians(angle1),
                                 math.radians(angle2),
-                                1)
+                                3)
 
 
     def draw_grid(self):

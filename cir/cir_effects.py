@@ -31,7 +31,6 @@ class GameEffects(object):
         :param pos: new position
         :return: the new item
         """
-        print "product_name", product_name
         new_item = self.loader.load_item(product_name)
         if radius:
             new_item.radius = radius
@@ -110,6 +109,7 @@ class GameEffects(object):
             new_copy.img = item.img
             new_copy.speed = item.speed
             new_copy.name = "new copy"
+            new_copy.birth_track = []
             # new_copy.pos = item.pos
             # new_copy.color = self.color
             # new_copy.birth_time = None
@@ -384,14 +384,14 @@ class GameEffects(object):
                 item.change_speed(0.1)
 
             elif option.name == "suicide":
-                self.destroy(self.grid, item)
+                self.destroy(item)
 
             elif option.name == "echo":
                 print "Echo!"
 
             # enter / exit
             elif "Enter_" in option.name:
-                self.exit_room(self.grid, my_body, item)
+                self.exit_room(my_body, item)
 
             # Setting the mode
             item.set_mode(self.grid, option)

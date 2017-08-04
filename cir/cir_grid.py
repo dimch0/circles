@@ -224,7 +224,7 @@ class Grid(object):
 
     def set_mouse_mode(self, option):
         self.mouse_mode = option.name
-        if option.img and option.modable:
+        if option.img and option.modable and not option.name == "echo":
             self.mouse_img = option.img
 
     # --------------------------------------------------------------- #
