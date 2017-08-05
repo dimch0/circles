@@ -45,13 +45,13 @@ class GameDrawer(object):
 
     def draw_hover(self, current_tile, tile):
         """ Highlights the hovered tile """
-
-        if cir_utils.in_circle(tile, self.grid.tile_radius, current_tile):
-            self.pygame.draw.circle(self.grid.game_display,
-                               self.grid.white,
-                               tile,
-                                self.grid.tile_radius,
-                               1)
+        if current_tile:
+            if cir_utils.in_circle(tile, self.grid.tile_radius, current_tile):
+                self.pygame.draw.circle(self.grid.game_display,
+                                   self.grid.white,
+                                   tile,
+                                   self.grid.tile_radius,
+                                   1)
 
 
     def draw_img(self, item):
@@ -358,6 +358,26 @@ class GameDrawer(object):
 
                 # Items
                 self.draw_body(current_tile, item)
+
+                r = self.grid.tile_radius
+                x = my_body.pos[0] - (r / 2)
+                y = my_body.pos[1] - math.sqrt((r * r) + ((r/2) * (r/2)))
+
+                # y = my_body.pos[1]
+                POS = (int(x), int(y))
+                # self.pygame.draw.circle(self.grid.game_display,
+                #                         self.grid.red,
+                #                         POS,
+                #                         5,
+                #                         0)
+
+                self.pygame.draw.line(self.grid.game_display,
+                                      self.grid.white,
+                                      my_body.pos,
+                                      POS,
+                                      3)
+
+
 
                 # Show movement track in color
                 if self.grid.show_movement and len(item.move_track) > 1:

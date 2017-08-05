@@ -141,8 +141,9 @@ class Grid(object):
 
         if current_tile:
             self.previous_tile = current_tile
-        else:
+        elif current_tile and self.previous_tile:
             current_tile = self.previous_tile
+
 
         return current_tile
 

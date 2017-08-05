@@ -129,7 +129,7 @@ def game_loop(game_over, scenario="Scenario_1"):
 
                     elif event.key == pygame.K_p:
                         print ">>>> key p"
-                        my_body.lifespan.update(-1)
+                        my_body.lifespan.update(-5)
                         print my_body.lifespan.duration
 
                     elif event.key == pygame.K_l:
