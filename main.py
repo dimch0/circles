@@ -8,9 +8,7 @@
 # --------------------------------------------------------------- #
 #                            Features                             #
 # --------------------------------------------------------------- #
-# TODO: Item generation
 # TODO: Level Editor
-# TODO: Log messages on screen
 # TODO: Create map (screenshot all rooms) room 401
 # TODO: Create inside body view room 400
 # TODO: Create spirit mode NEW SCENARIO
@@ -19,6 +17,7 @@
 # TODO: Create load button
 # TODO: Create installation .exe file
 # TODO: Create reverse get position
+# TODO: Item generation
 # --------------------------------------------------------------- #
 #                            Animation                            #
 # --------------------------------------------------------------- #
@@ -26,6 +25,7 @@
 # TODO: Animate item activation
 # TODO: Animate demo
 # TODO: Add sounds
+# TODO: Log messages on screen
 # --------------------------------------------------------------- #
 #                            Bug fixes                            #
 # --------------------------------------------------------------- #

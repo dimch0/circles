@@ -183,11 +183,20 @@ class GameEffects(object):
     def echo_mode_click(self, current_tile, my_body):
         """ Signal effect """
         if not cir_utils.in_circle(my_body.pos, my_body.radius, current_tile) and not my_body.move_track:
+            trace = self.produce("signal",
+                                  my_body.pos,
+                                  radius = int((self.grid.tile_radius / 3) + 2),
+                                  birth = 0.08,
+                                 )
             signal = self.produce("signal",
                                   my_body.pos,
                                   radius = int(self.grid.tile_radius / 3),
-                                  birth = 0)
+                                  birth = 0.11)
+
+            trace.color = self.grid.pink
+            trace.direction = trace.get_aiming_direction(self.grid, current_tile)[1]
             signal.direction = signal.get_aiming_direction(self.grid, current_tile)[1]
+
 
 
     def signal_hit(self, item, my_body):

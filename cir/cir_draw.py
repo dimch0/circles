@@ -162,6 +162,11 @@ class GameDrawer(object):
             # Draw activation / deactivation here
 
             self.draw_img(item)
+
+            # Aim
+            self.draw_aim(current_tile, item)
+
+
             self.draw_hover(current_tile, item.pos)
 
 
@@ -178,16 +183,17 @@ class GameDrawer(object):
                                 math.radians(item.lifespan.start_degrees),
                                 2)
 
-    def draw_aim(self, current_tile, my_body):
+    def draw_aim(self, current_tile, item):
         """ Aim """
-        if my_body.mode == "echo":
-            aim_dir_idx = my_body.get_aiming_direction(self.grid, current_tile)[1]
+        if item.mode == "echo":
+            aim_dir_idx = item.get_aiming_direction(self.grid, current_tile)[1]
+            aim_tile = item.get_aiming_direction(self.grid, current_tile)[0]
 
-            bow_dist = my_body.radius / 3
-            aim_rect = [my_body.rect[0] - bow_dist,
-                        my_body.rect[1] - bow_dist,
-                        my_body.rect[2] + bow_dist * 2,
-                        my_body.rect[3] + bow_dist * 2]
+            bow_dist = item.radius / 3
+            aim_rect = [item.rect[0] - bow_dist,
+                        item.rect[1] - bow_dist,
+                        item.rect[2] + bow_dist * 2,
+                        item.rect[3] + bow_dist * 2]
 
             angle1, angle2 = None, None
             if aim_dir_idx == 0:
@@ -210,6 +216,37 @@ class GameDrawer(object):
                                 math.radians(angle1),
                                 math.radians(angle2),
                                 3)
+
+            # r = item.radius
+            # if aim_dir_idx == 0:
+            #     x = item.pos[0] - (r / 2)
+            #     y = item.pos[1] - math.sqrt((r * r) + ((r / 2) * (r / 2)))
+            #     x1 = item.pos[0] + (r / 2)
+            #     y1 = item.pos[1] - math.sqrt((r * r) + ((r / 2) * (r / 2)))
+            # elif aim_dir_idx == 1:
+            #     x = item.pos[0] + (r / 2)
+            #     y = item.pos[1] - math.sqrt((r * r) + ((r / 2) * (r / 2)))
+            #     x1 = item.pos[0] - (r / 2)
+            #     y1 = item.pos[1]
+            #
+            # else:
+            #     x = 0
+            #     y = 0
+            #     x1 = 0
+            #     y1 = 0
+            #
+            #
+            #
+            # POS = (int(x), int(y))
+            # POS2 = item.pos
+            # POS3 = (int(x1), int(y1))
+            #
+            # self.pygame.draw.lines(self.grid.game_display,
+            #                        self.grid.white,
+            #                        False,
+            #                        [POS, POS2, POS3],
+            #                        1)
+
 
 
     def draw_grid(self):
@@ -346,8 +383,7 @@ class GameDrawer(object):
         #                   grid.tile_radius * 2)
 
 
-        # Aim
-        self.draw_aim(current_tile, my_body)
+
 
         for item in self.grid.items:
             if item.available:
@@ -359,23 +395,7 @@ class GameDrawer(object):
                 # Items
                 self.draw_body(current_tile, item)
 
-                r = self.grid.tile_radius
-                x = my_body.pos[0] - (r / 2)
-                y = my_body.pos[1] - math.sqrt((r * r) + ((r/2) * (r/2)))
 
-                # y = my_body.pos[1]
-                POS = (int(x), int(y))
-                # self.pygame.draw.circle(self.grid.game_display,
-                #                         self.grid.red,
-                #                         POS,
-                #                         5,
-                #                         0)
-
-                self.pygame.draw.line(self.grid.game_display,
-                                      self.grid.white,
-                                      my_body.pos,
-                                      POS,
-                                      3)
 
 
 
