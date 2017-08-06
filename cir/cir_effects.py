@@ -23,7 +23,7 @@ class GameEffects(object):
     #                             PRODUCE                             #
     #                                                                 #
     # --------------------------------------------------------------- #
-    def produce(self, product_name, pos, radius=None, birth=None,):
+    def produce(self, product_name, pos=None, radius=None, birth=None, vf=None, lifespan=None):
         """
         Produces an item from the everything dict
         :param grid: grid instance
@@ -32,36 +32,26 @@ class GameEffects(object):
         :return: the new item
         """
         new_item = self.loader.load_item(product_name)
+
         if radius:
             new_item.radius = radius
         if birth:
             new_item.birth_time.duration = birth
-        new_item.pos         = pos
+        if vf:
+            new_item.vibe_freq.duration = vf
+        if pos:
+            new_item.pos = pos
+        if lifespan:
+            new_item.lifespan = lifespan
+        # self.loader.set_timer(new_item)
         new_item.default_img = new_item.img
         # new_item.name        = new_item.name + str(time.time())
-        new_item.available   = True
+        # new_item.marked_for_destruction = False
+        new_item.available = True
         new_item.gen_birth_track()
 
         self.grid.items.append(new_item)
         return new_item
-
-        # new_item = None
-        # for name, item in grid.everything.items():
-        #     if name == product_name:
-        #         new_item = copy.deepcopy(item)
-        #         if radius:
-        #             new_item.radius = radius
-        #         if birth:
-        #             new_item.birth_time.duration = birth
-        #         new_item.name = new_item.name + str(time.time())
-        #         new_item.img = item.img
-        #         new_item.default_img = item.default_img
-        #         new_item.pos = pos
-        #         new_item.available = True
-        #         new_item.gen_birth_track()
-        #         new_item.lifespan = item.lifespan
-        #         new_item.marked_for_destruction = False
-        #         grid.items.append(new_item)
 
     # --------------------------------------------------------------- #
     #                                                                 #
@@ -70,9 +60,11 @@ class GameEffects(object):
     # --------------------------------------------------------------- #
     def destroy(self, item):
         if item in self.grid.items and not item.birth_track:
-            item.in_menu = False
             if item.lifespan:
                 item.lifespan = None
+            if item.vibe_freq:
+                item.vibe_freq = None
+            item.in_menu = False
             item.move_track = []
             item.gen_birth_track()
             item.birth_track.reverse()
@@ -81,7 +73,7 @@ class GameEffects(object):
 
 
     def destruction(self, item):
-        if item.marked_for_destruction and not item.birth_track:
+        if item.marked_for_destruction and len(item.birth_track) == 1:
             item.available = False
             self.grid.items.remove(item)
             if item.name == "my_body":
@@ -103,7 +95,6 @@ class GameEffects(object):
         empty_tile = item.check_for_empty_adj_tile(self.grid)
         if empty_tile:
             placeholder = self.produce("placeholder", empty_tile)
-
             search_for_name = item.name.replace(" - copy", "")
             new_copy = self.produce(search_for_name, item.pos)
             new_copy.img = item.img
@@ -127,8 +118,6 @@ class GameEffects(object):
         :param grid: grid instance
         :return:
         """
-        # copies = [item for item in grid.items if self.name in item.name]
-        # Ready copies
         for other_item in self.grid.items:
             print "START MITO", item.name
             if other_item.name == "new copy":
@@ -183,18 +172,17 @@ class GameEffects(object):
     def echo_mode_click(self, current_tile, my_body):
         """ Signal effect """
         if not cir_utils.in_circle(my_body.pos, my_body.radius, current_tile) and not my_body.move_track:
-            trace = self.produce("signal",
-                                  my_body.pos,
-                                  radius = int((self.grid.tile_radius / 3) + 2),
-                                  birth = 0.08,
-                                 )
+            # trace = self.produce("signal",
+            #                       my_body.pos,
+            #                       radius = int((self.grid.tile_radius / 3) + 1),
+            #                       birth = 0.05,
+            #                      )
+            # trace.color = self.grid.pink
+            # trace.direction = trace.get_aiming_direction(self.grid, current_tile)[1]
             signal = self.produce("signal",
                                   my_body.pos,
                                   radius = int(self.grid.tile_radius / 3),
-                                  birth = 0.11)
-
-            trace.color = self.grid.pink
-            trace.direction = trace.get_aiming_direction(self.grid, current_tile)[1]
+                                  birth = 0.05)
             signal.direction = signal.get_aiming_direction(self.grid, current_tile)[1]
 
 
@@ -297,12 +285,8 @@ class GameEffects(object):
             item.birth_track.pop(0)
             item.birth_time.restart()
 
-    # lifespan
-    def my_body_lifespan_over_effect(self):
-        self.grid.game_over = True
-
-    # observer
-    def observer_lifespan_over_effect(self, item):
+    def vibe_freq_over_effect(self, item):
+        """ Vibe frequency timer over effect """
         if not item.move_track:
             item.gen_radar_track(self.grid)
 
@@ -314,8 +298,8 @@ class GameEffects(object):
 
             if legal_moves:
                 item.move_track = item.move_to_tile(self.grid, random.choice(legal_moves))
-                if item.lifespan:
-                    item.lifespan.restart()
+                if item.vibe_freq:
+                    item.vibe_freq.restart()
 
 
     def signal_lifespan_over_effect(self, item):
@@ -326,20 +310,22 @@ class GameEffects(object):
         """ Timer effects  """
         if item.lifespan:
             item.lifespan.tick()
-
             if item.lifespan.is_over:
-                if item.name == "my_body":
-                    self.my_body_lifespan_over_effect()
-                elif "observer" in item.name:
-                    self.observer_lifespan_over_effect(item)
-                else:
-                    self.destroy(item)
+                self.destroy(item)
+
+        if hasattr(item, "vibe_freq"):
+            if item.vibe_freq and not isinstance(item.vibe_freq, float):
+                if item.vibe_freq.duration:
+                    item.vibe_freq.tick()
+                    if item.vibe_freq.is_over:
+                        self.vibe_freq_over_effect(item)
 
         if item.birth_track:
             if item.birth_time and not isinstance(item.birth_time, float):
                 item.birth_time.tick()
                 if item.birth_time.is_over:
                     self.birth_time_over_effect(item)
+
 
 
     # --------------------------------------------------------------- #
@@ -446,6 +432,56 @@ class GameEffects(object):
 
 
 
+
+
+
+    def editor(self, item, my_body):
+        # EDITOR CLICK
+        if item.name == "EDITOR10":
+            my_body.vibe_speed += 0.1
+
+        if item.name == "EDITOR11":
+            my_body.lifespan.update(10)
+
+        elif item.name == "EDITOR12":
+            my_body.lifespan.update(-10)
+
+        elif item.name == "EDITOR13":
+            my_body.img = self.grid.images.ape
+            my_body.default_img = self.grid.images.ape
+            my_body.speed = 10
+
+        elif item.name == "EDITOR14":
+            my_body.lifespan.update(60)
+
+        elif item.name == "EDITOR15":
+            trigger = self.produce(product_name="trigger",
+                                   pos = self.grid.center_tile,
+                                   lifespan=1)
+            trigger.range = 4
+            trigger.vibe_speed = 3
+            trigger.birth_time = 0
+
+            self.loader.set_timer(trigger)
+            trigger.vibe_freq = None
+            trigger.birth_track = []
+            trigger.gen_radar_track(self.grid)
+
+
+        elif item.name == "EDITOR17":
+            self.grid.scenario = 'Scenario_2'
+            self.grid.game_over = True
+
+        elif item.name == "EDITOR18":
+            my_body.gen_fat()
+
+
+
+
+
+
+
+
     # --------------------------------------------------------------- #
     #                                                                 #
     #                           CHANGE VARS                           #
@@ -465,9 +501,6 @@ class GameEffects(object):
             # Items
             for item in self.grid.items:
 
-                # Timers
-                self.timer_effect(item)
-
                 # Enter
                 self.enter_room(my_body, item)
 
@@ -475,6 +508,9 @@ class GameEffects(object):
                 self.destruction(item)
 
                 if item.available:
+
+                    # Timers
+                    self.timer_effect(item)
 
                     # Kissing circles
                     if item.type == 'body':

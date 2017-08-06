@@ -88,7 +88,7 @@ class TimerItem(Item):
         self._filled_degrees = int((self.step * self.number_of_steps) / steps_before) - \
                               (self.step_degrees * steps_delta)
 
-        # print "duration        :", self.duration
+        print "dur: ", self.duration
         # print "current    step :", self.step
         # print "number of steps :", self.number_of_steps
         # print "start   degrees :", self.start_degrees

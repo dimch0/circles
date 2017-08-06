@@ -8,7 +8,7 @@
 # --------------------------------------------------------------- #
 #                            Features                             #
 # --------------------------------------------------------------- #
-# TODO: Level Editor
+# TODO: Introduce vibe freq timer
 # TODO: Create map (screenshot all rooms) room 401
 # TODO: Create inside body view room 400
 # TODO: Create spirit mode NEW SCENARIO
@@ -31,6 +31,8 @@
 # --------------------------------------------------------------- #
 # TODO: Fix mitosis (lag, overlap)
 # TODO: Fix item collection
+# TODO: Improve item options
+# TODO: remove everything dict
 # --------------------------------------------------------------- #
 #                            Imports                              #
 # --------------------------------------------------------------- #
@@ -66,7 +68,7 @@ def game_loop(game_over, scenario="Scenario_1"):
     # --------------------------------------------------------------- #
     #                         TEST TESTING PLACE                      #
     # --------------------------------------------------------------- #
-    my_body.lifespan.duration = 60
+    # my_body.lifespan.duration = 60
 
     print "Game started"
 
@@ -83,12 +85,11 @@ def game_loop(game_over, scenario="Scenario_1"):
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
-            # --------------------------------------------------------------- #
-            #                            KEY EVENTS                           #
-            # --------------------------------------------------------------- #
+
             elif event.type == pygame.KEYDOWN:
+                # TODO: Create a key sector class
                 # --------------------------------------------------------------- #
-                #                             'Esc'                               #
+                #                             'Escape'                               #
                 # --------------------------------------------------------------- #
                 if event.key == pygame.K_ESCAPE:
                     if not grid.game_menu:
@@ -109,40 +110,10 @@ def game_loop(game_over, scenario="Scenario_1"):
                         # DEBUG PRINT
                         cir_utils.debug_print_space(grid, my_body)
 
-                    elif event.key == pygame.K_t:
-                        print ">>>> key t"
-                        my_body.vibe_speed += 0.1
-                        my_body.lifespan.update(5)
-                        print my_body.lifespan.duration
-
-                    elif event.key == pygame.K_KP_ENTER:
-                        print "EDITOR MODE"
-                        my_body.lifespan = None
-                        for editor in grid.everything.values():
-                            if "EDITOR" in editor.name:
-                                if not editor in grid.items:
-                                    grid.items.append(editor)
-
-                    elif event.key == pygame.K_f:
-                        print ">>>> key f"
-                        my_body.gen_fat()
-
-                    elif event.key == pygame.K_p:
-                        print ">>>> key p"
-                        my_body.lifespan.update(-5)
-                        print my_body.lifespan.duration
-
-                    elif event.key == pygame.K_l:
-                        print ">>>> key l"
-                        scenario = 'Scenario_2'
-                        grid.game_over = True
-
-                    elif event.key == pygame.K_k:
-                        print ">>>> key k"
-                        my_body.img = grid.images.alien1
-                        my_body.default_img = my_body.img
-                        my_body.speed = 10
-
+                    if event.key == pygame.K_KP_ENTER:
+                        editor_buttons = loader.load_editor()
+                        for editor_button in editor_buttons:
+                            effects.produce(editor_button.name)
 
                     elif event.key == pygame.K_1:
                         print ">>>> key 1"
@@ -194,6 +165,10 @@ def game_loop(game_over, scenario="Scenario_1"):
                                     # SET MOUSE MODE
                                     if item.modable:
                                         grid.set_mouse_mode(item)
+
+                                    # EDITOR CLICK
+                                    effects.editor(item, my_body)
+
                                     # --------------------------------------------------------------- #
                                     #                    MOUSE MODE CLICK ON ITEM                     #
                                     # --------------------------------------------------------------- #
@@ -257,7 +232,7 @@ def game_loop(game_over, scenario="Scenario_1"):
         grid.clock.tick(grid.fps)
 
     if grid.game_over:
-        game_loop(grid.game_over, scenario)
+        game_loop(grid.game_over, grid.scenario)
 
     pygame.quit()
     quit()

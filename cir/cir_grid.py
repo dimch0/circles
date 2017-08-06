@@ -141,7 +141,7 @@ class Grid(object):
 
         if current_tile:
             self.previous_tile = current_tile
-        elif current_tile and self.previous_tile:
+        elif not current_tile and self.previous_tile:
             current_tile = self.previous_tile
 
 
@@ -153,7 +153,7 @@ class Grid(object):
         result = []
         for tile in self.playing_tiles:
             for item in self.items:
-                if not item.type == "signal":
+                if not item.type in ["signal", "trigger"]:
                     circle_1 = (tile, self.tile_radius)
                     circle_2 = (item.pos, self.tile_radius)
                     if intersecting(circle_1, circle_2):

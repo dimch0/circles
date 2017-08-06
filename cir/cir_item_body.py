@@ -20,6 +20,7 @@ class BodyItem(MobileItem):
         self.range = 1
         # VIBE SPEED CAN NOT BE LESS THAN 1 !!!
         self.vibe_speed = 1
+        self.vibe_freq = None
         # self.muscle = 1
         # self.mind = 0
         # self.ego = 0

@@ -66,7 +66,6 @@ class GameDrawer(object):
 
     def draw_radar(self, item):
         """ Radar animation """
-
         radar_radius, thick = item.radar(self.grid)
         if radar_radius and thick:
             self.pygame.draw.circle(self.grid.game_display,
@@ -209,7 +208,7 @@ class GameDrawer(object):
             elif aim_dir_idx == 5:
                 angle1, angle2 = 120, 180
 
-            if angle1 and angle2:
+            if angle1 and angle2 and aim_rect[2] > 3 and aim_rect[3] > 3:
                 self.pygame.draw.arc(self.grid.game_display,
                                 self.grid.white,
                                 aim_rect,

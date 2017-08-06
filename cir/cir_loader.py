@@ -29,20 +29,17 @@ class DataLoader(object):
         """
         dummy = None
         try:
-            if type == "body":
+            if type in ["body", "trigger"]:
                 dummy = cir_item_body.BodyItem()
             elif type == "timer":
                 dummy = cir_item_timer.TimerItem()
                 dummy.timer_tile_radius = self.grid.tile_radius
-            # elif type == "button":
-            #     dummy = cir_item_button.ButtonItem()
             elif type in ["mobile", "signal"]:
                 dummy = cir_item_mobile.MobileItem()
             elif type in ["mode_option", "simple"]:
                 dummy = cir_item.Item()
         except Exception as e:
-            print e
-            print "Error, could not create item of type: {0}".format(type)
+            print("Error {0, could not create item of type: {1}".format(e, type))
 
         try:
             for attribute, value in attributes.items():
@@ -98,7 +95,7 @@ class DataLoader(object):
         :param images:  images instance
         :return: item object, type and category
         """
-        print "Loading", self.grid.scenario, "..."
+
         with open(self.grid.data_file, 'rb') as csvfile:
             data = csv.reader(csvfile, delimiter=',')
             header = next(data)
@@ -127,7 +124,9 @@ class DataLoader(object):
                             "uses"        : int(row[col_idx["uses"]]) if len(row[col_idx["uses"]]) > 0 else None,
                             "room"        : int(row[col_idx["room"]]) if len(row[col_idx["room"]]) > 0 else None,
                             "lifespan"    : float(row[col_idx["lifespan"]]) if len(row[col_idx["lifespan"]]) > 0 else None,
+                            "vibe_freq"   : float(row[col_idx["vibe_freq"]]) if len(row[col_idx["vibe_freq"]]) > 0 else None
                         }
+
                         # Create an item
                         item = self.create_new_item(type, attributes)
                         yield item, type, category
@@ -148,40 +147,25 @@ class DataLoader(object):
                     item.default_options = mode_options
                     item.options = item.default_options
 
-
-    def set_timers(self):
-        """ Assign all options from grid.mode_vs_options to grid.items """
-        for name, item in self.grid.everything.items():
-
-            if item.lifespan:
-                timer = cir_item_timer.TimerItem()
-                timer.radius = self.grid.tile_radius
-                timer.default_radius = self.grid.tile_radius
-                timer.duration = item.lifespan
-                timer.color = item.time_color
-                item.lifespan = timer
-
-            if item.birth_time:
-                timer = cir_item_timer.TimerItem()
-                timer.duration = item.birth_time
-                item.birth_time = timer
-
-
     def set_timer(self, item):
         """ Assign all options from self.grid.mode_vs_options to grid.items """
         if item.lifespan:
-            timer = cir_item_timer.TimerItem()
-            timer.radius = self.grid.tile_radius
-            timer.default_radius = self.grid.tile_radius
-            timer.duration = item.lifespan
-            timer.color = item.time_color
-            item.lifespan = timer
+            lifespan = cir_item_timer.TimerItem()
+            lifespan.radius = self.grid.tile_radius
+            lifespan.default_radius = self.grid.tile_radius
+            lifespan.duration = item.lifespan
+            lifespan.color = item.time_color
+            item.lifespan = lifespan
 
         if item.birth_time:
-            timer = cir_item_timer.TimerItem()
-            timer.duration = item.birth_time
-            item.birth_time = timer
+            birth = cir_item_timer.TimerItem()
+            birth.duration = item.birth_time
+            item.birth_time = birth
 
+        if hasattr(item, "vibe_freq"):
+            vibefr = cir_item_timer.TimerItem()
+            vibefr.duration = item.vibe_freq
+            item.vibe_freq = vibefr
 
     def set_buttons(self):
         """ Assign all items to the grid object """
@@ -221,11 +205,21 @@ class DataLoader(object):
         return new_item
 
 
+    def load_editor(self):
+        print("Loading editor mode ...")
+        editor_items = []
+        for item, type, category in self.load_data():
+            if "EDITOR" in item.name:
+                editor_items.append(item)
+        return editor_items
+
+
     def load_items(self):
         """
         Loading all modes, buttons, timers, my_body
         :return: my_body
         """
+        print("Loading from {} ...".format(self.grid.scenario))
         for item, type, category in self.load_data():
             # Everything
             self.grid.everything[item.name] = item
