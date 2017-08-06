@@ -62,7 +62,7 @@ class GameEffects(object):
         if item in self.grid.items and not item.birth_track:
             if item.lifespan:
                 item.lifespan = None
-            if item.vibe_freq:
+            if hasattr(item, "vibe_freq"):
                 item.vibe_freq = None
             item.in_menu = False
             item.move_track = []
@@ -71,13 +71,14 @@ class GameEffects(object):
 
             item.marked_for_destruction = True
 
-
     def destruction(self, item):
-        if item.marked_for_destruction and len(item.birth_track) == 1:
+        if item.marked_for_destruction and not item.birth_track:
             item.available = False
             self.grid.items.remove(item)
             if item.name == "my_body":
                 self.grid.game_over = True
+
+
 
     # --------------------------------------------------------------- #
     #                                                                 #
@@ -467,6 +468,9 @@ class GameEffects(object):
             trigger.birth_track = []
             trigger.gen_radar_track(self.grid)
 
+        elif item.name == "EDITOR16":
+            my_body.lifespan.duration = 60
+            my_body.lifespan.restart()
 
         elif item.name == "EDITOR17":
             self.grid.scenario = 'Scenario_2'

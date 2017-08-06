@@ -8,7 +8,6 @@
 # --------------------------------------------------------------- #
 #                            Features                             #
 # --------------------------------------------------------------- #
-# TODO: Introduce vibe freq timer
 # TODO: Create map (screenshot all rooms) room 401
 # TODO: Create inside body view room 400
 # TODO: Create spirit mode NEW SCENARIO
