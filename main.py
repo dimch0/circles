@@ -17,6 +17,7 @@
 # TODO: Create installation .exe file
 # TODO: Create reverse get position
 # TODO: Item generation
+# TODO: Lifespan limit
 # --------------------------------------------------------------- #
 #                            Animation                            #
 # --------------------------------------------------------------- #

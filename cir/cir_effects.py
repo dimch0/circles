@@ -187,7 +187,6 @@ class GameEffects(object):
             signal.direction = signal.get_aiming_direction(self.grid, current_tile)[1]
 
 
-
     def signal_hit(self, item, my_body):
         hit = False
         if item.type == "signal":
@@ -211,7 +210,7 @@ class GameEffects(object):
     # --------------------------------------------------------------- #
     def collect(self, item):
         """ Collect item: add it to bag options """
-        if item.collectable:
+        if item.collectible:
             for option in self.grid.mode_vs_options["bag"]:
                 if "bag_placeholder" in option.name:
                     self.grid.mode_vs_options["bag"].remove(option)

@@ -37,7 +37,7 @@ class Item(object):
         self.modable = False
         self.available = True
         self.clickable = True
-        self.collectable = False
+        self.collectible = False
         self.mode = self.name
         self.options = []
         self.default_options = []

@@ -120,7 +120,7 @@ class DataLoader(object):
                             "range"       : int(row[col_idx["range"]]) if len(row[col_idx["range"]]) > 0 else None,
                             "time_color"  : getattr(self.grid, row[col_idx["time_color"]]) if len(row[col_idx["time_color"]]) > 0 else None,
                             "modable"     : row[col_idx["modable"]] if len(row[col_idx["modable"]]) > 0 else None,
-                            "collectable" : row[col_idx["collectable"]] if len(row[col_idx["collectable"]]) > 0 else None,
+                            "collectible" : row[col_idx["collectible"]] if len(row[col_idx["collectible"]]) > 0 else None,
                             "uses"        : int(row[col_idx["uses"]]) if len(row[col_idx["uses"]]) > 0 else None,
                             "room"        : int(row[col_idx["room"]]) if len(row[col_idx["room"]]) > 0 else None,
                             "lifespan"    : float(row[col_idx["lifespan"]]) if len(row[col_idx["lifespan"]]) > 0 else None,
