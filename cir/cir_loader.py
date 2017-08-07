@@ -154,6 +154,7 @@ class DataLoader(object):
             lifespan.radius = self.grid.tile_radius
             lifespan.default_radius = self.grid.tile_radius
             lifespan.duration = item.lifespan
+            lifespan.limit = lifespan.duration
             lifespan.color = item.time_color
             item.lifespan = lifespan
 

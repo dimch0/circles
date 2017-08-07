@@ -22,6 +22,7 @@ class TimerItem(Item):
 
         # METRICS
         self.duration = 0
+        self.limit = 0
         self.step = 1
         self.start_time = None
         self._number_of_steps = 1
@@ -82,13 +83,24 @@ class TimerItem(Item):
         Updates the timer with delta seconds
         :param delta: change of timer in seconds
         """
+        current_duration = self.duration - (self.step / self.steps_per_sec)
         steps_before = self.number_of_steps
-        steps_delta  = delta * self.steps_per_sec
-        self.duration += delta
-        self._filled_degrees = int((self.step * self.number_of_steps) / steps_before) - \
-                              (self.step_degrees * steps_delta)
+
+        if current_duration + delta > self.limit:
+            self.duration = self.limit
+            self.restart()
+        elif current_duration + delta <= 0:
+            self._is_over = True
+        else:
+            steps_delta  = delta * self.steps_per_sec
+            self.duration += delta
+            self._filled_degrees = int((self.step * self.number_of_steps) / steps_before) - \
+                                  (self.step_degrees * steps_delta)
+
 
         print "dur: ", self.duration
+        print current_duration + delta
+        print self.limit
         # print "current    step :", self.step
         # print "number of steps :", self.number_of_steps
         # print "start   degrees :", self.start_degrees

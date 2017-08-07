@@ -367,18 +367,15 @@ class GameDrawer(object):
     #                           ANIMATIONS                            #
     #                                                                 #
     # --------------------------------------------------------------- #
-    def draw_animations(self, my_body, current_tile):
+    def draw_animations(self, current_tile):
         """ Main drawing function """
         # TEST PLACE
-
 
         # self.pygame.draw.lines(grid.game_display,
         #                   grid.dark_grey,
         #                   False,
         #                   [(693, 450), (795, 510)],
         #                   grid.tile_radius * 2)
-
-
 
 
         for item in self.grid.items:
@@ -419,3 +416,16 @@ class GameDrawer(object):
         # Mouse
         if self.grid.mouse_mode:
             self.draw_mouse_image(current_tile)
+
+    def draw(self, current_tile):
+        """
+        Draws everything
+        :param my_body: my_body instance
+        :param current_tile: coordinates of current tile
+        """
+        # BACKGROUND
+        self.draw_background_stuff()
+        # ANIMATIONS
+        self.draw_animations(current_tile)
+        # UPDATE
+        self.pygame.display.update()

@@ -140,6 +140,10 @@ class VarChanger(object):
     #                                                                 #
     # --------------------------------------------------------------- #
     def change_vars(self, my_body):
+        """
+        U[darting all variables before next iteration of the main loop
+        :param my_body: my_body instance
+        """
         if not self.grid.game_menu:
 
             # My_body to room
@@ -184,3 +188,5 @@ class VarChanger(object):
                     self.grid.clean_placeholders(item)
                     # Overlap
                     item.overlapping(self.grid)
+
+        self.grid.clock.tick(self.grid.fps)
