@@ -256,3 +256,22 @@ class Item(object):
         cir1 = (self.pos, self.radius)
         cir2 = (item2.pos, item2.radius)
         return cir_utils.intersecting(cir1, cir2)
+
+
+    # --------------------------------------------------------------- #
+    #                                                                 #
+    #                             DESTROY                             #
+    #                                                                 #
+    # --------------------------------------------------------------- #
+    def destroy(self, grid):
+        if self in grid.items and not self.birth_track:
+            if hasattr(self, "lifespan"):
+                self.lifespan = None
+            if hasattr(self, "vibe_freq"):
+                self.vibe_freq = None
+            self.in_menu = False
+            if hasattr(self, "move_track"):
+                self.move_track = []
+            self.gen_birth_track()
+            self.birth_track.reverse()
+            self.marked_for_destruction = True

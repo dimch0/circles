@@ -1,14 +1,12 @@
-#######################################################################################################################
-#################                                                                                     #################
-#################                                                                                     #################
-#################                                        Effects                                      #################
-#################                                                                                     #################
-#################                                                                                     #################
-#######################################################################################################################
+# -------------------------------------------------------------------------------------------------------------------- #
+#                                                                                                                      #
+#                                                                                                                      #
+#                                                    Effects                                                           #
+#                                                                                                                      #
+#                                                                                                                      #
+# -------------------------------------------------------------------------------------------------------------------- #
 import copy
-import random
 import cir_utils
-import time
 
 
 class GameEffects(object):
@@ -17,19 +15,21 @@ class GameEffects(object):
         self.grid = grid
         self.loader = loader
 
-
     # --------------------------------------------------------------- #
     #                                                                 #
     #                             PRODUCE                             #
     #                                                                 #
     # --------------------------------------------------------------- #
-    def produce(self, product_name, pos=None, radius=None, birth=None, vf=None, lifespan=None):
+    def produce(self, product_name, pos=None, radius=None, birth=None, vibe_freq=None, lifespan=None):
         """
         Produces an item from the everything dict
-        :param grid: grid instance
-        :param product: name of the item from the everything dict
-        :param pos: new position
-        :return: the new item
+        :param product_name: name of the item from the everything dict
+        :param pos: set new position (optional)
+        :param radius: set new radius (optional)
+        :param birth: set new birth timer (optional)
+        :param vibe_freq: set new vibe frequency (optional)
+        :param lifespan: set new lifespan (optional)
+        :return: the new item object
         """
         new_item = self.loader.load_item(product_name)
 
@@ -37,8 +37,8 @@ class GameEffects(object):
             new_item.radius = radius
         if birth:
             new_item.birth_time.duration = birth
-        if vf:
-            new_item.vibe_freq.duration = vf
+        if vibe_freq:
+            new_item.vibe_freq.duration = vibe_freq
         if pos:
             new_item.pos = pos
         if lifespan:
@@ -55,60 +55,26 @@ class GameEffects(object):
 
     # --------------------------------------------------------------- #
     #                                                                 #
-    #                             DESTROY                             #
-    #                                                                 #
-    # --------------------------------------------------------------- #
-    def destroy(self, item):
-        if item in self.grid.items and not item.birth_track:
-            if item.lifespan:
-                item.lifespan = None
-            if hasattr(item, "vibe_freq"):
-                item.vibe_freq = None
-            item.in_menu = False
-            item.move_track = []
-            item.gen_birth_track()
-            item.birth_track.reverse()
-
-            item.marked_for_destruction = True
-
-    def destruction(self, item):
-        if item.marked_for_destruction and not item.birth_track:
-            item.available = False
-            self.grid.items.remove(item)
-            if item.name == "my_body":
-                self.grid.game_over = True
-
-
-
-    # --------------------------------------------------------------- #
-    #                                                                 #
     #                             MITOSIS                             #
     #                                                                 #
     # --------------------------------------------------------------- #
     def cell_division(self, item):
         """
         Creates a placeholder in the empty tile.
-        Than creates a copy of the item and moves it into the placehoder.
-        They're being cleaned with the clean_placehoder function.
-        :param grid: grid instance
-        :return:
+        Than creates a copy of the item and moves it into the placeholder
+        They're being cleaned with the clean_placeholder function
         """
         empty_tile = item.check_for_empty_adj_tile(self.grid)
         if empty_tile:
-            placeholder = self.produce("placeholder", empty_tile)
+            self.produce("placeholder", empty_tile)
             search_for_name = item.name.replace(" - copy", "")
             new_copy = self.produce(search_for_name, item.pos)
+            new_copy.color = item.color
             new_copy.img = item.img
             new_copy.speed = item.speed
+            new_copy.radius = item.radius
             new_copy.name = "new copy"
             new_copy.birth_track = []
-            # new_copy.pos = item.pos
-            # new_copy.color = self.color
-            # new_copy.birth_time = None
-            # new_copy.radius = self.radius
-            # new_copy.birth_time = TimerItem()
-            # new_copy.birth_time.duration = 0
-            # new_copy.gen_birth_track()
             new_copy.move_track = new_copy.move_to_tile(self.grid, empty_tile)
             if new_copy.lifespan:
                 new_copy.lifespan.duration = 10
@@ -116,8 +82,7 @@ class GameEffects(object):
 
     def mitosis(self, item):
         """
-        :param grid: grid instance
-        :return:
+        :param item: item to copy
         """
         for other_item in self.grid.items:
             print "START MITO", item.name
@@ -131,8 +96,6 @@ class GameEffects(object):
                         self.cell_division(other_item)
             print "FINISH MITO", item.name
 
-
-
     # --------------------------------------------------------------- #
     #                                                                 #
     #                         MOUSE MODES                             #
@@ -141,34 +104,29 @@ class GameEffects(object):
     def laino_mode_click(self, current_tile):
         """
         For mode 'laino', if clicked produces an item
-        :param self.grid: self.grid instance
         :param current_tile: the clicked circle
         """
         if current_tile not in self.grid.occupado_tiles and current_tile in self.grid.revealed_tiles:
             self.produce("product_shit", current_tile)
 
-
     def shit_mode_click(self, current_circle):
         """
         For mode 'shit', if clicked produces an item and exhausts mode uses
-        :param self.grid: self.grid instance
         :param current_circle: the clicked circle
         """
         for bag_item in self.grid.mode_vs_options["bag"]:
             if bag_item.name == self.grid.mouse_mode:
                 if bag_item.uses:
-                    if current_circle not in self.grid.occupado_tiles: #and current_circle in self.grid.revealed_tiles:
+                    if current_circle not in self.grid.occupado_tiles:
                         self.produce("shit", current_circle)
                         bag_item.uses -= 1
                         return 1
 
-
     def eat_mode_click(self, current_tile):
         """ Eat that shit """
         for item in self.grid.items:
-            if current_tile == item.pos and not item.name == "my_body" and not "EDITOR" in item.name:
-                self.destroy(item)
-
+            if current_tile == item.pos and not item.name == "my_body" and "EDITOR" not in item.name:
+                item.destroy(self.grid)
 
     def echo_mode_click(self, current_tile, my_body):
         """ Signal effect """
@@ -182,26 +140,9 @@ class GameEffects(object):
             # trace.direction = trace.get_aiming_direction(self.grid, current_tile)[1]
             signal = self.produce("signal",
                                   my_body.pos,
-                                  radius = int(self.grid.tile_radius / 3),
-                                  birth = 0.05)
+                                  radius=int(self.grid.tile_radius / 3),
+                                  birth=0.05)
             signal.direction = signal.get_aiming_direction(self.grid, current_tile)[1]
-
-
-    def signal_hit(self, item, my_body):
-        hit = False
-        if item.type == "signal":
-            if (item.pos in self.grid.occupado_tiles and not item.intersects(my_body)) or item.direction == None:
-                hit = True
-                print "Hit!"
-        return hit
-
-
-    def signal_hit_effect(self, item):
-        item.in_menu = False
-        item.move_track = []
-        item.gen_birth_track()
-        item.birth_track.reverse()
-        item.marked_for_destruction = True
 
     # --------------------------------------------------------------- #
     #                                                                 #
@@ -224,47 +165,16 @@ class GameEffects(object):
                     self.grid.items.remove(item)
                     return 1
 
-
-    def empty_bag(self):
-        """ Empties the bag if an item's uses are exhausted """
-        for bag_item in self.grid.mode_vs_options["bag"]:
-            if bag_item.uses == 0:
-                self.grid.mode_vs_options["bag"].remove(bag_item)
-                empty_placeholder = copy.deepcopy(self.grid.everything["bag_placeholder"])
-                empty_placeholder.color = self.grid.everything["bag_placeholder"].color
-                self.grid.mode_vs_options["bag"].append(empty_placeholder)
-                if self.grid.mouse_mode == bag_item.name:
-                    self.grid.clean_mouse()
-                return 1
-
-
     # --------------------------------------------------------------- #
     #                                                                 #
     #                       ENTER / EXIT EFFECTS                      #
     #                                                                 #
     # --------------------------------------------------------------- #
-    def enter_room(self, my_body, item):
-        if "Exit_" in item.name or "Enter_" in item.name:
-            room_number = None
-            for option in item.options:
-                if "Enter_" in option.name:
-                    room_number = option.name.replace("Enter_", "")
-                    room_number = int(room_number)
-
-            if my_body.pos == item.pos and self.grid.needs_to_change_room:
-                self.grid.change_room(room_number)
-                my_body.available = True
-                my_body.gen_birth_track()
-                self.grid.rooms[self.grid.current_room]["revealed_radius"].append(((item.pos), self.grid.tile_radius))
-
-
     def exit_room(self, my_body, item):
         """
         Changes the current room
-        :param self.grid: self.grid instance
         :param my_body: my_body instance
         :param item: enter / exit item
-        :param option: option of the above item -> holds the room number
         """
         if my_body.pos in self.grid.adj_tiles(item.pos):
             my_body.move_track = my_body.move_to_tile(self.grid, item.pos)
@@ -272,61 +182,13 @@ class GameEffects(object):
         else:
             print "it far"
 
-
-
     # --------------------------------------------------------------- #
     #                                                                 #
     #                         TIMER EFFECTS                           #
     #                                                                 #
     # --------------------------------------------------------------- #
-    def birth_time_over_effect(self, item):
-        """ Birth timer effect """
-        if item.birth_track:
-            item.birth_track.pop(0)
-            item.birth_time.restart()
-
-    def vibe_freq_over_effect(self, item):
-        """ Vibe frequency timer over effect """
-        if not item.move_track:
-            item.gen_radar_track(self.grid)
-
-        if len(item.radar_track) == 1:
-            legal_moves = []
-            for item_adj in self.grid.adj_tiles(item.pos):
-                if item_adj in self.grid.playing_tiles and item_adj not in self.grid.occupado_tiles:
-                    legal_moves.append(item_adj)
-
-            if legal_moves:
-                item.move_track = item.move_to_tile(self.grid, random.choice(legal_moves))
-                if item.vibe_freq:
-                    item.vibe_freq.restart()
-
-
     def signal_lifespan_over_effect(self, item):
-        self.destroy(item)
-
-
-    def timer_effect(self, item):
-        """ Timer effects  """
-        if item.lifespan:
-            item.lifespan.tick()
-            if item.lifespan.is_over:
-                self.destroy(item)
-
-        if hasattr(item, "vibe_freq"):
-            if item.vibe_freq and not isinstance(item.vibe_freq, float):
-                if item.vibe_freq.duration:
-                    item.vibe_freq.tick()
-                    if item.vibe_freq.is_over:
-                        self.vibe_freq_over_effect(item)
-
-        if item.birth_track:
-            if item.birth_time and not isinstance(item.birth_time, float):
-                item.birth_time.tick()
-                if item.birth_time.is_over:
-                    self.birth_time_over_effect(item)
-
-
+        item.destroy(self.grid)
 
     # --------------------------------------------------------------- #
     #                        MOUSE MODE CLICK                         #
@@ -347,9 +209,6 @@ class GameEffects(object):
             self.eat_mode_click(current_tile)
         elif self.grid.mouse_mode == "echo":
             self.echo_mode_click(current_tile, my_body)
-
-
-
 
     # --------------------------------------------------------------- #
     #                             EDITOR                              #
@@ -401,7 +260,6 @@ class GameEffects(object):
         elif item.name == "EDITOR18":
             my_body.gen_fat()
 
-
     # --------------------------------------------------------------- #
     #                          CLICK ON ITEM                          #
     # --------------------------------------------------------------- #
@@ -413,7 +271,6 @@ class GameEffects(object):
         # BAG MOUSE MODE CLICK
         if self.grid.mouse_mode == "bag":
             self.collect(item)
-
 
     # --------------------------------------------------------------- #
     #                                                                 #
@@ -438,7 +295,7 @@ class GameEffects(object):
                 item.change_speed(0.1)
 
             elif option.name == "suicide":
-                self.destroy(item)
+                item.destroy(self.grid)
 
             elif option.name == "echo":
                 print "Echo!"
@@ -488,58 +345,3 @@ class GameEffects(object):
         # Close menu if option has no sub-options
         if option.name not in self.grid.mode_vs_options.keys():
             item.set_in_menu(self.grid, False)
-
-
-
-
-
-    # --------------------------------------------------------------- #
-    #                                                                 #
-    #                           CHANGE VARS                           #
-    #                                                                 #
-    # --------------------------------------------------------------- #
-    def change_vars(self, my_body):
-        if not self.grid.game_menu:
-
-            # My_body to room
-            if not my_body in self.grid.items:
-                self.grid.items.append(my_body)
-
-            # Check bag
-            if "bag" in self.grid.everything.keys():
-                self.empty_bag()
-
-            # Items
-            for item in self.grid.items:
-
-                # Enter
-                self.enter_room(my_body, item)
-
-                # Destruction
-                self.destruction(item)
-
-                if item.available:
-
-                    # Timers
-                    self.timer_effect(item)
-
-                    # Kissing circles
-                    if item.type == 'body':
-                        for adj_item in self.grid.items:
-                            if adj_item.type == 'body' and adj_item.pos in self.grid.adj_tiles(item.pos):
-                                item.gen_fat()
-
-                    # Movement
-                    if item.direction != None:
-                        item.gen_move_track(self.grid)
-                    if item.move_track:
-                        item.move()
-
-                    # Signal hit
-                    if self.signal_hit(item, my_body):
-                        self.signal_hit_effect(item)
-
-                    # Clean placeholders
-                    self.grid.clean_placeholders(item)
-                    # Overlap
-                    item.overlapping(self.grid)

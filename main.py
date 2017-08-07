@@ -29,6 +29,7 @@
 # --------------------------------------------------------------- #
 #                            Bug fixes                            #
 # --------------------------------------------------------------- #
+# TODO: Game menu separate loop
 # TODO: Fix mitosis (lag, overlap)
 # TODO: Fix item collection
 # TODO: Improve item options
@@ -40,24 +41,26 @@ import time
 import pygame
 pygame.init()
 from cir import cir_utils
-from cir import cir_grid
 from cir import cir_cosmetic
+from cir.cir_grid import Grid
 from cir.cir_draw import GameDrawer
 from cir.cir_loader import DataLoader
 from cir.cir_event_effects import GameEffects
+from cir.cir_change_vars import VarChanger
 
 
 def game_loop(game_over, scenario="Scenario_1"):
     # --------------------------------------------------------------- #
     #                            LOADING                              #
     # --------------------------------------------------------------- #
-    grid            = cir_grid.Grid(pygame, scenario)
+    grid            = Grid(pygame, scenario)
     grid.images     = cir_cosmetic.Images(grid, pygame)
     grid.fonts      = cir_cosmetic.Fonts(grid, pygame)
     loader          = DataLoader(grid)
     drawer          = GameDrawer(grid, pygame)
-    event_effects         = GameEffects(grid, loader)
     my_body         = loader.load_items()
+    var_changer     = VarChanger(grid)
+    event_effects   = GameEffects(grid, loader)
     grid.start_time = time.time()
 
     if game_over:
@@ -71,7 +74,6 @@ def game_loop(game_over, scenario="Scenario_1"):
     # my_body.lifespan.duration = 60
 
     print "Game started"
-
     while not grid.game_over:
 
         current_tile = grid.mouse_in_tile(pygame.mouse.get_pos())
@@ -154,30 +156,31 @@ def game_loop(game_over, scenario="Scenario_1"):
                         # --------------------------------------------------------------- #
                         for item in grid.items:
                             if item.clickable:
+
+                                # --------------------------------------------------------------- #
+                                #                          CLICK ON ITEM                          #
+                                # --------------------------------------------------------------- #
                                 if current_tile == item.pos:
 
                                     # SET MOUSE MODE
                                     if item.modable:
                                         grid.set_mouse_mode(item)
 
-                                    # --------------------------------------------------------------- #
-                                    #                          CLICK ON ITEM                          #
-                                    # --------------------------------------------------------------- #
+                                    # CLICK ON ITEMS
                                     event_effects.click_items(item, my_body)
 
-                                    # --------------------------------------------------------------- #
-                                    #                           MENU OPTIONS                          #
-                                    # --------------------------------------------------------------- #
-                                    # SET IN MENU
+                                    # SET IN MENU OPTIONS
                                     item.check_in_menu(grid, current_tile)
+
                                     # SET OPTS POS
                                     item.set_option_pos(grid)
+
                                     # OPT CLICKED
                                     if item.in_menu:
                                         grid.clean_mouse()
 
                                 # --------------------------------------------------------------- #
-                                #                       CLICK ITEM OPTIONS                        #
+                                #                       CLICK ON ITEM OPTIONS                     #
                                 # --------------------------------------------------------------- #
                                 elif current_tile in grid.adj_tiles(item.pos) and item.in_menu:
                                     if item.options:
@@ -187,13 +190,15 @@ def game_loop(game_over, scenario="Scenario_1"):
                                                 # SET MOUSE MODE
                                                 if option.modable:
                                                     grid.set_mouse_mode(option)
-                                                # --------------------------------------------------------------- #
-                                                #                      OPTIONS / SUB-OPTIONS                      #
-                                                # --------------------------------------------------------------- #
+
+                                                # OPTIONS SUBOPTIONS
                                                 event_effects.click_options(item, option, my_body)
 
-                                # CLICKED OUTSIDE
-                                elif (current_tile != item.pos) and (current_tile not in grid.adj_tiles(item.pos)):
+                                # --------------------------------------------------------------- #
+                                #                          CLICKED OUTSIDE                        #
+                                # --------------------------------------------------------------- #
+                                # elif (current_tile != item.pos) and (current_tile not in grid.adj_tiles(item.pos)):
+                                else:
                                     item.set_in_menu(grid, False)
 
                 # DEBUG PRINT
@@ -217,7 +222,7 @@ def game_loop(game_over, scenario="Scenario_1"):
         # --------------------------------------------------------------- #
         #                           CHANGE VARS                           #
         # --------------------------------------------------------------- #
-        event_effects.change_vars(my_body)
+        var_changer.change_vars(my_body)
 
         # FINISH LOOP
         grid.clock.tick(grid.fps)
