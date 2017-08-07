@@ -111,7 +111,7 @@ class GameDrawer(object):
                                            self.grid.yellowgrey,
                                            option.pos,
                                            self.grid.tile_radius,
-                                           5)
+                                           2)
 
 
                 if option.img:

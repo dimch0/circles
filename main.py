@@ -44,7 +44,7 @@ from cir import cir_grid
 from cir import cir_cosmetic
 from cir.cir_draw import GameDrawer
 from cir.cir_loader import DataLoader
-from cir.cir_effects import GameEffects
+from cir.cir_event_effects import GameEffects
 
 
 def game_loop(game_over, scenario="Scenario_1"):
@@ -56,7 +56,7 @@ def game_loop(game_over, scenario="Scenario_1"):
     grid.fonts      = cir_cosmetic.Fonts(grid, pygame)
     loader          = DataLoader(grid)
     drawer          = GameDrawer(grid, pygame)
-    effects         = GameEffects(grid, loader)
+    event_effects         = GameEffects(grid, loader)
     my_body         = loader.load_items()
     grid.start_time = time.time()
 
@@ -103,30 +103,24 @@ def game_loop(game_over, scenario="Scenario_1"):
                     #                            'Space'                              #
                     # --------------------------------------------------------------- #
                     if event.key == pygame.K_SPACE:
-
                         # GEN RADAR
                         my_body.gen_radar_track(grid)
-
                         # DEBUG PRINT
                         cir_utils.debug_print_space(grid, my_body)
 
                     if event.key == pygame.K_KP_ENTER:
                         editor_buttons = loader.load_editor()
                         for editor_button in editor_buttons:
-                            effects.produce(editor_button.name)
-
+                            event_effects.produce(editor_button.name)
                     elif event.key == pygame.K_1:
                         print ">>>> key 1"
                         grid.change_room(1)
-
                     elif event.key == pygame.K_2:
                         print ">>>> key 2"
                         grid.change_room(2)
-
                     elif event.key == pygame.K_3:
                         print ">>>> key 3"
                         grid.change_room(3)
-
 
                     # GENERATE MOVEMENT
                     elif not my_body.in_menu:
@@ -153,7 +147,7 @@ def game_loop(game_over, scenario="Scenario_1"):
                         # --------------------------------------------------------------- #
                         #                         MOUSE MODE CLICK                        #
                         # --------------------------------------------------------------- #
-                        effects.mouse_mode_click(current_tile, my_body)
+                        event_effects.mouse_mode_click(current_tile, my_body)
 
                         # --------------------------------------------------------------- #
                         #                          CLICK ON ITEMS                         #
@@ -166,13 +160,10 @@ def game_loop(game_over, scenario="Scenario_1"):
                                     if item.modable:
                                         grid.set_mouse_mode(item)
 
-                                    # EDITOR CLICK
-                                    effects.editor(item, my_body)
-
                                     # --------------------------------------------------------------- #
-                                    #                    MOUSE MODE CLICK ON ITEM                     #
+                                    #                          CLICK ON ITEM                          #
                                     # --------------------------------------------------------------- #
-                                    effects.mouse_mode_click_item(item)
+                                    event_effects.click_items(item, my_body)
 
                                     # --------------------------------------------------------------- #
                                     #                           MENU OPTIONS                          #
@@ -199,7 +190,7 @@ def game_loop(game_over, scenario="Scenario_1"):
                                                 # --------------------------------------------------------------- #
                                                 #                      OPTIONS / SUB-OPTIONS                      #
                                                 # --------------------------------------------------------------- #
-                                                effects.click_options(item, option, my_body)
+                                                event_effects.click_options(item, option, my_body)
 
                                 # CLICKED OUTSIDE
                                 elif (current_tile != item.pos) and (current_tile not in grid.adj_tiles(item.pos)):
@@ -226,7 +217,7 @@ def game_loop(game_over, scenario="Scenario_1"):
         # --------------------------------------------------------------- #
         #                           CHANGE VARS                           #
         # --------------------------------------------------------------- #
-        effects.change_vars(my_body)
+        event_effects.change_vars(my_body)
 
         # FINISH LOOP
         grid.clock.tick(grid.fps)

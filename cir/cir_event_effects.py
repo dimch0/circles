@@ -348,10 +348,69 @@ class GameEffects(object):
         elif self.grid.mouse_mode == "echo":
             self.echo_mode_click(current_tile, my_body)
 
+
+
+
     # --------------------------------------------------------------- #
-    #                    MOUSE MODE CLICK ON ITEM                     #
+    #                             EDITOR                              #
     # --------------------------------------------------------------- #
-    def mouse_mode_click_item(self, item):
+    def editor(self, item, my_body):
+        # EDITOR CLICK
+        if item.name == "EDITOR10":
+            my_body.vibe_speed += 0.1
+
+        if item.name == "EDITOR11":
+            if my_body.lifespan:
+                my_body.lifespan.update(10)
+
+        elif item.name == "EDITOR12":
+            if my_body.lifespan:
+                my_body.lifespan.update(-10)
+
+        elif item.name == "EDITOR13":
+            my_body.img = self.grid.images.ape
+            my_body.default_img = self.grid.images.ape
+            my_body.speed = 10
+
+        elif item.name == "EDITOR14":
+            if my_body.lifespan:
+                my_body.lifespan.update(60)
+
+        elif item.name == "EDITOR15":
+            trigger = self.produce(product_name="trigger",
+                                   pos=self.grid.center_tile,
+                                   lifespan=1)
+            trigger.range = 4
+            trigger.vibe_speed = 3
+            trigger.birth_time = 0
+
+            self.loader.set_timer(trigger)
+            trigger.vibe_freq = None
+            trigger.birth_track = []
+            trigger.gen_radar_track(self.grid)
+
+        elif item.name == "EDITOR16":
+            if my_body.lifespan:
+                my_body.lifespan.duration = 60
+                my_body.lifespan.restart()
+
+        elif item.name == "EDITOR17":
+            self.grid.scenario = 'Scenario_2'
+            self.grid.game_over = True
+
+        elif item.name == "EDITOR18":
+            my_body.gen_fat()
+
+
+    # --------------------------------------------------------------- #
+    #                          CLICK ON ITEM                          #
+    # --------------------------------------------------------------- #
+    def click_items(self, item, my_body):
+
+        # EDITOR CLICK
+        self.editor(item, my_body)
+
+        # BAG MOUSE MODE CLICK
         if self.grid.mouse_mode == "bag":
             self.collect(item)
 
@@ -429,57 +488,6 @@ class GameEffects(object):
         # Close menu if option has no sub-options
         if option.name not in self.grid.mode_vs_options.keys():
             item.set_in_menu(self.grid, False)
-
-
-
-
-
-
-    def editor(self, item, my_body):
-        # EDITOR CLICK
-        if item.name == "EDITOR10":
-            my_body.vibe_speed += 0.1
-
-        if item.name == "EDITOR11":
-            my_body.lifespan.update(10)
-
-        elif item.name == "EDITOR12":
-            my_body.lifespan.update(-10)
-
-        elif item.name == "EDITOR13":
-            my_body.img = self.grid.images.ape
-            my_body.default_img = self.grid.images.ape
-            my_body.speed = 10
-
-        elif item.name == "EDITOR14":
-            my_body.lifespan.update(60)
-
-        elif item.name == "EDITOR15":
-            trigger = self.produce(product_name="trigger",
-                                   pos = self.grid.center_tile,
-                                   lifespan=1)
-            trigger.range = 4
-            trigger.vibe_speed = 3
-            trigger.birth_time = 0
-
-            self.loader.set_timer(trigger)
-            trigger.vibe_freq = None
-            trigger.birth_track = []
-            trigger.gen_radar_track(self.grid)
-
-        elif item.name == "EDITOR16":
-            my_body.lifespan.duration = 60
-            my_body.lifespan.restart()
-
-        elif item.name == "EDITOR17":
-            self.grid.scenario = 'Scenario_2'
-            self.grid.game_over = True
-
-        elif item.name == "EDITOR18":
-            my_body.gen_fat()
-
-
-
 
 
 
