@@ -258,22 +258,13 @@ class Grid(object):
     def capture_room(self):
         """ Takes a screenshot of the current room """
         if not self.current_room == 999:
-            # width = (2 * self.tile_radius) + (8 * self.cathetus)
-            # height = 18 * self.tile_radius
-            # top = self.center_tile[0] - (width / 2)
-            # left = self.center_tile[1] - (height / 2)
-            # rect = self.pygame.Rect(top, left, width, height)
-            # sub = self.game_display.subsurface(rect)
-            # self.pygame.image.save(sub, self.maps_dir + str(self.current_room) + ".png")
-
-            # width = (2 * self.tile_radius) + (8 * self.cathetus)
-            side = 18 * self.tile_radius
-            top = self.center_tile[0] - (side / 2)
-            left = self.center_tile[1] - (side / 2)
-            rect = self.pygame.Rect(top, left, side, side)
+            width = (2 * self.tile_radius) + (8 * self.cathetus)
+            height = 18 * self.tile_radius
+            top = self.center_tile[0] - (width / 2)
+            left = self.center_tile[1] - (height / 2)
+            rect = self.pygame.Rect(top, left, width, height)
             sub = self.game_display.subsurface(rect)
             self.pygame.image.save(sub, self.maps_dir + str(self.current_room) + ".png")
-
 
     def save_current_room(self):
         """ Saves the current room to self.rooms """

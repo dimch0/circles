@@ -234,6 +234,7 @@ class GameEffects(object):
             if not self.grid.current_room == 999:
                 self.grid.previous_room = self.grid.current_room
                 self.grid.change_room(999)
+                diff = 10
                 if my_body in self.grid.items:
                     self.grid.items.remove(my_body)
                 # my_body.available = False
@@ -245,17 +246,25 @@ class GameEffects(object):
                             img_file = os.path.join(root, file)
                             name = os.path.splitext(file)[0]
                             image = self.grid.pygame.image.load(img_file)
+                            image_height = self.grid.tile_radius * 2
                             image = self.grid.pygame.transform.scale(
                                 image, (
-                                    self.grid.tile_radius * 2,
-                                    self.grid.tile_radius * 2))
+                                    image_height - diff,
+                                    image_height))
                             if name == "1":
                                 pos = self.grid.set_pos("1")
                             elif name == "2":
                                 pos = self.grid.set_pos("12")
                             elif name == "3":
                                 pos = self.grid.set_pos("122")
-
+                            elif name == "4":
+                                pos = self.grid.set_pos("120")
+                            elif name == "5":
+                                pos = self.grid.set_pos("10")
+                            elif name == "6":
+                                pos = self.grid.set_pos("1220")
+                            else:
+                                pos = self.grid.set_pos("1")
 
                             map_tile = self.produce(product_name="trigger",
                                                     pos=pos)
