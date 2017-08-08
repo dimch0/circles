@@ -226,7 +226,7 @@ class GameEffects(object):
         """ EDITOR CLICKS """
 
 
-        # MAP
+        # MAPS
         if item.name == "EDITOR6":
 
             self.grid.capture_room()
@@ -234,7 +234,10 @@ class GameEffects(object):
             if not self.grid.current_room == 999:
                 self.grid.previous_room = self.grid.current_room
                 self.grid.change_room(999)
-                my_body.available = False
+                if my_body in self.grid.items:
+                    self.grid.items.remove(my_body)
+                # my_body.available = False
+                # my_body.clickable = False
 
                 try:
                     for root, dirs, files in os.walk(self.grid.maps_dir):
@@ -242,8 +245,10 @@ class GameEffects(object):
                             img_file = os.path.join(root, file)
                             name = os.path.splitext(file)[0]
                             image = self.grid.pygame.image.load(img_file)
-                            image = self.grid.pygame.transform.scale(image, (
-                            self.grid.tile_radius * 2, self.grid.tile_radius * 2))
+                            image = self.grid.pygame.transform.scale(
+                                image, (
+                                    self.grid.tile_radius * 2,
+                                    self.grid.tile_radius * 2))
                             if name == "1":
                                 pos = self.grid.set_pos("1")
                             elif name == "2":
@@ -264,8 +269,10 @@ class GameEffects(object):
 
             else:
                 self.grid.change_room(self.grid.previous_room)
-                my_body.available = True
-
+                if my_body not in self.grid.items:
+                    self.grid.items.append(my_body)
+                # my_body.available = True
+                # my_body.clickable = True
 
 
 

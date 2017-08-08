@@ -182,7 +182,7 @@ class GameDrawer(object):
 
     def draw_aim(self, current_tile, item):
         """ Aim """
-        if item.mode == "echo":
+        if item.mode == "echo" and item.available:
             aim_dir_idx = item.get_aiming_direction(self.grid, current_tile)[1]
             aim_tile = item.get_aiming_direction(self.grid, current_tile)[0]
 

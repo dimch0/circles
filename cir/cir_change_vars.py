@@ -147,7 +147,7 @@ class VarChanger(object):
         if not self.grid.game_menu:
 
             # My_body to room
-            if not my_body in self.grid.items:
+            if not my_body in self.grid.items and self.grid.current_room not in [999]:
                 self.grid.items.append(my_body)
 
             # Check bag
