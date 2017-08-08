@@ -11,9 +11,8 @@ import cir_utils
 
 class GameEffects(object):
 
-    def __init__(self, grid=None, loader=None):
+    def __init__(self, grid=None):
         self.grid = grid
-        self.loader = loader
 
     # --------------------------------------------------------------- #
     #                                                                 #
@@ -31,7 +30,7 @@ class GameEffects(object):
         :param lifespan: set new lifespan (optional)
         :return: the new item object
         """
-        new_item = self.loader.load_item(product_name)
+        new_item = self.grid.loader.load_item(product_name)
 
         if radius:
             new_item.radius = radius
@@ -43,7 +42,7 @@ class GameEffects(object):
             new_item.pos = pos
         if lifespan:
             new_item.lifespan = lifespan
-        # self.loader.set_timer(new_item)
+        # self.grid.loader.set_timer(new_item)
         new_item.default_img = new_item.img
         # new_item.name        = new_item.name + str(time.time())
         # new_item.marked_for_destruction = False
@@ -215,7 +214,11 @@ class GameEffects(object):
     # --------------------------------------------------------------- #
     def editor(self, item, my_body):
         # EDITOR CLICK
-        if item.name == "EDITOR10":
+        # CAMERA
+        if item.name == "EDITOR7":
+            self.grid.capture_room()
+
+        elif item.name == "EDITOR10":
             my_body.vibe_speed += 0.1
 
         if item.name == "EDITOR11":
@@ -243,7 +246,7 @@ class GameEffects(object):
             trigger.vibe_speed = 3
             trigger.birth_time = 0
 
-            self.loader.set_timer(trigger)
+            self.grid.loader.set_timer(trigger)
             trigger.vibe_freq = None
             trigger.birth_track = []
             trigger.gen_radar_track(self.grid)

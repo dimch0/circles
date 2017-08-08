@@ -39,7 +39,7 @@ import pygame
 pygame.init()
 from cir.cir_game_menu import game_menu
 from cir import cir_utils
-from cir import cir_cosmetic
+from cir .cir_cosmetic import Images, Fonts
 from cir.cir_grid import Grid
 from cir.cir_draw import GameDrawer
 from cir.cir_loader import DataLoader
@@ -52,12 +52,12 @@ def game_loop(game_over, scenario="Scenario_1"):
     #                            LOADING                              #
     # --------------------------------------------------------------- #
     grid               = Grid(pygame, scenario)
-    grid.images        = cir_cosmetic.Images(grid, pygame)
-    grid.fonts         = cir_cosmetic.Fonts(grid, pygame)
-    grid.drawer        = GameDrawer(grid, pygame)
+    grid.images        = Images(grid)
+    grid.fonts         = Fonts(grid)
+    grid.drawer        = GameDrawer(grid)
     grid.loader        = DataLoader(grid)
     grid.var_changer   = VarChanger(grid)
-    grid.event_effects = GameEffects(grid, grid.loader)
+    grid.event_effects = GameEffects(grid)
     grid.start_time    = time.time()
     my_body            = grid.loader.load_items()
 

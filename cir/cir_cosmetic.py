@@ -10,23 +10,23 @@ import os
 
 class Fonts(object):
     """
-    a class containing all the fonts
+    A class containing all the fonts
     """
-    def __init__(self, grid, pygame):
-        self.small = pygame.font.Font(grid.font_file, int(grid.tile_radius * 0.60))
-        self.medium = pygame.font.Font(grid.font_file, int(grid.tile_radius))
-        self.large = pygame.font.Font(grid.font_file, grid.tile_radius * 2)
+    def __init__(self, grid):
+        self.small = grid.pygame.font.Font(grid.font_file, int(grid.tile_radius * 0.60))
+        self.medium = grid.pygame.font.Font(grid.font_file, int(grid.tile_radius))
+        self.large = grid.pygame.font.Font(grid.font_file, grid.tile_radius * 2)
 
 
 
 class Images(object):
     """
-    a class containing all images
+    A class containing all images
     """
-    def __init__(self, grid, pygame):
-        self.set_images(grid, pygame)
+    def __init__(self, grid):
+        self.set_images(grid)
 
-    def set_images(self, grid, pygame):
+    def set_images(self, grid):
         """
         Setting attributes from the img directory
         and calculating the display metrics
@@ -37,12 +37,12 @@ class Images(object):
                 for file in files:
                     img_file = os.path.join(root, file)
                     name = os.path.splitext(file)[0]
-                    image = pygame.image.load(img_file)
+                    image = grid.pygame.image.load(img_file)
 
                     if 'emoji' in img_file:
-                        image = pygame.transform.scale(image, (grid.tile_radius, grid.tile_radius))
+                        image = grid.pygame.transform.scale(image, (grid.tile_radius, grid.tile_radius))
                     else:
-                        image = pygame.transform.scale(image, (grid.tile_radius * 2, grid.tile_radius * 2))
+                        image = grid.pygame.transform.scale(image, (grid.tile_radius * 2, grid.tile_radius * 2))
 
                     if not 'insta' in img_file:
                         setattr(self, name, image)

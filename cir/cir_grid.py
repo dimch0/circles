@@ -235,6 +235,16 @@ class Grid(object):
     # --------------------------------------------------------------- #
     #                             ROOMS                               #
     # --------------------------------------------------------------- #
+    def capture_room(self):
+        """ Takes a screenshot of the current room """
+        width = (2 * self.tile_radius) + (8 * self.cathetus)
+        height = 18 * self.tile_radius
+        top = self.center_tile[0] - (width / 2)
+        left = self.center_tile[1] - (height / 2)
+        rect = self.pygame.Rect(top, left, width, height)
+        sub = self.game_display.subsurface(rect)
+        self.pygame.image.save(sub, self.maps_dir + str(self.current_room) + ".png")
+
     def save_current_room(self):
         """ Saves the current room to self.rooms """
         self.rooms[self.current_room] = {
@@ -260,6 +270,7 @@ class Grid(object):
     def change_room(self, room):
         """ Saves the current room and loads a new room """
         self.save_current_room()
+        self.capture_room()
         self.current_room = room
         self.load_current_room()
         self.needs_to_change_room = False
@@ -287,3 +298,4 @@ class Grid(object):
         for button in self.buttons:
             if button.name == old_name:
                 button.name = new_name
+

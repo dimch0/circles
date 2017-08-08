@@ -11,9 +11,9 @@ import math
 
 class GameDrawer(object):
 
-    def __init__(self, grid=None, pygame=None):
+    def __init__(self, grid=None):
         self.grid = grid
-        self.pygame = pygame
+        # self.grid.pygame = pygame
 
 
 
@@ -47,7 +47,7 @@ class GameDrawer(object):
         """ Highlights the hovered tile """
         if current_tile:
             if cir_utils.in_circle(tile, self.grid.tile_radius, current_tile):
-                self.pygame.draw.circle(self.grid.game_display,
+                self.grid.pygame.draw.circle(self.grid.game_display,
                                    self.grid.white,
                                    tile,
                                    self.grid.tile_radius,
@@ -68,7 +68,7 @@ class GameDrawer(object):
         """ Radar animation """
         radar_radius, thick = item.radar(self.grid)
         if radar_radius and thick:
-            self.pygame.draw.circle(self.grid.game_display,
+            self.grid.pygame.draw.circle(self.grid.game_display,
                                self.grid.white,
                                item.pos,
                                int(radar_radius),
@@ -78,7 +78,7 @@ class GameDrawer(object):
     def draw_revealed_radius(self):
         """ Drawing the revealed areas (radius) """
         for revealed in self.grid.revealed_radius:
-            self.pygame.draw.circle(self.grid.game_display,
+            self.grid.pygame.draw.circle(self.grid.game_display,
                                self.grid.room_color,
                                revealed[0],
                                int(revealed[1]),
@@ -100,14 +100,14 @@ class GameDrawer(object):
                 if option.color:
 
 
-                    self.pygame.draw.circle(self.grid.game_display,
+                    self.grid.pygame.draw.circle(self.grid.game_display,
                                        option.color,
                                        option.pos,
                                        self.grid.tile_radius,
                                        0)
 
                     if item.mode == "bag":
-                        self.pygame.draw.circle(self.grid.game_display,
+                        self.grid.pygame.draw.circle(self.grid.game_display,
                                            self.grid.yellowgrey,
                                            option.pos,
                                            self.grid.tile_radius,
@@ -129,7 +129,7 @@ class GameDrawer(object):
         for button in self.grid.buttons:
             if button.available:
                 if button.color:
-                    self.pygame.draw.circle(self.grid.game_display,
+                    self.grid.pygame.draw.circle(self.grid.game_display,
                                        button.color,
                                        button.pos,
                                        self.grid.tile_radius,
@@ -155,7 +155,7 @@ class GameDrawer(object):
                 blit_item = False
 
             if blit_item:
-                self.pygame.draw.circle(self.grid.game_display,
+                self.grid.pygame.draw.circle(self.grid.game_display,
                                    item.color,
                                    item.pos,
                                    item.radius,
@@ -172,7 +172,7 @@ class GameDrawer(object):
         if item.lifespan:
             if item.lifespan.available and item.time_color:
                 item.lifespan.pos = item.pos
-                self.pygame.draw.arc(self.grid.game_display,
+                self.grid.pygame.draw.arc(self.grid.game_display,
                                 item.time_color,
                                 item.lifespan.rect,
                                 math.radians(item.lifespan.filled_degrees),
@@ -206,7 +206,7 @@ class GameDrawer(object):
                 angle1, angle2 = 120, 180
 
             if angle1 and angle2 and aim_rect[2] > 3 and aim_rect[3] > 3:
-                self.pygame.draw.arc(self.grid.game_display,
+                self.grid.pygame.draw.arc(self.grid.game_display,
                                 self.grid.white,
                                 aim_rect,
                                 math.radians(angle1),
@@ -237,7 +237,7 @@ class GameDrawer(object):
             # POS2 = item.pos
             # POS3 = (int(x1), int(y1))
             #
-            # self.pygame.draw.lines(self.grid.game_display,
+            # self.grid.pygame.draw.lines(self.grid.game_display,
             #                        self.grid.white,
             #                        False,
             #                        [POS, POS2, POS3],
@@ -248,7 +248,7 @@ class GameDrawer(object):
     def draw_grid(self):
         """ Shows the grid tiles in white """
         for tile in self.grid.tiles:
-            self.pygame.draw.circle(self.grid.game_display,
+            self.grid.pygame.draw.circle(self.grid.game_display,
                                self.grid.room_color,
                                tile,
                                self.grid.tile_radius,
@@ -288,18 +288,18 @@ class GameDrawer(object):
                 (self.grid.center_tile[0] - ((2 * self.grid.cathetus) + (self.grid.cathetus / 2) + 5), self.grid.display_height)
             ]
 
-            self.pygame.draw.rect(self.grid.game_display, self.grid.fog_color, rect1, 0)
-            self.pygame.draw.rect(self.grid.game_display, self.grid.fog_color, rect2, 0)
-            self.pygame.draw.polygon(self.grid.game_display, self.grid.fog_color, tri1, 0)
-            self.pygame.draw.polygon(self.grid.game_display, self.grid.fog_color, tri2, 0)
-            self.pygame.draw.polygon(self.grid.game_display, self.grid.fog_color, tri3, 0)
-            self.pygame.draw.polygon(self.grid.game_display, self.grid.fog_color, tri4, 0)
+            self.grid.pygame.draw.rect(self.grid.game_display, self.grid.fog_color, rect1, 0)
+            self.grid.pygame.draw.rect(self.grid.game_display, self.grid.fog_color, rect2, 0)
+            self.grid.pygame.draw.polygon(self.grid.game_display, self.grid.fog_color, tri1, 0)
+            self.grid.pygame.draw.polygon(self.grid.game_display, self.grid.fog_color, tri2, 0)
+            self.grid.pygame.draw.polygon(self.grid.game_display, self.grid.fog_color, tri3, 0)
+            self.grid.pygame.draw.polygon(self.grid.game_display, self.grid.fog_color, tri4, 0)
 
 
     def draw_mouse_image(self, current_tile):
         """ Draws the Mouse image"""
         if current_tile and self.grid.mouse_img:
-            self.pygame.draw.circle(self.grid.game_display,
+            self.grid.pygame.draw.circle(self.grid.game_display,
                                self.grid.white,
                                current_tile,
                                self.grid.tile_radius,
@@ -313,7 +313,7 @@ class GameDrawer(object):
     def draw_movement(self, item):
         """ DEBUG: Shows the movement in cyan and the correct track in red """
         for move_step in item.move_track:
-            self.pygame.draw.circle(self.grid.game_display,
+            self.grid.pygame.draw.circle(self.grid.game_display,
                                self.grid.white,
                                move_step,
                                2,
@@ -324,7 +324,7 @@ class GameDrawer(object):
         """ Shows all tiles of the playing board in yellow """
         if self.grid.playing_tiles:
             for tile in self.grid.playing_tiles:
-                self.pygame.draw.circle(self.grid.game_display,
+                self.grid.pygame.draw.circle(self.grid.game_display,
                                    self.grid.gelb, tile,
                                    self.grid.tile_radius,
                                    1)
@@ -371,7 +371,7 @@ class GameDrawer(object):
         """ Main drawing function """
         # TEST PLACE
 
-        # self.pygame.draw.lines(grid.game_display,
+        # self.grid.pygame.draw.lines(grid.game_display,
         #                   grid.dark_grey,
         #                   False,
         #                   [(693, 450), (795, 510)],
@@ -398,11 +398,11 @@ class GameDrawer(object):
 
                 # Image rotation
                 if item.rot_track:
-                    item.rotate(self.pygame)
+                    item.rotate(self.grid.pygame)
 
                 # Item reverse rotation
                 if item.last_rotation and not item.move_track and not item.direction:
-                    item.rotate_reverse(self.pygame)
+                    item.rotate_reverse(self.grid.pygame)
 
                 # Timers
                 self.draw_timers(item)
@@ -428,4 +428,4 @@ class GameDrawer(object):
         # ANIMATIONS
         self.draw_animations(current_tile)
         # UPDATE
-        self.pygame.display.update()
+        self.grid.pygame.display.update()
