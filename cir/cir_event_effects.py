@@ -5,6 +5,7 @@
 #                                                                                                                     #
 #                                                                                                                     #
 # ------------------------------------------------------------------------------------------------------------------- #
+import os
 import copy
 import cir_utils
 
@@ -108,18 +109,27 @@ class GameEffects(object):
         if current_tile not in self.grid.occupado_tiles and current_tile in self.grid.revealed_tiles:
             self.produce("product_shit", current_tile)
 
-    def shit_mode_click(self, current_circle):
+    def shit_mode_click(self, current_tile):
         """
         For mode 'shit', if clicked produces an item and exhausts mode uses
-        :param current_circle: the clicked circle
+        :param current_tile: the clicked circle
         """
         for bag_item in self.grid.mode_vs_options["bag"]:
             if bag_item.name == self.grid.mouse_mode:
                 if bag_item.uses:
-                    if current_circle not in self.grid.occupado_tiles:
-                        self.produce("shit", current_circle)
+                    if current_tile not in self.grid.occupado_tiles:
+                        self.produce("shit", current_tile)
                         bag_item.uses -= 1
                         return 1
+
+    def see_mode_click(self, current_tile):
+        """
+        For mode 'shit', if clicked produces an item and exhausts mode uses
+        :param current_tile: the clicked circle
+        """
+        if current_tile not in self.grid.occupado_tiles and current_tile in self.grid.revealed_tiles:
+            new_observer = self.produce("observer", current_tile)
+            new_observer.lifespan.restart()
 
     def eat_mode_click(self, current_tile):
         """ Eat that shit """
@@ -193,29 +203,74 @@ class GameEffects(object):
     #                        MOUSE MODE CLICK                         #
     # --------------------------------------------------------------- #
     def mouse_mode_click(self, current_tile, my_body):
+        """ CLICK WITH THE CURRENT MOUSE MODE ACTIVATES EFFECT ACCORDINGLY """
+
         if self.grid.mouse_mode in ["laino", "EDITOR2"]:
             self.laino_mode_click(current_tile)
         elif self.grid.mouse_mode in ["shit"]:
             self.shit_mode_click(current_tile)
         elif self.grid.mouse_mode in ["see", "EDITOR1"]:
-            if current_tile not in self.grid.occupado_tiles and current_tile in self.grid.revealed_tiles:
-                new_observer = self.produce("observer", current_tile)
-                new_observer.lifespan.restart()
-        elif self.grid.mouse_mode in ["EDITOR3"]:
-            if current_tile not in self.grid.occupado_tiles and current_tile in self.grid.revealed_tiles:
-                self.produce("block_of_steel", current_tile)
+            self.see_mode_click(current_tile)
         elif self.grid.mouse_mode in ["eat", "EDITOR9"]:
             self.eat_mode_click(current_tile)
         elif self.grid.mouse_mode == "echo":
             self.echo_mode_click(current_tile, my_body)
+        elif self.grid.mouse_mode in ["EDITOR3"]:
+            if current_tile not in self.grid.occupado_tiles and current_tile in self.grid.revealed_tiles:
+                self.produce("block_of_steel", current_tile)
 
     # --------------------------------------------------------------- #
     #                             EDITOR                              #
     # --------------------------------------------------------------- #
     def editor(self, item, my_body):
-        # EDITOR CLICK
+        """ EDITOR CLICKS """
+
+
+        # MAP
+        if item.name == "EDITOR6":
+
+            self.grid.capture_room()
+
+            if not self.grid.current_room == 999:
+                self.grid.previous_room = self.grid.current_room
+                self.grid.change_room(999)
+                my_body.available = False
+
+                try:
+                    for root, dirs, files in os.walk(self.grid.maps_dir):
+                        for file in files:
+                            img_file = os.path.join(root, file)
+                            name = os.path.splitext(file)[0]
+                            image = self.grid.pygame.image.load(img_file)
+                            image = self.grid.pygame.transform.scale(image, (
+                            self.grid.tile_radius * 2, self.grid.tile_radius * 2))
+                            if name == "1":
+                                pos = self.grid.set_pos("1")
+                            elif name == "2":
+                                pos = self.grid.set_pos("12")
+                            elif name == "3":
+                                pos = self.grid.set_pos("122")
+
+
+                            map_tile = self.produce(product_name="trigger",
+                                                    pos=pos)
+                            map_tile.img = image
+                            map_tile.available = True
+                            self.grid.revealed_tiles.append(pos)
+
+                except Exception as e:
+                    print "ERROR, could not show map", e
+
+
+            else:
+                self.grid.change_room(self.grid.previous_room)
+                my_body.available = True
+
+
+
+
         # CAMERA
-        if item.name == "EDITOR7":
+        elif item.name == "EDITOR7":
             self.grid.capture_room()
 
         elif item.name == "EDITOR10":

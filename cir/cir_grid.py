@@ -60,6 +60,7 @@ class Grid(object):
         self.buttons = []
         self.rooms = {}
         self.needs_to_change_room = False
+        self.previous_room = None
         # -------------------------------------------------- #
         #                        ITEMS                       #
         # -------------------------------------------------- #
@@ -199,6 +200,25 @@ class Grid(object):
                 (self_x - self.cathetus, self_y - self.tile_radius)
                ]
 
+    def set_pos(self, number):
+        """
+        Calculate the position as following:
+        The number is split to a list of digits
+        The first digit is always 1 - that is the center tile
+        Each digit after it is the index of an adjacent tile to the previous tile
+        :param number: column value
+        :return: the final position
+        """
+        position = None
+        indexes = [int(n) for n in number]
+        if indexes:
+            position = self.center_tile
+        if len(indexes) > 1:
+            for idx in indexes[1:]:
+                position = self.adj_tiles(position)[idx]
+        return position
+
+
     def set_rev_tiles(self):
         """ Reveal tiles in the revealed areas (radius) """
         for tile in self.tiles:
@@ -237,13 +257,14 @@ class Grid(object):
     # --------------------------------------------------------------- #
     def capture_room(self):
         """ Takes a screenshot of the current room """
-        width = (2 * self.tile_radius) + (8 * self.cathetus)
-        height = 18 * self.tile_radius
-        top = self.center_tile[0] - (width / 2)
-        left = self.center_tile[1] - (height / 2)
-        rect = self.pygame.Rect(top, left, width, height)
-        sub = self.game_display.subsurface(rect)
-        self.pygame.image.save(sub, self.maps_dir + str(self.current_room) + ".png")
+        if not self.current_room == 999:
+            width = (2 * self.tile_radius) + (8 * self.cathetus)
+            height = 18 * self.tile_radius
+            top = self.center_tile[0] - (width / 2)
+            left = self.center_tile[1] - (height / 2)
+            rect = self.pygame.Rect(top, left, width, height)
+            sub = self.game_display.subsurface(rect)
+            self.pygame.image.save(sub, self.maps_dir + str(self.current_room) + ".png")
 
     def save_current_room(self):
         """ Saves the current room to self.rooms """

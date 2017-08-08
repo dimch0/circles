@@ -144,26 +144,27 @@ class GameDrawer(object):
     def draw_body(self, current_tile, item):
         """ Draws each body and it's image if available """
         # for item in grid.bodies:
-        if item.available and item.color:
-            blit_item = True
-            if item.birth_track:
-                item.radius = item.birth_track[0]
-            elif not item.birth_track and item.fat_track:
-                item.radius = item.fat_track[0]
-                item.fat_track.pop(0)
-            if not item.birth_track and item.marked_for_destruction:
-                blit_item = False
+        if item.available:
+            if item.color:
+                blit_item = True
+                if item.birth_track:
+                    item.radius = item.birth_track[0]
+                elif not item.birth_track and item.fat_track:
+                    item.radius = item.fat_track[0]
+                    item.fat_track.pop(0)
+                if not item.birth_track and item.marked_for_destruction:
+                    blit_item = False
 
-            if blit_item:
-                self.grid.pygame.draw.circle(self.grid.game_display,
-                                   item.color,
-                                   item.pos,
-                                   item.radius,
-                                   0)
-                # Draw activation / deactivation here
-                self.draw_img(item)
-                self.draw_aim(current_tile, item)
-                self.draw_hover(current_tile, item.pos)
+                if blit_item:
+                    self.grid.pygame.draw.circle(self.grid.game_display,
+                                       item.color,
+                                       item.pos,
+                                       item.radius,
+                                       0)
+            # Draw activation / deactivation here
+            self.draw_img(item)
+            self.draw_aim(current_tile, item)
+            self.draw_hover(current_tile, item.pos)
 
 
 

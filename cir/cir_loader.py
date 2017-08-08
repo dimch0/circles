@@ -70,25 +70,6 @@ class DataLoader(object):
             result[name] = idx
         return result
 
-
-    def set_pos(self, number):
-        """
-        Calculate the position as following:
-        The number is split to a list of digits
-        The first digit is always 1 - that is the center tile
-        Each digit after it is the index of an adjacent tile to the previous tile
-        :param number: column value
-        :return: the final position
-        """
-        position = None
-        indexes = [int(n) for n in number]
-        if indexes:
-            position = self.grid.center_tile
-        if len(indexes) > 1:
-            for idx in indexes[1:]:
-                position = self.grid.adj_tiles(position)[idx]
-        return position
-
     def load_data(self):
         """
         This function loads all items and menu options from external data file.
@@ -113,7 +94,7 @@ class DataLoader(object):
                             "type"        : row[col_idx["type"]],
                             "available"   : bool(row[col_idx["available"]]) if len(row[col_idx["available"]]) > 0 else None,
                             "name"        : row[col_idx["name"]] if len(row[col_idx["name"]]) > 0 else None,
-                            "pos"         : self.set_pos(row[col_idx["pos"]]) if len(row[col_idx["pos"]]) > 0 else None,
+                            "pos"         : self.grid.set_pos(row[col_idx["pos"]]) if len(row[col_idx["pos"]]) > 0 else None,
                             "color"       : getattr(self.grid, row[col_idx["color"]]) if len(row[col_idx["color"]]) > 0 else None,
                             "img"         : getattr(self.grid.images, row[col_idx["img"]]) if len(row[col_idx["img"]]) > 0 else None,
                             "speed"       : int(row[col_idx["speed"]]) if len(row[col_idx["speed"]]) > 0 else None,
@@ -178,9 +159,9 @@ class DataLoader(object):
             butt.font = getattr(self.grid.fonts, 'small')
             butt.text_color = self.grid.white
             if name == "play":
-                butt.pos = self.set_pos('10')
+                butt.pos = self.grid.set_pos('10')
             elif name == "quit":
-                butt.pos = self.set_pos('13')
+                butt.pos = self.grid.set_pos('13')
 
             self.grid.buttons.append(butt)
             self.grid.everything[butt.name] = butt

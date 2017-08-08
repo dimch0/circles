@@ -7,7 +7,7 @@
     },
 
   "VISIBILITY": {
-    "show_debug"        : 0,
+    "show_debug"        : 1,
     "show_grid"         : 0,
     "show_seconds"      : 0,
     "show_movement"     : 0,
