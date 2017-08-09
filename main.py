@@ -8,7 +8,7 @@
 # --------------------------------------------------------------- #
 #                            FEATURES                             #
 # --------------------------------------------------------------- #
-# TODO: Create map (screenshot all rooms) room 401
+# TODO: Create map tile positions / calculate seconds
 # TODO: Create inside body view room 400
 # TODO: Create spirit mode NEW SCENARIO
 # TODO: Log statistics during a lifespan, calculate karma
@@ -28,6 +28,7 @@
 # --------------------------------------------------------------- #
 #                            BUG FIXES                            #
 # --------------------------------------------------------------- #
+# TODO: Use IMG / SOUND lib
 # TODO: Fix mitosis (lag, overlap)
 # TODO: Improve item options
 # TODO: Fix item collection / remove everything dict
