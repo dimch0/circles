@@ -218,13 +218,13 @@ class GameDrawer(object):
             elif aim_dir_idx == 5:
                 angle1, angle2 = 120, 180
 
-            if angle1 and angle2 and aim_rect[2] > 3 and aim_rect[3] > 3:
+            if angle1 and angle2 and item.radius >= 2:
                 self.grid.pygame.draw.arc(self.grid.game_display,
                                 self.grid.white,
                                 aim_rect,
                                 math.radians(angle1),
                                 math.radians(angle2),
-                                3)
+                                2)
 
             # r = item.radius
             # if aim_dir_idx == 0:
