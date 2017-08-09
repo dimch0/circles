@@ -57,10 +57,14 @@ class GameDrawer(object):
         """ Highlights the hovered tile """
         if current_tile:
             if cir_utils.in_circle(tile, self.grid.tile_radius, current_tile):
+                if self.grid.current_room == 999 and not self.grid.game_menu:
+                    radius = self.grid.tile_radius - 4
+                else:
+                    radius = self.grid.tile_radius
                 self.grid.pygame.draw.circle(self.grid.game_display,
                                    self.grid.white,
                                    tile,
-                                   self.grid.tile_radius,
+                                   radius,
                                    1)
 
 
