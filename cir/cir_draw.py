@@ -270,7 +270,17 @@ class GameDrawer(object):
                                tile,
                                self.grid.tile_radius,
                                1)
+
         self.draw_playing_tiles()
+
+
+    def draw_tile_names(self):
+        for tile_name, tile_centre in self.grid.tile_dict.items():
+            font = getattr(self.grid.fonts, 'small')
+            text = font.render(str(tile_name), True, self.grid.white)
+            rect = text.get_rect()
+            rect.center = tile_centre
+            self.grid.game_display.blit(text, rect)
 
 
     def draw_mask(self):
@@ -433,6 +443,11 @@ class GameDrawer(object):
         # Mouse
         if self.grid.mouse_mode:
             self.draw_mouse_image(current_tile)
+
+        # Tile names
+        if self.grid.show_tile_names:
+            self.draw_grid()
+            self.draw_tile_names()
 
     def draw(self, current_tile):
         """

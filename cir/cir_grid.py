@@ -43,6 +43,7 @@ class Grid(object):
         #                        TILES                       #
         # -------------------------------------------------- #
         self.tiles = []
+        self.tile_dict = {}
         self.set_display()
         self.center_tile = None
         self.previous_tile = None
@@ -111,6 +112,7 @@ class Grid(object):
                     centre = (centre_x, centre_y)
                     if not centre in self.tiles:
                         self.tiles.append(centre)
+                        self.tile_dict[(x, y)] = centre
 
     def set_display (self):
         ##### Setting the display metrics ####

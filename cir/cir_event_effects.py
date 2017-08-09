@@ -309,7 +309,7 @@ class GameEffects(object):
             if my_body.lifespan:
                 my_body.lifespan.update(200)
 
-        elif item.name == "EDITOR15":
+        elif item.name == "EDITOR15" and not self.grid.current_room == 999:
             trigger = self.produce(product_name="trigger",
                                    pos=self.grid.center_tile,
                                    lifespan=1)

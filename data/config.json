@@ -11,7 +11,8 @@
     "show_grid"         : 0,
     "show_seconds"      : 0,
     "show_movement"     : 0,
-    "show_playing_tiles": 0
+    "show_playing_tiles": 0,
+    "show_tile_names"   : 1
   },
 
   "PATHS": {
