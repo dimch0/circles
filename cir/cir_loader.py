@@ -110,7 +110,7 @@ class DataLoader(object):
                             "vibe_freq"   : float(row[col_idx["vibe_freq"]]) if len(row[col_idx["vibe_freq"]]) > 0 else None
                         }
 
-                        # Create an item
+                        # Create an items
                         item = self.create_new_item(type, attributes)
                         yield item, type, category
 
