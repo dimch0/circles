@@ -60,6 +60,8 @@ class DataLoader(object):
         dummy.default_radius = dummy.radius
 
         # DEBUG PRINT
+        if self.grid.show_debug:
+            print"Loaded {0}".format(dummy.name)
         return dummy
 
     def set_col_idx(self, header):

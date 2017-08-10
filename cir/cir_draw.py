@@ -57,7 +57,7 @@ class GameDrawer(object):
         """ Highlights the hovered tile """
         if current_tile:
             if cir_utils.in_circle(tile, self.grid.tile_radius, current_tile):
-                if self.grid.current_room == 999 and not self.grid.game_menu:
+                if self.grid.current_room in ["999"] and not self.grid.game_menu:
                     radius = self.grid.tile_radius - 4
                 else:
                     radius = self.grid.tile_radius
@@ -160,13 +160,14 @@ class GameDrawer(object):
     def draw_body(self, current_tile, item):
         """ Draws each body and it's image if available """
         # for item in grid.bodies:
+
         if item.available:
             blit_item = True
+
             if item.birth_track:
                 item.radius = item.birth_track[0]
             elif not item.birth_track and item.fat_track:
                 item.radius = item.fat_track[0]
-                item.fat_track.pop(0)
             if not item.birth_track and item.marked_for_destruction:
                 blit_item = False
 

@@ -8,7 +8,6 @@
 # --------------------------------------------------------------- #
 #                            FEATURES                             #
 # --------------------------------------------------------------- #
-# TODO: Create map tile positions / calculate seconds
 # TODO: Create inside body view room 400
 # TODO: Create spirit mode NEW SCENARIO
 # TODO: Log statistics during a lifespan, calculate karma
@@ -27,13 +26,13 @@
 # --------------------------------------------------------------- #
 #                            BUG FIXES                            #
 # --------------------------------------------------------------- #
-# TODO: Use IMG / SOUND lib
-# TODO: Fix mitosis (lag, overlap)
+# TODO: Fix mitosis lag
+# TODO: Fix signal lag
 # TODO: Improve item options
 # TODO: Fix item collection / remove everything dict
 # TODO: Fix room change
 # TODO: Fix signal hit on intersecting
-# TODO: Fix signal lag
+# TODO: Set rotation on direction
 # --------------------------------------------------------------- #
 #                            IMPORTS                              #
 # --------------------------------------------------------------- #
@@ -86,7 +85,7 @@ def game_loop(game_over, scenario="Scenario_1"):
         # --------------------------------------------------------------- #
         #                            GAME MENU                            #
         # --------------------------------------------------------------- #
-        game_menu(grid, pygame)
+        game_menu(grid)
 
         # --------------------------------------------------------------- #
         #                                                                 #
@@ -95,8 +94,7 @@ def game_loop(game_over, scenario="Scenario_1"):
         # --------------------------------------------------------------- #
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                pygame.quit()
-                quit()
+                grid.game_exit()
 
             elif event.type == pygame.KEYDOWN:
                 # --------------------------------------------------------------- #
@@ -131,7 +129,7 @@ def game_loop(game_over, scenario="Scenario_1"):
                     grid.change_room("12_10")
                 elif event.key == pygame.K_3:
                     print ">>>> key 3"
-                    grid.change_room("12_14")
+                    grid.change_room("12_8")
 
                 # --------------------------------------------------------------- #
                 #                             OTHER                               #
@@ -215,8 +213,7 @@ def game_loop(game_over, scenario="Scenario_1"):
     if grid.game_over:
         game_loop(grid.game_over, grid.scenario)
 
-    pygame.quit()
-    quit()
+    grid.game_exit()
 
 # --------------------------------------------------------------- #
 #                              MAIN                               #

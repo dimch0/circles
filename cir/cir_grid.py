@@ -7,6 +7,7 @@
 # ------------------------------------------------------------------------------------------------------------------- #
 import json
 import time
+import os
 from cir_utils import in_circle, inside_polygon, intersecting
 from math import sqrt
 
@@ -276,7 +277,7 @@ class Grid(object):
         """ Saves the current room and loads a new room """
         self.save_current_room()
         self.capture_room()
-        self.current_room = room
+        self.current_room = str(room)
         self.load_current_room()
         self.needs_to_change_room = False
 
@@ -287,7 +288,7 @@ class Grid(object):
         """ Counts the seconds in the game """
 
         if time.time() > self.start_time + self.seconds_in_game + self.seconds_in_pause:
-            if not self.game_menu:
+            if not self.game_menu and not self.current_room in ["999"]:
                 self.seconds_in_game += 1
                 if self.show_seconds:
                     print "Game second: {0}".format(self.seconds_in_game)
@@ -304,3 +305,17 @@ class Grid(object):
             if button.name == old_name:
                 button.name = new_name
 
+
+    # --------------------------------------------------------------- #
+    #                            GAME QUIT                            #
+    # --------------------------------------------------------------- #
+    def clean_tmp_maps(self):
+        for map_file in os.listdir(self.maps_dir):
+            map_file = os.path.join(self.maps_dir, map_file)
+            os.remove(map_file)
+
+
+    def game_exit(self):
+        self.clean_tmp_maps()
+        self.pygame.quit()
+        quit()

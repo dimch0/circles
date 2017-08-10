@@ -138,6 +138,7 @@ def debug_print_click(grid, current_circle, my_body):
         playing     : {6}
         move track  : {7}
         all tiles   : {8}
+        current room: {9}
         """.format(current_circle,
                    grid.mouse_mode,
                    my_body.mode,
@@ -148,7 +149,8 @@ def debug_print_click(grid, current_circle, my_body):
                    len(grid._occupado_tiles),
                    len(grid.playing_tiles),
                    my_body.move_track,
-                   len(grid.tiles)
+                   len(grid.tiles),
+                   grid.current_room
                    )
                   )
 

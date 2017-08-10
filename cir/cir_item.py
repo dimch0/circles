@@ -110,7 +110,7 @@ class Item(object):
                     self.rot_revert = cir_utils.negative_list(self.rot_track)
 
     def gen_birth_track(self):
-        self.birth_track = range(1, self.radius)
+        self.birth_track = range(1, self.radius + 1)
 
 
     def gen_fat(self):

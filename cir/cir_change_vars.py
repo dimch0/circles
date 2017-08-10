@@ -38,7 +38,7 @@ class VarChanger(object):
     #                                                                 #
     # --------------------------------------------------------------- #
     def enter_room(self, my_body, item):
-        self.grid.previous_room = self.grid.current_room
+
         if "Exit_" in item.name or "Enter_" in item.name:
             room_number = None
             for option in item.options:
@@ -48,10 +48,7 @@ class VarChanger(object):
 
             if my_body.pos == item.pos and self.grid.needs_to_change_room:
                 self.grid.change_room(room_number)
-                for ex in self.grid.items:
-                    for op in ex.options:
-                        if self.grid.previous_room in op.name:
-                            self.pos = item.pos
+
                 my_body.available = True
                 my_body.gen_birth_track()
                 self.grid.rooms[self.grid.current_room]["revealed_radius"].append(
@@ -77,8 +74,8 @@ class VarChanger(object):
     def birth_time_over_effect(self, item):
         """ Birth timer effect """
         if item.birth_track:
-            item.birth_track.pop(0)
             item.birth_time.restart()
+            item.birth_track.pop(0)
 
 
     def vibe_freq_over_effect(self, item):
@@ -180,6 +177,8 @@ class VarChanger(object):
                         item.gen_move_track(self.grid)
                     if item.move_track:
                         item.move()
+                    if item.fat_track:
+                        item.fat_track.pop(0)
 
                     # Signal hit
                     if self.signal_hit(item, my_body):

@@ -5,28 +5,26 @@
 #                                                                                                                     #
 #                                                                                                                     #
 # ------------------------------------------------------------------------------------------------------------------- #
-
-def game_menu(grid, pygame):
+def game_menu(grid):
     """ GAME MENU LOOP """
     while grid.game_menu:
 
-        current_tile = grid.mouse_in_tile(pygame.mouse.get_pos())
+        current_tile = grid.mouse_in_tile(grid.pygame.mouse.get_pos())
         grid.seconds_in_game_tick()
 
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                quit()
+        for event in grid.pygame.event.get():
+            if event.type == grid.pygame.QUIT:
+                grid.game_exit()
 
-            elif event.type == pygame.KEYDOWN:
+            elif event.type == grid.pygame.KEYDOWN:
                 # --------------------------------------------------------------- #
                 #                             'Escape'                            #
                 # --------------------------------------------------------------- #
-                if event.key == pygame.K_ESCAPE:
+                if event.key == grid.pygame.K_ESCAPE:
                     if grid.seconds_in_game > 0:
                         grid.game_menu = False
 
-            elif event.type == pygame.MOUSEBUTTONDOWN:
+            elif event.type == grid.pygame.MOUSEBUTTONDOWN:
                 if current_tile:
                     for button in grid.buttons:
                         if current_tile == button.pos and button.clickable:
@@ -35,9 +33,8 @@ def game_menu(grid, pygame):
                                 if grid.game_over:
                                     grid.game_over = False
                             elif button.name == "quit":
-                                pygame.quit()
-                                quit()
+                                grid.game_exit()
         if grid.game_menu:
             if grid.buttons:
                 grid.drawer.draw_menu_buttons(current_tile)
-        pygame.display.update()
+        grid.pygame.display.update()
