@@ -276,7 +276,7 @@ class GameDrawer(object):
 
     def draw_tile_names(self):
         for tile_name, tile_centre in self.grid.tile_dict.items():
-            font = getattr(self.grid.fonts, 'small')
+            font = getattr(self.grid.fonts, 'tiny')
             text = font.render(str(tile_name), True, self.grid.white)
             rect = text.get_rect()
             rect.center = tile_centre

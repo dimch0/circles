@@ -38,15 +38,20 @@ class VarChanger(object):
     #                                                                 #
     # --------------------------------------------------------------- #
     def enter_room(self, my_body, item):
+        self.grid.previous_room = self.grid.current_room
         if "Exit_" in item.name or "Enter_" in item.name:
             room_number = None
             for option in item.options:
                 if "Enter_" in option.name:
                     room_number = option.name.replace("Enter_", "")
-                    room_number = int(room_number)
+                    room_number = room_number
 
             if my_body.pos == item.pos and self.grid.needs_to_change_room:
                 self.grid.change_room(room_number)
+                for ex in self.grid.items:
+                    for op in ex.options:
+                        if self.grid.previous_room in op.name:
+                            self.pos = item.pos
                 my_body.available = True
                 my_body.gen_birth_track()
                 self.grid.rooms[self.grid.current_room]["revealed_radius"].append(
@@ -63,8 +68,6 @@ class VarChanger(object):
             self.grid.items.remove(item)
             if item.name == "my_body":
                 self.grid.game_over = True
-
-
 
     # --------------------------------------------------------------- #
     #                                                                 #
@@ -115,7 +118,6 @@ class VarChanger(object):
                 if item.birth_time.is_over:
                     self.birth_time_over_effect(item)
 
-
     # --------------------------------------------------------------- #
     #                                                                 #
     #                            SIGNALS                              #
@@ -133,7 +135,6 @@ class VarChanger(object):
     def signal_hit_effect(self, item):
         item.destroy(self.grid)
 
-
     # --------------------------------------------------------------- #
     #                                                                 #
     #                           CHANGE VARS                           #
@@ -147,7 +148,7 @@ class VarChanger(object):
         if not self.grid.game_menu:
 
             # My_body to room
-            if not my_body in self.grid.items and self.grid.current_room not in [999]:
+            if not my_body in self.grid.items and self.grid.current_room not in ["999"]:
                 self.grid.items.append(my_body)
 
             # Check bag

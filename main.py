@@ -15,7 +15,6 @@
 # TODO: Create save button
 # TODO: Create load button
 # TODO: Create installation .exe file
-# TODO: Create reverse get position
 # TODO: Item generation
 # --------------------------------------------------------------- #
 #                            ANIMATION                            #
@@ -32,6 +31,9 @@
 # TODO: Fix mitosis (lag, overlap)
 # TODO: Improve item options
 # TODO: Fix item collection / remove everything dict
+# TODO: Fix room change
+# TODO: Fix signal hit on intersecting
+# TODO: Fix signal lag
 # --------------------------------------------------------------- #
 #                            IMPORTS                              #
 # --------------------------------------------------------------- #
@@ -123,13 +125,13 @@ def game_loop(game_over, scenario="Scenario_1"):
 
                 elif event.key == pygame.K_1:
                     print ">>>> key 1"
-                    grid.change_room(1)
+                    grid.change_room("12_12")
                 elif event.key == pygame.K_2:
                     print ">>>> key 2"
-                    grid.change_room(2)
+                    grid.change_room("12_10")
                 elif event.key == pygame.K_3:
                     print ">>>> key 3"
-                    grid.change_room(3)
+                    grid.change_room("12_14")
 
                 # --------------------------------------------------------------- #
                 #                             OTHER                               #

@@ -56,7 +56,7 @@ class Grid(object):
         # -------------------------------------------------- #
         #                        ROOMS                       #
         # -------------------------------------------------- #
-        self.current_room = 1
+        self.current_room = "12_12"
         self.items = []
         self.buttons = []
         self.rooms = {}
@@ -112,7 +112,7 @@ class Grid(object):
                     centre = (centre_x, centre_y)
                     if not centre in self.tiles:
                         self.tiles.append(centre)
-                        self.tile_dict[(x, y)] = centre
+                        self.tile_dict[str(x) + '_' + str(y)] = centre
 
     def set_display (self):
         ##### Setting the display metrics ####
@@ -202,24 +202,6 @@ class Grid(object):
                 (self_x - self.cathetus, self_y - self.tile_radius)
                ]
 
-    def set_pos(self, number):
-        """
-        Calculate the position as following:
-        The number is split to a list of digits
-        The first digit is always 1 - that is the center tile
-        Each digit after it is the index of an adjacent tile to the previous tile
-        :param number: column value
-        :return: the final position
-        """
-        position = None
-        indexes = [int(n) for n in number]
-        if indexes:
-            position = self.center_tile
-        if len(indexes) > 1:
-            for idx in indexes[1:]:
-                position = self.adj_tiles(position)[idx]
-        return position
-
 
     def set_rev_tiles(self):
         """ Reveal tiles in the revealed areas (radius) """
@@ -259,7 +241,7 @@ class Grid(object):
     # --------------------------------------------------------------- #
     def capture_room(self):
         """ Takes a screenshot of the current room """
-        if not self.current_room == 999:
+        if not self.current_room == "999":
             width = (2 * self.tile_radius) + (8 * self.cathetus)
             height = 18 * self.tile_radius
             top = self.center_tile[0] - (width / 2)

@@ -94,7 +94,7 @@ class DataLoader(object):
                             "type"        : row[col_idx["type"]],
                             "available"   : bool(row[col_idx["available"]]) if len(row[col_idx["available"]]) > 0 else None,
                             "name"        : row[col_idx["name"]] if len(row[col_idx["name"]]) > 0 else None,
-                            "pos"         : self.grid.set_pos(row[col_idx["pos"]]) if len(row[col_idx["pos"]]) > 0 else None,
+                            "pos"         : self.grid.tile_dict[row[col_idx["pos"]]] if len(row[col_idx["pos"]]) > 0 else None,
                             "color"       : getattr(self.grid, row[col_idx["color"]]) if len(row[col_idx["color"]]) > 0 else None,
                             "img"         : getattr(self.grid.images, row[col_idx["img"]]) if len(row[col_idx["img"]]) > 0 else None,
                             "speed"       : int(row[col_idx["speed"]]) if len(row[col_idx["speed"]]) > 0 else None,
@@ -103,7 +103,7 @@ class DataLoader(object):
                             "modable"     : row[col_idx["modable"]] if len(row[col_idx["modable"]]) > 0 else None,
                             "collectible" : row[col_idx["collectible"]] if len(row[col_idx["collectible"]]) > 0 else None,
                             "uses"        : int(row[col_idx["uses"]]) if len(row[col_idx["uses"]]) > 0 else None,
-                            "room"        : int(row[col_idx["room"]]) if len(row[col_idx["room"]]) > 0 else None,
+                            "room"        : row[col_idx["room"]] if len(row[col_idx["room"]]) > 0 else None,
                             "lifespan"    : float(row[col_idx["lifespan"]]) if len(row[col_idx["lifespan"]]) > 0 else None,
                             "vibe_freq"   : float(row[col_idx["vibe_freq"]]) if len(row[col_idx["vibe_freq"]]) > 0 else None
                         }
@@ -124,7 +124,7 @@ class DataLoader(object):
         """ Assign all options from grid.mode_vs_options to grid.items """
         for name, item in self.grid.everything.items():
             for mode_name, mode_options in self.grid.mode_vs_options.items():
-                if item.name == mode_name:
+                if mode_name in item.name:
                     item.default_options = mode_options
                     item.options = item.default_options
 
@@ -159,9 +159,9 @@ class DataLoader(object):
             butt.font = getattr(self.grid.fonts, 'small')
             butt.text_color = self.grid.white
             if name == "play":
-                butt.pos = self.grid.set_pos('10')
+                butt.pos = self.grid.tile_dict['12_10']
             elif name == "quit":
-                butt.pos = self.grid.set_pos('13')
+                butt.pos = self.grid.tile_dict['12_14']
 
             self.grid.buttons.append(butt)
             self.grid.everything[butt.name] = butt

@@ -231,14 +231,12 @@ class GameEffects(object):
 
             self.grid.capture_room()
 
-            if not self.grid.current_room == 999:
+            if not self.grid.current_room == "999":
                 self.grid.previous_room = self.grid.current_room
-                self.grid.change_room(999)
+                self.grid.change_room("999")
                 diff = 10
                 if my_body in self.grid.items:
                     self.grid.items.remove(my_body)
-                # my_body.available = False
-                # my_body.clickable = False
 
                 try:
                     for root, dirs, files in os.walk(self.grid.maps_dir):
@@ -251,20 +249,8 @@ class GameEffects(object):
                                 image, (
                                     image_height - diff,
                                     image_height))
-                            if name == "1":
-                                pos = self.grid.set_pos("1")
-                            elif name == "2":
-                                pos = self.grid.set_pos("12")
-                            elif name == "3":
-                                pos = self.grid.set_pos("122")
-                            elif name == "4":
-                                pos = self.grid.set_pos("120")
-                            elif name == "5":
-                                pos = self.grid.set_pos("10")
-                            elif name == "6":
-                                pos = self.grid.set_pos("1220")
-                            else:
-                                pos = self.grid.set_pos("1")
+
+                            pos = self.grid.tile_dict[name]
 
                             map_tile = self.produce(product_name="trigger",
                                                     pos=pos)
@@ -280,8 +266,6 @@ class GameEffects(object):
                 self.grid.change_room(self.grid.previous_room)
                 if my_body not in self.grid.items:
                     self.grid.items.append(my_body)
-                # my_body.available = True
-                # my_body.clickable = True
 
 
 
@@ -306,10 +290,10 @@ class GameEffects(object):
             my_body.speed = 10
 
         elif item.name == "EDITOR14":
-            if my_body.lifespan:
-                my_body.lifespan.update(200)
+            my_body.lifespan = None
+            # my_body.lifespan.update(200)
 
-        elif item.name == "EDITOR15" and not self.grid.current_room == 999:
+        elif item.name == "EDITOR15" and not self.grid.current_room == "999":
             trigger = self.produce(product_name="trigger",
                                    pos=self.grid.center_tile,
                                    lifespan=1)
