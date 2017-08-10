@@ -130,6 +130,9 @@ def game_loop(game_over, scenario="Scenario_1"):
                 elif event.key == pygame.K_3:
                     print ">>>> key 3"
                     grid.change_room("12_8")
+                elif event.key == pygame.K_4:
+                    print ">>>> key 4"
+                    grid.change_room("12_14")
 
                 # --------------------------------------------------------------- #
                 #                             OTHER                               #

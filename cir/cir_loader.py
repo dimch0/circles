@@ -11,6 +11,7 @@ import cir_item_body
 import cir_item_timer
 import cir_item_button
 import cir_item_mobile
+import cir_utils
 
 
 class DataLoader(object):
@@ -36,7 +37,7 @@ class DataLoader(object):
                 dummy.timer_tile_radius = self.grid.tile_radius
             elif type in ["mobile", "signal"]:
                 dummy = cir_item_mobile.MobileItem()
-            elif type in ["mode_option", "simple"]:
+            elif type in ["mode_option", "simple", "door"]:
                 dummy = cir_item.Item()
         except Exception as e:
             print("Error {0, could not create item of type: {1}".format(e, type))
@@ -54,14 +55,14 @@ class DataLoader(object):
                             setattr(dummy, "default_color", value)
 
         except Exception as e:
-            print "Error, could not set attribute: {0}".format(e)
+            print("Error, could not set attribute: {0}".format(e))
 
         dummy.radius = self.grid.tile_radius
         dummy.default_radius = dummy.radius
 
         # DEBUG PRINT
-        if self.grid.show_debug:
-            print"Loaded {0}".format(dummy.name)
+        # if self.grid.show_debug:
+        #     print("Loaded {0}".format(dummy.name))
         return dummy
 
     def set_col_idx(self, header):
@@ -126,9 +127,10 @@ class DataLoader(object):
         """ Assign all options from grid.mode_vs_options to grid.items """
         for name, item in self.grid.everything.items():
             for mode_name, mode_options in self.grid.mode_vs_options.items():
-                if mode_name in item.name:
+                if mode_name in name:
                     item.default_options = mode_options
                     item.options = item.default_options
+
 
     def set_timer(self, item):
         """ Assign all options from self.grid.mode_vs_options to grid.items """
@@ -150,6 +152,26 @@ class DataLoader(object):
             vibefr = cir_item_timer.TimerItem()
             vibefr.duration = item.vibe_freq
             item.vibe_freq = vibefr
+
+    def set_door(self, item):
+        door = cir_item.Item()
+        door.type = "other side"
+        door.name = "Enters_" + item.room
+        door.room = item.name.replace("Enters_", "")
+        door.pos = cir_utils.get_mirror_point(item.pos, self.grid.center_tile)
+        door.color = item.color
+        door.img = item.img
+        door.default_img = item.default_img
+        door.options = item.options
+        door.default_options = door.default_options
+        door.default_color = door.default_color
+        door.radius = item.radius
+        door.available = False
+
+        return door
+
+
+
 
     def set_buttons(self):
         """ Assign all items to the grid object """
@@ -174,8 +196,7 @@ class DataLoader(object):
             if item.room not in self.grid.rooms.keys():
                 self.grid.rooms[item.room] = {
                     "items"          : [],
-                    "revealed_radius": []
-                }
+                    "revealed_radius": []}
             self.grid.rooms[item.room]["items"].append(item)
 
 
@@ -203,14 +224,26 @@ class DataLoader(object):
         Loading all modes, buttons, timers, my_body
         :return: my_body
         """
-        print("Loading from {} ...".format(self.grid.scenario))
+        print("Loading items from {} ...".format(self.grid.scenario))
+
+
+
         for item, type, category in self.load_data():
+
             # Everything
             self.grid.everything[item.name] = item
             self.set_rooms(item)
             self.set_timer(item)
+
+            # DOORS
+            if type == "door":
+                door = self.set_door(item)
+                self.grid.everything[door.name] = door
+                self.set_rooms(door)
+                self.set_timer(door)
+
             # Mode options
-            if type == "mode_option":
+            elif type == "mode_option":
                 self.add_optoin_to_mode(category, item)
 
         self.set_buttons()
@@ -219,5 +252,8 @@ class DataLoader(object):
         my_body.gen_birth_track()
         self.grid.rooms[self.grid.current_room]["revealed_radius"].append(((my_body.pos), self.grid.tile_radius))
         self.grid.load_current_room()
+
+        # DEBUG
+        print self.grid.mode_vs_options["Enters"]
 
         return my_body
