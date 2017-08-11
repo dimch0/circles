@@ -362,6 +362,10 @@ class GameEffects(object):
             elif "Enter_" in option.name:
                 self.exit_room(my_body, item)
 
+            # Enters
+            elif "Entering" in option.name:
+                self.exit_room(my_body, item)
+
             # Setting the mode
             item.set_mode(self.grid, option)
 

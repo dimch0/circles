@@ -132,7 +132,7 @@ def game_loop(game_over, scenario="Scenario_1"):
                     grid.change_room("12_8")
                 elif event.key == pygame.K_4:
                     print ">>>> key 4"
-                    grid.change_room("12_14")
+                    grid.change_room("12_6")
 
                 # --------------------------------------------------------------- #
                 #                             OTHER                               #

@@ -129,6 +129,9 @@ class DataLoader(object):
             for mode_name, mode_options in self.grid.mode_vs_options.items():
                 if mode_name in name:
                     item.default_options = mode_options
+                    for item_option in item.default_options:
+                        item_option.color = item.color
+                        item_option.default_color = item.color
                     item.options = item.default_options
 
 
@@ -156,14 +159,14 @@ class DataLoader(object):
     def set_door(self, item):
         door = cir_item.Item()
         door.type = "other side"
-        door.name = "Enters_" + item.room
-        door.room = item.name.replace("Enters_", "")
+        door.name = "Enter_" + item.room
+        door.room = item.name.replace("Enter_", "")
         door.pos = cir_utils.get_mirror_point(item.pos, self.grid.center_tile)
         door.color = item.color
         door.img = item.img
         door.default_img = item.default_img
-        door.options = item.options
-        door.default_options = door.default_options
+        # door.options = item.options
+        # door.default_options = door.default_options
         door.default_color = door.default_color
         door.radius = item.radius
         door.available = False
@@ -254,6 +257,6 @@ class DataLoader(object):
         self.grid.load_current_room()
 
         # DEBUG
-        print self.grid.mode_vs_options["Enters"]
+        print self.grid.everything["Enter_12_12"].options[0].name
 
         return my_body

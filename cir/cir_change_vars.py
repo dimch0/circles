@@ -7,7 +7,7 @@
 #######################################################################################################################
 import copy
 import random
-
+from cir_utils import get_mirror_point
 
 class VarChanger(object):
 
@@ -37,19 +37,44 @@ class VarChanger(object):
     #                       ENTER / EXIT EFFECTS                      #
     #                                                                 #
     # --------------------------------------------------------------- #
+    # def enter_room(self, my_body, item):
+    #
+    #     if "Exit_" in item.name or "Enter_" in item.name:
+    #         room_number = None
+    #         for option in item.options:
+    #             if "Enter_" in option.name:
+    #                 room_number = option.name.replace("Enter_", "")
+    #                 room_number = room_number
+    #             elif "Enters_" in option.name:
+    #                 room_number = option.name.replace("Enters_", "")
+    #                 room_number = room_number
+    #
+    #         if my_body.pos == item.pos and self.grid.needs_to_change_room:
+    #             self.grid.change_room(room_number)
+    #
+    #             my_body.available = True
+    #             my_body.gen_birth_track()
+    #             self.grid.rooms[self.grid.current_room]["revealed_radius"].append(
+    #                 ((item.pos), self.grid.tile_radius))
+
+
     def enter_room(self, my_body, item):
 
-        if "Exit_" in item.name or "Enter_" in item.name:
-            room_number = None
-            for option in item.options:
-                if "Enter_" in option.name:
-                    room_number = option.name.replace("Enter_", "")
-                    room_number = room_number
+        if my_body.pos == item.pos and self.grid.needs_to_change_room:
 
-            if my_body.pos == item.pos and self.grid.needs_to_change_room:
+            if "Enter_" in item.name:
+                room_number = None
+                for option in item.options:
+                    if "Enter" in option.name:
+                        room_number = item.name.replace("Enter_", "")
+                        room_number = room_number
+                        print self.grid.current_room
+                        print room_number
+
                 self.grid.change_room(room_number)
 
                 my_body.available = True
+                my_body.pos = get_mirror_point(my_body.pos, self.grid.center_tile)
                 my_body.gen_birth_track()
                 self.grid.rooms[self.grid.current_room]["revealed_radius"].append(
                     ((item.pos), self.grid.tile_radius))

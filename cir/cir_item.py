@@ -158,6 +158,7 @@ class Item(object):
             if self.in_menu:
                 option.pos = grid.adj_tiles(self.pos)[idx]
 
+
     def set_mode(self, grid, option):
         """
         Changes the mode of an item to a given options
@@ -167,9 +168,11 @@ class Item(object):
         self.mode = option.name
         self.color = option.color
         # self.img = option.img
-        if option.name in grid.mode_vs_options.keys():
+        # if option.name in grid.mode_vs_options.keys():
+        if any(mode_name in self.name for mode_name in grid.mode_vs_options.keys()):
             self.options = grid.mode_vs_options[option.name]
         self.set_option_pos(grid)
+
 
     def reset_mode(self):
         """
@@ -204,7 +207,12 @@ class Item(object):
         """
 
         # Clicked on item
-        if clicked_circle == self.pos and self.name in grid.mode_vs_options.keys() and self.clickable and not (self.name != "my_body" and grid.mouse_mode):
+        # if clicked_circle == self.pos and self.name in grid.mode_vs_options.keys() and self.clickable and not (self.name != "my_body" and grid.mouse_mode):
+        if clicked_circle == self.pos\
+                and any(mode_name in self.name for mode_name in grid.mode_vs_options.keys())\
+                and self.clickable\
+                and not (self.name != "my_body" and grid.mouse_mode):
+
             # If default mode:
             if self.mode is self.name:
                 if not self.in_menu:
