@@ -73,7 +73,7 @@ class VarChanger(object):
     #                             TIMERS                              #
     #                                                                 #
     # --------------------------------------------------------------- #
-    def birth_time_over_effect(self, item):
+    def update_birth_track(self, item):
         """ Birth timer effect """
         if item.birth_track:
             item.birth_track.pop(0)
@@ -117,7 +117,7 @@ class VarChanger(object):
                     item.birth_time.tick()
                     # performance - gen birth track without birth_time = faster birth
                     if item.birth_time.is_over:
-                        self.birth_time_over_effect(item)
+                        self.update_birth_track(item)
                 else:
                     item.birth_track.pop(0)
 

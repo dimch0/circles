@@ -43,14 +43,16 @@ class GameEffects(object):
             new_item.pos = pos
         if lifespan:
             new_item.lifespan = lifespan
+
         # self.grid.loader.set_timer(new_item)
-        new_item.default_img = new_item.img
-        # new_item.name        = new_item.name + str(time.time())
+        # new_item.name = new_item.name + str(time.time())
         # new_item.marked_for_destruction = False
+
+        new_item.default_img = new_item.img
         new_item.available = True
         new_item.gen_birth_track()
-
         self.grid.items.append(new_item)
+
         return new_item
 
     # --------------------------------------------------------------- #
