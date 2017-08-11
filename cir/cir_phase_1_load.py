@@ -20,12 +20,12 @@ class DataLoader(object):
         self.grid = grid
 
 
-    def create_new_item(self, type, attributes):
+    def create_new_item(self, type, attributes_dict):
         """
         This function creates an item of a class by the given type.
-        Attributes are set by a given dict (attributes)
+        Attributes are set by a given dict (attributes_dict)
         :param type: type specified
-        :param attributes: generated dict
+        :param attributes_dict: generated dict
         :return: a new instance of an item object
         """
         dummy = None
@@ -43,7 +43,7 @@ class DataLoader(object):
             print("Error {0, could not create item of type: {1}".format(e, type))
 
         try:
-            for attribute, value in attributes.items():
+            for attribute, value in attributes_dict.items():
                 if dummy:
                     if hasattr(dummy, attribute):
                         setattr(dummy, attribute, value)
@@ -79,7 +79,6 @@ class DataLoader(object):
         :param images:  images instance
         :return: item object, type and category
         """
-
         with open(self.grid.data_file, 'rb') as csvfile:
             data = csv.reader(csvfile, delimiter=',')
             header = next(data)
@@ -93,26 +92,27 @@ class DataLoader(object):
                         # --------------------------------------------------------------- #
                         #                        ATTRIBUTES DICT                          #
                         # --------------------------------------------------------------- #
-                        attributes = {
+                        attributes_dict = {
                             "type"        : row[col_idx["type"]],
-                            "available"   : bool(row[col_idx["available"]]) if len(row[col_idx["available"]]) > 0 else None,
-                            "name"        : row[col_idx["name"]] if len(row[col_idx["name"]]) > 0 else None,
+                            "category"    : row[col_idx["category"]],
+                            "available"   : bool(row[col_idx["available"]]),
+                            "name"        : row[col_idx["name"]],
                             "pos"         : self.grid.tile_dict[row[col_idx["pos"]]] if len(row[col_idx["pos"]]) > 0 else None,
                             "color"       : getattr(self.grid, row[col_idx["color"]]) if len(row[col_idx["color"]]) > 0 else None,
                             "img"         : getattr(self.grid.images, row[col_idx["img"]]) if len(row[col_idx["img"]]) > 0 else None,
                             "speed"       : int(row[col_idx["speed"]]) if len(row[col_idx["speed"]]) > 0 else None,
                             "range"       : int(row[col_idx["range"]]) if len(row[col_idx["range"]]) > 0 else None,
                             "time_color"  : getattr(self.grid, row[col_idx["time_color"]]) if len(row[col_idx["time_color"]]) > 0 else None,
-                            "modable"     : row[col_idx["modable"]] if len(row[col_idx["modable"]]) > 0 else None,
-                            "collectible" : row[col_idx["collectible"]] if len(row[col_idx["collectible"]]) > 0 else None,
+                            "modable"     : bool(row[col_idx["modable"]]),
+                            "collectible" : bool(row[col_idx["collectible"]]),
                             "uses"        : int(row[col_idx["uses"]]) if len(row[col_idx["uses"]]) > 0 else None,
-                            "room"        : row[col_idx["room"]] if len(row[col_idx["room"]]) > 0 else None,
+                            "room"        : row[col_idx["room"]],
                             "lifespan"    : float(row[col_idx["lifespan"]]) if len(row[col_idx["lifespan"]]) > 0 else None,
                             "vibe_freq"   : float(row[col_idx["vibe_freq"]]) if len(row[col_idx["vibe_freq"]]) > 0 else None
                         }
 
-                        # Create an items
-                        item = self.create_new_item(type, attributes)
+                        # CREATE ITEM
+                        item = self.create_new_item(type, attributes_dict)
                         yield item, type, category
 
 

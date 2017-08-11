@@ -19,6 +19,7 @@ class Item(object):
         # --------------------------------------------------------------- #
         self.name = None
         self.type = None
+        self.category = None
         self.pos = ()
         self.color = None
         self.img = None
