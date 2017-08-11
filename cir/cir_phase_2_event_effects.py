@@ -35,7 +35,7 @@ class GameEffects(object):
 
         if radius:
             new_item.radius = radius
-        if birth:
+        if not birth == None:
             new_item.birth_time.duration = birth
         if vibe_freq:
             new_item.vibe_freq.duration = vibe_freq
@@ -190,6 +190,7 @@ class GameEffects(object):
             self.grid.needs_to_change_room = True
         else:
             print "it far"
+            item.in_menu = False
 
     # --------------------------------------------------------------- #
     #                                                                 #
@@ -225,7 +226,6 @@ class GameEffects(object):
     def editor(self, item, my_body):
         """ EDITOR CLICKS """
 
-
         # MAPS
         if item.name == "EDITOR6":
 
@@ -260,7 +260,6 @@ class GameEffects(object):
 
                 except Exception as e:
                     print "ERROR, could not show map", e
-
 
             else:
                 self.grid.change_room(self.grid.previous_room)

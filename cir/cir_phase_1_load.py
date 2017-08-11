@@ -218,6 +218,7 @@ class DataLoader(object):
         editor_items = []
         for item, type, category in self.load_data():
             if "EDITOR" in item.name:
+                item.birth_time = 0
                 editor_items.append(item)
         return editor_items
 

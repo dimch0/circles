@@ -110,7 +110,7 @@ class Item(object):
                     self.rot_revert = cir_utils.negative_list(self.rot_track)
 
     def gen_birth_track(self):
-        self.birth_track = range(1, self.radius + 1)
+        self.birth_track = range(1, self.radius)
 
 
     def gen_fat(self):
@@ -166,10 +166,10 @@ class Item(object):
         :param grid: grid instance
         """
         self.mode = option.name
-        self.color = option.color
+        # self.color = option.color
         # self.img = option.img
-        # if option.name in grid.mode_vs_options.keys():
-        if any(mode_name in self.name for mode_name in grid.mode_vs_options.keys()):
+        if option.name in grid.mode_vs_options.keys():
+        # if any(mode_name in self.name for mode_name in grid.mode_vs_options.keys()):
             self.options = grid.mode_vs_options[option.name]
         self.set_option_pos(grid)
 

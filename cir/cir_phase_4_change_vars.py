@@ -34,50 +34,27 @@ class VarChanger(object):
 
     # --------------------------------------------------------------- #
     #                                                                 #
-    #                       ENTER / EXIT EFFECTS                      #
+    #                        ENTER ROOM EFFECTS                       #
     #                                                                 #
     # --------------------------------------------------------------- #
-    # def enter_room(self, my_body, item):
-    #
-    #     if "Exit_" in item.name or "Enter_" in item.name:
-    #         room_number = None
-    #         for option in item.options:
-    #             if "Enter_" in option.name:
-    #                 room_number = option.name.replace("Enter_", "")
-    #                 room_number = room_number
-    #             elif "Enters_" in option.name:
-    #                 room_number = option.name.replace("Enters_", "")
-    #                 room_number = room_number
-    #
-    #         if my_body.pos == item.pos and self.grid.needs_to_change_room:
-    #             self.grid.change_room(room_number)
-    #
-    #             my_body.available = True
-    #             my_body.gen_birth_track()
-    #             self.grid.rooms[self.grid.current_room]["revealed_radius"].append(
-    #                 ((item.pos), self.grid.tile_radius))
-
-
     def enter_room(self, my_body, item):
 
-        if my_body.pos == item.pos and self.grid.needs_to_change_room:
+        if "Enter_" in item.name and my_body.pos == item.pos:
+            room_number = None
+            for option in item.options:
+                if "Enter" in option.name:
+                    room_number = item.name.replace("Enter_", "")
+                    room_number = room_number
+                    print self.grid.current_room
+                    print room_number
 
-            if "Enter_" in item.name:
-                room_number = None
-                for option in item.options:
-                    if "Enter" in option.name:
-                        room_number = item.name.replace("Enter_", "")
-                        room_number = room_number
-                        print self.grid.current_room
-                        print room_number
+            self.grid.change_room(room_number)
 
-                self.grid.change_room(room_number)
-
-                my_body.available = True
-                my_body.pos = get_mirror_point(my_body.pos, self.grid.center_tile)
-                my_body.gen_birth_track()
-                self.grid.rooms[self.grid.current_room]["revealed_radius"].append(
-                    ((item.pos), self.grid.tile_radius))
+            my_body.available = True
+            my_body.pos = get_mirror_point(my_body.pos, self.grid.center_tile)
+            my_body.gen_birth_track()
+            self.grid.rooms[self.grid.current_room]["revealed_radius"].append(
+                ((item.pos), self.grid.tile_radius))
 
     # --------------------------------------------------------------- #
     #                                                                 #
@@ -85,7 +62,7 @@ class VarChanger(object):
     #                                                                 #
     # --------------------------------------------------------------- #
     def destruction(self, item):
-        if item.marked_for_destruction and not item.birth_track:
+        if not item.birth_track:
             item.available = False
             self.grid.items.remove(item)
             if item.name == "my_body":
@@ -99,8 +76,8 @@ class VarChanger(object):
     def birth_time_over_effect(self, item):
         """ Birth timer effect """
         if item.birth_track:
-            item.birth_time.restart()
             item.birth_track.pop(0)
+            item.birth_time.restart()
 
 
     def vibe_freq_over_effect(self, item):
@@ -136,9 +113,13 @@ class VarChanger(object):
 
         if item.birth_track:
             if item.birth_time and not isinstance(item.birth_time, float):
-                item.birth_time.tick()
-                if item.birth_time.is_over:
-                    self.birth_time_over_effect(item)
+                if item.birth_time.duration > 0:
+                    item.birth_time.tick()
+                    # performance - gen birth track without birth_time = faster birth
+                    if item.birth_time.is_over:
+                        self.birth_time_over_effect(item)
+                else:
+                    item.birth_track.pop(0)
 
     # --------------------------------------------------------------- #
     #                                                                 #
@@ -152,6 +133,7 @@ class VarChanger(object):
                     my_body)) or item.direction == None:
                 hit = True
                 print "Hit!"
+                item.destroy(self.grid)
         return hit
 
     def signal_hit_effect(self, item):
@@ -181,10 +163,12 @@ class VarChanger(object):
             for item in self.grid.items:
 
                 # Enter
-                self.enter_room(my_body, item)
+                if self.grid.needs_to_change_room:
+                    self.enter_room(my_body, item)
 
                 # Destruction
-                self.destruction(item)
+                if item.marked_for_destruction:
+                    self.destruction(item)
 
                 if item.available:
 

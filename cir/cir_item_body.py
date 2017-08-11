@@ -93,17 +93,3 @@ class BodyItem(MobileItem):
                     item.gen_birth_track()
 
         return radar_radius, thick
-
-
-    # def set_lifespan(self, grid):
-    #     if self.lifespan:
-    #         timer = TimerItem()
-    #         timer.radius = grid.tile_radius
-    #         timer.default_radius = grid.tile_radius
-    #         timer.duration = self.lifespan
-    #         timer.color = self.time_color
-    #         self.lifespan = timer
-
-
-
-

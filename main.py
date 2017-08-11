@@ -5,6 +5,7 @@
 #                                                                                                                     #
 #                                                                                                                     #
 # ------------------------------------------------------------------------------------------------------------------- #
+
 # --------------------------------------------------------------- #
 #                            FEATURES                             #
 # --------------------------------------------------------------- #
@@ -33,9 +34,9 @@
 # TODO: Fix room change
 # TODO: Fix signal hit on intersecting
 # TODO: Set rotation on direction
-# --------------------------------------------------------------- #
-#                            IMPORTS                              #
-# --------------------------------------------------------------- #
+
+# TODO: Fix constant hit bug - line 113 cir_item
+
 import time
 import pygame
 pygame.init()
@@ -43,10 +44,11 @@ from cir.cir_game_menu import game_menu
 from cir import cir_utils
 from cir .cir_cosmetic import Images, Fonts
 from cir.cir_grid import Grid
-from cir.cir_draw import GameDrawer
-from cir.cir_loader import DataLoader
-from cir.cir_event_effects import GameEffects
-from cir.cir_change_vars import VarChanger
+
+from cir.cir_phase_1_load import DataLoader
+from cir.cir_phase_2_event_effects import GameEffects
+from cir.cir_phase_3_draw import GameDrawer
+from cir.cir_phase_4_change_vars import VarChanger
 
 
 def game_loop(game_over, scenario="Scenario_1"):
@@ -56,10 +58,10 @@ def game_loop(game_over, scenario="Scenario_1"):
     grid               = Grid(pygame, scenario)
     grid.images        = Images(grid)
     grid.fonts         = Fonts(grid)
-    grid.drawer        = GameDrawer(grid)
     grid.loader        = DataLoader(grid)
-    grid.var_changer   = VarChanger(grid)
     grid.event_effects = GameEffects(grid)
+    grid.drawer        = GameDrawer(grid)
+    grid.var_changer   = VarChanger(grid)
     grid.start_time    = time.time()
     my_body            = grid.loader.load_items()
 
@@ -79,18 +81,17 @@ def game_loop(game_over, scenario="Scenario_1"):
     print "Game started"
     while not grid.game_over:
 
+        # CURRENT TILE
         current_tile = grid.mouse_in_tile(pygame.mouse.get_pos())
+
+        # SECONDS
         grid.seconds_in_game_tick()
 
-        # --------------------------------------------------------------- #
-        #                            GAME MENU                            #
-        # --------------------------------------------------------------- #
+        # GAME MENU
         game_menu(grid)
 
         # --------------------------------------------------------------- #
-        #                                                                 #
-        #                            EVENTS                               #
-        #                                                                 #
+        #                             EVENTS                              #
         # --------------------------------------------------------------- #
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -119,7 +120,7 @@ def game_loop(game_over, scenario="Scenario_1"):
                 elif event.key == pygame.K_KP_ENTER:
                     editor_buttons = grid.loader.load_editor()
                     for editor_button in editor_buttons:
-                        grid.event_effects.produce(editor_button.name)
+                        grid.event_effects.produce(editor_button.name, birth=0)
 
                 elif event.key == pygame.K_1:
                     print ">>>> key 1"
