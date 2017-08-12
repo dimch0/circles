@@ -112,15 +112,23 @@ class DataLoader(object):
                         item = self.create_new_item(klas, attributes_dict)
                         yield item, klas
 
+    def find_opts(self, opt, item):
+        if opt.type == "option":
+            if opt.category and opt.category in item.name:
+                opt.color = item.color
+                opt.default_color = item.color
+                item.options.append(opt)
+                item.default_options.append(opt)
+
     def set_opts(self, item):
         if item.has_opts:
             for opt, klas in self.load_data():
-                if opt.type == "option":
-                    if opt.category and opt.category in item.name:
-                        opt.color = item.color
-                        opt.default_color = item.color
-                        item.options.append(opt)
-                        item.default_options.append(opt)
+                self.find_opts(opt, item)
+                if opt.has_opts:
+                    for sub_opt, klas in self.load_data():
+                        self.find_opts(sub_opt, opt)
+            # DEBUG
+            # print(item.name, [opt.name + " - " + str([sopt.name for sopt in opt.options]) for opt in item.options],)
 
 
     def set_timers(self, item):
@@ -161,8 +169,6 @@ class DataLoader(object):
 
         self.set_room(door)
         self.set_timers(door)
-
-
 
 
     def set_buttons(self):

@@ -29,11 +29,10 @@
 # --------------------------------------------------------------- #
 # TODO: Fix mitosis lag
 # TODO: Fix signal lag
-# TODO: Fix item options
 # TODO: Fix item collection / remove everything dict
 # TODO: Fix room change
 # TODO: Fix signal hit on intersecting
-# TODO: Set rotation on direction
+# TODO: Fix rotation on direction
 
 # TODO: Fix constant hit bug - line 113 cir_item
 

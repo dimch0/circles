@@ -18,11 +18,17 @@ def execute_click_events(grid, event, my_body, current_tile):
                 # SET MOUSE MODE
                 if item.modable:
                     grid.set_mouse_mode(item)
+                    print item.name
+                    for ober_item in grid.items:
+                        print ober_item.options
+                        if item in ober_item.options:
+
+                            ober_item.set_in_menu(False)
 
                 # CLICK ON ITEMS
                 grid.event_effects.click_items(item, my_body)
 
-                # SET IN MENU OPTIONS
+                # SET IN MENU OPTS
                 item.check_in_menu(grid, current_tile)
 
                 # SET OPTS POS

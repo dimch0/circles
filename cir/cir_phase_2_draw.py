@@ -108,33 +108,6 @@ class GameDrawer(object):
                                 self.grid.revealed_radius.remove(printed)
 
 
-    def draw_item_options(self, current_tile, item):
-        """ Draws the item menu options """
-
-        for option in item.options:
-            if option.available:
-                if option.color:
-
-
-                    self.grid.pygame.draw.circle(self.grid.game_display,
-                                       option.color,
-                                       option.pos,
-                                       self.grid.tile_radius,
-                                       0)
-
-                    if item.mode == "bag":
-                        self.grid.pygame.draw.circle(self.grid.game_display,
-                                           self.grid.yellowgrey,
-                                           option.pos,
-                                           self.grid.tile_radius,
-                                           2)
-
-
-                if option.img:
-                    self.draw_img(option)
-                self.draw_hover(current_tile, option.pos)
-
-
     def draw_menu_buttons(self, current_tile):
         """ Drawing the buttons in the game menu """
 
@@ -178,6 +151,12 @@ class GameDrawer(object):
                                        item.pos,
                                        item.radius,
                                        0)
+            # if item.mode == "bag":
+            #     self.grid.pygame.draw.circle(self.grid.game_display,
+            #                                  self.grid.yellowgrey,
+            #                                  option.pos,
+            #                                  self.grid.tile_radius,
+            #                                  2)
                 # Draw activation / deactivation here
                 self.draw_img(item)
                 self.draw_aim(current_tile, item)
@@ -436,10 +415,10 @@ class GameDrawer(object):
                 self.draw_timers(item)
 
         # Item options
-        for item in self.grid.items:
-            if item.available:
-                if item.in_menu:
-                    self.draw_item_options(current_tile, item)
+        # for item in self.grid.items:
+        #     if item.available:
+        #         if item.in_menu:
+        #             self.draw_item_options(current_tile, item)
 
         # Mouse
         if self.grid.mouse_mode:

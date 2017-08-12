@@ -129,7 +129,7 @@ def get_mirror_point(pointA, pointB):
 def debug_print_click(grid, current_circle, my_body):
     """  Debug print on click event  """
     if grid.show_debug:
-            print(""">>>>>> click tile: {0},
+        print(""">>>>>> click tile: {0},
         mouse mode  : {1}
         my_body mode: {2}
         menu        : {3}
@@ -139,10 +139,12 @@ def debug_print_click(grid, current_circle, my_body):
         move track  : {7}
         all tiles   : {8}
         current room: {9}
+        prev room   : {10}
         """.format(current_circle,
                    grid.mouse_mode,
                    my_body.mode,
                    my_body.in_menu,
+                   # [(item.name, item.pos) for item in my_body.options],
                    [(item.name, item.pos) for item in grid.items],
                    # len(grid.items),
                    # [ot for ot in grid.occupado_tiles],
@@ -150,7 +152,8 @@ def debug_print_click(grid, current_circle, my_body):
                    len(grid.playing_tiles),
                    my_body.move_track,
                    len(grid.tiles),
-                   grid.current_room
+                   grid.current_room,
+                   grid.previous_room
                    )
                   )
 

@@ -192,6 +192,7 @@ class Item(object):
         if not in menu: restores from self.overlap
         """
         if self.in_menu:
+            grid.items.extend(self.options)
             for olapped_item in grid.items:
                 for option in self.options:
                     if olapped_item.pos == option.pos and olapped_item.available:
@@ -200,6 +201,7 @@ class Item(object):
                             grid.overlapped.append(olapped_item)
                             olapped_item.clickable = False
         else:
+            grid.items = list(set(grid.items) - set(self.options))
             if self.overlap:
                 for item in self.overlap:
                     item.clickable = True

@@ -87,7 +87,7 @@ class GameEffects(object):
         :param item: item to copy
         """
         for other_item in self.grid.items:
-            print "START MITO", item.name
+            print("START MITO", item.name)
             if other_item.name == "new copy":
                 other_item.name = str(item.name + " - copy")
 
@@ -96,21 +96,13 @@ class GameEffects(object):
                 if empty_tile:
                     if other_item.speed and not other_item.birth_track and not other_item.move_track:
                         self.cell_division(other_item)
-            print "FINISH MITO", item.name
+            print("FINISH MITO", item.name)
 
     # --------------------------------------------------------------- #
     #                                                                 #
     #                         MOUSE MODES                             #
     #                                                                 #
     # --------------------------------------------------------------- #
-    def laino_mode_click(self, current_tile):
-        """
-        For mode 'laino', if clicked produces an item
-        :param current_tile: the clicked circle
-        """
-        if current_tile not in self.grid.occupado_tiles and current_tile in self.grid.revealed_tiles:
-            self.produce("product_shit", current_tile)
-
     # BAG ITEM CLICK
     # def shit_mode_click(self, current_tile):
     #     """
@@ -125,24 +117,18 @@ class GameEffects(object):
     #                     bag_item.uses -= 1
     #                     return 1
 
+    def laino_mode_click(self, current_tile):
+        if current_tile not in self.grid.occupado_tiles and current_tile in self.grid.revealed_tiles:
+            self.produce("product_shit", current_tile)
+
     def see_mode_click(self, current_tile):
-        """
-        For mode 'shit', if clicked produces an item and exhausts mode uses
-        :param current_tile: the clicked circle
-        """
         if current_tile not in self.grid.occupado_tiles and current_tile in self.grid.revealed_tiles:
             new_observer = self.produce("observer", current_tile)
             new_observer.lifespan.restart()
 
-    def eat_mode_click(self, current_tile):
-        """ Eat that shit """
-        for item in self.grid.items:
-            if current_tile == item.pos and not item.name == "my_body" and "EDITOR" not in item.name:
-                item.destroy(self.grid)
-
     def echo_mode_click(self, current_tile, my_body):
         """ Signal effect """
-        if not cir_utils.in_circle(my_body.pos, my_body.radius, current_tile) and not my_body.move_track:
+        if not cir_utils.in_circle(my_body.pos, my_body.radius, current_tile):
             signal = self.produce("signal",
                                   my_body.pos,
                                   radius=int(self.grid.tile_radius / 3),
@@ -178,7 +164,7 @@ class GameEffects(object):
     #                       ENTER / EXIT EFFECTS                      #
     #                                                                 #
     # --------------------------------------------------------------- #
-    def exit_room(self, my_body, item):
+    def enter_effect(self, my_body, item):
         """
         Changes the current room
         :param my_body: my_body instance
@@ -188,7 +174,7 @@ class GameEffects(object):
             my_body.move_track = my_body.move_to_tile(self.grid, item.pos)
             self.grid.needs_to_change_room = True
         else:
-            print "it far"
+            print("it far")
             item.in_menu = False
 
     # --------------------------------------------------------------- #
@@ -205,19 +191,27 @@ class GameEffects(object):
     def mouse_mode_click(self, current_tile, my_body):
         """ CLICK WITH THE CURRENT MOUSE MODE ACTIVATES EFFECT ACCORDINGLY """
 
+        # --------------------------------------------------------------- #
+        #                          PRODUCTION                             #
+        # --------------------------------------------------------------- #
         if self.grid.mouse_mode in ["laino", "EDITOR2"]:
             self.laino_mode_click(current_tile)
+
         elif self.grid.mouse_mode in ["shit"]:
-            pass
+            # TODO: BAG ITEM DROP
+            self.laino_mode_click(current_tile)
+
         elif self.grid.mouse_mode in ["see", "EDITOR1"]:
             self.see_mode_click(current_tile)
-        elif self.grid.mouse_mode in ["eat", "EDITOR9"]:
-            self.eat_mode_click(current_tile)
-        elif self.grid.mouse_mode == "echo":
-            self.echo_mode_click(current_tile, my_body)
+
         elif self.grid.mouse_mode in ["EDITOR3"]:
             if current_tile not in self.grid.occupado_tiles and current_tile in self.grid.revealed_tiles:
                 self.produce("block_of_steel", current_tile)
+
+        elif self.grid.mouse_mode == "echo":
+            self.echo_mode_click(current_tile, my_body)
+
+
 
     # --------------------------------------------------------------- #
     #                             EDITOR                              #
@@ -258,7 +252,7 @@ class GameEffects(object):
                             self.grid.revealed_tiles.append(pos)
 
                 except Exception as e:
-                    print "ERROR, could not show map", e
+                    print("ERROR, could not show map - ", e)
 
             else:
                 self.grid.change_room(self.grid.previous_room)
@@ -316,9 +310,16 @@ class GameEffects(object):
         elif item.name == "EDITOR18":
             my_body.gen_fat()
 
+
+
     # --------------------------------------------------------------- #
     #                          CLICK ON ITEM                          #
     # --------------------------------------------------------------- #
+    def eat(self, item):
+        """ Eat that shit """
+        if not any(name_str in item.name for name_str in ["my_body", "EDITOR"]):
+            item.destroy(self.grid)
+
     def click_items(self, item, my_body):
 
         # EDITOR CLICK
@@ -327,6 +328,10 @@ class GameEffects(object):
         # BAG MOUSE MODE CLICK
         if self.grid.mouse_mode == "bag":
             self.collect(item, my_body)
+
+        # EAT MODE
+        if self.grid.mouse_mode in ["eat", "EDITOR9"]:
+            self.eat(item)
 
     # --------------------------------------------------------------- #
     #                                                                 #
@@ -338,6 +343,10 @@ class GameEffects(object):
         #                       CLICK DEFAULT OPTIONS                     #
         # --------------------------------------------------------------- #
         if option in item.default_options:
+
+
+            # Setting the mode
+            item.set_mode(self.grid, option)
 
             # bag
             if option.name == "bag":
@@ -358,14 +367,12 @@ class GameEffects(object):
 
             # enter / exit
             elif "Enter_" in option.name:
-                self.exit_room(my_body, item)
+                self.enter_effect(my_body, item)
 
             # Enters
             elif "Entering" in option.name:
-                self.exit_room(my_body, item)
+                self.enter_effect(my_body, item)
 
-            # Setting the mode
-            item.set_mode(self.grid, option)
 
         # --------------------------------------------------------------- #
         #                        CLICK SUB-OPTIONS                        #
