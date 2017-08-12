@@ -62,28 +62,17 @@ class MobileItem(Item):
         :param options: options
         :return: a list of all available tiles in direction_idx
         """
-        if not self.type == "signal":
-            if self.direction != None and not self.move_track:
-                target_tile = grid.adj_tiles(self.pos)[self.direction]
-                if self.speed > 0:
-                    if target_tile in grid.revealed_tiles and target_tile not in grid.occupado_tiles:
+        if self.direction != None and not self.move_track:
+            target_tile = grid.adj_tiles(self.pos)[self.direction]
+            if self.speed > 0:
+                if target_tile in grid.revealed_tiles\
+                   and ((self.type != "signal" and target_tile not in grid.occupado_tiles)\
+                        or self.type == "signal"):
                         self.move_track = self.move_to_tile(grid, target_tile)
-                    else:
-                        self.direction = None
                 else:
                     self.direction = None
-
-        # TODO: Identify signal
-        else:
-            if self.direction != None and not self.move_track:
-                target_tile = grid.adj_tiles(self.pos)[self.direction]
-                if self.speed > 0:
-                    if target_tile in grid.revealed_tiles:
-                        self.move_track = self.move_to_tile(grid, target_tile)
-                    else:
-                        self.direction = None
-                else:
-                    self.direction = None
+            else:
+                self.direction = None
 
     def gen_direction(self, pygame, grid, event):
         """ Generates item direction from 0-6 on pressed key """
@@ -109,6 +98,61 @@ class MobileItem(Item):
         if self.move_track and not self.birth_track:
             self.pos = self.move_track[0]
             self.move_track.pop(0)
+
+    # --------------------------------------------------------------- #
+    #                                                                 #
+    #                           ROTATION                              #
+    #                                                                 #
+    # --------------------------------------------------------------- #
+    def gen_rot_track(self, idx):
+        """
+        Generates rotating track and revert rotating track
+        :param idx:  index of direction
+        :param item: item to whom belongs the image
+        """
+        step = 15
+        end_point = step * 4
+        track = None
+        if idx == 1:
+            track = range(-step, -end_point, -step)
+        elif idx == 2:
+            track = range(-step, -end_point * 2, -step)
+        elif idx == 3:
+            track = range(-step, -end_point * 3, -step)
+        elif idx == 4:
+            track = range(step, end_point * 2, step)
+        elif idx == 5:
+            track = range(step, end_point, step)
+
+        if track:
+            self.rot_track = track
+            if not self.rot_revert:
+                if idx == 3:
+                    self.rot_revert = range(-step, -end_point * 3, -step)
+                else:
+                    self.rot_revert = cir_utils.negative_list(self.rot_track)
+
+    def rotate(self, pygame):
+        """ Rotates the image """
+        self.img = cir_utils.rot_center(pygame, self.default_img, self.rot_track[0])
+
+        if len(self.rot_track) == 1:
+            self.last_rotation = self.rot_track[-1]
+        self.rot_track.pop(0)
+
+    def rotate_reverse(self, pygame):
+        """ Returns the image to start position """
+        if self.last_rotation:
+            self.img = cir_utils.rot_center(pygame, self.default_img, self.last_rotation)
+
+        if self.rot_revert:
+            self.img = cir_utils.rot_center(pygame, self.img, self.rot_revert[0])
+            self.rot_revert.pop(0)
+
+        elif not self.rot_revert:
+            self.img = self.default_img
+            self.last_rotation = False
+
 
     # --------------------------------------------------------------- #
     #                    CHECK FOR EMPTY ADJ TILE                     #

@@ -1,5 +1,5 @@
 scenario,room,name,klas,type,category,has_opts,available,modable,collectible,consumable,uses,color,img,pos,speed,range,time_color,lifespan,vibe_freq
-Scenario_1,,my_body,body,my_body,,TRUE,TRUE,,,,,dark_grey,galab,12_12,1,1,black,60,
+Scenario_1,,my_body,body,my_body,,TRUE,TRUE,,,,,ungrey,galab,12_12,1,1,black,60,
 ,,,,,,,,,,,,,,,,,,,
 Scenario_1,12_8,lover,body,,,,,,,,,cyclama,bqlgalab,14_10,1,1,,,
 Scenario_1,,eat,item,option,my_body,,TRUE,TRUE,,,,,emoji_lips_y,,,,,,

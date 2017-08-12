@@ -61,7 +61,9 @@ class Grid(object):
         self.current_room = "12_12"
         self.previous_room = None
         self.needs_to_change_room = False
-
+        # -------------------------------------------------- #
+        #                        ITEMS                       #
+        # -------------------------------------------------- #
         self.items = []
         self.overlapped = []
         self.buttons = []
@@ -93,7 +95,7 @@ class Grid(object):
                 for status, value in conf[section].items():
                     setattr(self, status, value)
         except Exception as e:
-            print "ERROR, could not set config:", e
+            print("ERROR, could not set config: {0}".format(e))
 
     def get_tiles(self):
         """

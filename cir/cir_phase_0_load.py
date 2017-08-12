@@ -10,7 +10,6 @@ import cir_item
 import cir_item_body
 import cir_item_timer
 import cir_item_button
-import cir_item_mobile
 import cir_utils
 
 
@@ -218,10 +217,7 @@ class DataLoader(object):
         :return: my_body
         """
         print("Loading items from {} ...".format(self.grid.scenario))
-
-
         my_body = None
-
         for item, klas in self.load_data():
 
             # SET ROOM
@@ -239,10 +235,6 @@ class DataLoader(object):
                 my_body.gen_birth_track()
 
         self.set_buttons()
-        # self.set_mode_options()
-        self.grid.rooms[self.grid.current_room]["revealed_radius"].append(((my_body.pos), self.grid.tile_radius))
         self.grid.load_current_room()
-
-        # DEBUG
 
         return my_body

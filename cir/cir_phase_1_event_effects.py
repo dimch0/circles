@@ -111,6 +111,7 @@ class GameEffects(object):
         if current_tile not in self.grid.occupado_tiles and current_tile in self.grid.revealed_tiles:
             self.produce("product_shit", current_tile)
 
+    # BAG ITEM CLICK
     # def shit_mode_click(self, current_tile):
     #     """
     #     For mode 'shit', if clicked produces an item and exhausts mode uses
@@ -155,21 +156,22 @@ class GameEffects(object):
     # --------------------------------------------------------------- #
     def collect(self, item, my_body):
         """ Collect item: add it to bag options """
-        if item.collectible:
-            for bag in my_body.options:
-                if bag.name == "bag":
-                    for option in bag.options:
-                        if "bag_placeholder" in option.name:
-                            self.grid.mode_vs_options["bag"].remove(option)
-                            new_item = copy.deepcopy(item)
-                            new_item.modable = True
-                            new_item.img = item.img
-                            new_item.default_img = item.default_img
-                            new_item.color = item.color
-                            self.grid.mode_vs_options["bag"].append(new_item)
-                            item.available = False
-                            self.grid.items.remove(item)
-                            return 1
+        pass
+        # if item.collectible:
+        #     for bag in my_body.options:
+        #         if bag.name == "bag":
+        #             for option in bag.options:
+        #                 if "bag_placeholder" in option.name:
+        #                     bag.options.remove(option)
+        #                     new_item = copy.deepcopy(item)
+        #                     new_item.modable = True
+        #                     new_item.img = item.img
+        #                     new_item.default_img = item.default_img
+        #                     new_item.color = item.color
+        #                     bag.options.append(new_item)
+        #                     item.available = False
+        #                     self.grid.items.remove(item)
+        #                     return 1
 
     # --------------------------------------------------------------- #
     #                                                                 #
@@ -206,7 +208,7 @@ class GameEffects(object):
         if self.grid.mouse_mode in ["laino", "EDITOR2"]:
             self.laino_mode_click(current_tile)
         elif self.grid.mouse_mode in ["shit"]:
-            self.shit_mode_click(current_tile)
+            pass
         elif self.grid.mouse_mode in ["see", "EDITOR1"]:
             self.see_mode_click(current_tile)
         elif self.grid.mouse_mode in ["eat", "EDITOR9"]:
@@ -339,7 +341,7 @@ class GameEffects(object):
 
             # bag
             if option.name == "bag":
-                print "Gimme the loot!"
+                print("Gimme the loot!")
 
             # mitosis
             elif option.name == "mitosis":
@@ -352,7 +354,7 @@ class GameEffects(object):
                 item.destroy(self.grid)
 
             elif option.name == "echo":
-                print "Echo!"
+                print("Echo!")
 
             # enter / exit
             elif "Enter_" in option.name:
