@@ -34,6 +34,7 @@ class Item(object):
         # --------------------------------------------------------------- #
         #                            OPTIONS                              #
         # --------------------------------------------------------------- #
+        self.has_opts = False
         self.in_menu = False
         self.modable = False
         self.available = True
@@ -169,9 +170,8 @@ class Item(object):
         self.mode = option.name
         # self.color = option.color
         # self.img = option.img
-        if option.name in grid.mode_vs_options.keys():
-        # if any(mode_name in self.name for mode_name in grid.mode_vs_options.keys()):
-            self.options = grid.mode_vs_options[option.name]
+        if option.options:
+            self.options = option.options
         self.set_option_pos(grid)
 
 
@@ -208,9 +208,8 @@ class Item(object):
         """
 
         # Clicked on item
-        # if clicked_circle == self.pos and self.name in grid.mode_vs_options.keys() and self.clickable and not (self.name != "my_body" and grid.mouse_mode):
         if clicked_circle == self.pos\
-                and any(mode_name in self.name for mode_name in grid.mode_vs_options.keys())\
+                and self.options\
                 and self.clickable\
                 and not (self.name != "my_body" and grid.mouse_mode):
 

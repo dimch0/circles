@@ -20,17 +20,17 @@ class VarChanger(object):
     #                          BAG EFFECTS                            #
     #                                                                 #
     # --------------------------------------------------------------- #
-    def empty_bag(self):
-        """ Empties the bag if an item's uses are exhausted """
-        for bag_item in self.grid.mode_vs_options["bag"]:
-            if bag_item.uses == 0:
-                self.grid.mode_vs_options["bag"].remove(bag_item)
-                empty_placeholder = copy.deepcopy(self.grid.everything["bag_placeholder"])
-                empty_placeholder.color = self.grid.everything["bag_placeholder"].color
-                self.grid.mode_vs_options["bag"].append(empty_placeholder)
-                if self.grid.mouse_mode == bag_item.name:
-                    self.grid.clean_mouse()
-                return 1
+    # def empty_bag(self):
+    #     """ Empties the bag if an item's uses are exhausted """
+    #     for bag_item in self.grid.mode_vs_options["bag"]:
+    #         if bag_item.uses == 0:
+    #             self.grid.mode_vs_options["bag"].remove(bag_item)
+    #             empty_placeholder = copy.deepcopy(self.grid.everything["bag_placeholder"])
+    #             empty_placeholder.color = self.grid.everything["bag_placeholder"].color
+    #             self.grid.mode_vs_options["bag"].append(empty_placeholder)
+    #             if self.grid.mouse_mode == bag_item.name:
+    #                 self.grid.clean_mouse()
+    #             return 1
 
     # --------------------------------------------------------------- #
     #                                                                 #
@@ -156,8 +156,8 @@ class VarChanger(object):
                 self.grid.items.append(my_body)
 
             # Check bag
-            if "bag" in self.grid.everything.keys():
-                self.empty_bag()
+            # if "bag" in self.grid.everything.keys():
+            #     self.empty_bag()
 
             # Items
             for item in self.grid.items:

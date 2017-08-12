@@ -44,7 +44,7 @@ class GameEffects(object):
         if lifespan:
             new_item.lifespan = lifespan
 
-        # self.grid.loader.set_timer(new_item)
+        # self.grid.loader.set_timers(new_item)
         # new_item.name = new_item.name + str(time.time())
         # new_item.marked_for_destruction = False
 
@@ -111,18 +111,18 @@ class GameEffects(object):
         if current_tile not in self.grid.occupado_tiles and current_tile in self.grid.revealed_tiles:
             self.produce("product_shit", current_tile)
 
-    def shit_mode_click(self, current_tile):
-        """
-        For mode 'shit', if clicked produces an item and exhausts mode uses
-        :param current_tile: the clicked circle
-        """
-        for bag_item in self.grid.mode_vs_options["bag"]:
-            if bag_item.name == self.grid.mouse_mode:
-                if bag_item.uses:
-                    if current_tile not in self.grid.occupado_tiles:
-                        self.produce("shit", current_tile)
-                        bag_item.uses -= 1
-                        return 1
+    # def shit_mode_click(self, current_tile):
+    #     """
+    #     For mode 'shit', if clicked produces an item and exhausts mode uses
+    #     :param current_tile: the clicked circle
+    #     """
+    #     for bag_item in self.grid.mode_vs_options["bag"]:
+    #         if bag_item.name == self.grid.mouse_mode:
+    #             if bag_item.uses:
+    #                 if current_tile not in self.grid.occupado_tiles:
+    #                     self.produce("shit", current_tile)
+    #                     bag_item.uses -= 1
+    #                     return 1
 
     def see_mode_click(self, current_tile):
         """
@@ -142,17 +142,10 @@ class GameEffects(object):
     def echo_mode_click(self, current_tile, my_body):
         """ Signal effect """
         if not cir_utils.in_circle(my_body.pos, my_body.radius, current_tile) and not my_body.move_track:
-            # trace = self.produce("signal",
-            #                       my_body.pos,
-            #                       radius = int((self.grid.tile_radius / 3) + 1),
-            #                       birth = 0.05,
-            #                      )
-            # trace.color = self.grid.pink
-            # trace.direction = trace.get_aiming_direction(self.grid, current_tile)[1]
             signal = self.produce("signal",
                                   my_body.pos,
                                   radius=int(self.grid.tile_radius / 3),
-                                  birth=0.05)
+                                  birth=0)
             signal.direction = signal.get_aiming_direction(self.grid, current_tile)[1]
 
     # --------------------------------------------------------------- #
@@ -160,21 +153,23 @@ class GameEffects(object):
     #                           BAG MODES                             #
     #                                                                 #
     # --------------------------------------------------------------- #
-    def collect(self, item):
+    def collect(self, item, my_body):
         """ Collect item: add it to bag options """
         if item.collectible:
-            for option in self.grid.mode_vs_options["bag"]:
-                if "bag_placeholder" in option.name:
-                    self.grid.mode_vs_options["bag"].remove(option)
-                    new_item = copy.deepcopy(item)
-                    new_item.modable = True
-                    new_item.img = item.img
-                    new_item.default_img = item.default_img
-                    new_item.color = item.color
-                    self.grid.mode_vs_options["bag"].append(new_item)
-                    item.available = False
-                    self.grid.items.remove(item)
-                    return 1
+            for bag in my_body.options:
+                if bag.name == "bag":
+                    for option in bag.options:
+                        if "bag_placeholder" in option.name:
+                            self.grid.mode_vs_options["bag"].remove(option)
+                            new_item = copy.deepcopy(item)
+                            new_item.modable = True
+                            new_item.img = item.img
+                            new_item.default_img = item.default_img
+                            new_item.color = item.color
+                            self.grid.mode_vs_options["bag"].append(new_item)
+                            item.available = False
+                            self.grid.items.remove(item)
+                            return 1
 
     # --------------------------------------------------------------- #
     #                                                                 #
@@ -302,7 +297,7 @@ class GameEffects(object):
             trigger.vibe_speed = 3
             trigger.birth_time = 0
 
-            self.grid.loader.set_timer(trigger)
+            self.grid.loader.set_timers(trigger)
             trigger.vibe_freq = None
             trigger.birth_track = []
             trigger.gen_radar_track(self.grid)
@@ -329,7 +324,7 @@ class GameEffects(object):
 
         # BAG MOUSE MODE CLICK
         if self.grid.mouse_mode == "bag":
-            self.collect(item)
+            self.collect(item, my_body)
 
     # --------------------------------------------------------------- #
     #                                                                 #
@@ -373,38 +368,38 @@ class GameEffects(object):
         # --------------------------------------------------------------- #
         #                        CLICK SUB-OPTIONS                        #
         # --------------------------------------------------------------- #
-        elif option in self.grid.mode_vs_options[item.mode]:
-            # see
-            if option.name == "see":
-                print "Seen"
-
-            # smel
-            elif option.name == "smel":
-                print "Sniff hair"
-
-            # medi
-            elif option.name == "medi":
-                print "Ommmm"
-                item.range += 3
-                my_body.gen_radar_track(self.grid)
-                item.range -= 3
-
-            # audio
-            elif option.name == "audio":
-                print "Who"
-                item.range += 1
-
-            # eat
-            elif option.name == "eat":
-                print "Nom Nom Nom"
-
-            # touch
-            elif option.name == "touch":
-                print "Can't touch this"
-
-            # Close menu when sub-option selected
-            item.set_in_menu(self.grid, False)
+        # elif option in self.grid.mode_vs_options[item.mode]:
+        #     # see
+        #     if option.name == "see":
+        #         print "Seen"
+        #
+        #     # smel
+        #     elif option.name == "smel":
+        #         print "Sniff hair"
+        #
+        #     # medi
+        #     elif option.name == "medi":
+        #         print "Ommmm"
+        #         item.range += 3
+        #         my_body.gen_radar_track(self.grid)
+        #         item.range -= 3
+        #
+        #     # audio
+        #     elif option.name == "audio":
+        #         print "Who"
+        #         item.range += 1
+        #
+        #     # eat
+        #     elif option.name == "eat":
+        #         print "Nom Nom Nom"
+        #
+        #     # touch
+        #     elif option.name == "touch":
+        #         print "Can't touch this"
+        #
+        #     # Close menu when sub-option selected
+        #     item.set_in_menu(self.grid, False)
 
         # Close menu if option has no sub-options
-        if option.name not in self.grid.mode_vs_options.keys():
-            item.set_in_menu(self.grid, False)
+        # if option.name not in self.grid.mode_vs_options.keys():
+        #     item.set_in_menu(self.grid, False)

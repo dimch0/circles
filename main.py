@@ -29,7 +29,7 @@
 # --------------------------------------------------------------- #
 # TODO: Fix mitosis lag
 # TODO: Fix signal lag
-# TODO: Improve item options
+# TODO: Fix item options
 # TODO: Fix item collection / remove everything dict
 # TODO: Fix room change
 # TODO: Fix signal hit on intersecting

@@ -20,27 +20,25 @@ class DataLoader(object):
         self.grid = grid
 
 
-    def create_new_item(self, type, attributes_dict):
+    def create_new_item(self, klas, attributes_dict):
         """
-        This function creates an item of a class by the given type.
+        This function creates an item of a class by the given klas.
         Attributes are set by a given dict (attributes_dict)
-        :param type: type specified
+        :param klas: klas specified
         :param attributes_dict: generated dict
         :return: a new instance of an item object
         """
         dummy = None
         try:
-            if type in ["body", "trigger"]:
+            if klas == "body":
                 dummy = cir_item_body.BodyItem()
-            elif type == "timer":
+            elif klas == "timer":
                 dummy = cir_item_timer.TimerItem()
                 dummy.timer_tile_radius = self.grid.tile_radius
-            elif type in ["mobile", "signal"]:
-                dummy = cir_item_mobile.MobileItem()
-            elif type in ["mode_option", "simple", "door"]:
+            elif klas in "item":
                 dummy = cir_item.Item()
         except Exception as e:
-            print("Error {0, could not create item of type: {1}".format(e, type))
+            print("Error {0, could not create item of klas: {1}".format(e, klas))
 
         try:
             for attribute, value in attributes_dict.items():
@@ -87,13 +85,13 @@ class DataLoader(object):
                 if not row == header:
                     scenario_col = row[col_idx["scenario"]]
                     if str(self.grid.scenario) in scenario_col or "ALL" in scenario_col:
-                        category = row[col_idx["category"]]
-                        type = row[col_idx["type"]]
+                        klas = row[col_idx["klas"]]
                         # --------------------------------------------------------------- #
                         #                        ATTRIBUTES DICT                          #
                         # --------------------------------------------------------------- #
                         attributes_dict = {
                             "type"        : row[col_idx["type"]],
+                            "has_opts"    : row[col_idx["has_opts"]],
                             "category"    : row[col_idx["category"]],
                             "available"   : bool(row[col_idx["available"]]),
                             "name"        : row[col_idx["name"]],
@@ -112,31 +110,22 @@ class DataLoader(object):
                         }
 
                         # CREATE ITEM
-                        item = self.create_new_item(type, attributes_dict)
-                        yield item, type, category
+                        item = self.create_new_item(klas, attributes_dict)
+                        yield item, klas
+
+    def set_opts(self, item):
+        if item.has_opts:
+            for opt, klas in self.load_data():
+                if opt.type == "option":
+                    if opt.category and opt.category in item.name:
+                        opt.color = item.color
+                        opt.default_color = item.color
+                        item.options.append(opt)
+                        item.default_options.append(opt)
 
 
-    def add_optoin_to_mode(self, category, option):
-        """ Append the mode option to the MODE_VS_OPTIONS DICT """
-        if category not in self.grid.mode_vs_options.keys():
-            self.grid.mode_vs_options[category] = []
-        self.grid.mode_vs_options[category].append(option)
-
-
-    def set_mode_options(self):
-        """ Assign all options from grid.mode_vs_options to grid.items """
-        for name, item in self.grid.everything.items():
-            for mode_name, mode_options in self.grid.mode_vs_options.items():
-                if mode_name in name:
-                    item.default_options = mode_options
-                    for item_option in item.default_options:
-                        item_option.color = item.color
-                        item_option.default_color = item.color
-                    item.options = item.default_options
-
-
-    def set_timer(self, item):
-        """ Assign all options from self.grid.mode_vs_options to grid.items """
+    def set_timers(self, item):
+        """ Set timers """
         if item.lifespan:
             lifespan = cir_item_timer.TimerItem()
             lifespan.radius = self.grid.tile_radius
@@ -165,13 +154,14 @@ class DataLoader(object):
         door.color = item.color
         door.img = item.img
         door.default_img = item.default_img
-        # door.options = item.options
-        # door.default_options = door.default_options
+        door.options = item.options
+        door.default_options = door.default_options
         door.default_color = door.default_color
         door.radius = item.radius
         door.available = False
 
-        return door
+        self.set_room(door)
+        self.set_timers(door)
 
 
 
@@ -191,10 +181,9 @@ class DataLoader(object):
                 butt.pos = self.grid.tile_dict['12_14']
 
             self.grid.buttons.append(butt)
-            self.grid.everything[butt.name] = butt
 
 
-    def set_rooms(self, item):
+    def set_room(self, item):
         if item.room not in [None, ""]:
             if item.room not in self.grid.rooms.keys():
                 self.grid.rooms[item.room] = {
@@ -205,10 +194,10 @@ class DataLoader(object):
 
     def load_item(self, item_name):
         new_item = None
-        for item, type, category in self.load_data():
+        for item, klas in self.load_data():
             if item.name == item_name:
                 new_item = item
-                self.set_timer(new_item)
+                self.set_timers(new_item)
                 break
         return new_item
 
@@ -216,8 +205,8 @@ class DataLoader(object):
     def load_editor(self):
         print("Loading editor mode ...")
         editor_items = []
-        for item, type, category in self.load_data():
-            if "EDITOR" in item.name:
+        for item, klas in self.load_data():
+            if item.type == "editor":
                 item.birth_time = 0
                 editor_items.append(item)
         return editor_items
@@ -231,33 +220,29 @@ class DataLoader(object):
         print("Loading items from {} ...".format(self.grid.scenario))
 
 
+        my_body = None
 
-        for item, type, category in self.load_data():
+        for item, klas in self.load_data():
 
-            # Everything
-            self.grid.everything[item.name] = item
-            self.set_rooms(item)
-            self.set_timer(item)
-
-            # DOORS
-            if type == "door":
-                door = self.set_door(item)
-                self.grid.everything[door.name] = door
-                self.set_rooms(door)
-                self.set_timer(door)
-
-            # Mode options
-            elif type == "mode_option":
-                self.add_optoin_to_mode(category, item)
+            # SET ROOM
+            self.set_room(item)
+            # SET_TIMERS
+            self.set_timers(item)
+            # SET OPTS
+            self.set_opts(item)
+            # SET DOOR
+            if item.type == "door":
+                self.set_door(item)
+            # My body
+            elif item.type == "my_body":
+                my_body = item
+                my_body.gen_birth_track()
 
         self.set_buttons()
-        self.set_mode_options()
-        my_body = self.grid.everything["my_body"]
-        my_body.gen_birth_track()
+        # self.set_mode_options()
         self.grid.rooms[self.grid.current_room]["revealed_radius"].append(((my_body.pos), self.grid.tile_radius))
         self.grid.load_current_room()
 
         # DEBUG
-        print self.grid.everything["Enter_12_12"].options[0].name
 
         return my_body
