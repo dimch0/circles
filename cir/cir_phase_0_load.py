@@ -232,6 +232,7 @@ class DataLoader(object):
             self.set_timers(item)
             # SET OPTS
             self.set_opts(item)
+
             # SET DOOR
             if item.type == "door":
                 self.set_door(item)

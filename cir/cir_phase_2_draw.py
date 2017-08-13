@@ -72,6 +72,7 @@ class GameDrawer(object):
         """ Blit image on display """
 
         if item.img and item.available and not item.birth_track:
+
             if item.img.get_width() == self.grid.tile_radius:
                 self.grid.game_display.blit(item.img, self.set_emoji_pos(item.pos))
             elif item.img.get_width() == (self.grid.tile_radius * 2) - 10:
@@ -132,7 +133,6 @@ class GameDrawer(object):
 
     def draw_body(self, current_tile, item):
         """ Draws each body and it's image if available """
-        # for item in grid.bodies:
 
         if item.available:
             blit_item = True
@@ -151,13 +151,14 @@ class GameDrawer(object):
                                        item.pos,
                                        item.radius,
                                        0)
-            # if item.mode == "bag":
-            #     self.grid.pygame.draw.circle(self.grid.game_display,
-            #                                  self.grid.yellowgrey,
-            #                                  option.pos,
-            #                                  self.grid.tile_radius,
-            #                                  2)
+                # if item.mode == "bag":
+                #     self.grid.pygame.draw.circle(self.grid.game_display,
+                #                                  self.grid.yellowgrey,
+                #                                  option.pos,
+                #                                  self.grid.tile_radius,
+                #                                  2)
                 # Draw activation / deactivation here
+
                 self.draw_img(item)
                 self.draw_aim(current_tile, item)
                 self.draw_hover(current_tile, item.pos)
@@ -394,10 +395,6 @@ class GameDrawer(object):
 
                 # Items
                 self.draw_body(current_tile, item)
-
-
-
-
 
                 # Show movement track in color
                 if self.grid.show_movement and len(item.move_track) > 1:

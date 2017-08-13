@@ -129,33 +129,21 @@ def get_mirror_point(pointA, pointB):
 def debug_print_click(grid, current_circle, my_body):
     """  Debug print on click event  """
     if grid.show_debug:
-        print(""">>>>>> click tile: {0},
-        mouse mode  : {1}
-        my_body mode: {2}
-        menu        : {3}
-        grid items  : {4}
-        occupado:   : {5}
-        playing     : {6}
-        move track  : {7}
-        all tiles   : {8}
-        current room: {9}
-        prev room   : {10}
-        """.format(current_circle,
-                   grid.mouse_mode,
-                   my_body.mode,
-                   my_body.in_menu,
-                   # [(item.name, item.pos) for item in my_body.options],
-                   [(item.name, item.pos) for item in grid.items],
-                   # len(grid.items),
-                   # [ot for ot in grid.occupado_tiles],
-                   len(grid._occupado_tiles),
-                   len(grid.playing_tiles),
-                   my_body.move_track,
-                   len(grid.tiles),
-                   grid.current_room,
-                   grid.previous_room
-                   )
-                  )
+        print('')
+        # print("DEBUG: click tile: {0}".format(current_circle))
+        print("DEBUG: mouse mode  : {0}".format(grid.mouse_mode))
+        print("DEBUG: my_body mode: {0}".format(my_body.mode))
+        print("DEBUG: menu        : {0}".format(my_body.in_menu))
+        print("DEBUG: grid items  : {0}".format([(item.name, item.pos) for item in grid.items]))
+        # print("DEBUG: occupado    : {0}".format(len(grid._occupado_tiles)))
+        print("DEBUG: overlap     : {0}".format([(item.name, item.pos) for item in grid.overlapped]))
+        # print("DEBUG: playing     : {0}".format(len(grid.playing_tiles)))
+        # print("DEBUG: move track  : {0}".format(my_body.move_track))
+        # print("DEBUG: all tiles   : {0}".format(len(grid.tiles)))
+        # print("DEBUG: current room: {0}".format(grid.current_room))
+        # print("DEBUG: prev room   : {0}".format(grid.previous_room))
+        print('')
+
 
 def debug_print_space(grid, my_body):
     """  Debug print on space bar event  """

@@ -40,6 +40,7 @@ class Grid(object):
         self.var_changer = None
         self.event_effects = None
         self.scenario = scenario
+        self.editor = False
         # -------------------------------------------------- #
         #                        TILES                       #
         # -------------------------------------------------- #
@@ -158,7 +159,7 @@ class Grid(object):
         result = []
         for tile in self.playing_tiles:
             for item in self.items:
-                if not item.type in ["signal", "trigger"]:
+                if not item.type in ["signal", "trigger", "option"]:
                     circle_1 = (tile, self.tile_radius)
                     circle_2 = (item.pos, self.tile_radius)
                     if intersecting(circle_1, circle_2):
@@ -220,7 +221,7 @@ class Grid(object):
                         item.available = False
                         self.items.remove(item)
                     except Exception as e:
-                        print "ERROR", e
+                        print("ERROR Could not remove placeholder", e)
 
     # --------------------------------------------------------------- #
     #                             MOUSE                               #
@@ -231,8 +232,10 @@ class Grid(object):
 
     def set_mouse_mode(self, option):
         self.mouse_mode = option.name
-        if option.img and option.modable and not option.name == "echo":
+        if option.img and not option.name == "echo":
             self.mouse_img = option.img
+        else:
+            self.mouse_img = None
 
     # --------------------------------------------------------------- #
     #                             ROOMS                               #
@@ -288,11 +291,11 @@ class Grid(object):
             if not self.game_menu and not self.current_room in ["999"]:
                 self.seconds_in_game += 1
                 if self.show_seconds:
-                    print "Game second: {0}".format(self.seconds_in_game)
+                    print("Game second: {0}".format(self.seconds_in_game))
             else:
                 self.seconds_in_pause += 1
                 if self.show_seconds:
-                    print "Pause second: {0}".format(self.seconds_in_pause)
+                    print("Pause second: {0}".format(self.seconds_in_pause))
 
     # --------------------------------------------------------------- #
     #                            BUTTONS                              #
@@ -310,9 +313,11 @@ class Grid(object):
         for map_file in os.listdir(self.maps_dir):
             map_file = os.path.join(self.maps_dir, map_file)
             os.remove(map_file)
+            print("Removed {0}".format(map_file))
 
 
     def game_exit(self):
         self.clean_tmp_maps()
         self.pygame.quit()
+        print("Game finished")
         quit()

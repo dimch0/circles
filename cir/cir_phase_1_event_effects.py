@@ -317,7 +317,13 @@ class GameEffects(object):
     # --------------------------------------------------------------- #
     def eat(self, item):
         """ Eat that shit """
-        if not any(name_str in item.name for name_str in ["my_body", "EDITOR"]):
+        if not any(forbidden_type in item.type for forbidden_type in [
+            "my_body",
+            "editor",
+            "option",
+            "trigger",
+            "placeholder"
+        ]):
             item.destroy(self.grid)
 
     def click_items(self, item, my_body):
@@ -326,8 +332,8 @@ class GameEffects(object):
         self.editor(item, my_body)
 
         # BAG MOUSE MODE CLICK
-        if self.grid.mouse_mode == "bag":
-            self.collect(item, my_body)
+        # if self.grid.mouse_mode == "bag":
+        #     self.collect(item, my_body)
 
         # EAT MODE
         if self.grid.mouse_mode in ["eat", "EDITOR9"]:
@@ -338,40 +344,40 @@ class GameEffects(object):
     #                            BODY MODES                           #
     #                                                                 #
     # --------------------------------------------------------------- #
-    def click_options(self, item, option, my_body):
-        # --------------------------------------------------------------- #
-        #                       CLICK DEFAULT OPTIONS                     #
-        # --------------------------------------------------------------- #
-        if option in item.default_options:
-
-
-            # Setting the mode
-            item.set_mode(self.grid, option)
-
-            # bag
-            if option.name == "bag":
-                print("Gimme the loot!")
-
-            # mitosis
-            elif option.name == "mitosis":
-                self.mitosis(item)
-
-            elif option.name == "move":
-                item.change_speed(0.1)
-
-            elif option.name == "suicide":
-                item.destroy(self.grid)
-
-            elif option.name == "echo":
-                print("Echo!")
-
-            # enter / exit
-            elif "Enter_" in option.name:
-                self.enter_effect(my_body, item)
-
-            # Enters
-            elif "Entering" in option.name:
-                self.enter_effect(my_body, item)
+    # def click_options(self, item, option, my_body):
+    #     # --------------------------------------------------------------- #
+    #     #                       CLICK DEFAULT OPTIONS                     #
+    #     # --------------------------------------------------------------- #
+    #     if option in item.default_options:
+    #
+    #
+    #         # Setting the mode
+    #         item.set_mode(self.grid, option)
+    #
+    #         # bag
+    #         if option.name == "bag":
+    #             print("Gimme the loot!")
+    #
+    #         # mitosis
+    #         elif option.name == "mitosis":
+    #             self.mitosis(item)
+    #
+    #         elif option.name == "move":
+    #             item.change_speed(0.1)
+    #
+    #         elif option.name == "suicide":
+    #             item.destroy(self.grid)
+    #
+    #         elif option.name == "echo":
+    #             print("Echo!")
+    #
+    #         # enter / exit
+    #         elif "Enter_" in option.name:
+    #             self.enter_effect(my_body, item)
+    #
+    #         # Enters
+    #         elif "Entering" in option.name:
+    #             self.enter_effect(my_body, item)
 
 
         # --------------------------------------------------------------- #

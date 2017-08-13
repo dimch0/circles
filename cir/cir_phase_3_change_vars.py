@@ -45,8 +45,9 @@ class VarChanger(object):
                 if "Enter" in option.name:
                     room_number = item.name.replace("Enter_", "")
                     room_number = room_number
-                    print self.grid.current_room
-                    print room_number
+                    print("Leaving room {0} and entering {1}".format(
+                        self.grid.current_room,
+                        room_number))
 
             self.grid.change_room(room_number)
 
@@ -132,8 +133,8 @@ class VarChanger(object):
             if (item.pos in self.grid.occupado_tiles and not item.intersects(
                     my_body)) or item.direction == None:
                 hit = True
-                print "Hit!"
-                item.destroy(self.grid)
+                print("Hit!")
+                # item.destroy(self.grid)
         return hit
 
     def signal_hit_effect(self, item):
@@ -152,7 +153,8 @@ class VarChanger(object):
         if not self.grid.game_menu:
 
             # My_body to room
-            if not my_body in self.grid.items and self.grid.current_room not in ["999"]:
+            if not my_body in self.grid.items\
+                    and self.grid.current_room not in ["999"]:
                 self.grid.items.append(my_body)
 
             # Check bag
@@ -186,6 +188,7 @@ class VarChanger(object):
                         item.gen_move_track(self.grid)
                     if item.move_track:
                         item.move()
+                    # Fat
                     if item.fat_track:
                         item.fat_track.pop(0)
 
@@ -195,7 +198,8 @@ class VarChanger(object):
 
                     # Clean placeholders
                     self.grid.clean_placeholders(item)
+
                     # Overlap
-                    item.overlapping(self.grid)
+                    # item.overlapping(self.grid)
 
         self.grid.clock.tick(self.grid.fps)

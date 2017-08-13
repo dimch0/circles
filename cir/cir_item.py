@@ -9,10 +9,7 @@ import cir_utils
 
 
 class Item(object):
-    """
-    This is the base class for all CIR items
-    It includes the open_menu method.
-    """
+
     def __init__(self):
         # --------------------------------------------------------------- #
         #                            BASICS                               #
@@ -31,20 +28,20 @@ class Item(object):
         self.border = 0
         self.border_color = None
         self.border_width = None
-
         # --------------------------------------------------------------- #
         #                            OPTIONS                              #
         # --------------------------------------------------------------- #
         self.has_opts = False
         self.in_menu = False
         self.modable = False
-        self.available = True
-        self.clickable = True
-        self.collectible = False
         self.mode = self.name
         self.options = []
         self.default_options = []
         self.overlap = []
+
+        self.available = True
+        self.clickable = True
+        self.collectible = False
         # --------------------------------------------------------------- #
         #                              STATS                              #
         # --------------------------------------------------------------- #
@@ -66,7 +63,6 @@ class Item(object):
         self.fat_track = []
         self.marked_for_destruction = False
 
-
     @property
     def rect(self):
         """ This defines the rect argument for the arch drawing """
@@ -78,7 +74,6 @@ class Item(object):
         else:
             self._rect = []
         return self._rect
-
 
 
     def gen_birth_track(self):
@@ -103,11 +98,65 @@ class Item(object):
     #                          MODE OPTIONS                           #
     #                                                                 #
     # --------------------------------------------------------------- #
-    def set_option_pos(self, grid):
-        # Returning the options only
-        for idx, option in enumerate(self.options):
-            if self.in_menu:
+    def get_ober_item(self, grid):
+        ober_item = None
+        if self.type == "option":
+            for item in grid.items:
+                if not ober_item:
+                    if self.category in item.name:
+                        ober_item = item
+
+                    elif item.mode and (self.category in item.mode):
+                        ober_item = item
+        if ober_item:
+            print("Option belongs to {0}".format(ober_item.name))
+        else:
+            print("No ober item found for {0}".format(self.name))
+        return ober_item
+
+
+
+
+    def open_menu(self, grid):
+
+        # SUB-OPTION
+        ober_item = self.get_ober_item(grid)
+        if ober_item:
+            ober_item.close_menu(grid)
+            ober_item.options = self.options
+            ober_item.open_menu(grid)
+            ober_item.mode = self.name
+        else:
+            for idx, option in enumerate(self.options):
                 option.pos = grid.adj_tiles(self.pos)[idx]
+                if option not in grid.items:
+                    grid.items.append(option)
+        self.in_menu = True
+
+            # for overlap_item in grid.items:
+            #     if option.pos == overlap_item.pos:
+            #         overlap_item.clickable = False
+            #         if not overlap_item in grid.overlapped:
+            #             grid.overlapped.append(overlap_item)
+
+
+    def close_menu(self, grid):
+        print("Closing menu {0}".format(self.name))
+        for option in self.options:
+            if option in grid.items:
+                grid.items.remove(option)
+        # for overlap_item in grid.overlapped:
+        #     overlap_item.clickable = True
+        #     if overlap_item in grid.overlapped:
+        #         grid.overlapped.remove(overlap_item)
+        self.in_menu = False
+
+
+    def revert_menu(self, grid):
+        self.close_menu(grid)
+        self.options = self.default_options
+        self.open_menu(grid)
+        self.mode = None
 
 
     def set_mode(self, grid, option):
@@ -117,12 +166,8 @@ class Item(object):
         :param grid: grid instance
         """
         self.mode = option.name
-        # self.color = option.color
-        # self.img = option.img
-        if option.options:
-            self.options = option.options
-        self.set_option_pos(grid)
-
+        # if option.options:
+        #     self.options = option.options
 
     def reset_mode(self):
         """
@@ -133,51 +178,39 @@ class Item(object):
         self.img = self.default_img
         self.options = self.default_options
 
-
     # --------------------------------------------------------------- #
     #                                                                 #
     #                           ITEM MENU                             #
     #                                                                 #
     # --------------------------------------------------------------- #
-    def set_in_menu(self, grid, value):
-        """ Setting the in_menu attribute to value
-        :param value: boolean -True or False
-        """
-        if value:
-            self.in_menu = True
-        else:
-            self.in_menu = False
-        return self.in_menu
-
-    def check_in_menu(self, grid, clicked_circle):
-        """
-        On a clicked circle - check if this item is in menu and set it
-        :param grid: grid instance
-        :param clicked_circle: the current clicekd circle
-        """
-
-        # Clicked on item
-        if clicked_circle == self.pos\
-                and self.options\
-                and self.clickable\
-                and not (self.name != "my_body" and grid.mouse_mode):
-
-            # If default mode:
-            if self.mode is self.name:
-                if not self.in_menu:
-                    self.set_in_menu(grid, True)
-                elif self.in_menu:
-                    self.set_in_menu(grid, False)
-            # If not default mode
-            elif self.mode is not self.name:
-                if self.in_menu:
-                    self.reset_mode()
-                elif not self.in_menu:
-                    self.set_in_menu(grid, True)
-
-        # Clicked outside
-        elif (clicked_circle != self.pos) and (clicked_circle not in grid.adj_tiles(self.pos)) and self.clickable:
-            self.set_in_menu(grid, False)
+    # def check_in_menu(self, grid, clicked_circle):
+    #     """
+    #     On a clicked circle - check if this item is in menu and set it
+    #     :param grid: grid instance
+    #     :param clicked_circle: the current clicekd circle
+    #     """
+    #
+    #     # Clicked on item
+    #     if self.clickable and self.available and self.options\
+    #             and not (self.name != "my_body" and grid.mouse_mode):
+    #
+    #         # If default mode:
+    #         if self.mode is self.name:
+    #             if not self.in_menu:
+    #                 self.in_menu = True
+    #             elif self.in_menu:
+    #                 self.in_menu = False
+    #
+    #         # If not default mode
+    #         elif self.mode is not self.name:
+    #             if self.in_menu:
+    #                 self.reset_mode()
+    #             elif not self.in_menu:
+    #                 self.in_menu = True
+    #
+    #     # Clicked outside
+    #     elif (clicked_circle != self.pos) and (clicked_circle not in grid.adj_tiles(self.pos)) and self.clickable:
+    #         self.in_menu = False
 
 
     # --------------------------------------------------------------- #
@@ -185,31 +218,36 @@ class Item(object):
     #                            OVERLAP                              #
     #                                                                 #
     # --------------------------------------------------------------- #
-    def overlapping(self, grid):
-        """
-        Checks for overlapping items
-        if in menu: creates a archive in self.overlap
-        if not in menu: restores from self.overlap
-        """
-        if self.in_menu:
-            grid.items.extend(self.options)
-            for olapped_item in grid.items:
-                for option in self.options:
-                    if olapped_item.pos == option.pos and olapped_item.available:
-                        if not olapped_item in self.overlap:
-                            self.overlap.append(olapped_item)
-                            grid.overlapped.append(olapped_item)
-                            olapped_item.clickable = False
-        else:
-            grid.items = list(set(grid.items) - set(self.options))
-            if self.overlap:
-                for item in self.overlap:
-                    item.clickable = True
-                    self.overlap.remove(item)
-                    if item in grid.overlapped:
-                        grid.overlapped.remove(item)
+    # def overlapping(self, grid):
+    #     """
+    #     Checks for overlapping items
+    #     if in menu: creates a archive in self.overlap
+    #     if not in menu: restores from self.overlap
+    #     """
+    #     if self.in_menu:
+    #         for olapped_item in grid.items:
+    #             for option in self.options:
+    #                 if olapped_item.pos == option.pos and olapped_item.available:
+    #                     if not olapped_item in self.overlap:
+    #                         self.overlap.append(olapped_item)
+    #                         grid.overlapped.append(olapped_item)
+    #                         olapped_item.clickable = False
+    #     else:
+    #         for opt in self.options:
+    #             if opt in grid.items:
+    #                 grid.items.remove(opt)
+    #         if self.overlap:
+    #             for item in self.overlap:
+    #                 item.clickable = True
+    #                 self.overlap.remove(item)
+    #                 if item in grid.overlapped:
+    #                     grid.overlapped.remove(item)
 
-
+    # --------------------------------------------------------------- #
+    #                                                                 #
+    #                           INTERSECTS                            #
+    #                                                                 #
+    # --------------------------------------------------------------- #
     def intersects(self, item2):
         """ Checks and returns a bool if this item is intersecting with item2 """
         cir1 = (self.pos, self.radius)

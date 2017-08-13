@@ -27,12 +27,15 @@
 # --------------------------------------------------------------- #
 #                            BUG FIXES                            #
 # --------------------------------------------------------------- #
-# TODO: Fix mitosis lag
-# TODO: Fix signal lag
-# TODO: Fix item collection / remove everything dict
+# TODO: Fix item overlap
+# TODO: Fix item collection
 # TODO: Fix room change
+
 # TODO: Fix signal hit on intersecting
 # TODO: Fix rotation on direction
+# TODO: Fix mitosis lag
+# TODO: Fix signal lag
+
 
 # TODO: Fix constant hit bug - line 113 cir_item
 
@@ -62,6 +65,8 @@ def game_loop(game_over, scenario="Scenario_1"):
     grid.var_changer   = VarChanger(grid)
     grid.start_time    = time.time()
     my_body            = grid.loader.load_items()
+
+    grid.clean_tmp_maps()
 
     if game_over:
         grid.rename_button("play", "replay")
