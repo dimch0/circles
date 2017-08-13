@@ -128,7 +128,8 @@ class GameEffects(object):
 
     def echo_mode_click(self, current_tile, my_body):
         """ Signal effect """
-        if not cir_utils.in_circle(my_body.pos, my_body.radius, current_tile):
+        print("Echo!")
+        if not cir_utils.in_circle(my_body.pos, my_body.radius, current_tile) and not my_body.move_track:
             signal = self.produce("signal",
                                   my_body.pos,
                                   radius=int(self.grid.tile_radius / 3),
@@ -311,7 +312,6 @@ class GameEffects(object):
             my_body.gen_fat()
 
 
-
     # --------------------------------------------------------------- #
     #                          CLICK ON ITEM                          #
     # --------------------------------------------------------------- #
@@ -326,58 +326,43 @@ class GameEffects(object):
         ]):
             item.destroy(self.grid)
 
+
+    # --------------------------------------------------------------- #
+    #                           CLICK ITEMS                           #
+    # --------------------------------------------------------------- #
     def click_items(self, item, my_body):
 
         # EDITOR CLICK
         self.editor(item, my_body)
 
-        # BAG MOUSE MODE CLICK
-        # if self.grid.mouse_mode == "bag":
-        #     self.collect(item, my_body)
-
         # EAT MODE
         if self.grid.mouse_mode in ["eat", "EDITOR9"]:
             self.eat(item)
 
-    # --------------------------------------------------------------- #
-    #                                                                 #
-    #                            BODY MODES                           #
-    #                                                                 #
-    # --------------------------------------------------------------- #
-    # def click_options(self, item, option, my_body):
-    #     # --------------------------------------------------------------- #
-    #     #                       CLICK DEFAULT OPTIONS                     #
-    #     # --------------------------------------------------------------- #
-    #     if option in item.default_options:
-    #
-    #
-    #         # Setting the mode
-    #         item.set_mode(self.grid, option)
-    #
-    #         # bag
-    #         if option.name == "bag":
-    #             print("Gimme the loot!")
-    #
-    #         # mitosis
-    #         elif option.name == "mitosis":
-    #             self.mitosis(item)
-    #
+        # BAG MOUSE MODE CLICK
+        # if self.grid.mouse_mode == "bag":
+        #     self.collect(item, my_body)
+
+        # ENTER
+        elif "Enter" in item.name:
+            self.enter_effect(my_body, item)
+
+        # OPTIONS
+        elif item.type == "option":
+            ober_item = item.get_ober_item(self.grid)
+            # SUICIDE
+            if item.name == "suicide":
+                if ober_item:
+                    ober_item.destroy(self.grid)
+
+            # mitosis
+            elif item.name == "mitosis":
+                if ober_item:
+                    self.mitosis(ober_item)
+
+
     #         elif option.name == "move":
     #             item.change_speed(0.1)
-    #
-    #         elif option.name == "suicide":
-    #             item.destroy(self.grid)
-    #
-    #         elif option.name == "echo":
-    #             print("Echo!")
-    #
-    #         # enter / exit
-    #         elif "Enter_" in option.name:
-    #             self.enter_effect(my_body, item)
-    #
-    #         # Enters
-    #         elif "Entering" in option.name:
-    #             self.enter_effect(my_body, item)
 
 
         # --------------------------------------------------------------- #
@@ -413,8 +398,4 @@ class GameEffects(object):
         #         print "Can't touch this"
         #
         #     # Close menu when sub-option selected
-        #     item.set_in_menu(self.grid, False)
-
-        # Close menu if option has no sub-options
-        # if option.name not in self.grid.mode_vs_options.keys():
         #     item.set_in_menu(self.grid, False)

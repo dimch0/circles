@@ -169,13 +169,15 @@ class GameDrawer(object):
         """ Draws current state of a timer """
         if item.lifespan:
             if item.lifespan.available and item.time_color:
-                item.lifespan.pos = item.pos
-                self.grid.pygame.draw.arc(self.grid.game_display,
-                                item.time_color,
-                                item.lifespan.rect,
-                                math.radians(item.lifespan.filled_degrees),
-                                math.radians(item.lifespan.start_degrees),
-                                2)
+                if item.radius >= 5:
+                    item.lifespan.pos = item.pos
+                    item.lifespan.radius = item.radius
+                    self.grid.pygame.draw.arc(self.grid.game_display,
+                                    item.time_color,
+                                    item.lifespan.rect,
+                                    math.radians(item.lifespan.filled_degrees),
+                                    math.radians(item.lifespan.start_degrees),
+                                    5)
 
     def draw_aim(self, current_tile, item):
         """ Aim """
@@ -183,7 +185,7 @@ class GameDrawer(object):
             aim_dir_idx = item.get_aiming_direction(self.grid, current_tile)[1]
             aim_tile = item.get_aiming_direction(self.grid, current_tile)[0]
 
-            bow_dist = item.radius / 3
+            bow_dist = item.radius / 8
             aim_rect = [item.rect[0] - bow_dist,
                         item.rect[1] - bow_dist,
                         item.rect[2] + bow_dist * 2,
@@ -410,12 +412,6 @@ class GameDrawer(object):
 
                 # Timers
                 self.draw_timers(item)
-
-        # Item options
-        # for item in self.grid.items:
-        #     if item.available:
-        #         if item.in_menu:
-        #             self.draw_item_options(current_tile, item)
 
         # Mouse
         if self.grid.mouse_mode:

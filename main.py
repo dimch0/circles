@@ -52,6 +52,7 @@ from cir.cir_phase_2_draw import GameDrawer
 from cir.cir_phase_3_change_vars import VarChanger
 pygame.init()
 
+
 def game_loop(game_over, scenario="Scenario_1"):
     # --------------------------------------------------------------- #
     #                        PHASE 0: LOADING                         #
@@ -72,6 +73,9 @@ def game_loop(game_over, scenario="Scenario_1"):
         grid.rename_button("play", "replay")
     if scenario == "Scenario_2":
         grid.game_menu = False
+    elif scenario == "Scenario_3":
+        grid.fog_color = grid.dark_grey
+        grid.room_color = grid.black
 
     # --------------------------------------------------------------- #
     #                            GAME LOOP                            #

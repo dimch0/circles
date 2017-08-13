@@ -14,6 +14,7 @@ def execute_click_events(grid, event, my_body, current_tile):
     for item in grid.items:
         if item.clickable and item.available:
             if current_tile == item.pos:
+                print("Clicked item: {0}".format(item.name))
 
                 if item.type == "option":
                     oitem = item.get_ober_item(grid)
@@ -31,9 +32,11 @@ def execute_click_events(grid, event, my_body, current_tile):
                 # SET MOUSE MODE
                 if item.modable:
                     grid.set_mouse_mode(item)
+                    my_body.mode = item.name
 
                 # CLICK ON ITEMS
                 grid.event_effects.click_items(item, my_body)
+
 
                 # CLEAN MOUSE
                 if item.in_menu:
@@ -43,26 +46,7 @@ def execute_click_events(grid, event, my_body, current_tile):
                 if item.in_menu:
                     item.close_menu(grid)
 
-            # # --------------------------------------------------------------- #
-            # #                       CLICK ON ITEM OPTIONS                     #
-            # # --------------------------------------------------------------- #
-            # elif current_tile in grid.adj_tiles(item.pos) and item.in_menu:
-            #     if item.options:
-            #         for option in item.options:
-            #             if current_tile == option.pos:
-            #
-            #                 # SET MOUSE MODE
-            #                 if option.modable:
-            #                     grid.set_mouse_mode(option)
-            #
-            #                 # OPTIONS SUB-OPTIONS
-            #                 grid.event_effects.click_options(item, option, my_body)
-            #
-            # # --------------------------------------------------------------- #
-            # #                          CLICKED OUTSIDE                        #
-            # # --------------------------------------------------------------- #
-            # else:
-            #     item.set_in_menu(grid, False)
+
 
     # DEBUG PRINT
     cir_utils.debug_print_click(grid, current_tile, my_body)

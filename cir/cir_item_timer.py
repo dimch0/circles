@@ -29,7 +29,7 @@ class TimerItem(Item):
         self._step_degrees = None
         self._filled_degrees = self.start_degrees
         self._is_over = False
-        self.reversed = True
+        self.reversed = False
 
     @property
     def number_of_steps(self):
