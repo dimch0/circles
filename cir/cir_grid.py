@@ -68,6 +68,7 @@ class Grid(object):
         self.items = []
         self.overlapped = []
         self.buttons = []
+        self.editor = []
         # -------------------------------------------------- #
         #                        MOUSE                       #
         # -------------------------------------------------- #

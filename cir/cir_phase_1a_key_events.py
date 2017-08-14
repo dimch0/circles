@@ -25,7 +25,8 @@ def execute_key_events(grid, event, my_body):
     elif event.key == grid.pygame.K_KP_ENTER:
         editor_buttons = grid.loader.load_editor()
         for editor_button in editor_buttons:
-            if not editor_button in grid.items.append:
+            if not editor_button in grid.items:
+                editor_button.available = True
                 grid.items.append(editor_button)
             # if editor_button.pos not in grid.occupado_tiles:
             #     grid.event_effects.produce(editor_button.name, birth=0)
