@@ -77,7 +77,10 @@ class Item(object):
 
 
     def gen_birth_track(self):
-        self.birth_track = range(1, self.radius)
+        if self.type == "signal":
+            self.birth_track = range(1, self.radius)
+        else:
+            self.birth_track = range(1, self.radius + 1)
 
 
     def gen_fat(self):

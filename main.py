@@ -5,7 +5,18 @@
 #                                                                                                                     #
 #                                                                                                                     #
 # ------------------------------------------------------------------------------------------------------------------- #
+# --------------------------------------------------------------- #
+#                            BUG FIXES                            #
+# --------------------------------------------------------------- #
+# TODO: Fix item overlap
+# TODO: Fix item collection
+# TODO: Fix eating below overlap
+# TODO: Fix editor wont open / multi buttons
 
+# TODO: Fix signal hit on intersecting
+# TODO: Fix rotation on direction
+# TODO: Fix mitosis lag
+# TODO: Fix signal lag
 # --------------------------------------------------------------- #
 #                            FEATURES                             #
 # --------------------------------------------------------------- #
@@ -24,18 +35,6 @@
 # TODO: Animate demo
 # TODO: Add sounds
 # TODO: Log messages on screen
-# --------------------------------------------------------------- #
-#                            BUG FIXES                            #
-# --------------------------------------------------------------- #
-# TODO: Fix item overlap
-# TODO: Fix item collection
-# TODO: Fix room change
-
-# TODO: Fix signal hit on intersecting
-# TODO: Fix rotation on direction
-# TODO: Fix mitosis lag
-# TODO: Fix signal lag
-
 
 # TODO: Fix constant hit bug - line 113 cir_item
 

@@ -142,6 +142,7 @@ def debug_print_click(grid, current_circle, my_body):
         # print("DEBUG: all tiles   : {0}".format(len(grid.tiles)))
         # print("DEBUG: current room: {0}".format(grid.current_room))
         # print("DEBUG: prev room   : {0}".format(grid.previous_room))
+        print("DEBUG: revealed    : {0}".format(grid.revealed_radius))
         print('')
 
 

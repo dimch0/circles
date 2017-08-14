@@ -40,22 +40,18 @@ class VarChanger(object):
     def enter_room(self, my_body, item):
 
         if "Enter_" in item.name and my_body.pos == item.pos:
-            room_number = None
-            for option in item.options:
-                if "Enter" in option.name:
-                    room_number = item.name.replace("Enter_", "")
-                    room_number = room_number
-                    print("Leaving room {0} and entering {1}".format(
-                        self.grid.current_room,
-                        room_number))
+            room_number = item.name.replace("Enter_", "")
+            print("Leaving room : '{0}' \nEntering room: '{1}'".format(
+                self.grid.current_room,
+                room_number))
 
             self.grid.change_room(room_number)
 
             my_body.available = True
             my_body.pos = get_mirror_point(my_body.pos, self.grid.center_tile)
             my_body.gen_birth_track()
-            self.grid.rooms[self.grid.current_room]["revealed_radius"].append(
-                ((item.pos), self.grid.tile_radius))
+            # self.grid.rooms[self.grid.current_room]["revealed_radius"].append(
+            #     ((item.pos), self.grid.tile_radius))
 
     # --------------------------------------------------------------- #
     #                                                                 #
@@ -134,7 +130,6 @@ class VarChanger(object):
                     my_body)) or item.direction == None:
                 hit = True
                 print("Hit!")
-                # item.destroy(self.grid)
         return hit
 
     def signal_hit_effect(self, item):
