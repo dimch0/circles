@@ -11,7 +11,6 @@
 # TODO: Fix item overlap
 # TODO: Fix item collection
 # TODO: Fix eating below overlap
-# TODO: Fix editor wont open / multi buttons
 
 # TODO: Fix signal hit on intersecting
 # TODO: Fix rotation on direction
@@ -41,7 +40,7 @@
 import time
 import pygame
 from cir.cir_game_menu import game_menu
-from cir .cir_cosmetic import Images, Fonts
+from cir.cir_cosmetic import Images, Fonts
 from cir.cir_grid import Grid
 from cir.cir_phase_0_load import DataLoader
 from cir.cir_phase_1_event_effects import GameEffects
@@ -67,6 +66,12 @@ def game_loop(game_over, scenario="Scenario_1"):
     my_body            = grid.loader.load_items()
 
     grid.clean_tmp_maps()
+    # if not my_body in self.grid.items\
+    #         and self.grid.current_room not in ["999"]:
+    #     self.grid.items.append(my_body)
+
+    if not my_body in grid.items:
+        grid.items.append(my_body)
 
     if game_over:
         grid.rename_button("play", "replay")

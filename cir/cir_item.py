@@ -263,7 +263,7 @@ class Item(object):
     #                             DESTROY                             #
     #                                                                 #
     # --------------------------------------------------------------- #
-    def destroy(self, grid):
+    def destroy(self, grid, fast=False):
         if self in grid.items and not self.birth_track:
             if hasattr(self, "lifespan"):
                 self.lifespan = None
@@ -272,6 +272,9 @@ class Item(object):
             self.in_menu = False
             if hasattr(self, "move_track"):
                 self.move_track = []
+
+            if fast and self.birth_time:
+                self.birth_time.duration = 0
             self.gen_birth_track()
             self.birth_track.reverse()
             self.marked_for_destruction = True

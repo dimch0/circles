@@ -40,18 +40,19 @@ class VarChanger(object):
     def enter_room(self, my_body, item):
 
         if "Enter_" in item.name and my_body.pos == item.pos:
+
             room_number = item.name.replace("Enter_", "")
             print("Leaving room : '{0}' \nEntering room: '{1}'".format(
                 self.grid.current_room,
                 room_number))
 
             self.grid.change_room(room_number)
-
-            my_body.available = True
-            my_body.pos = get_mirror_point(my_body.pos, self.grid.center_tile)
+            if not my_body in self.grid.items:
+                self.grid.items.append(my_body)
+            # my_body.available = True
+            my_body.pos = get_mirror_point(item.pos, self.grid.center_tile)
+            self.grid.needs_to_change_room = False
             my_body.gen_birth_track()
-            # self.grid.rooms[self.grid.current_room]["revealed_radius"].append(
-            #     ((item.pos), self.grid.tile_radius))
 
     # --------------------------------------------------------------- #
     #                                                                 #
@@ -148,9 +149,9 @@ class VarChanger(object):
         if not self.grid.game_menu:
 
             # My_body to room
-            if not my_body in self.grid.items\
-                    and self.grid.current_room not in ["999"]:
-                self.grid.items.append(my_body)
+            # if not my_body in self.grid.items\
+            #         and self.grid.current_room not in ["999"]:
+            #     self.grid.items.append(my_body)
 
             # Check bag
             # if "bag" in self.grid.everything.keys():

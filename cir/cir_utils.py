@@ -100,7 +100,7 @@ def get_next_point(pointA, pointB, dist):
 
 
 def get_mirror_point(pointA, pointB):
-
+    print("Mirroring {0}".format(pointB))
     # TESTING STILL IN PROGRESS
 
     dist = 2
@@ -134,6 +134,7 @@ def debug_print_click(grid, current_circle, my_body):
         print("DEBUG: mouse mode  : {0}".format(grid.mouse_mode))
         print("DEBUG: my_body mode: {0}".format(my_body.mode))
         print("DEBUG: menu        : {0}".format(my_body.in_menu))
+        print("DEBUG: grid items  : {0}".format(len(grid.items)))
         print("DEBUG: grid items  : {0}".format([(item.name, item.pos) for item in grid.items]))
         # print("DEBUG: occupado    : {0}".format(len(grid._occupado_tiles)))
         print("DEBUG: overlap     : {0}".format([(item.name, item.pos) for item in grid.overlapped]))

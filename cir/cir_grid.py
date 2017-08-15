@@ -40,7 +40,6 @@ class Grid(object):
         self.var_changer = None
         self.event_effects = None
         self.scenario = scenario
-        self.editor = False
         # -------------------------------------------------- #
         #                        TILES                       #
         # -------------------------------------------------- #
@@ -68,7 +67,7 @@ class Grid(object):
         self.items = []
         self.overlapped = []
         self.buttons = []
-        self.editor = []
+        self.editor_buttons = []
         # -------------------------------------------------- #
         #                        MOUSE                       #
         # -------------------------------------------------- #

@@ -110,7 +110,7 @@ class GameEffects(object):
     #     :param current_tile: the clicked circle
     #     """
     #     for bag_item in self.grid.mode_vs_options["bag"]:
-    #         if bag_item.name == self.grid.mouse_mode:
+    #         if bag_item.name == mouse_mode:
     #             if bag_item.uses:
     #                 if current_tile not in self.grid.occupado_tiles:
     #                     self.produce("shit", current_tile)
@@ -326,37 +326,66 @@ class GameEffects(object):
         ]):
             item.destroy(self.grid)
 
+    def terminate(self, item):
+        """ Eat that shit """
+        if not any(forbidden_type in item.type for forbidden_type in [
+            "my_body",
+            "editor",
+            "option",
+            "trigger",
+            "placeholder"
+        ]):
+            item.destroy(self.grid, fast=True)
+
 
     # --------------------------------------------------------------- #
     #                           CLICK ITEMS                           #
     # --------------------------------------------------------------- #
-    def click_items(self, item, my_body):
+    def click_items(self, clicked_item, my_body):
+        """
+        Check if clicked on an event
+        :param clicked_item: Item clicked on!
+        :param my_body: my_body instance
+        """
+        mouse_mode = self.grid.mouse_mode
 
         # EDITOR CLICK
-        self.editor(item, my_body)
+        self.editor(clicked_item, my_body)
 
         # EAT MODE
-        if self.grid.mouse_mode in ["eat", "EDITOR9"]:
-            self.eat(item)
+        # if clicked_item.edible:
+        if mouse_mode in ["eat"]:
+            self.eat(clicked_item)
+
+        # TERMINATE
+        elif mouse_mode in ["EDITOR9"]:
+            self.terminate(clicked_item)
+
+        elif mouse_mode in ["bag"]:
+            if clicked_item.collectible:
+                pass
+                # TODO: produce modable option of the item
+                # TODO: include opt in bag options
+                # TODO: terminate item
 
         # BAG MOUSE MODE CLICK
-        # if self.grid.mouse_mode == "bag":
-        #     self.collect(item, my_body)
+        # if mouse_mode == "bag":
+        #     self.collect(clicked_item, my_body)
 
         # ENTER
-        elif "Enter" in item.name:
-            self.enter_effect(my_body, item)
+        if "Enter" in clicked_item.name:
+            self.enter_effect(my_body, clicked_item)
 
         # OPTIONS
-        elif item.type == "option":
-            ober_item = item.get_ober_item(self.grid)
+        if clicked_item.type == "option":
+            ober_item = clicked_item.get_ober_item(self.grid)
             # SUICIDE
-            if item.name == "suicide":
+            if clicked_item.name == "suicide":
                 if ober_item:
                     ober_item.destroy(self.grid)
 
             # mitosis
-            elif item.name == "mitosis":
+            elif clicked_item.name == "mitosis":
                 if ober_item:
                     self.mitosis(ober_item)
 

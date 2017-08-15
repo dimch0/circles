@@ -207,16 +207,6 @@ class DataLoader(object):
         return new_item
 
 
-    def load_editor(self):
-        print("Loading editor mode ...")
-        editor_items = []
-        for item, klas in self.load_data():
-            if item.type == "editor":
-                item.birth_time = 0
-                editor_items.append(item)
-        return editor_items
-
-
     def load_items(self):
         """
         Loading all modes, buttons, timers, my_body
@@ -232,11 +222,15 @@ class DataLoader(object):
             self.set_timers(item)
             # SET OPTS
             self.set_opts(item)
-
             # SET DOOR
             if item.type == "door":
                 self.set_door(item)
-            # My body
+
+            # EDITOR
+            elif item.type == "editor":
+                self.grid.editor_buttons.append(item)
+
+            # MY BODY
             elif item.type == "my_body":
                 my_body = item
                 my_body.gen_birth_track()
