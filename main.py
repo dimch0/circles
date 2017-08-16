@@ -8,8 +8,8 @@
 # --------------------------------------------------------------- #
 #                            BUG FIXES                            #
 # --------------------------------------------------------------- #
-# TODO: Fix item overlap
-# TODO: Fix item collection
+# TODO: Fix duplicate item collection
+# TODO: Create collect mode and bag
 # TODO: Fix eating below overlap
 
 # TODO: Fix signal hit on intersecting

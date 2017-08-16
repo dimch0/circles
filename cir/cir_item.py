@@ -35,8 +35,8 @@ class Item(object):
         self.in_menu = False
         self.modable = False
         self.mode = self.name
-        self.options = []
-        self.default_options = []
+        self.options = {}
+        self.default_options = {}
         self.overlap = []
 
         self.available = True
@@ -122,6 +122,9 @@ class Item(object):
 
     def open_menu(self, grid):
 
+        self.in_menu = True
+        print("In menu {0}".format(self.name))
+        olap_pos = []
         # SUB-OPTION
         ober_item = self.get_ober_item(grid)
         if ober_item:
@@ -129,30 +132,49 @@ class Item(object):
             ober_item.options = self.options
             ober_item.open_menu(grid)
             ober_item.mode = self.name
+
+        # NORMAL OPTIONS
         else:
-            for idx, option in enumerate(self.options):
+            for idx, option in enumerate(self.options.values()):
                 option.pos = grid.adj_tiles(self.pos)[idx]
+                olap_pos.append(option.pos)
                 if option not in grid.items:
                     grid.items.append(option)
-        self.in_menu = True
 
-            # for overlap_item in grid.items:
-            #     if option.pos == overlap_item.pos:
-            #         overlap_item.clickable = False
-            #         if not overlap_item in grid.overlapped:
-            #             grid.overlapped.append(overlap_item)
+        # OVERLAP
+        if olap_pos:
+            for olap_item in grid.items:
+                if not olap_item.type in ["option"]:
+                    if olap_item.pos in olap_pos:
+                        olap_item.clickable = False
+                        if not olap_item in grid.overlap:
+                            grid.overlap.append(olap_item)
 
 
     def close_menu(self, grid):
-        print("Closing menu {0}".format(self.name))
-        for option in self.options:
+
+        print("Close menu {0}".format(self.name))
+        self.in_menu = False
+        olap_pos = []
+
+        for option in self.options.values():
+            olap_pos.append(option.pos)
             if option in grid.items:
                 grid.items.remove(option)
-        # for overlap_item in grid.overlapped:
+
+
+        if olap_pos:
+            for olap_item in grid.overlap:
+                if olap_item.pos in olap_pos:
+                    olap_item.clickable = True
+                    if olap_item in grid.overlap:
+                        grid.overlap.remove(olap_item)
+
+        # for overlap_item in grid.overlap:
         #     overlap_item.clickable = True
-        #     if overlap_item in grid.overlapped:
-        #         grid.overlapped.remove(overlap_item)
-        self.in_menu = False
+        #     if overlap_item in grid.overlap:
+        #         grid.overlap.remove(overlap_item)
+
 
 
     def revert_menu(self, grid):
@@ -233,7 +255,7 @@ class Item(object):
     #                 if olapped_item.pos == option.pos and olapped_item.available:
     #                     if not olapped_item in self.overlap:
     #                         self.overlap.append(olapped_item)
-    #                         grid.overlapped.append(olapped_item)
+    #                         grid.overlap.append(olapped_item)
     #                         olapped_item.clickable = False
     #     else:
     #         for opt in self.options:
@@ -243,8 +265,8 @@ class Item(object):
     #             for item in self.overlap:
     #                 item.clickable = True
     #                 self.overlap.remove(item)
-    #                 if item in grid.overlapped:
-    #                     grid.overlapped.remove(item)
+    #                 if item in grid.overlap:
+    #                     grid.overlap.remove(item)
 
     # --------------------------------------------------------------- #
     #                                                                 #

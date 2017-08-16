@@ -88,7 +88,7 @@ class BodyItem(MobileItem):
         grid.set_rev_tiles()
         for item in grid.items:
             if item.pos in grid.revealed_tiles:
-                if not item.available and not item in grid.overlapped:
+                if not item.available and not item in grid.overlap:
                     item.available = True
                     item.gen_birth_track()
 

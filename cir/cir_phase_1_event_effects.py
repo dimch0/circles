@@ -20,7 +20,7 @@ class GameEffects(object):
     #                             PRODUCE                             #
     #                                                                 #
     # --------------------------------------------------------------- #
-    def produce(self, product_name, pos=None, radius=None, birth=None, vibe_freq=None, lifespan=None):
+    def produce(self, product_name, pos=None, radius=None, birth=None, vibe_freq=None, lifespan=None, add_to_items=True):
         """
         Produces an item from the everything dict
         :param product_name: name of the item from the everything dict
@@ -51,7 +51,8 @@ class GameEffects(object):
         new_item.default_img = new_item.img
         new_item.available = True
         new_item.gen_birth_track()
-        self.grid.items.append(new_item)
+        if add_to_items:
+            self.grid.items.append(new_item)
 
         return new_item
 
@@ -229,8 +230,6 @@ class GameEffects(object):
                 self.grid.previous_room = self.grid.current_room
                 self.grid.change_room("999")
                 diff = 10
-                if my_body in self.grid.items:
-                    self.grid.items.remove(my_body)
 
                 try:
                     for root, dirs, files in os.walk(self.grid.maps_dir):
@@ -363,10 +362,34 @@ class GameEffects(object):
 
         elif mouse_mode in ["bag"]:
             if clicked_item.collectible:
-                pass
-                # TODO: produce modable option of the item
-                # TODO: include opt in bag options
-                # TODO: terminate item
+
+                # CHECK FOR EMPTY SLOT IN BAG
+                bag_placeholder = None
+                for empty_name, empty_item in my_body.options['bag'].options.items():
+                    if "bag_placeholder" in empty_name:
+                        bag_placeholder = empty_item
+                        break
+
+                # PRODUCE MODABLE ITEM AS OPTION
+                if bag_placeholder:
+                    item_as_option = self.produce(product_name=bag_placeholder.name,
+                                                  pos=bag_placeholder.pos,
+                                                  birth=0,
+                                                  add_to_items=False)
+                    item_as_option.name = clicked_item.name
+                    item_as_option.type = "option"
+                    item_as_option.modable = True
+                    item_as_option.color = my_body.options['bag'].color
+                    item_as_option.img = clicked_item.img
+
+                    del my_body.options['bag'].options[bag_placeholder.name]
+                    my_body.options['bag'].options[item_as_option.name] = item_as_option
+
+                    # ADD IN BAG
+                    # REMOVE FROM FIELD
+                    clicked_item.destroy(self.grid, fast=True)
+                else:
+                    print("No space in bag")
 
         # BAG MOUSE MODE CLICK
         # if mouse_mode == "bag":

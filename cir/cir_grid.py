@@ -65,7 +65,7 @@ class Grid(object):
         #                        ITEMS                       #
         # -------------------------------------------------- #
         self.items = []
-        self.overlapped = []
+        self.overlap = []
         self.buttons = []
         self.editor_buttons = []
         # -------------------------------------------------- #

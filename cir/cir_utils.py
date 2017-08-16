@@ -137,7 +137,7 @@ def debug_print_click(grid, current_circle, my_body):
         print("DEBUG: grid items  : {0}".format(len(grid.items)))
         print("DEBUG: grid items  : {0}".format([(item.name, item.pos) for item in grid.items]))
         # print("DEBUG: occupado    : {0}".format(len(grid._occupado_tiles)))
-        print("DEBUG: overlap     : {0}".format([(item.name, item.pos) for item in grid.overlapped]))
+        # print("DEBUG: overlap     : {0}".format([(item.name, item.pos) for item in grid.overlap]))
         # print("DEBUG: playing     : {0}".format(len(grid.playing_tiles)))
         # print("DEBUG: move track  : {0}".format(my_body.move_track))
         # print("DEBUG: all tiles   : {0}".format(len(grid.tiles)))

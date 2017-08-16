@@ -117,8 +117,9 @@ class DataLoader(object):
             if opt.category and opt.category in item.name:
                 opt.color = item.color
                 opt.default_color = item.color
-                item.options.append(opt)
-                item.default_options.append(opt)
+                # item.options.append(opt)
+                item.options[opt.name] = opt
+                item.default_options[opt.name] = opt
 
     def set_opts(self, item):
         if item.has_opts:
@@ -161,8 +162,8 @@ class DataLoader(object):
         door.color = item.color
         door.img = item.img
         door.default_img = item.default_img
-        door.options = item.options
-        door.default_options = door.default_options
+        # door.options = item.options
+        # door.default_options = door.default_options
         door.default_color = door.default_color
         door.radius = item.radius
         door.available = False
