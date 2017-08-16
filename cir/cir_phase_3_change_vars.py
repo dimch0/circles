@@ -46,7 +46,7 @@ class VarChanger(object):
                 self.grid.current_room,
                 room_number))
 
-            self.grid.change_room(room_number, my_body)
+            self.grid.change_room(room_number)
             if not my_body in self.grid.items:
                 self.grid.items.append(my_body)
             # my_body.available = True

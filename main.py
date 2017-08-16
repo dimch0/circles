@@ -10,6 +10,7 @@
 # --------------------------------------------------------------- #
 # TODO: Fix duplicate item collection
 # TODO: Create collect mode and bag
+# TODO: Create drop mode
 # TODO: Fix eating below overlap
 
 # TODO: Fix signal hit on intersecting
