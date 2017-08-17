@@ -11,7 +11,7 @@
 # TODO: Fix duplicate item collection
 # TODO: Create collect mode and bag
 # TODO: Create drop mode
-# TODO: Fix eating below overlap
+# TODO: Fix eating below overlap with my_body
 
 # TODO: Fix signal hit on intersecting
 # TODO: Fix rotation on direction

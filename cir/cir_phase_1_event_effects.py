@@ -360,7 +360,7 @@ class GameEffects(object):
         elif mouse_mode in ["EDITOR9"]:
             self.terminate(clicked_item)
 
-        elif mouse_mode in ["bag"]:
+        elif mouse_mode in ["collect"]:
             if clicked_item.collectible:
 
                 # CHECK FOR EMPTY SLOT IN BAG

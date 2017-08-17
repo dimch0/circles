@@ -321,3 +321,9 @@ class Grid(object):
         self.pygame.quit()
         print("Game finished")
         quit()
+
+
+# 8_4, 9_3
+# 15_3, 16_4
+# 8_20, 9_21
+# 15_21, 16_20
