@@ -6,9 +6,7 @@
 #################                                                                                     #################
 #######################################################################################################################
 from cir_item import Item
-from cir_item_timer import TimerItem
 import cir_utils
-import copy
 
 
 class MobileItem(Item):

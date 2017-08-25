@@ -1,18 +1,17 @@
 # ------------------------------------------------------------------------------------------------------------------- #
 #                                                                                                                     #
-#                                                                                                                     #
 #                                                       MAIN                                                          #
-#                                                                                                                     #
 #                                                                                                                     #
 # ------------------------------------------------------------------------------------------------------------------- #
 # --------------------------------------------------------------- #
 #                            BUG FIXES                            #
 # --------------------------------------------------------------- #
+# TODO: Fix overlap revert clickable
 # TODO: Fix duplicate item collection
-# TODO: Create collect mode and bag
-# TODO: Create drop mode
 # TODO: Fix eating below overlap with my_body
-
+# TODO: Fix opposite room transition
+# TODO: Create drop mode
+# TODO: Create editor class
 # TODO: Fix signal hit on intersecting
 # TODO: Fix rotation on direction
 # TODO: Fix mitosis lag
@@ -35,7 +34,6 @@
 # TODO: Animate demo
 # TODO: Add sounds
 # TODO: Log messages on screen
-
 # TODO: Fix constant hit bug - line 113 cir_item
 
 import time
@@ -44,11 +42,9 @@ from cir.cir_game_menu import game_menu
 from cir.cir_cosmetic import Images, Fonts
 from cir.cir_grid import Grid
 from cir.cir_phase_0_load import DataLoader
-from cir.cir_phase_1_event_effects import GameEffects
-from cir.cir_phase_1a_key_events import execute_key_events
-from cir.cir_phase_1b_click_events import execute_click_events
+from cir.cir_phase_1_events import GameEffects
 from cir.cir_phase_2_draw import GameDrawer
-from cir.cir_phase_3_change_vars import VarChanger
+from cir.cir_phase_3_update import VarChanger
 pygame.init()
 
 
@@ -67,9 +63,6 @@ def game_loop(game_over, scenario="Scenario_1"):
     my_body            = grid.loader.load_items()
 
     grid.clean_tmp_maps()
-    # if not my_body in self.grid.items\
-    #         and self.grid.current_room not in ["999"]:
-    #     self.grid.items.append(my_body)
 
     if not my_body in grid.items:
         grid.items.append(my_body)
@@ -103,10 +96,10 @@ def game_loop(game_over, scenario="Scenario_1"):
                 grid.game_exit()
             # KEY EVENTS
             elif event.type == pygame.KEYDOWN:
-                execute_key_events(grid, event, my_body)
+                grid.event_effects.execute_key_events(event, my_body)
             # CLICK EVENTS
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                execute_click_events(grid, event, my_body, current_tile)
+                grid.event_effects.execute_click_events(event, my_body, current_tile)
         # --------------------------------------------------------------- #
         #                          PHASE 2: DRAWING                       #
         # --------------------------------------------------------------- #
@@ -119,6 +112,7 @@ def game_loop(game_over, scenario="Scenario_1"):
     # GAME OVER
     if grid.game_over:
         game_loop(grid.game_over, grid.scenario)
+
     # GAME EXIT
     grid.game_exit()
 # --------------------------------------------------------------- #

@@ -102,6 +102,7 @@ class DataLoader(object):
                             "time_color"  : getattr(self.grid, row[col_idx["time_color"]]) if len(row[col_idx["time_color"]]) > 0 else None,
                             "modable"     : bool(row[col_idx["modable"]]),
                             "collectible" : bool(row[col_idx["collectible"]]),
+                            "consumable"  : bool(row[col_idx["consumable"]]),
                             "uses"        : int(row[col_idx["uses"]]) if len(row[col_idx["uses"]]) > 0 else None,
                             "room"        : row[col_idx["room"]],
                             "lifespan"    : float(row[col_idx["lifespan"]]) if len(row[col_idx["lifespan"]]) > 0 else None,
@@ -115,7 +116,8 @@ class DataLoader(object):
     def find_opts(self, opt, item):
         if opt.type == "option":
             if opt.category and opt.category in item.name:
-                opt.color = item.color
+                if not opt.color:
+                    opt.color = item.color
                 opt.default_color = item.color
                 # item.options.append(opt)
                 item.options[opt.name] = opt
@@ -129,7 +131,8 @@ class DataLoader(object):
                     for sub_opt, klas in self.load_data():
                         self.find_opts(sub_opt, opt)
             # DEBUG
-            # print(item.name, [opt.name + " - " + str([sopt.name for sopt in opt.options]) for opt in item.options],)
+            print("{0} options are: {1}".format(item.name, item.options))
+            # print(item.name, [opt.name + " - " + str([sopt.name for sopt in opt.options]) for opt in item.options])
 
 
     def set_timers(self, item):
@@ -198,6 +201,7 @@ class DataLoader(object):
             self.grid.rooms[item.room]["items"].append(item)
 
 
+
     def load_item(self, item_name):
         new_item = None
         for item, klas in self.load_data():
@@ -216,7 +220,9 @@ class DataLoader(object):
         print("Loading items from {} ...".format(self.grid.scenario))
         my_body = None
         for item, klas in self.load_data():
-
+            # EDITOR
+            if item.type == "editor" and self.grid.show_editor:
+                item.room = "ALL"
             # SET ROOM
             self.set_room(item)
             # SET_TIMERS
@@ -226,11 +232,6 @@ class DataLoader(object):
             # SET DOOR
             if item.type == "door":
                 self.set_door(item)
-
-            # EDITOR
-            elif item.type == "editor":
-                self.grid.editor_buttons.append(item)
-
             # MY BODY
             elif item.type == "my_body":
                 my_body = item

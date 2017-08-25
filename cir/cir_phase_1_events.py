@@ -6,7 +6,7 @@
 #                                                                                                                     #
 # ------------------------------------------------------------------------------------------------------------------- #
 import os
-import copy
+import time
 import cir_utils
 
 
@@ -20,7 +20,14 @@ class GameEffects(object):
     #                             PRODUCE                             #
     #                                                                 #
     # --------------------------------------------------------------- #
-    def produce(self, product_name, pos=None, radius=None, birth=None, vibe_freq=None, lifespan=None, add_to_items=True):
+    def produce(self,
+                product_name,
+                pos=None,
+                radius=None,
+                birth=None,
+                vibe_freq=None,
+                lifespan=None,
+                add_to_items=True):
         """
         Produces an item from the everything dict
         :param product_name: name of the item from the everything dict
@@ -43,10 +50,6 @@ class GameEffects(object):
             new_item.pos = pos
         if lifespan:
             new_item.lifespan = lifespan
-
-        # self.grid.loader.set_timers(new_item)
-        # new_item.name = new_item.name + str(time.time())
-        # new_item.marked_for_destruction = False
 
         new_item.default_img = new_item.img
         new_item.available = True
@@ -137,33 +140,59 @@ class GameEffects(object):
                                   birth=0)
             signal.direction = signal.get_aiming_direction(self.grid, current_tile)[1]
 
-    # --------------------------------------------------------------- #
-    #                                                                 #
-    #                           BAG MODES                             #
-    #                                                                 #
-    # --------------------------------------------------------------- #
-    def collect(self, item, my_body):
-        """ Collect item: add it to bag options """
-        pass
-        # if item.collectible:
-        #     for bag in my_body.options:
-        #         if bag.name == "bag":
-        #             for option in bag.options:
-        #                 if "bag_placeholder" in option.name:
-        #                     bag.options.remove(option)
-        #                     new_item = copy.deepcopy(item)
-        #                     new_item.modable = True
-        #                     new_item.img = item.img
-        #                     new_item.default_img = item.default_img
-        #                     new_item.color = item.color
-        #                     bag.options.append(new_item)
-        #                     item.available = False
-        #                     self.grid.items.remove(item)
-        #                     return 1
+    def eat_mode_click(self, item):
+        """ Eat that shit """
+        print("Nom nom nom")
+        item.destroy(self.grid)
+
+    def terminate(self, item):
+        """ Eat that shit """
+        if not any(forbidden_type in item.type for forbidden_type in [
+            "my_body",
+            "editor",
+            "option",
+            "trigger",
+            "placeholder"
+        ]):
+            item.destroy(self.grid, fast=True)
 
     # --------------------------------------------------------------- #
     #                                                                 #
-    #                       ENTER / EXIT EFFECTS                      #
+    #                           COLLECT                               #
+    #                                                                 #
+    # --------------------------------------------------------------- #
+    def collect(self, my_body, clicked_item):
+        """ Collect item: add it to bag options """
+        # CHECK FOR EMPTY SLOT IN BAG
+        bag_placeholder = None
+        bag = [item for item in self.grid.rooms["ALL"]["items"] if item.name == "bag"][0]
+
+        for empty_name, empty_item in bag.options.items():
+            if "bag_placeholder" in empty_name:
+                bag_placeholder = empty_item
+                break
+
+        # PRODUCE MODABLE ITEM AS OPTION
+        if bag_placeholder:
+            item_as_option = self.produce(product_name=bag_placeholder.name,
+                                          pos=bag_placeholder.pos,
+                                          birth=0,
+                                          add_to_items=False)
+            item_as_option.name = clicked_item.name + str(time.time())
+            item_as_option.type = "option"
+            item_as_option.modable = True
+            item_as_option.color = self.grid.yellow
+            item_as_option.img = clicked_item.img
+            # ADD IN BAG AND REMOVE FROM FIELD
+            del bag.options[bag_placeholder.name]
+            bag.options[item_as_option.name] = item_as_option
+            clicked_item.destroy(self.grid, fast=True)
+        else:
+            print("No space in bag")
+
+    # --------------------------------------------------------------- #
+    #                                                                 #
+    #                          ENTER EFFECTS                          #
     #                                                                 #
     # --------------------------------------------------------------- #
     def enter_effect(self, my_body, item):
@@ -179,44 +208,59 @@ class GameEffects(object):
             print("it far")
             item.in_menu = False
 
+
     # --------------------------------------------------------------- #
     #                                                                 #
-    #                         TIMER EFFECTS                           #
+    #                           KEY EVENTS                            #
     #                                                                 #
     # --------------------------------------------------------------- #
-    def signal_lifespan_over_effect(self, item):
-        item.destroy(self.grid)
-
-    # --------------------------------------------------------------- #
-    #                        MOUSE MODE CLICK                         #
-    # --------------------------------------------------------------- #
-    def mouse_mode_click(self, current_tile, my_body):
-        """ CLICK WITH THE CURRENT MOUSE MODE ACTIVATES EFFECT ACCORDINGLY """
+    def execute_key_events(self, event, my_body):
+        # --------------------------------------------------------------- #
+        #                             ESCAPE                              #
+        # --------------------------------------------------------------- #
+        if event.key == self.grid.pygame.K_ESCAPE:
+            if not self.grid.game_menu:
+                self.grid.rename_button("replay", "play")
+                self.grid.game_menu = True
 
         # --------------------------------------------------------------- #
-        #                          PRODUCTION                             #
+        #                             SPACE                               #
         # --------------------------------------------------------------- #
-        if self.grid.mouse_mode in ["laino", "EDITOR2"]:
-            self.laino_mode_click(current_tile)
+        if event.key == self.grid.pygame.K_SPACE:
 
-        elif self.grid.mouse_mode in ["shit"]:
-            # TODO: BAG ITEM DROP
-            self.laino_mode_click(current_tile)
+            # GEN RADAR
+            my_body.gen_radar_track(self.grid)
 
-        elif self.grid.mouse_mode in ["see", "EDITOR1"]:
-            self.see_mode_click(current_tile)
+            # DEBUG PRINT
+            cir_utils.debug_print_space(self.grid, my_body)
 
-        elif self.grid.mouse_mode in ["EDITOR3"]:
-            if current_tile not in self.grid.occupado_tiles and current_tile in self.grid.revealed_tiles:
-                self.produce("block_of_steel", current_tile)
+        # --------------------------------------------------------------- #
+        #                             NUMBERS                             #
+        # --------------------------------------------------------------- #
+        elif event.key == self.grid.pygame.K_1:
+            print(">>>> key 1")
+            self.grid.change_room("12_12")
+        elif event.key == self.grid.pygame.K_2:
+            print(">>>> key 2")
+            self.grid.change_room("12_10")
+        elif event.key == self.grid.pygame.K_3:
+            print(">>>> key 3")
+            self.grid.change_room("12_8")
+        elif event.key == self.grid.pygame.K_4:
+            print(">>>> key 4")
+            self.grid.change_room("12_6")
 
-        elif self.grid.mouse_mode == "echo":
-            self.echo_mode_click(current_tile, my_body)
-
+        # --------------------------------------------------------------- #
+        #                             OTHER                               #
+        # --------------------------------------------------------------- #
+        elif not my_body.in_menu:
+            my_body.gen_direction(self.grid.pygame, self.grid, event)
 
 
     # --------------------------------------------------------------- #
+    #                                                                 #
     #                             EDITOR                              #
+    #                                                                 #
     # --------------------------------------------------------------- #
     def editor(self, item, my_body):
         """ EDITOR CLICKS """
@@ -258,8 +302,6 @@ class GameEffects(object):
                 self.grid.change_room(self.grid.previous_room)
                 if my_body not in self.grid.items:
                     self.grid.items.append(my_body)
-
-
 
         # CAMERA
         elif item.name == "EDITOR7":
@@ -311,31 +353,6 @@ class GameEffects(object):
             my_body.gen_fat()
 
 
-    # --------------------------------------------------------------- #
-    #                          CLICK ON ITEM                          #
-    # --------------------------------------------------------------- #
-    def eat(self, item):
-        """ Eat that shit """
-        if not any(forbidden_type in item.type for forbidden_type in [
-            "my_body",
-            "editor",
-            "option",
-            "trigger",
-            "placeholder"
-        ]):
-            item.destroy(self.grid)
-
-    def terminate(self, item):
-        """ Eat that shit """
-        if not any(forbidden_type in item.type for forbidden_type in [
-            "my_body",
-            "editor",
-            "option",
-            "trigger",
-            "placeholder"
-        ]):
-            item.destroy(self.grid, fast=True)
-
 
     # --------------------------------------------------------------- #
     #                           CLICK ITEMS                           #
@@ -351,103 +368,114 @@ class GameEffects(object):
         # EDITOR CLICK
         self.editor(clicked_item, my_body)
 
-        # EAT MODE
-        # if clicked_item.edible:
+        # EAT
         if mouse_mode in ["eat"]:
-            self.eat(clicked_item)
+            if clicked_item.consumable:
+                self.eat_mode_click(clicked_item)
 
         # TERMINATE
         elif mouse_mode in ["EDITOR9"]:
             self.terminate(clicked_item)
 
+        # COLLECT
         elif mouse_mode in ["collect"]:
             if clicked_item.collectible:
-
-                # CHECK FOR EMPTY SLOT IN BAG
-                bag_placeholder = None
-                for empty_name, empty_item in my_body.options['bag'].options.items():
-                    if "bag_placeholder" in empty_name:
-                        bag_placeholder = empty_item
-                        break
-
-                # PRODUCE MODABLE ITEM AS OPTION
-                if bag_placeholder:
-                    item_as_option = self.produce(product_name=bag_placeholder.name,
-                                                  pos=bag_placeholder.pos,
-                                                  birth=0,
-                                                  add_to_items=False)
-                    item_as_option.name = clicked_item.name
-                    item_as_option.type = "option"
-                    item_as_option.modable = True
-                    item_as_option.color = my_body.options['bag'].color
-                    item_as_option.img = clicked_item.img
-
-                    del my_body.options['bag'].options[bag_placeholder.name]
-                    my_body.options['bag'].options[item_as_option.name] = item_as_option
-
-                    # ADD IN BAG
-                    # REMOVE FROM FIELD
-                    clicked_item.destroy(self.grid, fast=True)
-                else:
-                    print("No space in bag")
-
-        # BAG MOUSE MODE CLICK
-        # if mouse_mode == "bag":
-        #     self.collect(clicked_item, my_body)
+                self.collect(my_body, clicked_item)
 
         # ENTER
-        if "Enter" in clicked_item.name:
+        elif "Enter" in clicked_item.name:
             self.enter_effect(my_body, clicked_item)
 
         # OPTIONS
-        if clicked_item.type == "option":
+        elif clicked_item.type == "option":
+
             ober_item = clicked_item.get_ober_item(self.grid)
-            # SUICIDE
-            if clicked_item.name == "suicide":
-                if ober_item:
+            if ober_item:
+
+                # SUICIDE
+                if clicked_item.name == "suicide":
                     ober_item.destroy(self.grid)
 
-            # mitosis
-            elif clicked_item.name == "mitosis":
-                if ober_item:
+                # MITOSIS
+                elif clicked_item.name == "mitosis":
                     self.mitosis(ober_item)
+                # SMEL
+                elif clicked_item.name == "smel":
+                    print("Sniff hair")
+
+                # MEDI
+                elif clicked_item.name == "medi":
+                    print("Ommmm")
+                    ober_item.range += 3
+                    ober_item.vibe_speed += 3
+                    my_body.gen_radar_track(self.grid)
+                    ober_item.vibe_speed -= 3
+                    ober_item.range -= 3
+
+                # ACCELERATE
+                elif clicked_item.name == "move":
+                    ober_item.change_speed(0.1)
 
 
-    #         elif option.name == "move":
-    #             item.change_speed(0.1)
-
+    def execute_click_events(self, event, my_body, current_tile):
 
         # --------------------------------------------------------------- #
-        #                        CLICK SUB-OPTIONS                        #
+        #                        MOUSE MODE CLICK                         #
         # --------------------------------------------------------------- #
-        # elif option in self.grid.mode_vs_options[item.mode]:
-        #     # see
-        #     if option.name == "see":
-        #         print "Seen"
-        #
-        #     # smel
-        #     elif option.name == "smel":
-        #         print "Sniff hair"
-        #
-        #     # medi
-        #     elif option.name == "medi":
-        #         print "Ommmm"
-        #         item.range += 3
-        #         my_body.gen_radar_track(self.grid)
-        #         item.range -= 3
-        #
-        #     # audio
-        #     elif option.name == "audio":
-        #         print "Who"
-        #         item.range += 1
-        #
-        #     # eat
-        #     elif option.name == "eat":
-        #         print "Nom Nom Nom"
-        #
-        #     # touch
-        #     elif option.name == "touch":
-        #         print "Can't touch this"
-        #
-        #     # Close menu when sub-option selected
-        #     item.set_in_menu(self.grid, False)
+        if self.grid.mouse_mode in ["laino", "EDITOR2"]:
+            self.laino_mode_click(current_tile)
+
+        elif self.grid.mouse_mode in ["shit"]:
+            self.laino_mode_click(current_tile)
+
+        elif self.grid.mouse_mode in ["see", "EDITOR1"]:
+            self.see_mode_click(current_tile)
+
+        elif self.grid.mouse_mode in ["EDITOR3"]:
+            if current_tile not in self.grid.occupado_tiles and current_tile in self.grid.revealed_tiles:
+                self.produce("block_of_steel", current_tile)
+
+        elif self.grid.mouse_mode == "echo":
+            self.echo_mode_click(current_tile, my_body)
+
+        # --------------------------------------------------------------- #
+        #                          CLICK ON ITEMS                         #
+        # --------------------------------------------------------------- #
+        for item in self.grid.items:
+            if item.clickable and item.available:
+                if current_tile == item.pos:
+                    print("Clicked item: {0}".format(item.name))
+
+                    if item.type == "option":
+                        oitem = item.get_ober_item(self.grid)
+                        if not oitem.type == "inventory":
+                            oitem.close_menu(self.grid)
+
+                    if item.in_menu:
+                        if not item.mode and not (item.has_opts and item.type == "option"):
+                            item.close_menu(self.grid)
+                        else:
+                            item.revert_menu(self.grid)
+
+                    elif item.has_opts and not item.in_menu:
+                        item.open_menu(self.grid)
+
+                    # SET MOUSE MODE
+                    if item.modable:
+                        self.grid.set_mouse_mode(item)
+                        my_body.mode = item.name
+
+                    # CLICK ON ITEMS
+                    self.grid.event_effects.click_items(item, my_body)
+
+                    # CLEAN MOUSE
+                    if item.in_menu:
+                        self.grid.clean_mouse()
+                # MENU OFF
+                elif current_tile not in self.grid.adj_tiles(item.pos):
+                    if item.in_menu:
+                        if not item.type == "inventory":
+                            item.close_menu(self.grid)
+
+        # DEBUG PRINT
+        cir_utils.debug_print_click(self.grid, current_tile, my_body)

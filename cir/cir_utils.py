@@ -131,8 +131,8 @@ def debug_print_click(grid, current_circle, my_body):
     if grid.show_debug:
         print('')
         # print("DEBUG: click tile: {0}".format(current_circle))
-        print("DEBUG: mouse mode  : {0}".format(grid.mouse_mode))
-        print("DEBUG: my_body mode: {0}".format(my_body.mode))
+        # print("DEBUG: mouse mode  : {0}".format(grid.mouse_mode))
+        # print("DEBUG: my_body mode: {0}".format(my_body.mode))
         print("DEBUG: menu        : {0}".format(my_body.in_menu))
         print("DEBUG: grid items  : {0}".format(len(grid.items)))
         print("DEBUG: grid items  : {0}".format([(item.name, item.pos) for item in grid.items]))
@@ -143,7 +143,7 @@ def debug_print_click(grid, current_circle, my_body):
         # print("DEBUG: all tiles   : {0}".format(len(grid.tiles)))
         # print("DEBUG: current room: {0}".format(grid.current_room))
         # print("DEBUG: prev room   : {0}".format(grid.previous_room))
-        print("DEBUG: revealed    : {0}".format(grid.revealed_radius))
+        # print("DEBUG: revealed    : {0}".format(grid.revealed_radius))
         print('')
 
 

@@ -232,7 +232,7 @@ class Grid(object):
 
     def set_mouse_mode(self, option):
         self.mouse_mode = option.name
-        if option.img and not option.name == "echo":
+        if option.img:
             self.mouse_img = option.img
         else:
             self.mouse_img = None
@@ -242,14 +242,26 @@ class Grid(object):
     # --------------------------------------------------------------- #
     def capture_room(self):
         """ Takes a screenshot of the current room """
+
+        bag = [item for item in self.items if item.name == "bag"][0]
+        bag.available = False
+
+
+
         if not self.current_room == "999":
+
             width = (2 * self.tile_radius) + (8 * self.cathetus)
             height = 18 * self.tile_radius
             top = self.center_tile[0] - (width / 2)
             left = self.center_tile[1] - (height / 2)
             rect = self.pygame.Rect(top, left, width, height)
             sub = self.game_display.subsurface(rect)
+
             self.pygame.image.save(sub, self.maps_dir + str(self.current_room) + ".png")
+            # time.sleep(1)
+            # self.game_display.fill(self.white)
+            # self.pygame.display.update()
+
 
     def save_current_room(self):
         """ Saves the current room to self.rooms """
@@ -269,6 +281,8 @@ class Grid(object):
             "revealed_radius": [],
             }
         self.items = self.rooms[self.current_room]["items"]
+        self.items.extend(self.rooms["ALL"]["items"])
+        self.items = list(set(self.items))
         self.revealed_radius = self.rooms[self.current_room]["revealed_radius"]
         self.revealed_tiles = []
         self.set_rev_tiles()

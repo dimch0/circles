@@ -34,14 +34,14 @@ class Item(object):
         self.has_opts = False
         self.in_menu = False
         self.modable = False
+        self.available = True
+        self.clickable = True
+        self.collectible = False
+        self.consumable = False
         self.mode = self.name
         self.options = {}
         self.default_options = {}
         self.overlap = []
-
-        self.available = True
-        self.clickable = True
-        self.collectible = False
         # --------------------------------------------------------------- #
         #                              STATS                              #
         # --------------------------------------------------------------- #
@@ -112,18 +112,21 @@ class Item(object):
                     elif item.mode and (self.category in item.mode):
                         ober_item = item
         if ober_item:
-            print("Option belongs to {0}".format(ober_item.name))
+            print("INFO: Option belongs to {0}".format(ober_item.name))
         else:
-            print("No ober item found for {0}".format(self.name))
+            print("INFO: No ober item found for {0}".format(self.name))
         return ober_item
 
 
-
-
+    # --------------------------------------------------------------- #
+    #                                                                 #
+    #                           ITEM MENU                             #
+    #                                                                 #
+    # --------------------------------------------------------------- #
     def open_menu(self, grid):
 
         self.in_menu = True
-        print("In menu {0}".format(self.name))
+        print("INFO: Open menu {0}".format(self.name))
         olap_pos = []
         # SUB-OPTION
         ober_item = self.get_ober_item(grid)
@@ -152,8 +155,7 @@ class Item(object):
 
 
     def close_menu(self, grid):
-
-        print("Close menu {0}".format(self.name))
+        print("INFO: Close menu {0}".format(self.name))
         self.in_menu = False
         olap_pos = []
 
@@ -161,8 +163,6 @@ class Item(object):
             olap_pos.append(option.pos)
             if option in grid.items:
                 grid.items.remove(option)
-
-
         if olap_pos:
             for olap_item in grid.overlap:
                 if olap_item.pos in olap_pos:
@@ -205,71 +205,6 @@ class Item(object):
 
     # --------------------------------------------------------------- #
     #                                                                 #
-    #                           ITEM MENU                             #
-    #                                                                 #
-    # --------------------------------------------------------------- #
-    # def check_in_menu(self, grid, clicked_circle):
-    #     """
-    #     On a clicked circle - check if this item is in menu and set it
-    #     :param grid: grid instance
-    #     :param clicked_circle: the current clicekd circle
-    #     """
-    #
-    #     # Clicked on item
-    #     if self.clickable and self.available and self.options\
-    #             and not (self.name != "my_body" and grid.mouse_mode):
-    #
-    #         # If default mode:
-    #         if self.mode is self.name:
-    #             if not self.in_menu:
-    #                 self.in_menu = True
-    #             elif self.in_menu:
-    #                 self.in_menu = False
-    #
-    #         # If not default mode
-    #         elif self.mode is not self.name:
-    #             if self.in_menu:
-    #                 self.reset_mode()
-    #             elif not self.in_menu:
-    #                 self.in_menu = True
-    #
-    #     # Clicked outside
-    #     elif (clicked_circle != self.pos) and (clicked_circle not in grid.adj_tiles(self.pos)) and self.clickable:
-    #         self.in_menu = False
-
-
-    # --------------------------------------------------------------- #
-    #                                                                 #
-    #                            OVERLAP                              #
-    #                                                                 #
-    # --------------------------------------------------------------- #
-    # def overlapping(self, grid):
-    #     """
-    #     Checks for overlapping items
-    #     if in menu: creates a archive in self.overlap
-    #     if not in menu: restores from self.overlap
-    #     """
-    #     if self.in_menu:
-    #         for olapped_item in grid.items:
-    #             for option in self.options:
-    #                 if olapped_item.pos == option.pos and olapped_item.available:
-    #                     if not olapped_item in self.overlap:
-    #                         self.overlap.append(olapped_item)
-    #                         grid.overlap.append(olapped_item)
-    #                         olapped_item.clickable = False
-    #     else:
-    #         for opt in self.options:
-    #             if opt in grid.items:
-    #                 grid.items.remove(opt)
-    #         if self.overlap:
-    #             for item in self.overlap:
-    #                 item.clickable = True
-    #                 self.overlap.remove(item)
-    #                 if item in grid.overlap:
-    #                     grid.overlap.remove(item)
-
-    # --------------------------------------------------------------- #
-    #                                                                 #
     #                           INTERSECTS                            #
     #                                                                 #
     # --------------------------------------------------------------- #
@@ -278,7 +213,6 @@ class Item(object):
         cir1 = (self.pos, self.radius)
         cir2 = (item2.pos, item2.radius)
         return cir_utils.intersecting(cir1, cir2)
-
 
     # --------------------------------------------------------------- #
     #                                                                 #

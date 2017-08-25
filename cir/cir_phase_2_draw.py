@@ -151,19 +151,17 @@ class GameDrawer(object):
                                        item.pos,
                                        item.radius,
                                        0)
-                # if item.mode == "bag":
-                #     self.grid.pygame.draw.circle(self.grid.game_display,
-                #                                  self.grid.yellowgrey,
-                #                                  option.pos,
-                #                                  self.grid.tile_radius,
-                #                                  2)
+                if item.category == "bag":
+                    self.grid.pygame.draw.circle(self.grid.game_display,
+                                                 self.grid.yellow,
+                                                 item.pos,
+                                                 self.grid.tile_radius,
+                                                 1)
                 # Draw activation / deactivation here
 
                 self.draw_img(item)
                 self.draw_aim(current_tile, item)
                 self.draw_hover(current_tile, item.pos)
-
-
 
     def draw_timers(self, item):
         """ Draws current state of a timer """
@@ -185,7 +183,7 @@ class GameDrawer(object):
             aim_dir_idx = item.get_aiming_direction(self.grid, current_tile)[1]
             aim_tile = item.get_aiming_direction(self.grid, current_tile)[0]
 
-            bow_dist = item.radius / 8
+            bow_dist = item.radius / 4
             aim_rect = [item.rect[0] - bow_dist,
                         item.rect[1] - bow_dist,
                         item.rect[2] + bow_dist * 2,
@@ -207,7 +205,7 @@ class GameDrawer(object):
 
             if angle1 and angle2 and item.radius >= 2:
                 self.grid.pygame.draw.arc(self.grid.game_display,
-                                self.grid.white,
+                                item.color,
                                 aim_rect,
                                 math.radians(angle1),
                                 math.radians(angle2),
@@ -397,7 +395,6 @@ class GameDrawer(object):
 
                 # Items
                 self.draw_body(current_tile, item)
-
                 # Show movement track in color
                 if self.grid.show_movement and len(item.move_track) > 1:
                     self.draw_movement(item)
