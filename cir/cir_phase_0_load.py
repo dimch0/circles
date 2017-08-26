@@ -37,7 +37,7 @@ class DataLoader(object):
             elif klas in "item":
                 dummy = cir_item.Item()
         except Exception as e:
-            print("Error {0, could not create item of klas: {1}".format(e, klas))
+            print("ERROR: {0}, could not create item of klas: {1}".format(e, klas))
 
         try:
             for attribute, value in attributes_dict.items():
@@ -52,14 +52,14 @@ class DataLoader(object):
                             setattr(dummy, "default_color", value)
 
         except Exception as e:
-            print("Error, could not set attribute: {0}".format(e))
+            print("ERROR: Could not set attribute: {0}".format(e))
 
         dummy.radius = self.grid.tile_radius
         dummy.default_radius = dummy.radius
 
-        # DEBUG PRINT
-        # if self.grid.show_debug:
-        #     print("Loaded {0}".format(dummy.name))
+        # DEBUG
+        if self.grid.show_debug:
+            print("DEBUG: Loaded {0}".format(dummy.name))
         return dummy
 
     def set_col_idx(self, header):
@@ -130,9 +130,9 @@ class DataLoader(object):
                 if opt.has_opts:
                     for sub_opt, klas in self.load_data():
                         self.find_opts(sub_opt, opt)
-            # DEBUG
-            print("{0} options are: {1}".format(item.name, item.options))
-            # print(item.name, [opt.name + " - " + str([sopt.name for sopt in opt.options]) for opt in item.options])
+            if self.grid.show_debug:
+                print("DEBUG: {0} options are: {1}".format(item.name, item.options))
+                # print(item.name, [opt.name + " - " + str([sopt.name for sopt in opt.options]) for opt in item.options])
 
 
     def set_timers(self, item):
@@ -217,7 +217,7 @@ class DataLoader(object):
         Loading all modes, buttons, timers, my_body
         :return: my_body
         """
-        print("Loading items from {} ...".format(self.grid.scenario))
+        print("INFO: Loading items: {0}".format(self.grid.scenario))
         my_body = None
         for item, klas in self.load_data():
             # EDITOR

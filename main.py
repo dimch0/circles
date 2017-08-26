@@ -78,7 +78,7 @@ def game_loop(game_over, scenario="Scenario_1"):
     # --------------------------------------------------------------- #
     #                            GAME LOOP                            #
     # --------------------------------------------------------------- #
-    print("Game started")
+    print("INFO: Game started")
 
     while not grid.game_over:
         # CURRENT TILE

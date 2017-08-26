@@ -53,19 +53,19 @@ class GameDrawer(object):
         self.grid.game_display.fill(self.grid.fog_color)
 
 
-    def draw_hover(self, current_tile, tile):
+    def draw_hover(self, current_tile, item):
         """ Highlights the hovered tile """
         if current_tile:
-            if cir_utils.in_circle(tile, self.grid.tile_radius, current_tile):
-                if self.grid.current_room in ["999"] and not self.grid.game_menu:
+            if cir_utils.in_circle(item.pos, self.grid.tile_radius, current_tile):
+                if item.type == "map_tile":
                     radius = self.grid.tile_radius - 4
                 else:
                     radius = self.grid.tile_radius
                 self.grid.pygame.draw.circle(self.grid.game_display,
-                                   self.grid.white,
-                                   tile,
-                                   radius,
-                                   1)
+                                             self.grid.white,
+                                             item.pos,
+                                             radius,
+                                             1)
 
 
     def draw_img(self, item):
@@ -128,7 +128,7 @@ class GameDrawer(object):
                     self.draw_img(button)
                 if button.text:
                     self.grid.game_display.blit(button.text, button.text_rect)
-                self.draw_hover(current_tile, button.pos)
+                self.draw_hover(current_tile, button)
 
 
     def draw_body(self, current_tile, item):
@@ -161,7 +161,7 @@ class GameDrawer(object):
 
                 self.draw_img(item)
                 self.draw_aim(current_tile, item)
-                self.draw_hover(current_tile, item.pos)
+                self.draw_hover(current_tile, item)
 
     def draw_timers(self, item):
         """ Draws current state of a timer """

@@ -32,7 +32,7 @@ class Images(object):
         Setting attributes from the img directory
         and calculating the display metrics
         """
-        print "Loading images..."
+        print("INFO: Loading images")
         try:
             for root, dirs, files in os.walk(grid.img_dir, topdown=False):
                 for file in files:

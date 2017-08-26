@@ -100,27 +100,11 @@ def get_next_point(pointA, pointB, dist):
 
 
 def get_mirror_point(pointA, pointB):
-    print("Mirroring {0}".format(pointB))
-    # TESTING STILL IN PROGRESS
+    print("INFO: Mirroring {0}".format(pointB))
 
     dist = 2
-    pointA = pointA
-    pointB = pointB
-    pointC = get_next_point(pointA, pointB, dist)
-    pointD = None
-
-    ax = pointA[0]
-    ay = pointA[1]
-    bx = pointB[0]
-    by = pointB[1]
-    cx = pointC[0]
-    cy = pointC[1]
-
-    ddist = 10
-    d = math.sqrt((bx - cx) * (bx - cx)) + ((by - cy) * (by - cy))
-
     t = 1
-
+    pointC = get_next_point(pointA, pointB, dist)
     dx = int(((1 - t) * pointB[0]) + (t * pointC[0]))
     dy = int(((1 - t) * pointB[1]) + (t * pointC[1]))
 

@@ -291,8 +291,10 @@ class GameEffects(object):
 
                             map_tile = self.produce(product_name="trigger",
                                                     pos=pos)
+                            map_tile.type = "map_tile"
                             map_tile.img = image
                             map_tile.available = True
+
                             self.grid.revealed_tiles.append(pos)
 
                 except Exception as e:
@@ -448,7 +450,7 @@ class GameEffects(object):
 
                     if item.type == "option":
                         oitem = item.get_ober_item(self.grid)
-                        if not oitem.type == "inventory":
+                        if oitem.in_menu and not oitem.type in ["inventory"]:
                             oitem.close_menu(self.grid)
 
                     if item.in_menu:

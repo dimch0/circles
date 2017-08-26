@@ -96,7 +96,7 @@ class Grid(object):
                 for status, value in conf[section].items():
                     setattr(self, status, value)
         except Exception as e:
-            print("ERROR, could not set config: {0}".format(e))
+            print("ERROR: could not set config: {0}".format(e))
 
     def get_tiles(self):
         """
@@ -305,11 +305,11 @@ class Grid(object):
             if not self.game_menu and not self.current_room in ["999"]:
                 self.seconds_in_game += 1
                 if self.show_seconds:
-                    print("Game second: {0}".format(self.seconds_in_game))
+                    print("INFO: Game second: {0}".format(self.seconds_in_game))
             else:
                 self.seconds_in_pause += 1
                 if self.show_seconds:
-                    print("Pause second: {0}".format(self.seconds_in_pause))
+                    print("INFO: Pause second: {0}".format(self.seconds_in_pause))
 
     # --------------------------------------------------------------- #
     #                            BUTTONS                              #
@@ -327,13 +327,13 @@ class Grid(object):
         for map_file in os.listdir(self.maps_dir):
             map_file = os.path.join(self.maps_dir, map_file)
             os.remove(map_file)
-            print("Removed {0}".format(map_file))
+            print("INFO: Removed {0}".format(map_file))
 
 
     def game_exit(self):
         self.clean_tmp_maps()
         self.pygame.quit()
-        print("Game finished")
+        print("INFO: Game finished")
         quit()
 
 
