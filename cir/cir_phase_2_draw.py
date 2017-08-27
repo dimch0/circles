@@ -134,7 +134,7 @@ class GameDrawer(object):
     def draw_body(self, current_tile, item):
         """ Draws each body and it's image if available """
 
-        if item.available:
+        if item.available and item.clickable:
             blit_item = True
 
             if item.birth_track:

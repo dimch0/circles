@@ -128,6 +128,7 @@ class Item(object):
         self.in_menu = True
         print("INFO: Open menu {0}".format(self.name))
         olap_pos = []
+
         # SUB-OPTION
         ober_item = self.get_ober_item(grid)
         if ober_item:
@@ -155,27 +156,20 @@ class Item(object):
 
 
     def close_menu(self, grid):
+
         print("INFO: Close menu {0}".format(self.name))
         self.in_menu = False
-        olap_pos = []
 
+        # REMOVE OPTIONS
         for option in self.options.values():
-            olap_pos.append(option.pos)
             if option in grid.items:
                 grid.items.remove(option)
-        if olap_pos:
+        # OVERLAP
+        while grid.overlap:
             for olap_item in grid.overlap:
-                if olap_item.pos in olap_pos:
-                    olap_item.clickable = True
-                    if olap_item in grid.overlap:
-                        grid.overlap.remove(olap_item)
-
-        # for overlap_item in grid.overlap:
-        #     overlap_item.clickable = True
-        #     if overlap_item in grid.overlap:
-        #         grid.overlap.remove(overlap_item)
-
-
+                olap_item.clickable = True
+                if olap_item in grid.overlap:
+                    grid.overlap.remove(olap_item)
 
     def revert_menu(self, grid):
         self.close_menu(grid)
@@ -221,7 +215,8 @@ class Item(object):
     # --------------------------------------------------------------- #
     def destroy(self, grid, fast=False):
         if self in grid.items and not self.birth_track:
-            self.close_menu(grid)
+            if self.in_menu:
+                self.close_menu(grid)
             if hasattr(self, "lifespan"):
                 self.lifespan = None
             if hasattr(self, "vibe_freq"):

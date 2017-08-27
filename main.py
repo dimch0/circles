@@ -6,35 +6,35 @@
 # --------------------------------------------------------------- #
 #                            BUG FIXES                            #
 # --------------------------------------------------------------- #
-# TODO: Fix overlap revert clickable
-# TODO: Fix duplicate item collection
-# TODO: Fix eating below overlap with my_body
-# TODO: Fix opposite room transition
+# TODO: Try moving occupado tiles in update phase
+# TODO: Fix collect item
 # TODO: Create drop mode
 # TODO: Create editor class
 # TODO: Fix signal hit on intersecting
 # TODO: Fix rotation on direction
 # TODO: Fix mitosis lag
 # TODO: Fix signal lag
+# TODO: Refactor default values allocation
 # --------------------------------------------------------------- #
 #                            FEATURES                             #
 # --------------------------------------------------------------- #
+# TODO: Item generation
+# TODO: Parametrize scenario files
 # TODO: Create inside body view room 400
 # TODO: Create spirit mode NEW SCENARIO
 # TODO: Log statistics during a lifespan, calculate karma
 # TODO: Create save button
 # TODO: Create load button
 # TODO: Create installation .exe file
-# TODO: Item generation
 # --------------------------------------------------------------- #
-#                            ANIMATION                            #
+#                            COSMETICS                            #
 # --------------------------------------------------------------- #
 # TODO: Indicate uses / meters
 # TODO: Animate item activation
 # TODO: Animate demo
 # TODO: Add sounds
 # TODO: Log messages on screen
-# TODO: Fix constant hit bug - line 113 cir_item
+# TODO: Fixed constant hit bug - line 113 cir_item
 
 import time
 import pygame

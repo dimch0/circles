@@ -332,7 +332,7 @@ class GameEffects(object):
         elif item.name == "EDITOR15" and not self.grid.current_room == "999":
             trigger = self.produce(product_name="trigger",
                                    pos=self.grid.center_tile,
-                                   lifespan=1)
+                                   lifespan=2)
             trigger.range = 4
             trigger.vibe_speed = 3
             trigger.birth_time = 0
@@ -446,7 +446,7 @@ class GameEffects(object):
         for item in self.grid.items:
             if item.clickable and item.available:
                 if current_tile == item.pos:
-                    print("Clicked item: {0}".format(item.name))
+                    print("INFO: Clicked item: {0}".format(item.name))
 
                     if item.type == "option":
                         oitem = item.get_ober_item(self.grid)

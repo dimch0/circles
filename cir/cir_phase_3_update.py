@@ -13,7 +13,6 @@ class VarChanger(object):
     def __init__(self, grid=None):
         self.grid = grid
 
-
     # --------------------------------------------------------------- #
     #                                                                 #
     #                          BAG EFFECTS                            #
@@ -30,7 +29,6 @@ class VarChanger(object):
     #             if self.grid.mouse_mode == bag_item.name:
     #                 self.grid.clean_mouse()
     #             return 1
-
     # --------------------------------------------------------------- #
     #                                                                 #
     #                        ENTER ROOM EFFECTS                       #
@@ -49,7 +47,9 @@ class VarChanger(object):
             if not my_body in self.grid.items:
                 self.grid.items.append(my_body)
             # my_body.available = True
+
             my_body.pos = get_mirror_point(item.pos, self.grid.center_tile)
+
             self.grid.needs_to_change_room = False
             my_body.gen_birth_track()
 
@@ -147,17 +147,16 @@ class VarChanger(object):
         """
         if not self.grid.game_menu:
 
-            # My_body to room
-            # if not my_body in self.grid.items\
-            #         and self.grid.current_room not in ["999"]:
-            #     self.grid.items.append(my_body)
-
-            # Check bag
-            # if "bag" in self.grid.everything.keys():
-            #     self.empty_bag()
-
             # Items
             for item in self.grid.items:
+
+                if item.type != "my_body":
+                    if item.pos == my_body.pos:
+                        item.clickable = False
+                        item.radius = item.default_radius
+
+                    elif item.pos != my_body.pos and item not in self.grid.overlap:
+                        item.clickable = True
 
                 # Enter
                 if self.grid.needs_to_change_room:
