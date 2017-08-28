@@ -74,14 +74,15 @@ class GameEffects(object):
         """
         empty_tile = item.check_for_empty_adj_tile(self.grid)
         if empty_tile:
-            self.produce("placeholder", empty_tile)
+            placeholder = self.produce("placeholder", empty_tile)
+            placeholder.name = "placeholder" + str(time.time())
             searched_name = item.name.split()[0]
             new_copy = self.produce(searched_name, item.pos)
             new_copy.color = item.color
             new_copy.img = item.img
             new_copy.speed = item.speed
             new_copy.radius = item.radius
-            new_copy.name = "new copy"
+            new_copy.name = "new copy" + str(time.time())
             new_copy.birth_track = []
             new_copy.move_track = new_copy.move_to_tile(self.grid, empty_tile)
             if new_copy.lifespan:
@@ -94,7 +95,8 @@ class GameEffects(object):
         """
         for other_item in self.grid.items:
             print("START MITO", item.name)
-            if other_item.name == "new copy" + str(time.time()):
+
+            if "new copy" in other_item.name:
                 other_item.name = str(item.name + " - copy" + str(time.time()))
 
             if item.name in other_item.name or other_item.name in str(item.name + " - copy"):
@@ -102,6 +104,7 @@ class GameEffects(object):
                 if empty_tile:
                     if other_item.speed and not other_item.birth_track and not other_item.move_track:
                         self.cell_division(other_item)
+
             print("FINISH MITO", item.name)
 
     # --------------------------------------------------------------- #
@@ -149,13 +152,14 @@ class GameEffects(object):
 
     def terminate(self, item):
         """ Eat that shit """
-        if not any(forbidden_type in item.type for forbidden_type in [
+        non_terminates = [
             "my_body",
             "editor",
             "option",
             "trigger",
             "placeholder"
-        ]):
+            ]
+        if not any(non_terminate in item.type for non_terminate in non_terminates):
             item.destroy(self.grid, fast=True)
 
     # --------------------------------------------------------------- #
@@ -350,7 +354,7 @@ class GameEffects(object):
                 my_body.lifespan.restart()
 
         elif item.name == "EDITOR17":
-            self.grid.scenario = 'Scenario_2'
+            self.grid.scenario = 'scenario_2'
             self.grid.game_over = True
 
         elif item.name == "EDITOR18":

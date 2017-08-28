@@ -6,8 +6,6 @@
 # --------------------------------------------------------------- #
 #                            BUG FIXES                            #
 # --------------------------------------------------------------- #
-
-# TODO: Fix occupado
 # TODO: Fix signal
 # TODO: Fix signal hit on intersecting
 # TODO: Fix mitosis
@@ -83,6 +81,7 @@ def game_loop(game_over, scenario="scenario_1"):
     elif scenario == "scenario_3":
         grid.fog_color = grid.dark_grey
         grid.room_color = grid.black
+
 
     # --------------------------------------------------------------- #
     #                            GAME LOOP                            #

@@ -140,18 +140,19 @@ class VarChanger(object):
                 print("Hit!")
         return hit
 
+
     def signal_hit_effect(self, item):
         item.destroy(self.grid)
 
 
-    def update_occupado(self, item):
-
-        for tile in self.grid.playing_tiles:
+    def update_occupado(self):
+        for item in self.grid.items:
             if not item.type in ["signal", "trigger", "option"]:
-                circle_1 = (tile, self.grid.tile_radius)
-                circle_2 = (item.pos, self.grid.tile_radius)
-                if intersecting(circle_1, circle_2):
-                    self.grid.occupado_tiles[item.name] = tile
+                for tile in self.grid.playing_tiles:
+                    circle_1 = (tile, self.grid.tile_radius)
+                    circle_2 = (item.pos, self.grid.tile_radius)
+                    if intersecting(circle_1, circle_2):
+                        self.grid.occupado_tiles[item.name] = tile
 
     # --------------------------------------------------------------- #
     #                                                                 #
@@ -165,11 +166,11 @@ class VarChanger(object):
         """
 
         if not self.grid.game_menu:
-            # Items
+            # ITEMS
             for item in self.grid.items:
 
                 # OCCUPADO
-                self.update_occupado(item)
+                # self.update_occupado(item)
 
                 # MY_BODY OVERLAP
                 if item.type not in ["my_body", "option"]:
@@ -215,5 +216,7 @@ class VarChanger(object):
 
                     # CLEAN PLACEHOLDERS
                     self.grid.clean_placeholders(item)
+
+        self.update_occupado()
 
         self.grid.clock.tick(self.grid.fps)
