@@ -6,25 +6,29 @@
 # --------------------------------------------------------------- #
 #                            BUG FIXES                            #
 # --------------------------------------------------------------- #
-# TODO: Fix signal
+
 # TODO: Fix occupado
 # TODO: Make trigger dissapear
+# TODO: Fix signal
+# TODO: Fix signal hit on intersecting
 # TODO: Fix mitosis
+
 # TODO: Move effect to items and allocate to other classes
 # TODO: Remove bag and bodies from map
 # TODO: Fix collect item
+
 # TODO: Create drop mode
-# TODO: Create editor class
-# TODO: Fix signal hit on intersecting
-# TODO: Fix rotation on direction
-# TODO: Fix signal lag
+# TODO: Create trade mode
+# TODO: Create craft mode
+
 # TODO: Refactor default values allocation
 # TODO: Refactor for iterations
+# TODO: Create editor class
 # --------------------------------------------------------------- #
 #                            FEATURES                             #
 # --------------------------------------------------------------- #
-# TODO: Item generation
 # TODO: Parametrize scenario files
+# TODO: Item generation
 # TODO: Create save button
 # TODO: Create load button
 # TODO: Create inside body view room 400
@@ -34,7 +38,8 @@
 # --------------------------------------------------------------- #
 #                            COSMETICS                            #
 # --------------------------------------------------------------- #
-# TODO: Indicate uses / meters
+# TODO: Fix rotation on direction
+# TODO: Indicate uses / metrics
 # TODO: Animate item activation
 # TODO: Animate demo
 # TODO: Add sounds
