@@ -77,6 +77,12 @@ class DataLoader(object):
         :param images:  images instance
         :return: item object, type and category
         """
+        # if hasattr(self.grid, self.grid.scenario):
+            # TODO: Create a copy of all data file
+            # TODO: Extend this copy with the current scenario
+            # TODO: Use self.grid.data_file
+            # TODO: Remove file at the end
+
         with open(self.grid.data_file, 'rb') as csvfile:
             data = csv.reader(csvfile, delimiter=',')
             header = next(data)

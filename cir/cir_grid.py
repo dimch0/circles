@@ -12,7 +12,7 @@ from cir_utils import in_circle, inside_polygon, intersecting
 from math import sqrt
 
 
-CONFIG_JSON_FILE = "data/config.json"
+CONFIG_JSON_FILE = "config.json"
 
 class Grid(object):
     """ master class for the grid """
