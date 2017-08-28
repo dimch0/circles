@@ -6,6 +6,7 @@
 # --------------------------------------------------------------- #
 #                            BUG FIXES                            #
 # --------------------------------------------------------------- #
+# TODO: Fix signal
 # TODO: Fix occupado
 # TODO: Make trigger dissapear
 # TODO: Fix mitosis

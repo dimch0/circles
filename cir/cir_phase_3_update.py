@@ -59,8 +59,10 @@ class VarChanger(object):
     #                                                                 #
     # --------------------------------------------------------------- #
     def destruction(self, item):
+
         if not item.birth_track:
             item.available = False
+            print("INFO: destroying {0}".format(item.name))
             self.grid.items.remove(item)
             del self.grid.occupado_tiles[item.name]
             if item.name == "my_body":
