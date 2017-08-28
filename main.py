@@ -7,6 +7,7 @@
 #                            BUG FIXES                            #
 # --------------------------------------------------------------- #
 # TODO: Fix occupado
+# TODO: Make trigger dissapear
 # TODO: Fix mitosis
 # TODO: Move effect to items and allocate to other classes
 # TODO: Remove bag and bodies from map

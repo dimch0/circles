@@ -109,7 +109,7 @@ class GameEffects(object):
     #                         MOUSE MODES                             #
     #                                                                 #
     # --------------------------------------------------------------- #
-    # BAG ITEM CLICK
+    # DROP ITEM
     # def shit_mode_click(self, current_tile):
     #     """
     #     For mode 'shit', if clicked produces an item and exhausts mode uses
