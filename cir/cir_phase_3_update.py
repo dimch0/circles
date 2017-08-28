@@ -44,9 +44,9 @@ class VarChanger(object):
                 room_number))
 
             self.grid.change_room(room_number)
+
             if not my_body in self.grid.items:
                 self.grid.items.append(my_body)
-            # my_body.available = True
 
             my_body.pos = get_mirror_point(item.pos, self.grid.center_tile)
 
@@ -62,6 +62,7 @@ class VarChanger(object):
         if not item.birth_track:
             item.available = False
             self.grid.items.remove(item)
+            del self.grid.occupado_tiles[item.name]
             if item.name == "my_body":
                 self.grid.game_over = True
 
@@ -85,7 +86,7 @@ class VarChanger(object):
         if len(item.radar_track) == 1:
             legal_moves = []
             for item_adj in self.grid.adj_tiles(item.pos):
-                if item_adj in self.grid.playing_tiles and item_adj not in self.grid.occupado_tiles:
+                if item_adj in self.grid.playing_tiles and item_adj not in self.grid.occupado_tiles.values():
                     legal_moves.append(item_adj)
 
             if legal_moves:
@@ -126,7 +127,7 @@ class VarChanger(object):
     def signal_hit(self, item, my_body):
         hit = False
         if item.type == "signal":
-            if (item.pos in self.grid.occupado_tiles and not item.intersects(
+            if (item.pos in self.grid.occupado_tiles.values() and not item.intersects(
                     my_body)) or item.direction == None:
                 hit = True
                 print("Hit!")
@@ -134,6 +135,16 @@ class VarChanger(object):
 
     def signal_hit_effect(self, item):
         item.destroy(self.grid)
+
+
+    def update_occupado(self, item):
+
+        for tile in self.grid.playing_tiles:
+            if not item.type in ["signal", "trigger", "option"]:
+                circle_1 = (tile, self.grid.tile_radius)
+                circle_2 = (item.pos, self.grid.tile_radius)
+                if intersecting(circle_1, circle_2):
+                    self.grid.occupado_tiles[item.name] = tile
 
     # --------------------------------------------------------------- #
     #                                                                 #
@@ -146,29 +157,15 @@ class VarChanger(object):
         :param my_body: my_body instance
         """
 
-
-
         if not self.grid.game_menu:
-
-            self.grid.occupado_tiles = []
-
             # Items
             for item in self.grid.items:
 
+                # OCCUPADO
+                self.update_occupado(item)
 
-                for tile in self.grid.playing_tiles:
-                    if not item.type in ["signal", "trigger", "option"]:
-                        circle_1 = (tile, self.grid.tile_radius)
-                        circle_2 = (item.pos, self.grid.tile_radius)
-                        if intersecting(circle_1, circle_2):
-                            if not tile in self.grid.occupado_tiles:
-                                self.grid.occupado_tiles.append(tile)
-                                self.grid.occupado_tiles = list(set(self.grid.occupado_tiles))
-
-
-
-
-                if item.type != "my_body":
+                # MY_BODY OVERLAP
+                if item.type not in ["my_body", "option"]:
                     if item.pos == my_body.pos:
                         item.clickable = False
                         item.radius = item.default_radius
@@ -176,42 +173,40 @@ class VarChanger(object):
                     elif item.pos != my_body.pos and item not in self.grid.overlap:
                         item.clickable = True
 
-                # Enter
+                # ENTER
                 if self.grid.needs_to_change_room:
                     self.enter_room(my_body, item)
 
-                # Destruction
+                # DESTRUCTION
                 if item.marked_for_destruction:
                     self.destruction(item)
 
                 if item.available:
 
-                    # Timers
+                    # TIMERS
                     self.timer_effect(item)
 
-                    # Kissing circles
+                    # KISSING CIRCLES
                     if item.type == 'body':
                         for adj_item in self.grid.items:
                             if adj_item.type == 'body' and adj_item.pos in self.grid.adj_tiles(item.pos):
                                 item.gen_fat()
 
-                    # Movement
+                    # MOVEMENT
                     if item.direction != None:
                         item.gen_move_track(self.grid)
                     if item.move_track:
                         item.move()
-                    # Fat
+
+                    # FAT
                     if item.fat_track:
                         item.fat_track.pop(0)
 
-                    # Signal hit
+                    # SIGNAL HIT
                     if self.signal_hit(item, my_body):
                         self.signal_hit_effect(item)
 
-                    # Clean placeholders
+                    # CLEAN PLACEHOLDERS
                     self.grid.clean_placeholders(item)
-
-                    # Overlap
-                    # item.overlapping(self.grid)
 
         self.grid.clock.tick(self.grid.fps)

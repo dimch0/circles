@@ -385,7 +385,6 @@ class GameDrawer(object):
         #                   [(693, 450), (795, 510)],
         #                   grid.tile_radius * 2)
 
-
         for item in self.grid.items:
             if item.available:
 

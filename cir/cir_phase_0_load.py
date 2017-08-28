@@ -58,8 +58,9 @@ class DataLoader(object):
         dummy.default_radius = dummy.radius
 
         # DEBUG
-        if self.grid.show_debug:
-            print("DEBUG: Loaded {0}".format(dummy.name))
+        # if self.grid.show_debug:
+        #     print("DEBUG: Loaded {0}".format(dummy.name))
+
         return dummy
 
     def set_col_idx(self, header):
@@ -221,6 +222,7 @@ class DataLoader(object):
         print("INFO: Loading items: {0}".format(self.grid.scenario))
         my_body = None
         for item, klas in self.load_data():
+
             # EDITOR
             if item.type == "editor" and self.grid.show_editor:
                 item.room = "ALL"
@@ -234,7 +236,7 @@ class DataLoader(object):
             if item.type == "door":
                 self.set_door(item)
             # MY BODY
-            elif item.type == "my_body":
+            if item.type == "my_body":
                 my_body = item
                 my_body.gen_birth_track()
 

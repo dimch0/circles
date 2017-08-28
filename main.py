@@ -6,14 +6,15 @@
 # --------------------------------------------------------------- #
 #                            BUG FIXES                            #
 # --------------------------------------------------------------- #
-# TODO: Try moving occupado tiles in update phase
+# TODO: Fix occupado
+# TODO: Fix mitosis
+# TODO: Move effect to items and allocate to other classes
 # TODO: Remove bag and bodies from map
 # TODO: Fix collect item
 # TODO: Create drop mode
 # TODO: Create editor class
 # TODO: Fix signal hit on intersecting
 # TODO: Fix rotation on direction
-# TODO: Fix mitosis lag
 # TODO: Fix signal lag
 # TODO: Refactor default values allocation
 # TODO: Refactor for iterations
@@ -22,11 +23,11 @@
 # --------------------------------------------------------------- #
 # TODO: Item generation
 # TODO: Parametrize scenario files
+# TODO: Create save button
+# TODO: Create load button
 # TODO: Create inside body view room 400
 # TODO: Create spirit mode NEW SCENARIO
 # TODO: Log statistics during a lifespan, calculate karma
-# TODO: Create save button
-# TODO: Create load button
 # TODO: Create installation .exe file
 # --------------------------------------------------------------- #
 #                            COSMETICS                            #
@@ -50,7 +51,7 @@ from cir.cir_phase_3_update import VarChanger
 pygame.init()
 
 
-def game_loop(game_over, scenario="Scenario_1"):
+def game_loop(game_over, scenario="scenario_1"):
     # --------------------------------------------------------------- #
     #                        PHASE 0: LOADING                         #
     # --------------------------------------------------------------- #
@@ -71,9 +72,9 @@ def game_loop(game_over, scenario="Scenario_1"):
 
     if game_over:
         grid.rename_button("play", "replay")
-    if scenario == "Scenario_2":
+    if scenario == "scenario_2":
         grid.game_menu = False
-    elif scenario == "Scenario_3":
+    elif scenario == "scenario_3":
         grid.fog_color = grid.dark_grey
         grid.room_color = grid.black
 

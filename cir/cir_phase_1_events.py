@@ -55,6 +55,8 @@ class GameEffects(object):
         new_item.available = True
         new_item.gen_birth_track()
         if add_to_items:
+            if new_item.name in self.grid.occupado_tiles.keys():
+                new_item.name = new_item.name + str(time.time())
             self.grid.items.append(new_item)
 
         return new_item
@@ -73,8 +75,8 @@ class GameEffects(object):
         empty_tile = item.check_for_empty_adj_tile(self.grid)
         if empty_tile:
             self.produce("placeholder", empty_tile)
-            search_for_name = item.name.replace(" - copy", "")
-            new_copy = self.produce(search_for_name, item.pos)
+            searched_name = item.name.split()[0]
+            new_copy = self.produce(searched_name, item.pos)
             new_copy.color = item.color
             new_copy.img = item.img
             new_copy.speed = item.speed
@@ -92,10 +94,10 @@ class GameEffects(object):
         """
         for other_item in self.grid.items:
             print("START MITO", item.name)
-            if other_item.name == "new copy":
-                other_item.name = str(item.name + " - copy")
+            if other_item.name == "new copy" + str(time.time()):
+                other_item.name = str(item.name + " - copy" + str(time.time()))
 
-            if other_item.name in [item.name, str(item.name + " - copy")]:
+            if item.name in other_item.name or other_item.name in str(item.name + " - copy"):
                 empty_tile = other_item.check_for_empty_adj_tile(self.grid)
                 if empty_tile:
                     if other_item.speed and not other_item.birth_track and not other_item.move_track:
@@ -116,17 +118,17 @@ class GameEffects(object):
     #     for bag_item in self.grid.mode_vs_options["bag"]:
     #         if bag_item.name == mouse_mode:
     #             if bag_item.uses:
-    #                 if current_tile not in self.grid.occupado_tiles:
+    #                 if current_tile not in self.grid.occupado_tiles.values():
     #                     self.produce("shit", current_tile)
     #                     bag_item.uses -= 1
     #                     return 1
 
     def laino_mode_click(self, current_tile):
-        if current_tile not in self.grid.occupado_tiles and current_tile in self.grid.revealed_tiles:
+        if current_tile not in self.grid.occupado_tiles.values() and current_tile in self.grid.revealed_tiles:
             self.produce("product_shit", current_tile)
 
     def see_mode_click(self, current_tile):
-        if current_tile not in self.grid.occupado_tiles and current_tile in self.grid.revealed_tiles:
+        if current_tile not in self.grid.occupado_tiles.values() and current_tile in self.grid.revealed_tiles:
             new_observer = self.produce("observer", current_tile)
             new_observer.lifespan.restart()
 
@@ -434,7 +436,7 @@ class GameEffects(object):
             self.see_mode_click(current_tile)
 
         elif self.grid.mouse_mode in ["EDITOR3"]:
-            if current_tile not in self.grid.occupado_tiles and current_tile in self.grid.revealed_tiles:
+            if current_tile not in self.grid.occupado_tiles.values() and current_tile in self.grid.revealed_tiles:
                 self.produce("block_of_steel", current_tile)
 
         elif self.grid.mouse_mode == "echo":

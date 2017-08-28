@@ -51,7 +51,7 @@ class Grid(object):
         self.find_center_tile()
         self.playing_tiles = []
         self.set_playing_tiles()
-        self.occupado_tiles = []
+        self.occupado_tiles = {}
         self.revealed_radius = [((self.center_tile), self.tile_radius)]
         self.revealed_tiles = [self.center_tile]
         # -------------------------------------------------- #
@@ -264,8 +264,6 @@ class Grid(object):
     def load_current_room(self):
         """ loads the current room from self.rooms
         or an empty room if the number is not in self.rooms """
-
-
         if not self.current_room in self.rooms.keys():
             self.rooms[self.current_room] = {
             "items"          : [],
@@ -284,6 +282,7 @@ class Grid(object):
         self.capture_room()
         self.current_room = str(room)
         self.load_current_room()
+        self.occupado_tiles = {}
         self.needs_to_change_room = False
 
     # --------------------------------------------------------------- #

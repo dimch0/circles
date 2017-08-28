@@ -63,9 +63,7 @@ class MobileItem(Item):
         if self.direction != None and not self.move_track:
             target_tile = grid.adj_tiles(self.pos)[self.direction]
             if self.speed > 0:
-                if target_tile in grid.revealed_tiles\
-                   and ((self.type != "signal" and target_tile not in grid.occupado_tiles)\
-                        or self.type == "signal"):
+                if target_tile in grid.revealed_tiles and ((self.type != "signal" and target_tile not in grid.occupado_tiles.values()) or self.type == "signal"):
                         self.move_track = self.move_to_tile(grid, target_tile)
                 else:
                     self.direction = None
@@ -166,7 +164,7 @@ class MobileItem(Item):
         for idx, tile in enumerate(grid.adj_tiles(self.pos)):
             if not empty_tile:
                 if tile in grid.revealed_tiles:
-                    if tile not in grid.occupado_tiles:
+                    if tile not in grid.occupado_tiles.values():
                         empty_tile = tile
                         break
 
