@@ -8,7 +8,6 @@
 # --------------------------------------------------------------- #
 
 # TODO: Fix occupado
-# TODO: Make trigger dissapear
 # TODO: Fix signal
 # TODO: Fix signal hit on intersecting
 # TODO: Fix mitosis

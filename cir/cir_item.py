@@ -38,7 +38,7 @@ class Item(object):
         self.clickable = True
         self.collectible = False
         self.consumable = False
-        self.mode = self.name
+        self.mode = None
         self.options = {}
         self.default_options = {}
         self.overlap = []
@@ -108,7 +108,6 @@ class Item(object):
                 if not ober_item:
                     if self.category in item.name:
                         ober_item = item
-
                     elif item.mode and (self.category in item.mode):
                         ober_item = item
         if ober_item:

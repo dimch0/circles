@@ -59,12 +59,13 @@ class VarChanger(object):
     #                                                                 #
     # --------------------------------------------------------------- #
     def destruction(self, item):
-
         if not item.birth_track:
+
             item.available = False
             print("INFO: destroying {0}".format(item.name))
             self.grid.items.remove(item)
-            del self.grid.occupado_tiles[item.name]
+            if item.name in self.grid.occupado_tiles:
+                del self.grid.occupado_tiles[item.name]
             if item.name == "my_body":
                 self.grid.game_over = True
 
@@ -75,6 +76,7 @@ class VarChanger(object):
     # --------------------------------------------------------------- #
     def update_birth_track(self, item):
         """ Birth timer effect """
+
         if item.birth_track:
             item.birth_track.pop(0)
             item.birth_time.restart()
@@ -112,6 +114,7 @@ class VarChanger(object):
                         self.vibe_freq_over_effect(item)
 
         if item.birth_track:
+
             if item.birth_time and not isinstance(item.birth_time, float):
                 if item.birth_time.duration > 0:
                     item.birth_time.tick()
@@ -120,6 +123,8 @@ class VarChanger(object):
                         self.update_birth_track(item)
                 else:
                     item.birth_track.pop(0)
+            else:
+                item.birth_track = []
 
     # --------------------------------------------------------------- #
     #                                                                 #
