@@ -6,7 +6,7 @@
 #################                                                                                     #################
 #######################################################################################################################
 import random
-from cir_utils import get_mirror_point
+from cir_utils import get_mirror_point, intersecting
 
 class VarChanger(object):
 
@@ -145,10 +145,28 @@ class VarChanger(object):
         U[darting all variables before next iteration of the main loop
         :param my_body: my_body instance
         """
+
+
+
         if not self.grid.game_menu:
+
+            self.grid.occupado_tiles = []
 
             # Items
             for item in self.grid.items:
+
+
+                for tile in self.grid.playing_tiles:
+                    if not item.type in ["signal", "trigger", "option"]:
+                        circle_1 = (tile, self.grid.tile_radius)
+                        circle_2 = (item.pos, self.grid.tile_radius)
+                        if intersecting(circle_1, circle_2):
+                            if not tile in self.grid.occupado_tiles:
+                                self.grid.occupado_tiles.append(tile)
+                                self.grid.occupado_tiles = list(set(self.grid.occupado_tiles))
+
+
+
 
                 if item.type != "my_body":
                     if item.pos == my_body.pos:

@@ -51,7 +51,7 @@ class Grid(object):
         self.find_center_tile()
         self.playing_tiles = []
         self.set_playing_tiles()
-        self._occupado_tiles = []
+        self.occupado_tiles = []
         self.revealed_radius = [((self.center_tile), self.tile_radius)]
         self.revealed_tiles = [self.center_tile]
         # -------------------------------------------------- #
@@ -153,19 +153,19 @@ class Grid(object):
 
         return current_tile
 
-    @property
-    def occupado_tiles(self):
-        """ Playing tiles intersecting with any items """
-        result = []
-        for tile in self.playing_tiles:
-            for item in self.items:
-                if not item.type in ["signal", "trigger", "option"]:
-                    circle_1 = (tile, self.tile_radius)
-                    circle_2 = (item.pos, self.tile_radius)
-                    if intersecting(circle_1, circle_2):
-                        result.append(tile)
-        self._occupado_tiles = set(result)
-        return self._occupado_tiles
+    # @property
+    # def occupado_tiles(self):
+    #     """ Playing tiles intersecting with any items """
+    #     result = []
+    #     for tile in self.playing_tiles:
+    #         for item in self.items:
+    #             if not item.type in ["signal", "trigger", "option"]:
+    #                 circle_1 = (tile, self.tile_radius)
+    #                 circle_2 = (item.pos, self.tile_radius)
+    #                 if intersecting(circle_1, circle_2):
+    #                     result.append(tile)
+    #     self._occupado_tiles = set(result)
+    #     return self._occupado_tiles
 
 
     def set_playing_tiles(self):
@@ -243,11 +243,6 @@ class Grid(object):
     def capture_room(self):
         """ Takes a screenshot of the current room """
 
-        bag = [item for item in self.items if item.name == "bag"][0]
-        bag.available = False
-
-
-
         if not self.current_room == "999":
 
             width = (2 * self.tile_radius) + (8 * self.cathetus)
@@ -258,10 +253,6 @@ class Grid(object):
             sub = self.game_display.subsurface(rect)
 
             self.pygame.image.save(sub, self.maps_dir + str(self.current_room) + ".png")
-            # time.sleep(1)
-            # self.game_display.fill(self.white)
-            # self.pygame.display.update()
-
 
     def save_current_room(self):
         """ Saves the current room to self.rooms """

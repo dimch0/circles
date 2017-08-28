@@ -7,6 +7,7 @@
 #                            BUG FIXES                            #
 # --------------------------------------------------------------- #
 # TODO: Try moving occupado tiles in update phase
+# TODO: Remove bag and bodies from map
 # TODO: Fix collect item
 # TODO: Create drop mode
 # TODO: Create editor class
@@ -15,6 +16,7 @@
 # TODO: Fix mitosis lag
 # TODO: Fix signal lag
 # TODO: Refactor default values allocation
+# TODO: Refactor for iterations
 # --------------------------------------------------------------- #
 #                            FEATURES                             #
 # --------------------------------------------------------------- #
