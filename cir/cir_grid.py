@@ -5,14 +5,15 @@
 #                                                                                                                     #
 #                                                                                                                     #
 # ------------------------------------------------------------------------------------------------------------------- #
-import json
-import time
 import os
-from cir_utils import in_circle, inside_polygon, intersecting
+import time
+import json
+import shutil
 from math import sqrt
-
+from cir_utils import in_circle, inside_polygon
 
 CONFIG_JSON_FILE = "config.json"
+
 
 class Grid(object):
     """ master class for the grid """
@@ -27,6 +28,9 @@ class Grid(object):
         self.display_height = 0
         self.game_display = None
         self.set_config()
+        # self.data_file = None
+        self.scenario = scenario
+        self.set_data_file()
         self.game_menu = True
         self.game_over = False
         self.start_time = None
@@ -39,7 +43,8 @@ class Grid(object):
         self.loader = None
         self.var_changer = None
         self.event_effects = None
-        self.scenario = scenario
+
+
         # -------------------------------------------------- #
         #                        TILES                       #
         # -------------------------------------------------- #
@@ -81,7 +86,7 @@ class Grid(object):
         self.room_color = self.grey
 
     # --------------------------------------------------------------- #
-    #                           SETTINGS                              #
+    #                            SETTINGS                             #
     # --------------------------------------------------------------- #
     def set_game_display(self):
         self.game_display = self.pygame.display.set_mode((self.display_width, self.display_height))
@@ -99,6 +104,31 @@ class Grid(object):
                     setattr(self, status, value)
         except Exception as e:
             print("ERROR: could not set config: {0}".format(e))
+
+    def set_data_file(self):
+        """
+        Setting attributes from the config.json file
+        and calculating the display metrics
+        """
+        print("INFO: Loading data file")
+        try:
+            for root, dirs, files in os.walk(self.data_dir, topdown=False):
+                for file in files:
+                    data_file = os.path.join(root, file)
+                    file_name = os.path.splitext(file)[0]
+                    setattr(self, file_name, data_file)
+
+        except Exception as e:
+            print "ERROR, could not set data file as attribute:", e
+
+        if hasattr(self, self.scenario):
+            scenario_data_file = getattr(self, self.scenario)
+            print scenario_data_file
+            new_data_file = './tmp/data_file.csv'
+            if os.path.exists(new_data_file):
+                os.remove(new_data_file)
+            shutil.copy(scenario_data_file, new_data_file)
+            self.data_file = new_data_file
 
     def set_display(self):
         self.cathetus = int(sqrt(((2 * self.tile_radius) ** 2) - (self.tile_radius ** 2)))
@@ -196,7 +226,7 @@ class Grid(object):
 
     def clean_placeholders(self, item):
         """ Cleans the placeholders (eg for mitosis) """
-        if item.name == "placeholder":
+        if "placeholder" in item.name:
             for other_item in self.items:
                 if other_item.pos == item.pos:
                     try:

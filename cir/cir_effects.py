@@ -7,7 +7,6 @@
 # ------------------------------------------------------------------------------------------------------------------- #
 import os
 import time
-import cir_utils
 from cir_editor import Editor
 
 class GameEffects(object):
@@ -171,20 +170,20 @@ class GameEffects(object):
 
     # --------------------------------------------------------------- #
     #                                                                 #
-    #                         MOUSE MODES                             #
+    #                           ENTER ROOM                            #
     #                                                                 #
     # --------------------------------------------------------------- #
-
-    # DROP ITEM
-    # def shit_mode_click(self, current_tile):
-    #     """
-    #     For mode 'shit', if clicked produces an item and exhausts mode uses
-    #     :param current_tile: the clicked circle
-    #     """
-    #     for bag_item in self.grid.mode_vs_options["bag"]:
-    #         if bag_item.name == mouse_mode:
-    #             if bag_item.uses:
-    #                 if current_tile not in self.grid.occupado_tiles.values():
-    #                     self.produce("shit", current_tile)
-    #                     bag_item.uses -= 1
-    #                     return 1
+    def enter_room(self, my_body, item):
+        """
+        Changes the current room
+        :param my_body: my_body instance
+        :param item: enter / exit item
+        """
+        if my_body.pos in self.grid.adj_tiles(item.pos):
+            my_body.move_track = my_body.move_to_tile(self.grid, item.pos)
+            if my_body.in_menu:
+                my_body.close_menu(self.grid)
+            self.grid.needs_to_change_room = True
+        else:
+            print("it far")
+            item.in_menu = False

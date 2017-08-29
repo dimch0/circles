@@ -1,6 +1,6 @@
 {
   "CONSTANTS": {
-    "tile_radius": 30,
+    "tile_radius": 9,
     "rows"       : 24,
     "cols"       : 24,
     "fps"        : 60
@@ -19,11 +19,10 @@
   "PATHS": {
     "caption"  : "cir",
     "img_dir"  : "img",
-    "sound_dir": "sound",
     "data_dir" : "./data/",
-    "data_file": "./data/data.csv",
-    "font_file": "./fonts/HelveticaNeueMed.ttf",
-    "maps_dir" : "./tmp/maps/"
+    "sound_dir": "./sound/",
+    "maps_dir" : "./tmp/maps/",
+    "font_file": "./fonts/HelveticaNeueMed.ttf"
   },
 
   "COLORS": {

@@ -6,9 +6,7 @@
 #################                                                                                     #################
 #######################################################################################################################
 from cir_item_mobile import MobileItem
-from cir_item_timer import TimerItem
-from cir_utils import get_list_drange, get_mirror_point
-
+from cir_utils import get_list_drange
 
 
 class BodyItem(MobileItem):

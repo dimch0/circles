@@ -212,38 +212,6 @@ class GameDrawer(object):
                                 math.radians(angle2),
                                 aim_fat)
 
-            # r = item.radius
-            # if aim_dir_idx == 0:
-            #     x = item.pos[0] - (r / 2)
-            #     y = item.pos[1] - math.sqrt((r * r) + ((r / 2) * (r / 2)))
-            #     x1 = item.pos[0] + (r / 2)
-            #     y1 = item.pos[1] - math.sqrt((r * r) + ((r / 2) * (r / 2)))
-            # elif aim_dir_idx == 1:
-            #     x = item.pos[0] + (r / 2)
-            #     y = item.pos[1] - math.sqrt((r * r) + ((r / 2) * (r / 2)))
-            #     x1 = item.pos[0] - (r / 2)
-            #     y1 = item.pos[1]
-            #
-            # else:
-            #     x = 0
-            #     y = 0
-            #     x1 = 0
-            #     y1 = 0
-            #
-            #
-            #
-            # POS = (int(x), int(y))
-            # POS2 = item.pos
-            # POS3 = (int(x1), int(y1))
-            #
-            # self.grid.pygame.draw.lines(self.grid.game_display,
-            #                        self.grid.white,
-            #                        False,
-            #                        [POS, POS2, POS3],
-            #                        1)
-
-
-
     def draw_grid(self):
         """ Shows the grid tiles in white """
         for tile in self.grid.tiles:

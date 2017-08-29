@@ -19,6 +19,22 @@ class DataLoader(object):
         self.grid = grid
 
 
+    def set_data_file(self):
+        """ Extends the current scenario data file with the all data file """
+        lines_to_write = []
+        with open(self.grid.all, 'rb') as all:
+            data_all = csv.reader(all, delimiter=',')
+            header_all = next(data_all)
+            for line in data_all:
+                if line and not line == header_all:
+                    lines_to_write.append(line)
+                    print line
+
+        with open(self.grid.data_file, 'ab') as data_file:
+            writer = csv.writer(data_file)
+            for line in lines_to_write:
+                writer.writerow(line)
+
     def create_new_item(self, klas, attributes_dict):
         """
         This function creates an item of a class by the given klas.
@@ -74,15 +90,9 @@ class DataLoader(object):
     def load_data(self):
         """
         This function loads all items and menu options from external data file.
-        :param images:  images instance
+        :param images: images instance
         :return: item object, type and category
         """
-        # if hasattr(self.grid, self.grid.scenario):
-            # TODO: Create a copy of all data file
-            # TODO: Extend this copy with the current scenario
-            # TODO: Use self.grid.data_file
-            # TODO: Remove file at the end
-
         with open(self.grid.data_file, 'rb') as csvfile:
             data = csv.reader(csvfile, delimiter=',')
             header = next(data)
@@ -225,6 +235,7 @@ class DataLoader(object):
         Loading all modes, buttons, timers, my_body
         :return: my_body
         """
+        self.set_data_file()
         print("INFO: Loading items: {0}".format(self.grid.scenario))
         my_body = None
         for item, klas in self.load_data():

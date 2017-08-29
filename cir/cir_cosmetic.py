@@ -19,7 +19,6 @@ class Fonts(object):
         self.large = grid.pygame.font.Font(grid.font_file, grid.tile_radius * 2)
 
 
-
 class Images(object):
     """
     A class containing all images

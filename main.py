@@ -6,18 +6,14 @@
 # --------------------------------------------------------------- #
 #                            BUG FIXES                            #
 # --------------------------------------------------------------- #
-# TODO: Fix mitosis
+# TODO: Fix mitosis / movement to occupado
+# TODO: Fix collect
+# TODO: Fix map update
 # TODO: Fix signal birth gen
 # TODO: Remove bag and bodies from map
-# TODO: Fix collect item
-
-# TODO: Refactor effects - move to other classes
-# TODO: Refactor default values assignment
-# TODO: Refactor / combine for-cycles
 # --------------------------------------------------------------- #
 #                            FEATURES                             #
 # --------------------------------------------------------------- #
-# TODO: Parametrize scenario files
 # TODO: Create drop mode
 # TODO: Create trade mode
 # TODO: Create craft mode
@@ -45,7 +41,7 @@ from cir.cir_game_menu import game_menu
 from cir.cir_cosmetic import Images, Fonts
 from cir.cir_grid import Grid
 from cir.cir_phase_0_load import DataLoader
-from cir.cir_phase_1_events import GameEffects
+from cir.cir_phase_1_events import GameEvents
 from cir.cir_phase_2_draw import GameDrawer
 from cir.cir_phase_3_update import VarChanger
 pygame.init()
@@ -59,7 +55,7 @@ def game_loop(game_over, scenario="scenario_1"):
     grid.images        = Images(grid)
     grid.fonts         = Fonts(grid)
     grid.loader        = DataLoader(grid)
-    grid.event_effects = GameEffects(grid)
+    grid.event_effects = GameEvents(grid)
     grid.drawer        = GameDrawer(grid)
     grid.var_changer   = VarChanger(grid)
     grid.start_time    = time.time()
