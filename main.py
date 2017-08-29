@@ -7,6 +7,7 @@
 #                            BUG FIXES                            #
 # --------------------------------------------------------------- #
 # TODO: Fix mitosis / movement to occupado
+# TODO: Fix no ober item found
 # TODO: Fix collect
 # TODO: Fix map update
 # TODO: Fix signal birth gen
@@ -35,15 +36,10 @@
 # TODO: Log messages on screen
 # TODO: Fixed constant hit bug - line 113 cir_item
 
-import time
 import pygame
 from cir.cir_game_menu import game_menu
-from cir.cir_cosmetic import Images, Fonts
 from cir.cir_grid import Grid
 from cir.cir_phase_0_load import DataLoader
-from cir.cir_phase_1_events import GameEvents
-from cir.cir_phase_2_draw import GameDrawer
-from cir.cir_phase_3_update import VarChanger
 pygame.init()
 
 
@@ -52,28 +48,25 @@ def game_loop(game_over, scenario="scenario_1"):
     #                        PHASE 0: LOADING                         #
     # --------------------------------------------------------------- #
     grid               = Grid(pygame, scenario)
-    grid.images        = Images(grid)
-    grid.fonts         = Fonts(grid)
     grid.loader        = DataLoader(grid)
-    grid.event_effects = GameEvents(grid)
-    grid.drawer        = GameDrawer(grid)
-    grid.var_changer   = VarChanger(grid)
-    grid.start_time    = time.time()
     my_body            = grid.loader.load_items()
 
     grid.clean_tmp_maps()
 
     if not my_body in grid.items:
         grid.items.append(my_body)
-
     if game_over:
         grid.rename_button("play", "replay")
-    if scenario == "scenario_2":
-        grid.game_menu = False
-    elif scenario == "scenario_3":
+
+    # SET COLOR THEME
+    if scenario == "scenario_1":
+        grid.fog_color = grid.dark_grey
+        grid.room_color = grid.grey
+
+    elif scenario == "scenario_2":
         grid.fog_color = grid.dark_grey
         grid.room_color = grid.black
-
+        grid.game_menu = False
 
     # --------------------------------------------------------------- #
     #                            GAME LOOP                            #
@@ -107,7 +100,7 @@ def game_loop(game_over, scenario="scenario_1"):
         # --------------------------------------------------------------- #
         #                          PHASE 3: CHANGE VARS                   #
         # --------------------------------------------------------------- #
-        grid.var_changer.change_vars(my_body)
+        grid.updater.update_vars(my_body)
 
     # GAME OVER
     if grid.game_over:

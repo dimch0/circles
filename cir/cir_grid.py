@@ -41,7 +41,7 @@ class Grid(object):
         self.fonts = None
         self.drawer = None
         self.loader = None
-        self.var_changer = None
+        self.updater = None
         self.event_effects = None
 
 
@@ -82,8 +82,8 @@ class Grid(object):
         # -------------------------------------------------- #
         #                        THEME                       #
         # -------------------------------------------------- #
-        self.fog_color = self.dark_grey
-        self.room_color = self.grey
+        self.fog_color = None
+        self.room_color = None
 
     # --------------------------------------------------------------- #
     #                            SETTINGS                             #
@@ -110,7 +110,6 @@ class Grid(object):
         Setting attributes from the config.json file
         and calculating the display metrics
         """
-        print("INFO: Loading data file")
         try:
             for root, dirs, files in os.walk(self.data_dir, topdown=False):
                 for file in files:
@@ -123,7 +122,6 @@ class Grid(object):
 
         if hasattr(self, self.scenario):
             scenario_data_file = getattr(self, self.scenario)
-            print scenario_data_file
             new_data_file = './tmp/data_file.csv'
             if os.path.exists(new_data_file):
                 os.remove(new_data_file)

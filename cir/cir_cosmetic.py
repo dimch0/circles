@@ -7,6 +7,42 @@
 #######################################################################################################################
 import os
 
+class Colors(object):
+    """
+    A class containing all the colors
+    """
+    @staticmethod
+    def set_colors(grid):
+        print("INFO: Loading colors")
+        colors = {
+                  "black"      : [0, 0, 0],
+                  "dark_grey"  : [155, 145, 155],
+                  "grey"       : [175, 165, 175],
+                  "ungrey"     : [195, 195, 195],
+                  "light_grey" : [220, 215, 220],
+                  "white"      : [255, 255, 255],
+                  "unpink"     : [240, 222, 221],
+                  "pastel_pink": [255, 209, 220],
+                  "pink"       : [254, 215, 252],
+                  "purp"       : [244, 195, 253],
+                  "cyclama"    : [255, 107, 155],
+                  "red"        : [243, 93, 115],
+                  "blue"       : [188, 255, 254],
+                  "azure"      : [23, 251, 244],
+                  "green"      : [210, 255, 191],
+                  "electric"   : [63, 255, 0],
+                  "light_gelb" : [255, 255, 221],
+                  "gelb"       : [252, 255, 190],
+                  "neapo"      : [255, 255, 140],
+                  "yellow"     : [255, 255, 0],
+                  "yellowgrey" : [238, 224, 112],
+                  "orange"     : [254, 179, 113],
+                  "brown"      : [203, 169, 131],
+                  "ggelb"      : [252, 194, 27]
+                  }
+        for color_name, color_value in colors.items():
+            setattr(grid, color_name, color_value)
+
 
 class Fonts(object):
     """

@@ -8,7 +8,7 @@
 import random
 from cir_utils import get_mirror_point, intersecting
 
-class VarChanger(object):
+class VarUpdater(object):
 
     def __init__(self, grid=None):
         self.grid = grid
@@ -159,7 +159,7 @@ class VarChanger(object):
     #                           CHANGE VARS                           #
     #                                                                 #
     # --------------------------------------------------------------- #
-    def change_vars(self, my_body):
+    def update_vars(self, my_body):
         """
         U[darting all variables before next iteration of the main loop
         :param my_body: my_body instance

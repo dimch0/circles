@@ -100,8 +100,8 @@ def get_next_point(pointA, pointB, dist):
 
 
 def get_mirror_point(pointA, pointB):
-    print("INFO: Mirroring {0}".format(pointB))
 
+    # print("INFO: Mirroring {0}".format(pointB))
     dist = 2
     t = 1
     pointC = get_next_point(pointA, pointB, dist)

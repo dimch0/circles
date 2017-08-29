@@ -1,15 +1,15 @@
 {
   "CONSTANTS": {
-    "tile_radius": 9,
+    "tile_radius": 8,
     "rows"       : 24,
     "cols"       : 24,
     "fps"        : 60
     },
 
   "VISIBILITY": {
-    "show_debug"        : 1,
+    "show_debug"        : 0,
     "show_grid"         : 0,
-    "show_seconds"      : 0,
+    "show_seconds"      : 1,
     "show_movement"     : 0,
     "show_playing_tiles": 0,
     "show_tile_names"   : 0,
@@ -23,32 +23,5 @@
     "sound_dir": "./sound/",
     "maps_dir" : "./tmp/maps/",
     "font_file": "./fonts/HelveticaNeueMed.ttf"
-  },
-
-  "COLORS": {
-    "black"      : [0, 0, 0],
-    "dark_grey"  : [155, 145, 155],
-    "grey"       : [175, 165, 175],
-    "ungrey"     : [195, 195, 195],
-    "light_grey" : [220, 215, 220],
-    "white"      : [255, 255, 255],
-    "unpink"     : [240, 222, 221],
-    "pastel_pink": [255, 209, 220],
-    "pink"       : [254, 215, 252],
-    "purp"       : [244, 195, 253],
-    "cyclama"    : [255, 107, 155],
-    "red"        : [243, 93, 115],
-    "blue"       : [188, 255, 254],
-    "azure"      : [23, 251, 244],
-    "green"      : [210, 255, 191],
-    "electric"   : [63, 255, 0],
-    "light_gelb" : [255, 255, 221],
-    "gelb"       : [252, 255, 190],
-    "neapo"      : [255, 255, 140],
-    "yellow"     : [255, 255, 0],
-    "yellowgrey" : [238, 224, 112],
-    "orange"     : [254, 179, 113],
-    "brown"      : [203, 169, 131],
-    "ggelb"      : [252, 194, 27]
-    }
+  }
 }

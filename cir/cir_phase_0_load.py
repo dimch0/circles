@@ -6,12 +6,16 @@
 #################                                                                                     #################
 #######################################################################################################################
 import csv
+import time
 import cir_item
 import cir_item_body
 import cir_item_timer
 import cir_item_button
 import cir_utils
-
+from cir_cosmetic import Images, Fonts, Colors
+from cir.cir_phase_1_events import GameEvents
+from cir.cir_phase_2_draw import GameDrawer
+from cir.cir_phase_3_update import VarUpdater
 
 class DataLoader(object):
 
@@ -28,7 +32,6 @@ class DataLoader(object):
             for line in data_all:
                 if line and not line == header_all:
                     lines_to_write.append(line)
-                    print line
 
         with open(self.grid.data_file, 'ab') as data_file:
             writer = csv.writer(data_file)
@@ -232,28 +235,29 @@ class DataLoader(object):
 
     def load_items(self):
         """
-        Loading all modes, buttons, timers, my_body
+        Loading cosmetics, grid helpers, items, timers, buttons, my_body
         :return: my_body
         """
+        Colors.set_colors(self.grid)
         self.set_data_file()
+        self.grid.images        = Images(self.grid)
+        self.grid.fonts         = Fonts(self.grid)
+        self.grid.event_effects = GameEvents(self.grid)
+        self.grid.drawer        = GameDrawer(self.grid)
+        self.grid.updater       = VarUpdater(self.grid)
+        self.grid.start_time    = time.time()
+
         print("INFO: Loading items: {0}".format(self.grid.scenario))
         my_body = None
         for item, klas in self.load_data():
-
-            # EDITOR
             if item.type == "editor" and self.grid.show_editor:
                 item.room = "ALL"
-            # SET ROOM
             self.set_room(item)
-            # SET_TIMERS
             self.set_timers(item)
-            # SET OPTS
             self.set_opts(item)
-            # SET DOOR
             if item.type == "door":
                 self.set_door(item)
-            # MY BODY
-            if item.type == "my_body":
+            elif item.type == "my_body":
                 my_body = item
                 my_body.gen_birth_track()
 
