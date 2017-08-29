@@ -13,12 +13,12 @@
     "show_movement"     : 0,
     "show_playing_tiles": 0,
     "show_tile_names"   : 0,
-    "show_editor"       : 1
+    "show_editor"       : 0
   },
 
   "PATHS": {
     "caption"  : "cir",
-    "img_dir"  : "img",
+    "img_dir"  : "./img/",
     "data_dir" : "./data/",
     "sound_dir": "./sound/",
     "maps_dir" : "./tmp/maps/",
