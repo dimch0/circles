@@ -181,13 +181,14 @@ class GameDrawer(object):
         """ Aim """
         if item.mode == "echo" and item.available:
             aim_dir_idx = item.get_aiming_direction(self.grid, current_tile)[1]
-            aim_tile = item.get_aiming_direction(self.grid, current_tile)[0]
+            # aim_tile = item.get_aiming_direction(self.grid, current_tile)[0]
 
-            bow_dist = item.radius / 4
-            aim_rect = [item.rect[0] - bow_dist,
-                        item.rect[1] - bow_dist,
-                        item.rect[2] + bow_dist * 2,
-                        item.rect[3] + bow_dist * 2]
+            aim_fat  = item.radius / 10
+            aim_dist = item.radius / 4
+            aim_rect = [item.rect[0] - aim_dist,
+                        item.rect[1] - aim_dist,
+                        item.rect[2] + aim_dist * 2,
+                        item.rect[3] + aim_dist * 2]
 
             angle1, angle2 = None, None
             if aim_dir_idx == 0:
@@ -203,13 +204,13 @@ class GameDrawer(object):
             elif aim_dir_idx == 5:
                 angle1, angle2 = 120, 180
 
-            if angle1 and angle2 and item.radius >= 2:
+            if angle1 and angle2 and item.radius >= aim_fat:
                 self.grid.pygame.draw.arc(self.grid.game_display,
                                 item.color,
                                 aim_rect,
                                 math.radians(angle1),
                                 math.radians(angle2),
-                                2)
+                                aim_fat)
 
             # r = item.radius
             # if aim_dir_idx == 0:

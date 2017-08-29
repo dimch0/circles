@@ -165,7 +165,7 @@ class DataLoader(object):
 
     def set_door(self, item):
         door = cir_item.Item()
-        door.type = "other side"
+        door.type = "door"
         door.name = "Enter_" + item.room
         door.room = item.name.replace("Enter_", "")
         door.pos = cir_utils.get_mirror_point(item.pos, self.grid.center_tile)

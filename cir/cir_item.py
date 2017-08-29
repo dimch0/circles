@@ -124,8 +124,11 @@ class Item(object):
     # --------------------------------------------------------------- #
     def open_menu(self, grid):
 
-        self.in_menu = True
         print("INFO: Open menu {0}".format(self.name))
+
+        grid.clean_mouse()
+        self.mode = None
+        self.in_menu = True
         olap_pos = []
 
         # SUB-OPTION
@@ -175,26 +178,6 @@ class Item(object):
         self.options = self.default_options
         self.open_menu(grid)
         self.mode = None
-
-
-    def set_mode(self, grid, option):
-        """
-        Changes the mode of an item to a given options
-        :param option: an option item of a menu
-        :param grid: grid instance
-        """
-        self.mode = option.name
-        # if option.options:
-        #     self.options = option.options
-
-    def reset_mode(self):
-        """
-        Resets the item to default mode
-        """
-        self.mode = self.name
-        self.color = self.default_color
-        self.img = self.default_img
-        self.options = self.default_options
 
     # --------------------------------------------------------------- #
     #                                                                 #

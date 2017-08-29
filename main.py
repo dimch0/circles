@@ -6,24 +6,21 @@
 # --------------------------------------------------------------- #
 #                            BUG FIXES                            #
 # --------------------------------------------------------------- #
-# TODO: Fix signal hit on intersecting
 # TODO: Fix mitosis
-
-# TODO: Move effect to items and allocate to other classes
+# TODO: Fix signal birth gen
 # TODO: Remove bag and bodies from map
 # TODO: Fix collect item
 
-# TODO: Create drop mode
-# TODO: Create trade mode
-# TODO: Create craft mode
-
-# TODO: Refactor default values allocation
-# TODO: Refactor for iterations
-# TODO: Create editor class
+# TODO: Refactor effects - move to other classes
+# TODO: Refactor default values assignment
+# TODO: Refactor / combine for-cycles
 # --------------------------------------------------------------- #
 #                            FEATURES                             #
 # --------------------------------------------------------------- #
 # TODO: Parametrize scenario files
+# TODO: Create drop mode
+# TODO: Create trade mode
+# TODO: Create craft mode
 # TODO: Item generation
 # TODO: Create save button
 # TODO: Create load button

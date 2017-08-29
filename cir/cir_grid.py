@@ -80,7 +80,9 @@ class Grid(object):
         self.fog_color = self.dark_grey
         self.room_color = self.grey
 
-
+    # --------------------------------------------------------------- #
+    #                           SETTINGS                              #
+    # --------------------------------------------------------------- #
     def set_game_display(self):
         self.game_display = self.pygame.display.set_mode((self.display_width, self.display_height))
 
@@ -98,10 +100,20 @@ class Grid(object):
         except Exception as e:
             print("ERROR: could not set config: {0}".format(e))
 
-    def get_tiles(self):
-        """
-        Generating the grid tiles
-        """
+    def set_display(self):
+        self.cathetus = int(sqrt(((2 * self.tile_radius) ** 2) - (self.tile_radius ** 2)))
+        self.display_width = (self.cathetus * self.cols) + (self.tile_radius * 2)
+        self.display_height = self.rows * self.tile_radius
+        self.set_game_display()
+        self.pygame.display.set_caption(self.caption)
+        self.gen_tiles()
+
+    # --------------------------------------------------------------- #
+    #                             TILES                               #
+    # --------------------------------------------------------------- #
+    def gen_tiles(self):
+        """ Generating the grid tiles """
+
         self.tiles = []
         for x in range(0, self.cols + 1):
             for y in range(1, self.rows):
@@ -113,19 +125,9 @@ class Grid(object):
                         self.tiles.append(centre)
                         self.tile_dict[str(x) + '_' + str(y)] = centre
 
-    def set_display (self):
-        ##### Setting the display metrics ####
-        self.cathetus = int(sqrt(((2 * self.tile_radius) ** 2) - (self.tile_radius ** 2)))
-        self.display_width = (self.cathetus * self.cols) + (self.tile_radius * 2)
-        self.display_height = self.rows * self.tile_radius
-        self.set_game_display()
-        self.pygame.display.set_caption(self.caption)
-        self.get_tiles()
-
     def find_center_tile(self):
-        """
-        :return: the center tile (x, y) of the grid
-        """
+        """ :return: the center tile (x, y) of the grid """
+
         mid_x = int(self.display_width / 2)
         mid_y = int(self.display_height / 2)
         for tile in self.tiles:
@@ -150,28 +152,10 @@ class Grid(object):
         elif not current_tile and self.previous_tile:
             current_tile = self.previous_tile
 
-
         return current_tile
 
-    # @property
-    # def occupado_tiles(self):
-    #     """ Playing tiles intersecting with any items """
-    #     result = []
-    #     for tile in self.playing_tiles:
-    #         for item in self.items:
-    #             if not item.type in ["signal", "trigger", "option"]:
-    #                 circle_1 = (tile, self.tile_radius)
-    #                 circle_2 = (item.pos, self.tile_radius)
-    #                 if intersecting(circle_1, circle_2):
-    #                     result.append(tile)
-    #     self._occupado_tiles = set(result)
-    #     return self._occupado_tiles
-
-
     def set_playing_tiles(self):
-        """
-        Defining the playing tiles
-        """
+        """ Defining the playing tiles """
         hex_board = [
             (self.center_tile[0], self.center_tile[1] - (9 * self.tile_radius)),
             (self.center_tile[0] + (5 * self.cathetus), self.center_tile[1] - (4 * self.tile_radius)),
@@ -201,7 +185,6 @@ class Grid(object):
                 (self_x - self.cathetus, self_y - self.tile_radius)
                ]
 
-
     def set_rev_tiles(self):
         """ Reveal tiles in the revealed areas (radius) """
         for tile in self.tiles:
@@ -210,7 +193,6 @@ class Grid(object):
                     if in_circle(rev_rad[0], rev_rad[1], tile):
                         self.revealed_tiles.append(tile)
         return self.revealed_tiles
-
 
     def clean_placeholders(self, item):
         """ Cleans the placeholders (eg for mitosis) """
@@ -311,7 +293,6 @@ class Grid(object):
             if button.name == old_name:
                 button.name = new_name
 
-
     # --------------------------------------------------------------- #
     #                            GAME QUIT                            #
     # --------------------------------------------------------------- #
@@ -321,15 +302,8 @@ class Grid(object):
             os.remove(map_file)
             print("INFO: Removed {0}".format(map_file))
 
-
     def game_exit(self):
         self.clean_tmp_maps()
         self.pygame.quit()
         print("INFO: Game finished")
         quit()
-
-
-# 8_4, 9_3
-# 15_3, 16_4
-# 8_20, 9_21
-# 15_21, 16_20
