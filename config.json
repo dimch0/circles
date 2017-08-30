@@ -1,6 +1,6 @@
 {
   "CONSTANTS": {
-    "tile_radius": 8,
+    "tile_radius": 20,
     "rows"       : 24,
     "cols"       : 24,
     "fps"        : 60

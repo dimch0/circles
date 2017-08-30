@@ -13,22 +13,7 @@ class VarUpdater(object):
     def __init__(self, grid=None):
         self.grid = grid
 
-    # --------------------------------------------------------------- #
-    #                                                                 #
-    #                          BAG EFFECTS                            #
-    #                                                                 #
-    # --------------------------------------------------------------- #
-    # def empty_bag(self):
-    #     """ Empties the bag if an item's uses are exhausted """
-    #     for bag_item in self.grid.mode_vs_options["bag"]:
-    #         if bag_item.uses == 0:
-    #             self.grid.mode_vs_options["bag"].remove(bag_item)
-    #             empty_placeholder = copy.deepcopy(self.grid.everything["bag_placeholder"])
-    #             empty_placeholder.color = self.grid.everything["bag_placeholder"].color
-    #             self.grid.mode_vs_options["bag"].append(empty_placeholder)
-    #             if self.grid.mouse_mode == bag_item.name:
-    #                 self.grid.clean_mouse()
-    #             return 1
+
     # --------------------------------------------------------------- #
     #                                                                 #
     #                        ENTER ROOM EFFECTS                       #
@@ -85,9 +70,9 @@ class VarUpdater(object):
     def vibe_freq_over_effect(self, item):
         """ Vibe frequency timer over effect """
         if not item.move_track:
-            item.gen_radar_track(self.grid)
+            item.gen_vibe_track(self.grid)
 
-        if len(item.radar_track) == 1:
+        if len(item.vibe_track) == 1:
             legal_moves = []
             for item_adj in self.grid.adj_tiles(item.pos):
                 if item_adj in self.grid.playing_tiles and item_adj not in self.grid.occupado_tiles.values():
@@ -116,9 +101,9 @@ class VarUpdater(object):
         if item.birth_track:
 
             if item.birth_time and not isinstance(item.birth_time, float):
+                
                 if item.birth_time.duration > 0:
                     item.birth_time.tick()
-                    # performance - gen birth track without birth_time = faster birth
                     if item.birth_time.is_over:
                         self.update_birth_track(item)
                 else:
@@ -195,16 +180,16 @@ class VarUpdater(object):
                     self.timer_effect(item)
 
                     # KISSING CIRCLES
-                    if item.type == 'body':
-                        for adj_item in self.grid.items:
-                            if adj_item.type == 'body' and adj_item.pos in self.grid.adj_tiles(item.pos):
-                                item.gen_fat()
+                    # if item.type == 'body':
+                    #     for adj_item in self.grid.items:
+                    #         if adj_item.type == 'body' and adj_item.pos in self.grid.adj_tiles(item.pos):
+                    #             item.gen_fat()
 
                     # MOVEMENT
                     if item.direction != None:
                         item.gen_move_track(self.grid)
                     if item.move_track:
-                        item.move()
+                        item.update_pos()
 
                     # FAT
                     if item.fat_track:

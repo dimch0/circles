@@ -127,7 +127,7 @@ class GameEvents(GameEffects):
         elif event.key == self.grid.pygame.K_SPACE:
 
             # GEN RADAR
-            my_body.gen_radar_track(self.grid)
+            my_body.gen_vibe_track(self.grid)
 
             # DEBUG PRINT
             cir_utils.debug_print_space(self.grid, my_body)

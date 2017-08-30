@@ -358,7 +358,7 @@ class GameDrawer(object):
             if item.available:
 
                 # Radar
-                if item.radar_track:
+                if item.vibe_track:
                     self.draw_radar(item)
 
                 # Items

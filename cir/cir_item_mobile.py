@@ -83,11 +83,11 @@ class MobileItem(Item):
             ]
             for idx, arrow in enumerate(arrows):
                 if event.key == arrow:
-                    if not (self.radar_track or self.rot_revert or self.rot_track):
+                    if not (self.vibe_track or self.rot_revert or self.rot_track):
                         self.direction = idx
                         self.gen_rot_track(self.direction)
 
-    def move(self):
+    def update_pos(self):
         """
         :return: move self.pos per point in move_track
         """

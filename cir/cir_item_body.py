@@ -40,7 +40,7 @@ class BodyItem(MobileItem):
     #                             RADAR                               #
     #                                                                 #
     # --------------------------------------------------------------- #
-    def gen_radar_track(self, grid):
+    def gen_vibe_track(self, grid):
         """
         :param grid: grid object
         :return: a list of tuples for each radar CIR iteration
@@ -48,7 +48,7 @@ class BodyItem(MobileItem):
         (31, 10), (32, 10), (33, 10)
         """
 
-        if not self.move_track and not self.radar_track and not self.birth_track:
+        if not self.move_track and not self.vibe_track and not self.birth_track:
             radar_thickness = range(1, (grid.tile_radius / 3) + 1)
             radar_thickness.reverse()
             radar_limit = (grid.tile_radius * 2 * self.range) + grid.tile_radius + 1
@@ -61,21 +61,21 @@ class BodyItem(MobileItem):
                 for rad_delim in rad_delimiter_list:
                     result.append(thick)
 
-            self.radar_track = zip(radar_radius, result)
+            self.vibe_track = zip(radar_radius, result)
             self.gen_fat()
-        return self.radar_track
+        return self.vibe_track
 
     def radar(self, grid):
         """
         :param grid: grid object
         :return: the radius and thickness for each wave
-        from the radar_track list and removes after returning it
+        from the vibe_track list and removes after returning it
         Also updates the revealed tiles
         """
         radar_radius, thick = None, None
-        if self.radar_track:
-            radar_radius, thick = self.radar_track[0]
-            self.radar_track.pop(0)
+        if self.vibe_track:
+            radar_radius, thick = self.vibe_track[0]
+            self.vibe_track.pop(0)
 
         # Mark tiles as revealed
         revealed = ((self.pos), radar_radius)

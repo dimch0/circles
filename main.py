@@ -7,7 +7,7 @@
 #                            BUG FIXES                            #
 # --------------------------------------------------------------- #
 # TODO: Fix  movement to occupado / mitosis
-# TODO: Fix menu - no ober item found
+# TODO: Fix menu - no ober item found / body moves out of option - still not clickable
 # TODO: Fix collect
 # TODO: Fix map update
 # TODO: Fix signal birth gen

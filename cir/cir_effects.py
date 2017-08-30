@@ -166,7 +166,7 @@ class GameEffects(object):
         self.grid.loader.set_timers(trigger)
         trigger.vibe_freq = None
         trigger.birth_track = []
-        trigger.gen_radar_track(self.grid)
+        trigger.gen_vibe_track(self.grid)
 
     # --------------------------------------------------------------- #
     #                                                                 #
