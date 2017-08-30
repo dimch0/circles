@@ -7,15 +7,17 @@
 #######################################################################################################################
 import csv
 import time
+
 import cir_item
 import cir_item_body
 import cir_item_timer
 import cir_item_button
 import cir_utils
+
 from cir_cosmetic import Images, Fonts, Colors
-from cir.cir_phase_1_events import GameEvents
-from cir.cir_phase_2_draw import GameDrawer
-from cir.cir_phase_3_update import VarUpdater
+from cir_phase_1_events import GameEvents
+from cir_phase_2_draw import GameDrawer
+from cir_phase_3_update import VarUpdater
 
 class DataLoader(object):
 
@@ -233,35 +235,54 @@ class DataLoader(object):
         return new_item
 
 
-    def load_items(self):
+    def load_game(self):
         """
-        Loading cosmetics, grid helpers, items, timers, buttons, my_body
+        Main loading execution of all items, cosmetics and preconditions
         :return: my_body
         """
+
         Colors.set_colors(self.grid)
-        self.set_data_file()
         self.grid.images        = Images(self.grid)
         self.grid.fonts         = Fonts(self.grid)
+        self.set_data_file()
         self.grid.event_effects = GameEvents(self.grid)
         self.grid.drawer        = GameDrawer(self.grid)
         self.grid.updater       = VarUpdater(self.grid)
         self.grid.start_time    = time.time()
 
-        print("INFO: Loading items: {0}".format(self.grid.scenario))
         my_body = None
+
+        print("INFO: Loading items: {0}".format(self.grid.scenario))
         for item, klas in self.load_data():
+
             if item.type == "editor" and self.grid.show_editor:
                 item.room = "ALL"
-            self.set_room(item)
-            self.set_timers(item)
-            self.set_opts(item)
-            if item.type == "door":
+            elif item.type == "door":
                 self.set_door(item)
             elif item.type == "my_body":
                 my_body = item
                 my_body.gen_birth_track()
 
+            self.set_room(item)
+            self.set_timers(item)
+            self.set_opts(item)
+
         self.set_buttons()
         self.grid.load_current_room()
+
+        if not my_body in self.grid.items:
+            self.grid.items.append(my_body)
+
+
+        if self.grid.scenario == "scenario_1":
+            self.grid.fog_color = self.grid.dark_grey
+            self.grid.room_color = self.grid.grey
+
+        elif self.grid.scenario == "scenario_2":
+            self.grid.fog_color = self.grid.dark_grey
+            self.grid.room_color = self.grid.black
+            self.grid.game_menu = False
+
+        self.grid.clean_tmp_maps()
 
         return my_body

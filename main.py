@@ -6,8 +6,8 @@
 # --------------------------------------------------------------- #
 #                            BUG FIXES                            #
 # --------------------------------------------------------------- #
-# TODO: Fix mitosis / movement to occupado
-# TODO: Fix no ober item found
+# TODO: Fix  movement to occupado / mitosis
+# TODO: Fix menu - no ober item found
 # TODO: Fix collect
 # TODO: Fix map update
 # TODO: Fix signal birth gen
@@ -43,30 +43,19 @@ from cir.cir_phase_0_load import DataLoader
 pygame.init()
 
 
-def game_loop(game_over, scenario="scenario_2"):
+def game_loop(game_over, scenario="scenario_1"):
     # --------------------------------------------------------------- #
     #                        PHASE 0: LOADING                         #
     # --------------------------------------------------------------- #
     grid               = Grid(pygame, scenario)
     grid.loader        = DataLoader(grid)
-    my_body            = grid.loader.load_items()
+    my_body            = grid.loader.load_game()
 
-    grid.clean_tmp_maps()
 
-    if not my_body in grid.items:
-        grid.items.append(my_body)
+
+
     if game_over:
         grid.rename_button("play", "replay")
-
-    # SET COLOR THEME
-    if scenario == "scenario_1":
-        grid.fog_color = grid.dark_grey
-        grid.room_color = grid.grey
-
-    elif scenario == "scenario_2":
-        grid.fog_color = grid.dark_grey
-        grid.room_color = grid.black
-        grid.game_menu = False
 
     # --------------------------------------------------------------- #
     #                            GAME LOOP                            #
