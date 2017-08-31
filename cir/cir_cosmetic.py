@@ -13,7 +13,7 @@ class Colors(object):
     """
     @staticmethod
     def set_colors(grid):
-        print("INFO: Loading colors")
+        grid.logger.log(grid.logger.INFO, "Loading colors")
         colors = {
                   "black"      : [0, 0, 0],
                   "dark_grey"  : [155, 145, 155],
@@ -67,7 +67,7 @@ class Images(object):
         Setting attributes from the img directory
         and calculating the display metrics
         """
-        print("INFO: Loading images")
+        grid.logger.log(grid.logger.INFO, "Loading images")
         try:
             for root, dirs, files in os.walk(grid.img_dir, topdown=False):
                 for file in files:
@@ -84,4 +84,4 @@ class Images(object):
                         setattr(self, name, image)
 
         except Exception as e:
-            print "ERROR, could not set image as attribute:", e
+            grid.logger.log(grid.logger.ERROR, "could not set image as attribute: {0}".format(e))

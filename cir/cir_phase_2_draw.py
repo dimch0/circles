@@ -100,13 +100,13 @@ class GameDrawer(object):
                                revealed[0],
                                int(revealed[1]),
                                0)
-            printed = revealed
-            if printed:
-                for to_be_printed in self.grid.revealed_radius:
-                    if printed[0] == to_be_printed[0]:
-                        if printed[1] < to_be_printed[1]:
-                            if printed in self.grid.revealed_radius:
-                                self.grid.revealed_radius.remove(printed)
+            drawn = revealed
+            if drawn:
+                for to_be_drawn in self.grid.revealed_radius:
+                    if drawn[0] == to_be_drawn[0]:
+                        if drawn[1] < to_be_drawn[1]:
+                            if drawn in self.grid.revealed_radius:
+                                self.grid.revealed_radius.remove(drawn)
 
 
     def draw_menu_buttons(self, current_tile):

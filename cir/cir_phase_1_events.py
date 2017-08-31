@@ -53,7 +53,7 @@ class GameEvents(GameEffects):
 
     def echo_mode_click(self, current_tile, my_body):
         """ Signal effect """
-        print("Echo!")
+        self.grid.logger.log(self.grid.logger.INFO, "Echo!")
         if not cir_utils.in_circle(my_body.pos, my_body.radius, current_tile) and not my_body.move_track:
             signal = self.produce("signal",
                                   my_body.pos,
@@ -63,7 +63,7 @@ class GameEvents(GameEffects):
 
     def eat_mode_click(self, item):
         """ Eat that shit """
-        print("Nom nom nom")
+        self.grid.logger.log(self.grid.logger.INFO, "Nom nom nom")
         item.destroy(self.grid)
 
     def terminate_mode_click(self, current_tile):
@@ -105,8 +105,7 @@ class GameEvents(GameEffects):
             bag.options[item_as_option.name] = item_as_option
             current_tile.destroy(self.grid, fast=True)
         else:
-            print("No space in bag")
-
+            self.grid.logger.log(self.grid.logger.INFO, "No space in bag")
 
     # --------------------------------------------------------------- #
     #                                                                 #
@@ -129,22 +128,22 @@ class GameEvents(GameEffects):
             # GEN RADAR
             my_body.gen_vibe_track(self.grid)
 
-            # DEBUG PRINT
+            # DEBUG
             cir_utils.debug_print_space(self.grid, my_body)
         # --------------------------------------------------------------- #
         #                             NUMBERS                             #
         # --------------------------------------------------------------- #
         elif event.key == self.grid.pygame.K_1:
-            print(">>>> key 1")
+            self.grid.logger.log(self.grid.logger.INFO, "Key 1 pressed")
             self.grid.change_room("12_12")
         elif event.key == self.grid.pygame.K_2:
-            print(">>>> key 2")
+            self.grid.logger.log(self.grid.logger.INFO, "Key 2 pressed")
             self.grid.change_room("12_10")
         elif event.key == self.grid.pygame.K_3:
-            print(">>>> key 3")
+            self.grid.logger.log(self.grid.logger.INFO, "Key 3 pressed")
             self.grid.change_room("12_8")
         elif event.key == self.grid.pygame.K_4:
-            print(">>>> key 4")
+            self.grid.logger.log(self.grid.logger.INFO, "Key 4 pressed")
             self.grid.change_room("12_6")
         # --------------------------------------------------------------- #
         #                             OTHER                               #
@@ -186,7 +185,8 @@ class GameEvents(GameEffects):
         for item in self.grid.items:
             if item.clickable and item.available:
                 if current_tile == item.pos:
-                    print("INFO: Clicked item: {0}".format(item.name))
+
+                    self.grid.logger.log(self.grid.logger.INFO, "Clicked item: {0}".format(item.name))
 
                     # OPTION CLICKED
                     if item.type == "option":
@@ -206,12 +206,12 @@ class GameEvents(GameEffects):
 
                             # SMEL
                             elif item.name == "smel":
-                                print("Sniff hair")
+                                self.grid.logger.log(self.grid.logger.INFO, "Sniff hair")
 
                             # MEDI
                             elif item.name == "medi":
                                 self.satellite()
-                                print("Ommmm")
+                                self.grid.logger.log(self.grid.logger.INFO, "Ommmm")
                                 # ober_item.range += 3
                                 # ober_item.vibe_speed += 3
                                 # my_body.gen_radar_track(self.grid)
@@ -267,5 +267,5 @@ class GameEvents(GameEffects):
                         if not item.type == "inventory":
                             item.close_menu(self.grid)
 
-        # DEBUG PRINT
+        # DEBUG
         cir_utils.debug_print_click(self.grid, current_tile, my_body)

@@ -99,8 +99,6 @@ class GameEffects(object):
         :param item: item to copy
         """
         for other_item in self.grid.items:
-            print("INFO: MITO", item.name)
-
             if "new copy" in other_item.name:
                 other_item.name = str(item.name + " - copy" + str(time.time()))
 
@@ -125,24 +123,33 @@ class GameEffects(object):
             self.grid.change_room("999")
             diff = 10
             try:
-                for root, dirs, files in os.walk(self.grid.maps_dir):
+                for root, dirs, files in os.walk(self.grid.tmp_dir):
+
                     for file in files:
-                        img_file = os.path.join(root, file)
-                        name = os.path.splitext(file)[0]
-                        image = self.grid.pygame.image.load(img_file)
-                        image_height = self.grid.tile_radius * 2
-                        image = self.grid.pygame.transform.scale(
-                            image, (
-                                image_height - diff,
-                                image_height))
-                        pos = self.grid.tile_dict[name]
-                        map_tile = self.produce(product_name="trigger", pos=pos)
-                        map_tile.type = "map_tile"
-                        map_tile.img = image
-                        map_tile.available = True
-                        self.grid.revealed_tiles.append(pos)
+
+                        if file.endswith("png"):
+
+
+                            img_file = os.path.join(root, file)
+                            name = os.path.splitext(file)[0]
+                            image = self.grid.pygame.image.load(img_file)
+
+                            image_height = self.grid.tile_radius * 2
+                            image = self.grid.pygame.transform.scale(
+                                image, (
+                                    image_height - diff,
+                                    image_height))
+                            pos = self.grid.tile_dict[name]
+                            map_tile = self.produce(product_name="trigger", pos=pos)
+
+                            map_tile.type = "map_tile"
+                            map_tile.img = image
+                            map_tile.available = True
+                            self.grid.revealed_tiles.append(pos)
+
             except Exception as e:
-                print("ERROR, could not show map - ", e)
+                self.grid.logger.log(self.grid.logger.ERROR, "Could not show map: {0}".format(e))
+
 
         else:
             self.grid.change_room(self.grid.previous_room)
@@ -185,5 +192,5 @@ class GameEffects(object):
                 my_body.close_menu(self.grid)
             self.grid.needs_to_change_room = True
         else:
-            print("it far")
+            self.grid.logger.log(self.grid.logger.INFO, "Door far")
             item.in_menu = False

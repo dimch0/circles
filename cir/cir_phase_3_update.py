@@ -24,9 +24,9 @@ class VarUpdater(object):
         if "Enter_" in item.name and my_body.pos == item.pos:
 
             room_number = item.name.replace("Enter_", "")
-            print("Leaving room : '{0}' \nEntering room: '{1}'".format(
-                self.grid.current_room,
-                room_number))
+            self.grid.logger.log(
+                self.grid.logger.INFO, "Leaving room: {0}".format(
+                    self.grid.current_room))
 
             self.grid.change_room(room_number)
 
@@ -47,7 +47,7 @@ class VarUpdater(object):
         if not item.birth_track:
 
             item.available = False
-            print("INFO: destroying {0}".format(item.name))
+            self.grid.logger.log(self.grid.logger.INFO, "Destroying: {0}".format(item.name))
             self.grid.items.remove(item)
             if item.name in self.grid.occupado_tiles:
                 del self.grid.occupado_tiles[item.name]
@@ -122,7 +122,7 @@ class VarUpdater(object):
             if (item.pos in self.grid.occupado_tiles.values() and not item.intersects(
                     my_body)) or item.direction == None:
                 hit = True
-                print("Hit!")
+                self.grid.logger.log(self.grid.logger.INFO, "Hit!")
         return hit
 
 
@@ -158,7 +158,7 @@ class VarUpdater(object):
                 # self.update_occupado(item)
 
                 # MY_BODY OVERLAP
-                if item.type not in ["my_body", "option"]:
+                if item.type not in ["my_body", "option", "map_tile"]:
                     if item.pos == my_body.pos:
                         item.clickable = False
                         item.radius = item.default_radius

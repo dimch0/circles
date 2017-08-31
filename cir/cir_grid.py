@@ -43,6 +43,7 @@ class Grid(object):
         self.loader = None
         self.updater = None
         self.event_effects = None
+        self.logger = None
 
 
         # -------------------------------------------------- #
@@ -103,7 +104,7 @@ class Grid(object):
                 for status, value in conf[section].items():
                     setattr(self, status, value)
         except Exception as e:
-            print("ERROR: could not set config: {0}".format(e))
+            self.logger.log(self.logger.ERROR, "Could not set config: {0}".format(e))
 
     def set_data_file(self):
         """
@@ -118,7 +119,7 @@ class Grid(object):
                     setattr(self, file_name, data_file)
 
         except Exception as e:
-            print "ERROR, could not set data file as attribute:", e
+            self.logger.log(self.logger.ERROR, "Could not set data file as attribute: {0}".format(e))
 
         if hasattr(self, self.scenario):
             scenario_data_file = getattr(self, self.scenario)
@@ -231,7 +232,7 @@ class Grid(object):
                         item.available = False
                         self.items.remove(item)
                     except Exception as e:
-                        print("ERROR Could not remove placeholder", e)
+                        self.logger.log(self.logger.ERROR, "ERROR Could not remove placeholder: {0}".format(e))
 
     # --------------------------------------------------------------- #
     #                             MOUSE                               #
@@ -262,7 +263,7 @@ class Grid(object):
             rect = self.pygame.Rect(top, left, width, height)
             sub = self.game_display.subsurface(rect)
 
-            self.pygame.image.save(sub, self.maps_dir + str(self.current_room) + ".png")
+            self.pygame.image.save(sub, self.tmp_dir + str(self.current_room) + ".png")
 
     def save_current_room(self):
         """ Saves the current room to self.rooms """
@@ -274,7 +275,7 @@ class Grid(object):
     def load_current_room(self):
         """ loads the current room from self.rooms
         or an empty room if the number is not in self.rooms """
-        print("DEBUG: Cleaning occupado")
+        self.logger.log(self.logger.INFO, "Loading room: {0}".format(self.current_room))
         self.occupado_tiles = {}
         if not self.current_room in self.rooms.keys():
             self.rooms[self.current_room] = {
@@ -307,11 +308,11 @@ class Grid(object):
             if not self.game_menu and not self.current_room in ["999"]:
                 self.seconds_in_game += 1
                 if self.show_seconds:
-                    print("INFO: Game second: {0}".format(self.seconds_in_game))
+                    self.logger.log(self.logger.INFO, "Game second: {0}".format(self.seconds_in_game))
             else:
                 self.seconds_in_pause += 1
                 if self.show_seconds:
-                    print("INFO: Pause second: {0}".format(self.seconds_in_pause))
+                    self.logger.log(self.logger.INFO, "Pause second: {0}".format(self.seconds_in_pause))
 
     # --------------------------------------------------------------- #
     #                            BUTTONS                              #
@@ -322,16 +323,16 @@ class Grid(object):
                 button.name = new_name
 
     # --------------------------------------------------------------- #
-    #                            GAME QUIT                            #
+    #                            GAME EXIT                            #
     # --------------------------------------------------------------- #
-    def clean_tmp_maps(self):
-        for map_file in os.listdir(self.maps_dir):
-            map_file = os.path.join(self.maps_dir, map_file)
-            os.remove(map_file)
-            print("INFO: Removed {0}".format(map_file))
+    def clean_tmp_dir(self):
+        for file in os.listdir(self.tmp_dir):
+            file = os.path.join(self.tmp_dir, file)
+            os.remove(file)
+            self.logger.log(self.logger.INFO, "Removed: {0}".format(file))
 
     def game_exit(self):
-        self.clean_tmp_maps()
+        self.clean_tmp_dir()
         self.pygame.quit()
-        print("INFO: Game finished")
+        self.logger.log(self.logger.INFO, "Game finished")
         quit()

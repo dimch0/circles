@@ -53,7 +53,7 @@ class TimerItem(Item):
                 self._filled_degrees = self.start_degrees + (self.step_degrees * (self.number_of_steps - self.step))
                 return self._filled_degrees
         except Exception as e:
-            print "ERROR", e
+            print "ERROR filled_degrees", e
 
     @property
     def is_over(self):
@@ -98,9 +98,9 @@ class TimerItem(Item):
                                   (self.step_degrees * steps_delta)
 
 
-        print "dur: ", self.duration
-        print current_duration + delta
-        print self.limit
+        # print "dur: ", self.duration
+        # print current_duration + delta
+        # print self.limit
         # print "current    step :", self.step
         # print "number of steps :", self.number_of_steps
         # print "start   degrees :", self.start_degrees
