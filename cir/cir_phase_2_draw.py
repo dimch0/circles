@@ -368,6 +368,7 @@ class GameDrawer(object):
 
                 # Items
                 self.draw_body(current_tile, item)
+
                 # Show movement track in color
                 if self.grid.show_movement and len(item.move_track) > 1:
                     self.draw_movement(item)
@@ -383,9 +384,9 @@ class GameDrawer(object):
                 # Timers
                 self.draw_timers(item)
 
-        for item in self.grid.items:
-            if item.type in self.layer_2_types:
-                self.draw_body(current_tile, item, layer_2=True)
+
+                if item.type in self.layer_2_types:
+                    self.draw_body(current_tile, item, layer_2=True)
 
 
         # Mouse
