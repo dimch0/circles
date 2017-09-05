@@ -61,7 +61,6 @@ class VarUpdater(object):
     # --------------------------------------------------------------- #
     def update_birth_track(self, item):
         """ Birth timer effect """
-
         if item.birth_track:
             item.birth_track.pop(0)
             item.birth_time.restart()
@@ -108,26 +107,27 @@ class VarUpdater(object):
                         self.update_birth_track(item)
                 else:
                     item.birth_track.pop(0)
-            else:
-                item.birth_track = []
+            # else:
+            #     item.birth_track = []
 
     # --------------------------------------------------------------- #
     #                                                                 #
     #                            SIGNALS                              #
     #                                                                 #
     # --------------------------------------------------------------- #
-    def signal_hit(self, item, my_body):
+    def signal_hit(self, signal, my_body):
         hit = False
-        if item.type == "signal":
-            if (item.pos in self.grid.occupado_tiles.values() and not item.intersects(
-                    my_body)) or item.direction == None:
-                hit = True
-                self.grid.logger.log(self.grid.logger.INFO, "Hit!")
+        if signal.type == "signal":
+            if not signal.marked_for_destruction:
+                if (signal.pos in self.grid.occupado_tiles.values() and not signal.intersects(
+                        my_body)) or signal.direction == None:
+                    signal.destroy(self.grid)
+                    hit = True
         return hit
 
 
     def signal_hit_effect(self, item):
-        item.destroy(self.grid)
+        self.grid.logger.log(self.grid.logger.INFO, "Hit!")
 
 
     def update_occupado(self):
@@ -159,7 +159,7 @@ class VarUpdater(object):
 
                 # MY_BODY OVERLAP
                 if item.type not in ["my_body", "option", "map_tile"]:
-                    if item.pos == my_body.pos:
+                    if item.pos == my_body.pos and not item.birth_track:
                         item.clickable = False
                         item.radius = item.default_radius
 

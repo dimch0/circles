@@ -7,11 +7,8 @@
 #                            BUG FIXES                            #
 # --------------------------------------------------------------- #
 # TODO: Fix movement to occupado / mitosis
-# TODO: Fix menu - no ober item found / body moves out of option - still not clickable
 # TODO: Fix collect
-# TODO: Fix map update - problem found: my_body overlaps with first map tile
-# TODO: Fix signal birth gen
-# TODO: Remove bag and bodies from map
+# TODO: Remove bag from map
 # --------------------------------------------------------------- #
 #                            FEATURES                             #
 # --------------------------------------------------------------- #
@@ -34,7 +31,13 @@
 # TODO: Animate demo
 # TODO: Add sounds
 # TODO: Log messages on screen
+# --------------------------------------------------------------- #
+#                               DONE                              #
+# --------------------------------------------------------------- #
+# TODO: Fix map update - problem found: my_body overlaps with first map tile
+# TODO: Fix menu - no ober item found / body moves out of option - still not clickable (removed cond from drawing)
 # TODO: Fixed constant hit bug - line 113 cir_item
+
 
 import pygame
 from cir.cir_game_menu import game_menu

@@ -194,6 +194,9 @@ class Item(object):
     #                                                                 #
     # --------------------------------------------------------------- #
     def destroy(self, grid, fast=False):
+
+        self.marked_for_destruction = True
+
         if self in grid.items and not self.birth_track:
             if self.in_menu:
                 self.close_menu(grid)
@@ -209,4 +212,4 @@ class Item(object):
                 self.birth_time.duration = 0
             self.gen_birth_track()
             self.birth_track.reverse()
-            self.marked_for_destruction = True
+
