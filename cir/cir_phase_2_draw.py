@@ -188,7 +188,7 @@ class GameDrawer(object):
             aim_dir_idx = item.get_aiming_direction(self.grid, current_tile)[1]
             # aim_tile = item.get_aiming_direction(self.grid, current_tile)[0]
 
-            aim_fat  = item.radius / 10
+            aim_fat  = item.radius / 5
             aim_dist = item.radius / 4
             aim_rect = [item.rect[0] - aim_dist,
                         item.rect[1] - aim_dist,
