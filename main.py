@@ -9,6 +9,8 @@
 # TODO: Fix movement to occupado / mitosis
 # TODO: Fix collect with open menu
 # TODO: Fix duplicate print
+# TODO: Trigger doesn't suicide
+# TODO: No ober item found if item is not option?
 # --------------------------------------------------------------- #
 #                            FEATURES                             #
 # --------------------------------------------------------------- #

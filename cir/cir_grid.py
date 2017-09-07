@@ -10,7 +10,7 @@ import time
 import json
 import shutil
 from math import sqrt
-from cir_utils import in_circle, inside_polygon
+from cir_utils import in_circle, inside_polygon, bcolors
 
 CONFIG_JSON_FILE = "config.json"
 
@@ -342,10 +342,17 @@ class Grid(object):
         quit()
 
     def msg(self, msg):
+
         will_show_msg = True
+        msg_color = bcolors.INFO
+
         if not self.show_debug and "DEBUG - " in msg:
             will_show_msg = False
+            msg_color = bcolors.DEBUG
         if not self.show_verbose and "INFO - " in msg:
             will_show_msg = False
+            msg_color = bcolors.INFO
+        if "ERROR - " in msg:
+            msg_color = bcolors.ERROR
         if will_show_msg:
-            print(msg)
+            print(msg_color + msg + bcolors.ENDC)

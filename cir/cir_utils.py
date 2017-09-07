@@ -113,7 +113,7 @@ def get_mirror_point(pointA, pointB):
 
 def show_debug_on_click(grid, current_circle, my_body):
     """  Debug print on click event  """
-    print("-"*88)
+    grid.msg("-"*12)
     if grid.show_debug:
         # grid.msg("DEBUG = click tile  : {0}".format( current_circle ))
         # grid.msg("DEBUG = mouse mode  : {0}".format( grid.mouse_mode ))
@@ -133,7 +133,7 @@ def show_debug_on_click(grid, current_circle, my_body):
 
 def show_debug_on_space(grid, my_body):
     """  Debug print on space bar event  """
-    print("-"*88)
+    grid.msg("-"*12)
     if grid.show_debug:
         grid.msg("DEBUG = Key SPACE pressed")
         grid.msg("DEBUG = revealed tiles  : {0}".format( len(grid.revealed_tiles) ))
@@ -154,3 +154,12 @@ def rot_center(pygame, image, angle):
     rot_rect.center = rot_image.get_rect().center
     rot_image = rot_image.subsurface(rot_rect).copy()
     return rot_image
+
+
+class bcolors:
+    INFO = '\033[93m'
+    DEBUG = '\033[37m'
+    ERROR = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+
