@@ -129,7 +129,7 @@ class GameEvents(GameEffects):
             my_body.gen_vibe_track(self.grid)
 
             # DEBUG
-            cir_utils.debug_print_space(self.grid, my_body)
+            cir_utils.show_debug_on_space(self.grid, my_body)
         # --------------------------------------------------------------- #
         #                             NUMBERS                             #
         # --------------------------------------------------------------- #
@@ -268,4 +268,4 @@ class GameEvents(GameEffects):
                             item.close_menu(self.grid)
 
         # DEBUG
-        cir_utils.debug_print_click(self.grid, current_tile, my_body)
+        cir_utils.show_debug_on_click(self.grid, current_tile, my_body)

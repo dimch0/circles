@@ -111,10 +111,10 @@ def get_mirror_point(pointA, pointB):
     return (dx, dy)
 
 
-def debug_print_click(grid, current_circle, my_body):
+def show_debug_on_click(grid, current_circle, my_body):
     """  Debug print on click event  """
+    print("-"*88)
     if grid.show_debug:
-        print('')
         # grid.logger.log(grid.logger.DEBUG, "click tile  : {0}".format( current_circle ))
         # grid.logger.log(grid.logger.DEBUG, "mouse mode  : {0}".format( grid.mouse_mode ))
         # grid.logger.log(grid.logger.DEBUG, "my_body mode: {0}".format( my_body.mode ))
@@ -131,8 +131,9 @@ def debug_print_click(grid, current_circle, my_body):
         # grid.logger.log(grid.logger.DEBUG, "revealed    : {0}".format( grid.revealed_radius ))
 
 
-def debug_print_space(grid, my_body):
+def show_debug_on_space(grid, my_body):
     """  Debug print on space bar event  """
+    print("-"*88)
     if grid.show_debug:
         grid.logger.log(grid.logger.DEBUG, "Key SPACE pressed")
         grid.logger.log(grid.logger.DEBUG, "revealed tiles  : {0}".format( len(grid.revealed_tiles) ))
