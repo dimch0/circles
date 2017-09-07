@@ -342,3 +342,12 @@ class Grid(object):
         self.pygame.quit()
         self.logger.log(self.logger.INFO, "Game finished")
         quit()
+
+    def msg(self, msg):
+        will_show_msg = True
+        if not self.show_debug and "DEBUG - " in msg:
+            will_show_msg = False
+        if not self.show_verbose and "INFO - " in msg:
+            will_show_msg = False
+        if will_show_msg:
+            print(msg)

@@ -8,7 +8,7 @@
 # --------------------------------------------------------------- #
 # TODO: Fix movement to occupado / mitosis
 # TODO: Fix collect with open menu
-# TODO: Fix duplicate iteration on open inventory
+# TODO: Fix duplicate print
 # --------------------------------------------------------------- #
 #                            FEATURES                             #
 # --------------------------------------------------------------- #
