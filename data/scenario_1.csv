@@ -25,7 +25,7 @@ scenario_1,12_12,tomato,item,,,,,,TRUE,TRUE,1,ungrey,tomato,11_5,,,,,,1
 scenario_1,12_12,icecream,item,,,,,,TRUE,TRUE,1,ungrey,icecream,13_5,,,,,,1
 scenario_1,12_12,hotdog,item,,,,,,TRUE,TRUE,1,ungrey,hotdog,14_6,,,,,,1
 scenario_1,12_12,pizza,item,,,,,,TRUE,TRUE,1,ungrey,pizza,15_7,,,,,,1
-scenario_1,12_12,meat,item,,,,,,TRUE,TRUE,1,ungrey,meat,16_8,,,,,,1
+scenario_1,12_12,fresh,item,,,,,,TRUE,TRUE,1,ungrey,fresh2,16_8,,,,,,1
 scenario_1,12_12,bread,item,,,,,,TRUE,TRUE,1,ungrey,bread,16_10,,,,,,1
 scenario_1,12_12,shrimp,item,,,,,,TRUE,TRUE,1,ungrey,shrimp,16_12,,,,,,1
 scenario_1,12_10,block_of_steel1,item,,,,,,,,,dark_grey,,10_18,,,,,,1

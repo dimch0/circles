@@ -7,8 +7,8 @@
 #                            BUG FIXES                            #
 # --------------------------------------------------------------- #
 # TODO: Fix movement to occupado / mitosis
-# TODO: Fix collect
-# TODO: Remove bag from map
+# TODO: Fix collect with open menu
+# TODO: Fix duplicate iteration on open inventory
 # --------------------------------------------------------------- #
 #                            FEATURES                             #
 # --------------------------------------------------------------- #
@@ -37,7 +37,7 @@
 # TODO: Fix map update - problem found: my_body overlaps with first map tile
 # TODO: Fix menu - no ober item found / body moves out of option - still not clickable (removed cond from drawing)
 # TODO: Fixed constant hit bug - line 113 cir_item
-
+# TODO: Placeholder was cleaning bag_placeholders too :(
 
 import pygame
 from cir.cir_game_menu import game_menu

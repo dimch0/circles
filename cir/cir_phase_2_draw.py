@@ -144,6 +144,7 @@ class GameDrawer(object):
             if not item.birth_track and item.marked_for_destruction:
                 blit_item = False
 
+
             if blit_item:
                 if item.color:
                     self.grid.pygame.draw.circle(self.grid.game_display,
@@ -359,6 +360,7 @@ class GameDrawer(object):
         #                   grid.tile_radius * 2)
 
         for item in self.grid.items:
+
             if item.available:
 
                 # Radar

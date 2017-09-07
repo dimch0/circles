@@ -78,7 +78,7 @@ class GameEvents(GameEffects):
         if not any(non_terminate in current_tile.type for non_terminate in non_terminates):
             current_tile.destroy(self.grid, fast=True)
 
-    def collect_mode_click(self, my_body, current_tile):
+    def collect_mode_click(self, my_body, clicked_item):
         """ Collect item: add it to bag options """
         # CHECK FOR EMPTY SLOT IN BAG
         bag_placeholder = None
@@ -95,15 +95,15 @@ class GameEvents(GameEffects):
                                           pos=bag_placeholder.pos,
                                           birth=0,
                                           add_to_items=False)
-            item_as_option.name = current_tile.name + str(time.time())
+            item_as_option.name = clicked_item.name + str(time.time())
             item_as_option.type = "option"
             item_as_option.modable = True
-            item_as_option.color = self.grid.yellow
-            item_as_option.img = current_tile.img
+            item_as_option.color = clicked_item.color
+            item_as_option.img = clicked_item.img
             # ADD IN BAG AND REMOVE FROM FIELD
             del bag.options[bag_placeholder.name]
             bag.options[item_as_option.name] = item_as_option
-            current_tile.destroy(self.grid, fast=True)
+            clicked_item.destroy(self.grid, fast=True)
         else:
             self.grid.logger.log(self.grid.logger.INFO, "No space in bag")
 

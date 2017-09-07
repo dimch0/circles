@@ -1,6 +1,6 @@
 scenario,room,name,klas,type,category,has_opts,available,modable,collectible,consumable,uses,color,img,pos,speed,range,time_color,lifespan,vibe_freq,layer
 ALL,,echo,item,option,my_body,,TRUE,TRUE,,,,,bow,,,,,,,1
-ALL,ALL,bag,item,inventory,,TRUE,TRUE,,,,,,plastic_bag,8_20,,,,,,1
+ALL,ALL,bag,item,inventory,bag,TRUE,TRUE,,,,,,plastic_bag,18_4,,,,,,1
 ALL,,block_of_steel,item,,,,,,,,,dark_grey,,,,,,,,1
 ALL,,placeholder,item,,,,TRUE,,,,,,,,,,,,,1
 ALL,,trigger,body,trigger,,,TRUE,,,,,,,,,,,,,1
