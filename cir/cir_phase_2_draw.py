@@ -57,7 +57,7 @@ class GameDrawer(object):
         """ Highlights the hovered tile """
         if current_tile:
             if cir_utils.in_circle(item.pos, self.grid.tile_radius, current_tile):
-                if item.type == "map_tile":
+                if item.type == "map_tile" and not self.grid.mouse_mode:
                     radius = self.grid.tile_radius - 4
                 else:
                     radius = self.grid.tile_radius
