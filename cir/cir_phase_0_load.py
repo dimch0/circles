@@ -28,7 +28,6 @@ class DataLoader(object):
         self.logger = None
         self.set_logger()
 
-
     def set_logger(self):
         self.grid.logger = CirLogger()
         self.logger = self.grid.logger
@@ -136,7 +135,8 @@ class DataLoader(object):
                             "uses"        : int(row[col_idx["uses"]]) if len(row[col_idx["uses"]]) > 0 else None,
                             "room"        : row[col_idx["room"]],
                             "lifespan"    : float(row[col_idx["lifespan"]]) if len(row[col_idx["lifespan"]]) > 0 else None,
-                            "vibe_freq"   : float(row[col_idx["vibe_freq"]]) if len(row[col_idx["vibe_freq"]]) > 0 else None
+                            "vibe_freq"   : float(row[col_idx["vibe_freq"]]) if len(row[col_idx["vibe_freq"]]) > 0 else None,
+                            "layer"       : int(row[col_idx["layer"]]) if len(row[col_idx["layer"]]) > 0 else 1
                         }
 
                         # CREATE ITEM

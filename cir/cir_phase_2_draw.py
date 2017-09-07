@@ -13,7 +13,6 @@ class GameDrawer(object):
 
     def __init__(self, grid=None):
         self.grid = grid
-        self.layer_2_types = ["my_body", "signal"]
         # self.grid.pygame = pygame
 
 
@@ -132,41 +131,37 @@ class GameDrawer(object):
                 self.draw_hover(current_tile, button)
 
 
-    def draw_body(self, current_tile, item, layer_2=False):
+    def draw_body(self, current_tile, item):
         """ Draws each body and it's image if available """
 
+        if item.available:
+            blit_item = True
 
+            if item.birth_track:
+                item.radius = item.birth_track[0]
+            elif not item.birth_track and item.fat_track:
+                item.radius = item.fat_track[0]
+            if not item.birth_track and item.marked_for_destruction:
+                blit_item = False
 
-        if (layer_2 and item.type in self.layer_2_types) or (not layer_2 and item.type not in self.layer_2_types):
+            if blit_item:
+                if item.color:
+                    self.grid.pygame.draw.circle(self.grid.game_display,
+                                       item.color,
+                                       item.pos,
+                                       item.radius,
+                                       0)
+                if item.category == "bag":
+                    self.grid.pygame.draw.circle(self.grid.game_display,
+                                                 self.grid.yellow,
+                                                 item.pos,
+                                                 self.grid.tile_radius,
+                                                 1)
+                # Draw activation / deactivation here
 
-            if item.available:
-                blit_item = True
-
-                if item.birth_track:
-                    item.radius = item.birth_track[0]
-                elif not item.birth_track and item.fat_track:
-                    item.radius = item.fat_track[0]
-                if not item.birth_track and item.marked_for_destruction:
-                    blit_item = False
-
-                if blit_item:
-                    if item.color:
-                        self.grid.pygame.draw.circle(self.grid.game_display,
-                                           item.color,
-                                           item.pos,
-                                           item.radius,
-                                           0)
-                    if item.category == "bag":
-                        self.grid.pygame.draw.circle(self.grid.game_display,
-                                                     self.grid.yellow,
-                                                     item.pos,
-                                                     self.grid.tile_radius,
-                                                     1)
-                    # Draw activation / deactivation here
-
-                    self.draw_img(item)
-                    self.draw_aim(current_tile, item)
-                    self.draw_hover(current_tile, item)
+                self.draw_img(item)
+                self.draw_aim(current_tile, item)
+                self.draw_hover(current_tile, item)
 
     def draw_timers(self, item):
         """ Draws current state of a timer """
@@ -194,6 +189,10 @@ class GameDrawer(object):
                         item.rect[1] - aim_dist,
                         item.rect[2] + aim_dist * 2,
                         item.rect[3] + aim_dist * 2]
+            if item.color:
+                aim_color = item.color
+            else:
+                aim_color = self.grid.white
 
             angle1, angle2 = None, None
             if aim_dir_idx == 0:
@@ -211,7 +210,7 @@ class GameDrawer(object):
 
             if angle1 and angle2 and item.radius >= aim_fat:
                 self.grid.pygame.draw.arc(self.grid.game_display,
-                                item.color,
+                                aim_color,
                                 aim_rect,
                                 math.radians(angle1),
                                 math.radians(angle2),
@@ -383,10 +382,6 @@ class GameDrawer(object):
 
                 # Timers
                 self.draw_timers(item)
-
-
-                if item.type in self.layer_2_types:
-                    self.draw_body(current_tile, item, layer_2=True)
 
 
         # Mouse

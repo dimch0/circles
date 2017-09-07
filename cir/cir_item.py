@@ -28,6 +28,7 @@ class Item(object):
         self.border = 0
         self.border_color = None
         self.border_width = None
+        self.layer = None
         # --------------------------------------------------------------- #
         #                            OPTIONS                              #
         # --------------------------------------------------------------- #

@@ -202,6 +202,8 @@ class VarUpdater(object):
                     # CLEAN PLACEHOLDERS
                     self.grid.clean_placeholders(item)
 
+        self.grid.sort_items_by_layer()
+
         self.update_occupado()
 
         self.grid.clock.tick(self.grid.fps)
