@@ -115,30 +115,30 @@ def show_debug_on_click(grid, current_circle, my_body):
     """  Debug print on click event  """
     print("-"*88)
     if grid.show_debug:
-        # grid.logger.log(grid.logger.DEBUG, "click tile  : {0}".format( current_circle ))
-        # grid.logger.log(grid.logger.DEBUG, "mouse mode  : {0}".format( grid.mouse_mode ))
-        # grid.logger.log(grid.logger.DEBUG, "my_body mode: {0}".format( my_body.mode ))
-        # grid.logger.log(grid.logger.DEBUG, "menu        : {0}".format( my_body.in_menu ))
-        # grid.logger.log(grid.logger.DEBUG, "grid items  : {0}".format( len(grid.items) ))
-        grid.logger.log(grid.logger.DEBUG, "grid items  : {0}".format( [(item.name, item.pos) for item in grid.items] ))
-        # grid.logger.log(grid.logger.DEBUG, "occupado    : {0}".format( len(grid.occupado_tiles) ))
-        # grid.logger.log(grid.logger.DEBUG, "overlap     : {0}".format( [(item.name, item.pos) for item in grid.overlap] ))
-        # grid.logger.log(grid.logger.DEBUG, "playing     : {0}".format( len(grid.playing_tiles) ))
-        # grid.logger.log(grid.logger.DEBUG, "move track  : {0}".format( my_body.move_track ))
-        # grid.logger.log(grid.logger.DEBUG, "all tiles   : {0}".format( len(grid.tiles) ))
-        # grid.logger.log(grid.logger.DEBUG, "current room: {0}".format( grid.current_room ))
-        # grid.logger.log(grid.logger.DEBUG, "prev room   : {0}".format( grid.previous_room ))
-        # grid.logger.log(grid.logger.DEBUG, "revealed    : {0}".format( grid.revealed_radius ))
+        # grid.msg("DEBUG = click tile  : {0}".format( current_circle ))
+        # grid.msg("DEBUG = mouse mode  : {0}".format( grid.mouse_mode ))
+        # grid.msg("DEBUG = my_body mode: {0}".format( my_body.mode ))
+        # grid.msg("DEBUG = menu        : {0}".format( my_body.in_menu ))
+        # grid.msg("DEBUG = grid items  : {0}".format( len(grid.items) ))
+        grid.msg("DEBUG = grid items  : {0}".format( [(item.name, item.pos) for item in grid.items] ))
+        # grid.msg("DEBUG = occupado    : {0}".format( len(grid.occupado_tiles) ))
+        # grid.msg("DEBUG = overlap     : {0}".format( [(item.name, item.pos) for item in grid.overlap] ))
+        # grid.msg("DEBUG = playing     : {0}".format( len(grid.playing_tiles) ))
+        # grid.msg("DEBUG = move track  : {0}".format( my_body.move_track ))
+        # grid.msg("DEBUG = all tiles   : {0}".format( len(grid.tiles) ))
+        # grid.msg("DEBUG = current room: {0}".format( grid.current_room ))
+        # grid.msg("DEBUG = prev room   : {0}".format( grid.previous_room ))
+        # grid.msg("DEBUG = revealed    : {0}".format( grid.revealed_radius ))
 
 
 def show_debug_on_space(grid, my_body):
     """  Debug print on space bar event  """
     print("-"*88)
     if grid.show_debug:
-        grid.logger.log(grid.logger.DEBUG, "Key SPACE pressed")
-        grid.logger.log(grid.logger.DEBUG, "revealed tiles  : {0}".format( len(grid.revealed_tiles) ))
-        grid.logger.log(grid.logger.DEBUG, "revealed_radius : {0}".format( len(grid.revealed_radius) ))
-        grid.logger.log(grid.logger.DEBUG, "vibe speed      : {0}".format( my_body.vibe_speed ))
+        grid.msg("DEBUG = Key SPACE pressed")
+        grid.msg("DEBUG = revealed tiles  : {0}".format( len(grid.revealed_tiles) ))
+        grid.msg("DEBUG = revealed_radius : {0}".format( len(grid.revealed_radius) ))
+        grid.msg("DEBUG = vibe speed      : {0}".format( my_body.vibe_speed ))
 
 
 def negative_list(original_list):

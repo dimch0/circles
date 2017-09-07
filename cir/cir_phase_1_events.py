@@ -186,7 +186,7 @@ class GameEvents(GameEffects):
             if item.clickable and item.available:
                 if current_tile == item.pos:
 
-                    self.grid.msg("Clicked item: {0}".format(item.name))
+                    self.grid.msg("INFO - Clicked item: {0}".format(item.name))
 
                     # OPTION CLICKED
                     if item.type == "option":

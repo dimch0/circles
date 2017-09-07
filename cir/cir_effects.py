@@ -148,8 +148,7 @@ class GameEffects(object):
                             self.grid.revealed_tiles.append(pos)
 
             except Exception as e:
-                self.grid.logger.log(self.grid.logger.ERROR, "Could not show map: {0}".format(e))
-
+                self.grid.msg("ERROR - Could not show map: {0}".format(e))
 
         else:
             self.grid.change_room(self.grid.previous_room)
@@ -192,5 +191,5 @@ class GameEffects(object):
                 my_body.close_menu(self.grid)
             self.grid.needs_to_change_room = True
         else:
-            self.grid.logger.log(self.grid.logger.INFO, "Door far")
+            self.grid.msg("INFO - )Door far")
             item.in_menu = False

@@ -112,9 +112,9 @@ class Item(object):
                     elif item.mode and (self.category in item.mode):
                         ober_item = item
         if ober_item:
-            grid.logger.log(grid.logger.INFO, "Option belongs to {0}".format(ober_item.name))
+            grid.msg("INFO - Option belongs to {0}".format(ober_item.name))
         else:
-            grid.logger.log(grid.logger.INFO, "No ober item found for {0}".format(self.name))
+            grid.msg("INFO - No ober item found for {0}".format(self.name))
         return ober_item
 
 
@@ -124,7 +124,7 @@ class Item(object):
     #                                                                 #
     # --------------------------------------------------------------- #
     def open_menu(self, grid):
-        grid.logger.log(grid.logger.INFO, "Open menu {0}".format(self.name))
+        grid.msg("INFO - Open menu {0}".format(self.name))
         grid.clean_mouse()
         self.mode = None
         self.in_menu = True
@@ -158,7 +158,7 @@ class Item(object):
 
     def close_menu(self, grid):
 
-        grid.logger.log(grid.logger.INFO, "Close menu {0}".format(self.name))
+        grid.msg("INFO - Close menu {0}".format(self.name))
         self.in_menu = False
 
         # REMOVE OPTIONS

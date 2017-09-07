@@ -43,8 +43,6 @@ class Grid(object):
         self.loader = None
         self.updater = None
         self.event_effects = None
-        self.logger = None
-
 
         # -------------------------------------------------- #
         #                        TILES                       #
@@ -104,7 +102,7 @@ class Grid(object):
                 for status, value in conf[section].items():
                     setattr(self, status, value)
         except Exception as e:
-            self.logger.log(self.logger.ERROR, "Could not set config: {0}".format(e))
+            self.msg("ERROR - Could not set config: {0}".format(e))
 
     def set_data_file(self):
         """
@@ -119,7 +117,7 @@ class Grid(object):
                     setattr(self, file_name, data_file)
 
         except Exception as e:
-            self.logger.log(self.logger.ERROR, "Could not set data file as attribute: {0}".format(e))
+            self.msg("ERROR - Could not set data file as attribute: {0}".format(e))
 
         if hasattr(self, self.scenario):
             scenario_data_file = getattr(self, self.scenario)
@@ -232,7 +230,7 @@ class Grid(object):
                         item.available = False
                         self.items.remove(item)
                     except Exception as e:
-                        self.logger.log(self.logger.ERROR, "ERROR Could not remove placeholder: {0}".format(e))
+                        self.msg("ERROR - ERROR Could not remove placeholder: {0}".format(e))
 
     # --------------------------------------------------------------- #
     #                             MOUSE                               #
@@ -275,7 +273,7 @@ class Grid(object):
     def load_current_room(self):
         """ loads the current room from self.rooms
         or an empty room if the number is not in self.rooms """
-        self.logger.log(self.logger.INFO, "Loading room: {0}".format(self.current_room))
+        self.msg("INFO - Loading room: {0}".format(self.current_room))
         self.occupado_tiles = {}
         if not self.current_room in self.rooms.keys():
             self.rooms[self.current_room] = {
@@ -308,11 +306,11 @@ class Grid(object):
             if not self.game_menu and not self.current_room in ["999"]:
                 self.seconds_in_game += 1
                 if self.show_seconds:
-                    self.logger.log(self.logger.INFO, "Game second: {0}".format(self.seconds_in_game))
+                    self.msg("INFO - Game second: {0}".format(self.seconds_in_game))
             else:
                 self.seconds_in_pause += 1
                 if self.show_seconds:
-                    self.logger.log(self.logger.INFO, "Pause second: {0}".format(self.seconds_in_pause))
+                    self.msg("INFO - Pause second: {0}".format(self.seconds_in_pause))
 
     # --------------------------------------------------------------- #
     #                            BUTTONS                              #
@@ -335,12 +333,12 @@ class Grid(object):
         for file in os.listdir(self.tmp_dir):
             file = os.path.join(self.tmp_dir, file)
             os.remove(file)
-            self.logger.log(self.logger.INFO, "Removed: {0}".format(file))
+            self.msg("INFO - Removed: {0}".format(file))
 
     def game_exit(self):
         self.clean_tmp_dir()
         self.pygame.quit()
-        self.logger.log(self.logger.INFO, "Game finished")
+        self.msg("INFO - Game finished")
         quit()
 
     def msg(self, msg):

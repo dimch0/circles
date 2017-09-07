@@ -53,7 +53,6 @@ def game_loop(game_over, scenario="scenario_1"):
     grid               = Grid(pygame, scenario)
     grid.loader        = DataLoader(grid)
     my_body            = grid.loader.load_game()
-    logger             = grid.logger
 
     if game_over:
         grid.rename_button("play", "replay")
@@ -61,7 +60,7 @@ def game_loop(game_over, scenario="scenario_1"):
     # --------------------------------------------------------------- #
     #                            GAME LOOP                            #
     # --------------------------------------------------------------- #
-    logger.log(logger.INFO, "Game started")
+    grid.msg("INFO - Game started")
 
     while not grid.game_over:
         # CURRENT TILE

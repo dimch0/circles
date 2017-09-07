@@ -20,22 +20,14 @@ class VarUpdater(object):
     #                                                                 #
     # --------------------------------------------------------------- #
     def enter_room(self, my_body, item):
-
         if "Enter_" in item.name and my_body.pos == item.pos:
-
             room_number = item.name.replace("Enter_", "")
-            self.grid.logger.log(
-                self.grid.logger.INFO, "Leaving room: {0}".format(
-                    self.grid.current_room))
-
+            self.grid.msg("INFO - Leaving room: {0}".format(self.grid.current_room))
             self.grid.change_room(room_number)
-
+            self.grid.needs_to_change_room = False
             if not my_body in self.grid.items:
                 self.grid.items.append(my_body)
-
             my_body.pos = get_mirror_point(item.pos, self.grid.center_tile)
-
-            self.grid.needs_to_change_room = False
             my_body.gen_birth_track()
 
     # --------------------------------------------------------------- #
@@ -47,7 +39,7 @@ class VarUpdater(object):
         if not item.birth_track:
 
             item.available = False
-            self.grid.logger.log(self.grid.logger.INFO, "Destroying: {0}".format(item.name))
+            self.grid.msg("INFO - )Destroying: {0}".format(item.name))
             self.grid.items.remove(item)
             if item.name in self.grid.occupado_tiles:
                 del self.grid.occupado_tiles[item.name]
@@ -127,7 +119,7 @@ class VarUpdater(object):
 
 
     def signal_hit_effect(self, item):
-        self.grid.logger.log(self.grid.logger.INFO, "Hit!")
+        self.grid.msg("INFO - )Hit!")
 
 
     def update_occupado(self):

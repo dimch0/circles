@@ -18,19 +18,12 @@ from cir_cosmetic import Images, Fonts, Colors
 from cir_phase_1_events import GameEvents
 from cir_phase_2_draw import GameDrawer
 from cir_phase_3_update import VarUpdater
-from cir.cir_logger import CirLogger
 
 
 class DataLoader(object):
 
     def __init__(self, grid=None):
         self.grid = grid
-        self.logger = None
-        self.set_logger()
-
-    def set_logger(self):
-        self.grid.logger = CirLogger()
-        self.logger = self.grid.logger
 
     def set_data_file(self):
         """ Extends the current scenario data file with the all data file """
@@ -65,7 +58,7 @@ class DataLoader(object):
             elif klas in "item":
                 dummy = cir_item.Item()
         except Exception as e:
-            self.logger.log(self.logger.ERROR, "{0}, could not create item of klas: {1}".format(e, klas))
+            self.grid.msg("ERROR - {0}, could not create item of klas: {1}".format(e, klas))
 
         try:
             for attribute, value in attributes_dict.items():
@@ -80,14 +73,14 @@ class DataLoader(object):
                             setattr(dummy, "default_color", value)
 
         except Exception as e:
-            self.logger.log(self.logger.ERROR, "Could not set attribute: {0}".format(e))
+            self.grid.msg("ERROR - Could not set attribute: {0}".format(e))
 
         dummy.radius = self.grid.tile_radius
         dummy.default_radius = dummy.radius
 
         # DEBUG
         if self.grid.show_debug:
-           self.logger.log(self.logger.DEBUG, "Loaded {0}".format(dummy.name))
+           self.grid.msg("DEBUG - Loaded {0}".format(dummy.name))
 
         return dummy
 
@@ -161,7 +154,7 @@ class DataLoader(object):
                     for sub_opt, klas in self.load_data():
                         self.find_opts(sub_opt, opt)
             if self.grid.show_debug:
-                self.logger.log(self.logger.DEBUG, "{0} options are: {1}".format(item.name, item.options))
+                self.grid.msg("DEBUG - {0} options are: {1}".format(item.name, item.options))
 
 
     def set_timers(self, item):
@@ -259,7 +252,7 @@ class DataLoader(object):
 
         my_body = None
 
-        self.logger.log(self.logger.INFO, "Loading {0}".format(self.grid.scenario))
+        self.grid.msg("INFO - Loading {0}".format(self.grid.scenario))
         for item, klas in self.load_data():
 
             if item.type == "editor" and self.grid.show_editor:
