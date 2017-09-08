@@ -82,9 +82,15 @@ class GameDrawer(object):
     def draw_radar(self, item):
         """ Radar animation """
         radar_radius, thick = item.radar(self.grid)
+
+        if item.color:
+            wave_color = item.color
+        else:
+            wave_color = self.grid.white
+
         if radar_radius and thick:
             self.grid.pygame.draw.circle(self.grid.game_display,
-                               self.grid.white,
+                               wave_color,
                                item.pos,
                                int(radar_radius),
                                int(thick))

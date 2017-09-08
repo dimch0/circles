@@ -57,6 +57,7 @@ class GameEvents(GameEffects):
                                   my_body.pos,
                                   radius=int(self.grid.tile_radius / 3),
                                   birth=0)
+            signal.color = my_body.color
             signal.direction = signal.get_aiming_direction(self.grid, current_tile)[1]
 
     def eat_mode_click(self, item):

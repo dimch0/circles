@@ -37,7 +37,7 @@ class VarUpdater(object):
         if not item.birth_track:
 
             item.available = False
-            self.grid.msg("INFO - )Destroying: {0}".format(item.name))
+            self.grid.msg("INFO - Destroying: {0}".format(item.name))
             self.grid.items.remove(item)
             if item.name in self.grid.occupado_tiles:
                 del self.grid.occupado_tiles[item.name]
@@ -117,7 +117,7 @@ class VarUpdater(object):
 
 
     def signal_hit_effect(self, item):
-        self.grid.msg("INFO - )Hit!")
+        self.grid.msg("INFO - Hit!")
 
 
     def update_occupado(self):
