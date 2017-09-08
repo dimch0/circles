@@ -238,8 +238,8 @@ class GameEvents(GameEffects):
                     if item.in_menu:
                         if not item.mode and not (item.has_opts and item.type == "option"):
                             item.close_menu(self.grid)
-                        else:
-                            item.revert_menu(self.grid)
+                        # else:
+                        #     item.revert_menu(self.grid)
                     elif item.has_opts and not item.in_menu:
                         item.open_menu(self.grid)
 

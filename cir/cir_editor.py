@@ -14,16 +14,21 @@ class Editor(object):
     def execute_editor_clicks(self, clicked_item, my_body):
         """ EDITOR CLICKS """
 
+        # BUS
+        if clicked_item.name == "EDITOR5":
+            my_body.change_speed(0.5)
+
         # MAPS
-        if clicked_item.name == "EDITOR6":
+        elif clicked_item.name == "EDITOR6":
             self.grid.event_effects.show_map(my_body)
 
         # CAMERA
         elif clicked_item.name == "EDITOR7":
             self.grid.capture_room()
 
-        elif clicked_item.name == "EDITOR10":
-            my_body.vibe_speed += 0.1
+        # TV
+        elif clicked_item.name == "EDITOR8":
+            my_body.range += 0.5
 
         if clicked_item.name == "EDITOR11":
             if my_body.lifespan:
@@ -54,5 +59,7 @@ class Editor(object):
             self.grid.scenario = 'scenario_2'
             self.grid.game_over = True
 
+        # HOT-DOG
         elif clicked_item.name == "EDITOR18":
+            my_body.vibe_speed += 0.1
             my_body.gen_fat()

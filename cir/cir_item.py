@@ -129,7 +129,6 @@ class Item(object):
         olap_pos = []
         ober_item = None
 
-        # SUB-OPTION
         if self.type in ['option']:
             ober_item = self.get_ober_item(grid)
 
@@ -156,7 +155,6 @@ class Item(object):
                         if not olap_item in grid.overlap:
                             grid.overlap.append(olap_item)
 
-
     def close_menu(self, grid):
 
         grid.msg("INFO - Close menu {0}".format(self.name))
@@ -173,11 +171,11 @@ class Item(object):
                 if olap_item in grid.overlap:
                     grid.overlap.remove(olap_item)
 
-    def revert_menu(self, grid):
-        self.close_menu(grid)
-        self.options = self.default_options
-        self.open_menu(grid)
-        self.mode = None
+    # def revert_menu(self, grid):
+    #     self.close_menu(grid)
+    #     self.options = self.default_options
+    #     self.open_menu(grid)
+    #     self.mode = None
 
     # --------------------------------------------------------------- #
     #                                                                 #

@@ -171,8 +171,10 @@ class GameDrawer(object):
     def draw_timers(self, item):
         """ Draws current state of a timer """
         if item.lifespan:
+            timer_fat = item.radius / 5
+
             if item.lifespan.available and item.time_color:
-                if item.radius >= 5:
+                if item.radius >= timer_fat:
                     item.lifespan.pos = item.pos
                     item.lifespan.radius = item.radius
                     self.grid.pygame.draw.arc(self.grid.game_display,
@@ -180,7 +182,7 @@ class GameDrawer(object):
                                     item.lifespan.rect,
                                     math.radians(item.lifespan.filled_degrees),
                                     math.radians(item.lifespan.start_degrees),
-                                    5)
+                                    timer_fat)
 
     def draw_aim(self, current_tile, item):
         """ Aim """
@@ -189,7 +191,7 @@ class GameDrawer(object):
             # aim_tile = item.get_aiming_direction(self.grid, current_tile)[0]
 
             aim_fat  = item.radius / 5
-            aim_dist = item.radius / 4
+            aim_dist = aim_fat
             aim_rect = [item.rect[0] - aim_dist,
                         item.rect[1] - aim_dist,
                         item.rect[2] + aim_dist * 2,
@@ -286,7 +288,7 @@ class GameDrawer(object):
         """ Draws the Mouse image"""
         if current_tile and self.grid.mouse_img:
             self.grid.pygame.draw.circle(self.grid.game_display,
-                               self.grid.white,
+                               self.grid.yellow,
                                current_tile,
                                self.grid.tile_radius,
                                1)
@@ -402,7 +404,6 @@ class GameDrawer(object):
     def draw(self, current_tile):
         """
         Draws everything
-        :param my_body: my_body instance
         :param current_tile: coordinates of current tile
         """
         # BACKGROUND

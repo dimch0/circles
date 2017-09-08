@@ -10,7 +10,7 @@
 # TODO: Fix collect with open menu
 # TODO: Fix duplicate print (recursive calling of loop)
 # TODO: No ober item found if item is not option? PROPOSED: Remove all suboptoins
-# TODO: Try different grid, horizontal and spiral naming 40px
+# TODO: Maybe: Try different grid, horizontal and spiral naming 40px
 # --------------------------------------------------------------- #
 #                            FEATURES                             #
 # --------------------------------------------------------------- #
