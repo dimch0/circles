@@ -8,9 +8,9 @@
 # --------------------------------------------------------------- #
 # TODO: Fix movement to occupado / mitosis
 # TODO: Fix collect with open menu
-# TODO: Fix duplicate print
-# TODO: Trigger doesn't suicide
-# TODO: No ober item found if item is not option?
+# TODO: Fix duplicate print (recursive calling of loop)
+# TODO: No ober item found if item is not option? PROPOSED: Remove all suboptoins
+# TODO: Try different grid, horizontal and spiral naming 40px
 # --------------------------------------------------------------- #
 #                            FEATURES                             #
 # --------------------------------------------------------------- #
@@ -27,7 +27,7 @@
 # --------------------------------------------------------------- #
 #                            COSMETICS                            #
 # --------------------------------------------------------------- #
-# TODO: Fix rotation on direction
+# TODO: Fix rotation on direction (PROPOSED remove rotation)
 # TODO: Indicate uses / metrics
 # TODO: Animate item activation
 # TODO: Animate demo
@@ -40,6 +40,7 @@
 # TODO: Fix menu - no ober item found / body moves out of option - still not clickable (removed cond from drawing)
 # TODO: Fixed constant hit bug - line 113 cir_item
 # TODO: Placeholder was cleaning bag_placeholders too :(
+# TODO: Trigger doesn't suicide - cause: generated reversed birth track in self.destroy()
 
 import pygame
 from cir.cir_game_menu import game_menu
@@ -65,12 +66,11 @@ def game_loop(game_over, scenario="scenario_1"):
     grid.msg("INFO - Game started")
 
     while not grid.game_over:
-        # CURRENT TILE
-        current_tile = grid.mouse_in_tile(pygame.mouse.get_pos())
-        # SECONDS
+
+        CURRENT_TILE = grid.mouse_in_tile(pygame.mouse.get_pos())
         grid.seconds_in_game_tick()
-        # GAME MENU
         game_menu(grid)
+
         # --------------------------------------------------------------- #
         #                          PHASE 1: EVENTS                        #
         # --------------------------------------------------------------- #
@@ -83,11 +83,11 @@ def game_loop(game_over, scenario="scenario_1"):
                 grid.event_effects.execute_key_events(event, my_body)
             # CLICK EVENTS
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                grid.event_effects.execute_click_events(event, my_body, current_tile)
+                grid.event_effects.execute_click_events(event, my_body, CURRENT_TILE)
         # --------------------------------------------------------------- #
         #                          PHASE 2: DRAWING                       #
         # --------------------------------------------------------------- #
-        grid.drawer.draw(current_tile)
+        grid.drawer.draw(CURRENT_TILE)
         # --------------------------------------------------------------- #
         #                          PHASE 3: CHANGE VARS                   #
         # --------------------------------------------------------------- #

@@ -1,6 +1,6 @@
 {
   "CONSTANTS": {
-    "tile_radius": 30,
+    "tile_radius": 40,
     "rows"       : 24,
     "cols"       : 24,
     "fps"        : 60
@@ -8,7 +8,7 @@
 
   "VISIBILITY": {
     "show_debug"        : 0,
-    "show_grid"         : 0,
+    "show_grid"         : 1,
     "show_seconds"      : 0,
     "show_movement"     : 0,
     "show_playing_tiles": 0,

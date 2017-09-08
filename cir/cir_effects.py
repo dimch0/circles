@@ -164,7 +164,7 @@ class GameEffects(object):
     def satellite(self):
         trigger = self.produce(product_name="trigger",
                                pos=self.grid.center_tile,
-                               lifespan=1.5)
+                               lifespan=2)
         trigger.range = 4
         trigger.vibe_speed = 3
         trigger.birth_time = 0

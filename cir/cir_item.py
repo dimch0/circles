@@ -127,9 +127,12 @@ class Item(object):
         self.mode = None
         self.in_menu = True
         olap_pos = []
+        ober_item = None
 
         # SUB-OPTION
-        ober_item = self.get_ober_item(grid)
+        if self.type in ['option']:
+            ober_item = self.get_ober_item(grid)
+
         if ober_item:
             ober_item.close_menu(grid)
             ober_item.options = self.options
@@ -203,12 +206,11 @@ class Item(object):
                 self.lifespan = None
             if hasattr(self, "vibe_freq"):
                 self.vibe_freq = None
-
             if hasattr(self, "move_track"):
                 self.move_track = []
-
             if fast and self.birth_time:
                 self.birth_time.duration = 0
-            self.gen_birth_track()
-            self.birth_track.reverse()
+            if self.type not in ["trigger"]:
+                self.gen_birth_track()
+                self.birth_track.reverse()
 
