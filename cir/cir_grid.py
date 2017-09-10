@@ -62,7 +62,7 @@ class Grid(object):
         #                        ROOMS                       #
         # -------------------------------------------------- #
         self.rooms = {}
-        self.current_room = "12_12"
+        self.current_room = "11_11"
         self.previous_room = None
         self.needs_to_change_room = False
         # -------------------------------------------------- #
@@ -196,6 +196,16 @@ class Grid(object):
                 if not tile in self.playing_tiles:
                     self.playing_tiles.append(tile)
 
+    def names_to_pos(self, names):
+        """ Returns a list of pos tuples """
+        points = []
+        for name in names:
+            for tile_name, tile_pos in self.tile_dict.items():
+                if tile_name == name:
+                    points.append(tile_pos)
+        return points
+
+
     def adj_tiles(self, center):
         """
         :param grid: the center tile
@@ -281,7 +291,8 @@ class Grid(object):
             "revealed_radius": [],
             }
         self.items = self.rooms[self.current_room]["items"]
-        self.items.extend(self.rooms["ALL"]["items"])
+        if "ALL" in self.rooms.keys():
+            self.items.extend(self.rooms["ALL"]["items"])
         self.items = list(set(self.items))
         self.revealed_radius = self.rooms[self.current_room]["revealed_radius"]
         self.revealed_tiles = []

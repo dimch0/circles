@@ -1,8 +1,8 @@
 {
   "CONSTANTS": {
-    "tile_radius": 36,
-    "rows"       : 24,
-    "cols"       : 24,
+    "tile_radius": 32,
+    "rows"       : 22,
+    "cols"       : 22,
     "fps"        : 60
     },
 
@@ -12,7 +12,7 @@
     "show_seconds"      : 0,
     "show_movement"     : 0,
     "show_playing_tiles": 0,
-    "show_tile_names"   : 0,
+    "show_tile_names"   : 1,
     "show_editor"       : 1,
     "show_verbose"      : 1
   },

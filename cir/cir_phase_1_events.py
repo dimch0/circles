@@ -134,16 +134,13 @@ class GameEvents(GameEffects):
         # --------------------------------------------------------------- #
         elif event.key == self.grid.pygame.K_1:
             self.grid.msg("INFO - Key 1 pressed")
-            self.grid.change_room("12_12")
+            self.grid.change_room("11_11")
         elif event.key == self.grid.pygame.K_2:
             self.grid.msg("INFO - Key 2 pressed")
-            self.grid.change_room("12_10")
+            self.grid.change_room("11_9")
         elif event.key == self.grid.pygame.K_3:
             self.grid.msg("INFO - Key 3 pressed")
-            self.grid.change_room("12_8")
-        elif event.key == self.grid.pygame.K_4:
-            self.grid.msg("INFO - Key 4 pressed")
-            self.grid.change_room("12_6")
+            self.grid.change_room("11_7")
         # --------------------------------------------------------------- #
         #                             OTHER                               #
         # --------------------------------------------------------------- #

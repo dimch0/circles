@@ -256,9 +256,9 @@ class GameDrawer(object):
                 (self.grid.center_tile[0], self.grid.display_height)
                     ]
             tri1 = [
-                (self.grid.center_tile[0] - ((4 * self.grid.cathetus) + (self.grid.cathetus / 2) + 5), (self.grid.center_tile[0] - 14 * self.grid.tile_radius)),
+                (self.grid.center_tile[0] - ((4 * self.grid.cathetus) + (self.grid.cathetus / 2) + 5), (self.grid.center_tile[0] - 13 * self.grid.tile_radius)),
                 (self.grid.center_tile[0] - ((4 * self.grid.cathetus) + (self.grid.cathetus / 2) + 5), 0),
-                (self.grid.center_tile[0] + ((2 * self.grid.cathetus) + (self.grid.cathetus / 2) + 5), 0)
+                (self.grid.center_tile[0] + ((2 * self.grid.cathetus) + (self.grid.cathetus / 2) + 0), 0)
             ]
             tri2 = [
                 (self.grid.center_tile[0] + ((4 * self.grid.cathetus) + (self.grid.cathetus / 2) + 5), (self.grid.center_tile[0] - 14 * self.grid.tile_radius)),
@@ -278,11 +278,28 @@ class GameDrawer(object):
 
             self.grid.pygame.draw.rect(self.grid.game_display, self.grid.fog_color, rect1, 0)
             self.grid.pygame.draw.rect(self.grid.game_display, self.grid.fog_color, rect2, 0)
-            self.grid.pygame.draw.polygon(self.grid.game_display, self.grid.fog_color, tri1, 0)
-            self.grid.pygame.draw.polygon(self.grid.game_display, self.grid.fog_color, tri2, 0)
+            self.grid.pygame.draw.polygon(self.grid.game_display, self.grid.white, tri1, 0)
+            self.grid.pygame.draw.polygon(self.grid.game_display, self.grid.red, tri2, 0)
             self.grid.pygame.draw.polygon(self.grid.game_display, self.grid.fog_color, tri3, 0)
             self.grid.pygame.draw.polygon(self.grid.game_display, self.grid.fog_color, tri4, 0)
+        else:
 
+            points = self.grid.names_to_pos(["11_1", "16_6", "16_16", "11_21", "6_16", "6_6"])
+            self.grid.pygame.draw.lines(self.grid.game_display, self.grid.red, True, points, 50)
+
+            fat = int((4 * self.grid.tile_radius) + (4.5 * self.grid.cathetus))
+
+            rec1 = self.grid.names_to_pos(["19_1", "19_21"])
+            self.grid.pygame.draw.lines(self.grid.game_display, self.grid.red, True, rec1, fat)
+            rec2 = self.grid.names_to_pos(["3_1", "3_21"])
+            self.grid.pygame.draw.lines(self.grid.game_display, self.grid.red, True, rec2, fat)
+            tri1 = self.grid.names_to_pos(["13_1", "17_1", "17_5"])
+            self.grid.pygame.draw.lines(self.grid.game_display, self.grid.red, True, tri1, 3 * self.grid.tile_radius)
+            lin1 = self.grid.names_to_pos(["1_1", "21_1"])
+            self.grid.pygame.draw.lines(self.grid.game_display, self.grid.red, True, lin1, 2 * self.grid.tile_radius)
+
+            lin2 = self.grid.names_to_pos(["1_21", "21_21"])
+            self.grid.pygame.draw.lines(self.grid.game_display, self.grid.red, True, lin2, 2 * self.grid.tile_radius)
 
     def draw_mouse_image(self, current_tile):
         """ Draws the Mouse image"""

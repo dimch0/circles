@@ -206,9 +206,9 @@ class DataLoader(object):
             butt.font = getattr(self.grid.fonts, 'small')
             butt.text_color = self.grid.white
             if name == "play":
-                butt.pos = self.grid.tile_dict['12_10']
+                butt.pos = self.grid.tile_dict['11_9']
             elif name == "quit":
-                butt.pos = self.grid.tile_dict['12_14']
+                butt.pos = self.grid.tile_dict['11_13']
 
             self.grid.buttons.append(butt)
 
@@ -272,7 +272,7 @@ class DataLoader(object):
             self.grid.items.append(my_body)
 
 
-        if self.grid.scenario == "scenario_1":
+        if self.grid.scenario in ["scenario_1", "scenario_3"]:
             self.grid.fog_color = self.grid.dark_grey
             self.grid.room_color = self.grid.grey
 
