@@ -14,6 +14,9 @@ scenario_3,11_11,my_body,body,my_body,,TRUE,TRUE,,,,,yellow,galab,11_11,8,6,grey
 ,11_13,Enter_11_13,item,door,,,,,,,,yellow,door11,7_7,,,,,,1
 scenario_3,,eat,item,option,my_body,,TRUE,TRUE,,,,,emoji_lips_y,,,,,,,1
 scenario_3,,collect,item,option,my_body,,TRUE,TRUE,,,,,grab,,,,,,,1
+scenario_3,11_11,bar_E,item,,,,TRUE,,,,,,neon_bar,11_1,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
 ,11_11,pretzel,item,,,,,,TRUE,TRUE,1,ungrey,pretzel,7_7,,,,,,1
 ,11_11,carrot,item,,,,,,TRUE,TRUE,1,ungrey,carrot,7_9,,,,,,1
 ,11_11,corn,item,,,,,,TRUE,TRUE,1,ungrey,corn,7_11,,,,,,1
