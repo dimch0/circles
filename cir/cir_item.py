@@ -39,7 +39,7 @@ class Item(object):
         self.consumable = False
         self.mode = None
         self.options = {}
-        self.default_options = {}
+        # self.default_options = {}
         self.overlap = []
         # --------------------------------------------------------------- #
         #                              STATS                              #
@@ -127,24 +127,22 @@ class Item(object):
         self.mode = None
         self.in_menu = True
         olap_pos = []
-        ober_item = None
 
-        if self.type in ['option']:
-            ober_item = self.get_ober_item(grid)
-
-        if ober_item:
-            ober_item.close_menu(grid)
-            ober_item.options = self.options
-            ober_item.open_menu(grid)
-            ober_item.mode = self.name
-
+        # ober_item = None
+        # if self.type in ['option']:
+        #     ober_item = self.get_ober_item(grid)
+        # if ober_item:
+        #     ober_item.close_menu(grid)
+        #     ober_item.options = self.options
+        #     ober_item.open_menu(grid)
+        #     ober_item.mode = self.name
         # NORMAL OPTIONS
-        else:
-            for idx, option in enumerate(self.options.values()):
-                option.pos = grid.adj_tiles(self.pos)[idx]
-                olap_pos.append(option.pos)
-                if option not in grid.items:
-                    grid.items.append(option)
+        # else:
+        for idx, option in enumerate(self.options.values()):
+            option.pos = grid.adj_tiles(self.pos)[idx]
+            olap_pos.append(option.pos)
+            if option not in grid.items:
+                grid.items.append(option)
 
         # OVERLAP
         if olap_pos:
@@ -170,12 +168,6 @@ class Item(object):
                 olap_item.clickable = True
                 if olap_item in grid.overlap:
                     grid.overlap.remove(olap_item)
-
-    # def revert_menu(self, grid):
-    #     self.close_menu(grid)
-    #     self.options = self.default_options
-    #     self.open_menu(grid)
-    #     self.mode = None
 
     # --------------------------------------------------------------- #
     #                                                                 #

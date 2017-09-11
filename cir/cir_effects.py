@@ -165,7 +165,7 @@ class GameEffects(object):
         trigger = self.produce(product_name="trigger",
                                pos=self.grid.center_tile,
                                lifespan=2)
-        trigger.range = 4
+        trigger.range = 4.2
         trigger.vibe_speed = 3
         trigger.birth_time = 0
 

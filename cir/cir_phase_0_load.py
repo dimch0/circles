@@ -142,7 +142,7 @@ class DataLoader(object):
                 opt.default_color = item.color
                 # item.options.append(opt)
                 item.options[opt.name] = opt
-                item.default_options[opt.name] = opt
+                # item.default_options[opt.name] = opt
 
     def set_opts(self, item):
         if item.has_opts:
