@@ -39,7 +39,6 @@ class Item(object):
         self.consumable = False
         self.mode = None
         self.options = {}
-        # self.default_options = {}
         self.overlap = []
         # --------------------------------------------------------------- #
         #                              STATS                              #
