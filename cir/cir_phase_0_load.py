@@ -23,6 +23,7 @@ class DataLoader(object):
     def __init__(self, grid=None):
         self.grid = grid
 
+
     def set_data_file(self):
         """ Extends the current scenario data file with the all data file """
         lines_to_write = []
@@ -202,7 +203,7 @@ class DataLoader(object):
         for name in ["play", "quit"]:
             butt = cir_item_button.ButtonItem()
             butt.name = name
-            butt.color = self.grid.grey
+            butt.color = self.grid.grey4
             butt.font = getattr(self.grid.fonts, 'small')
             butt.text_color = self.grid.white
             if name == "play":
@@ -273,11 +274,11 @@ class DataLoader(object):
 
 
         if self.grid.scenario in ["scenario_1", "scenario_3"]:
-            self.grid.fog_color = self.grid.dark_grey
-            self.grid.room_color = self.grid.grey
+            self.grid.fog_color = self.grid.grey3
+            self.grid.room_color = self.grid.grey4
 
         elif self.grid.scenario == "scenario_2":
-            self.grid.fog_color = self.grid.dark_grey
+            self.grid.fog_color = self.grid.grey3
             self.grid.room_color = self.grid.black
             self.grid.game_menu = False
 
