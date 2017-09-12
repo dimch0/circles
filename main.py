@@ -4,13 +4,13 @@
 #                                                                                                                     #
 # ------------------------------------------------------------------------------------------------------------------- #
 # --------------------------------------------------------------- #
-#                            BUG FIXES                            #
+#                             BUG FIXES                           #
 # --------------------------------------------------------------- #
 # TODO: Fix movement to occupado / mitosis
 # TODO: Fix collect with open menu
 # TODO: Create drop mode
 # --------------------------------------------------------------- #
-#                            FEATURES                             #
+#                             FEATURES                            #
 # --------------------------------------------------------------- #
 # TODO: Create trade mode
 # TODO: Create craft mode
@@ -22,7 +22,7 @@
 # TODO: Log statistics during a lifespan, calculate karma
 # TODO: Create installation .exe file
 # --------------------------------------------------------------- #
-#                            COSMETICS                            #
+#                             COSMETICS                           #
 # --------------------------------------------------------------- #
 # TODO: Fix rotation on direction (PROPOSED remove rotation)
 # TODO: Indicate uses / metrics
@@ -33,14 +33,16 @@
 # --------------------------------------------------------------- #
 #                               DONE                              #
 # --------------------------------------------------------------- #
-# TODO: No ober item found if item is not option? PROPOSED: DO NOT USE SUBOPTIONS
+# TODO: No ober item found if item is not option? PROPOSED: DO NOT USE SUB-OPTIONS
 # TODO: Fix map update - problem found: my_body overlaps with first map tile
 # TODO: Fix menu - no ober item found / body moves out of option - still not clickable (removed cond from drawing)
 # TODO: Fixed constant hit bug - line 113 cir_item
 # TODO: Placeholder was cleaning bag_placeholders too :(
 # TODO: Trigger doesn't suicide - cause: generated reversed birth track in self.destroy()
-
-# TODO: Fix duplicate print (recursive calling of loop) - NOT FIXED
+# --------------------------------------------------------------- #
+#                             REJECTED                            #
+# --------------------------------------------------------------- #
+# TODO: Fix duplicate print (recursive calling of loop - NOT FIXED)
 
 
 import pygame
