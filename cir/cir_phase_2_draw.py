@@ -158,7 +158,7 @@ class GameDrawer(object):
                                        0)
                 if item.category == "bag":
                     self.grid.pygame.draw.circle(self.grid.game_display,
-                                                 self.grid.yellow,
+                                                 self.grid.gelb05,
                                                  item.pos,
                                                  self.grid.tile_radius,
                                                  1)
@@ -322,7 +322,7 @@ class GameDrawer(object):
         """ Draws the Mouse image"""
         if current_tile and self.grid.mouse_img:
             self.grid.pygame.draw.circle(self.grid.game_display,
-                               self.grid.yellow,
+                               self.grid.gelb05,
                                current_tile,
                                self.grid.tile_radius,
                                1)
@@ -347,7 +347,7 @@ class GameDrawer(object):
         if self.grid.playing_tiles:
             for tile in self.grid.playing_tiles:
                 self.grid.pygame.draw.circle(self.grid.game_display,
-                                   self.grid.gelb, tile,
+                                   self.grid.gelb01, tile,
                                    self.grid.tile_radius,
                                    1)
 

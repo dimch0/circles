@@ -203,7 +203,7 @@ class DataLoader(object):
         for name in ["play", "quit"]:
             butt = cir_item_button.ButtonItem()
             butt.name = name
-            butt.color = self.grid.grey4
+            butt.color = self.grid.grey04
             butt.font = getattr(self.grid.fonts, 'small')
             butt.text_color = self.grid.white
             if name == "play":
@@ -274,11 +274,11 @@ class DataLoader(object):
 
 
         if self.grid.scenario in ["scenario_1", "scenario_3"]:
-            self.grid.fog_color = self.grid.grey3
-            self.grid.room_color = self.grid.grey4
+            self.grid.fog_color = self.grid.grey03
+            self.grid.room_color = self.grid.grey04
 
         elif self.grid.scenario == "scenario_2":
-            self.grid.fog_color = self.grid.grey3
+            self.grid.fog_color = self.grid.grey03
             self.grid.room_color = self.grid.black
             self.grid.game_menu = False
 
