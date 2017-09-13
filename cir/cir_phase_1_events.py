@@ -82,6 +82,14 @@ class GameEvents(GameEffects):
         # CHECK FOR EMPTY SLOT IN BAG
         bag_placeholder = None
         bag = [item for item in self.grid.rooms["ALL"]["items"] if item.name == "bag"][0]
+        reopen_bag = False
+
+        if bag.in_menu:
+            bag.close_menu(self.grid)
+            reopen_bag = True
+            backup_mouse_mode = self.grid.mouse_mode
+            backup_mouse_img = self.grid.mouse_img
+            backup_body_mode = my_body.mode
 
         for empty_name, empty_item in bag.options.items():
             if "bag_placeholder" in empty_name:
@@ -105,6 +113,12 @@ class GameEvents(GameEffects):
             clicked_item.destroy(self.grid, fast=True)
         else:
             self.grid.msg("INFO -  No space in bag")
+
+        if reopen_bag:
+            bag.open_menu(self.grid)
+            self.grid.mouse_mode = backup_mouse_mode
+            self.grid.mouse_img = backup_mouse_img
+            my_body.mode = backup_body_mode
 
     # --------------------------------------------------------------- #
     #                                                                 #
