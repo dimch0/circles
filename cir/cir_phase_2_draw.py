@@ -225,18 +225,15 @@ class GameDrawer(object):
 
     def draw_grid(self):
         """ Shows the grid tiles in white """
-        for tile in self.grid.tiles:
-            self.grid.pygame.draw.circle(self.grid.game_display,
-                               self.grid.room_color,
-                               tile,
-                               self.grid.tile_radius,
-                               1)
-
-        self.draw_playing_tiles()
-
-
-    def draw_tile_names(self):
         for tile_name, tile_centre in self.grid.tile_dict.items():
+
+            self.grid.pygame.draw.circle(self.grid.game_display,
+                                         self.grid.room_color,
+                                         tile_centre,
+                                         self.grid.tile_radius,
+                                         1)
+
+
             font = getattr(self.grid.fonts, 'tiny')
             text = font.render(str(tile_name), True, self.grid.white)
             rect = text.get_rect()
@@ -342,17 +339,6 @@ class GameDrawer(object):
                                1)
 
 
-    def draw_playing_tiles(self):
-        """ Shows all tiles of the playing board in yellow """
-        if self.grid.playing_tiles:
-            for tile in self.grid.playing_tiles:
-                self.grid.pygame.draw.circle(self.grid.game_display,
-                                   self.grid.gelb01, tile,
-                                   self.grid.tile_radius,
-                                   1)
-
-
-
     # --------------------------------------------------------------- #
     #                                                                 #
     #                           BACKGROUND                            #
@@ -370,15 +356,6 @@ class GameDrawer(object):
 
         # Mask
         self.draw_mask()
-
-        # Grid
-        if self.grid.show_grid:
-            self.draw_grid()
-
-        # Playing board:
-        if self.grid.show_playing_tiles:
-            self.draw_playing_tiles()
-
 
 
 
@@ -426,14 +403,13 @@ class GameDrawer(object):
                 self.draw_timers(item)
 
 
-        # Mouse
+        # MOUSE
         if self.grid.mouse_mode:
             self.draw_mouse_image(current_tile)
 
-        # Tile names
-        if self.grid.show_tile_names:
+        # GRID
+        if self.grid.show_grid:
             self.draw_grid()
-            self.draw_tile_names()
 
     def draw(self, current_tile):
         """
