@@ -73,7 +73,7 @@ class GameDrawer(object):
 
             if item.img.get_width() == self.grid.tile_radius:
                 self.grid.game_display.blit(item.img, self.set_emoji_pos(item.pos))
-            elif item.img.get_width() == (self.grid.tile_radius * 2) - 10:
+            elif item.img.get_width() == (self.grid.tile_radius - 5) * 2:
                 self.grid.game_display.blit(item.img, self.set_map_pos(item.pos))
             else:
                 self.grid.game_display.blit(item.img, self.set_img_pos(item.pos))
@@ -140,11 +140,13 @@ class GameDrawer(object):
 
         if item.available:
             blit_item = True
-
+            if item.type == "door":
+                item.radius = self.grid.tile_radius + 5
             if item.birth_track:
                 item.radius = item.birth_track[0]
             elif not item.birth_track and item.fat_track:
                 item.radius = item.fat_track[0]
+
             if not item.birth_track and item.marked_for_destruction:
                 blit_item = False
 
