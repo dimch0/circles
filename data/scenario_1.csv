@@ -1,6 +1,6 @@
 scenario,room,name,klas,type,category,has_opts,available,modable,collectible,consumable,uses,color,img,pos,speed,range,time_color,lifespan,vibe_freq,layer
-scenario_1,11_11,my_body,body,my_body,,TRUE,TRUE,,,,,gelb05,galab,11_11,8,6,grey03,600,,2
-,11_7,lover,body,,,,,,,,,mag03,bqlgalab,13_9,1,1,,,,
+scenario_1,11_11,my_body,body,my_body,,TRUE,TRUE,,,,,gelb05,galab,11_11,2,1,grey03,600,,2
+scenario_1,12_12,lover,body,body,,,,,,,,red03,bqlgalab,13_9,1,1,,,,
 scenario_1,11_11,Enter_11_9,item,door,,,,,,,,grey03,door1,11_3,,,,,,
 scenario_1,11_11,Enter_11_13,item,door,,,,,,,,grey03,door2,11_19,,,,,,
 scenario_1,11_9,Enter_11_7,item,door,,,,,,,,grey03,door3,11_3,,,,,,
