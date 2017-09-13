@@ -5,7 +5,7 @@
 #                                                                                                                     #
 #                                                                                                                     #
 # ------------------------------------------------------------------------------------------------------------------- #
-def game_menu(grid):
+def game_menu(grid, my_body):
     """ GAME MENU LOOP """
     while grid.game_menu:
 
@@ -23,6 +23,7 @@ def game_menu(grid):
                 if event.key == grid.pygame.K_ESCAPE:
                     if grid.seconds_in_game > 0:
                         grid.game_menu = False
+
 
             elif event.type == grid.pygame.MOUSEBUTTONDOWN:
                 if current_tile:

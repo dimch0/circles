@@ -79,7 +79,7 @@ def game_loop(game_over, scenario="scenario_1"):
 
         CURRENT_TILE = grid.mouse_in_tile(pygame.mouse.get_pos())
         grid.seconds_in_game_tick()
-        game_menu(grid)
+        game_menu(grid, my_body)
 
         # --------------------------------------------------------------- #
         #                          PHASE 1: EVENTS                        #
