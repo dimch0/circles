@@ -7,13 +7,12 @@
 #                             BUG FIXES                           #
 # --------------------------------------------------------------- #
 # TODO: Fix movement to occupado / mitosis
-# TODO: Fix collect with open menu
 # TODO: Create drop mode
+# TODO: Create trade mode
+# TODO: Create craft mode
 # --------------------------------------------------------------- #
 #                             FEATURES                            #
 # --------------------------------------------------------------- #
-# TODO: Create trade mode
-# TODO: Create craft mode
 # TODO: Item generation
 # TODO: Create save button
 # TODO: Create load button

@@ -353,7 +353,7 @@ class Grid(object):
         quit()
 
     def msg(self, msg):
-
+        """ Display messages in terminal """
         will_show_msg = True
         msg_color = bcolors.INFO
 

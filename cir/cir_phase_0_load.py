@@ -5,6 +5,7 @@
 # ------------------------------------------------------------------------------------------------------------------- #
 import csv
 import time
+import xlrd
 
 import cir_item
 import cir_item_body
@@ -18,23 +19,47 @@ from cir_phase_2_draw import GameDrawer
 from cir_phase_3_update import VarUpdater
 
 
+
+
+def csv_from_excel(excel_file):
+
+    wb = xlrd.open_workbook(excel_file)
+    sh = wb.sheet_by_name('Sheet1')
+    csv_file = excel_file.replace('xls', 'csv')
+
+
+    your_csv_file = open(csv_file, 'wb')
+    wr = csv.writer(your_csv_file, quoting=csv.QUOTE_ALL)
+
+    for rownum in xrange(sh.nrows):
+        wr.writerow(sh.row_values(rownum))
+
+    your_csv_file.close()
+    return csv_file
+
 class DataLoader(object):
 
     def __init__(self, grid=None):
         self.grid = grid
-
+        self.csv_all = None
+        self.csv_data = None
+        self.data_file = None
 
     def set_data_file(self):
         """ Extends the current scenario data file with the all data file """
         lines_to_write = []
-        with open(self.grid.all, 'rb') as all:
+
+        self.csv_all = csv_from_excel(self.grid.all)
+        self.csv_data = csv_from_excel(self.grid.data_file)
+
+        with open(self.csv_all, 'rb') as all:
             data_all = csv.reader(all, delimiter=',')
             header_all = next(data_all)
             for line in data_all:
                 if line and not line == header_all:
                     lines_to_write.append(line)
 
-        with open(self.grid.data_file, 'ab') as data_file:
+        with open(self.csv_data, 'ab') as data_file:
             writer = csv.writer(data_file)
             for line in lines_to_write:
                 writer.writerow(line)
@@ -118,17 +143,17 @@ class DataLoader(object):
                             "pos"         : self.grid.tile_dict[row[col_idx["pos"]]] if len(row[col_idx["pos"]]) > 0 else None,
                             "color"       : getattr(self.grid, row[col_idx["color"]]) if len(row[col_idx["color"]]) > 0 else None,
                             "img"         : getattr(self.grid.images, row[col_idx["img"]]) if len(row[col_idx["img"]]) > 0 else None,
-                            "speed"       : int(row[col_idx["speed"]]) if len(row[col_idx["speed"]]) > 0 else None,
-                            "range"       : int(row[col_idx["range"]]) if len(row[col_idx["range"]]) > 0 else None,
+                            "speed"       : int(float(row[col_idx["speed"]])) if len(row[col_idx["speed"]]) > 0 else None,
+                            "range"       : int(float(row[col_idx["range"]])) if len(row[col_idx["range"]]) > 0 else None,
                             "time_color"  : getattr(self.grid, row[col_idx["time_color"]]) if len(row[col_idx["time_color"]]) > 0 else None,
                             "modable"     : bool(row[col_idx["modable"]]),
                             "collectible" : bool(row[col_idx["collectible"]]),
                             "consumable"  : bool(row[col_idx["consumable"]]),
-                            "uses"        : int(row[col_idx["uses"]]) if len(row[col_idx["uses"]]) > 0 else None,
+                            "uses"        : int(float(row[col_idx["uses"]])) if len(row[col_idx["uses"]]) > 0 else None,
                             "room"        : row[col_idx["room"]],
                             "lifespan"    : float(row[col_idx["lifespan"]]) if len(row[col_idx["lifespan"]]) > 0 else None,
                             "vibe_freq"   : float(row[col_idx["vibe_freq"]]) if len(row[col_idx["vibe_freq"]]) > 0 else None,
-                            "layer"       : int(row[col_idx["layer"]]) if len(row[col_idx["layer"]]) > 0 else 1
+                            "layer"       : int(float(row[col_idx["layer"]])) if len(row[col_idx["layer"]]) > 0 else 1
                         }
 
                         # CREATE ITEM
@@ -203,7 +228,7 @@ class DataLoader(object):
         for name in ["play", "quit"]:
             butt = cir_item_button.ButtonItem()
             butt.name = name
-            butt.color = self.grid.grey04
+            butt.color = self.grid.grey14
             butt.font = getattr(self.grid.fonts, 'small')
             butt.text_color = self.grid.white
             if name == "play":
@@ -275,13 +300,12 @@ class DataLoader(object):
 
         if self.grid.scenario in ["scenario_1"]:
             self.grid.fog_color = self.grid.grey03
-            self.grid.room_color = self.grid.grey04
+            self.grid.room_color = self.grid.grey14
 
-        elif self.grid.scenario == "scenario_2":
+        elif self.grid.scenario in ["scenario_2"]:
             self.grid.fog_color = self.grid.grey03
             self.grid.room_color = self.grid.black
             self.grid.game_menu = False
 
-        # self.grid.clean_tmp_maps()
 
         return my_body

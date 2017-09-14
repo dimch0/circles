@@ -25,7 +25,6 @@ class GameDrawer(object):
         img_y = item_pos[1] - self.grid.tile_radius
         return (img_x, img_y)
 
-
     def set_emoji_pos(self, item_pos):
         """
         Centers the emoji image posotion
@@ -34,6 +33,16 @@ class GameDrawer(object):
         """
         img_x = item_pos[0] - self.grid.tile_radius / 2
         img_y = item_pos[1] - self.grid.tile_radius / 2
+        return (img_x, img_y)
+
+    def set_neon_pos(self, item_pos):
+        """
+        Centers the emoji image posotion
+        :param grid:  grid object
+        :return: coordinates of the centered image
+        """
+        img_x = item_pos[0] - self.grid.tile_radius * 1.25
+        img_y = item_pos[1] - self.grid.tile_radius * 1.25
         return (img_x, img_y)
 
     def set_map_pos(self, item_pos):
@@ -75,6 +84,8 @@ class GameDrawer(object):
                 self.grid.game_display.blit(item.img, self.set_emoji_pos(item.pos))
             elif item.img.get_width() == (self.grid.tile_radius - 5) * 2:
                 self.grid.game_display.blit(item.img, self.set_map_pos(item.pos))
+            elif item.type in ['sign']:
+                self.grid.game_display.blit(item.img, self.set_neon_pos(item.pos))
             else:
                 self.grid.game_display.blit(item.img, self.set_img_pos(item.pos))
 
@@ -140,8 +151,6 @@ class GameDrawer(object):
 
         if item.available:
             blit_item = True
-            if item.type == "door":
-                item.radius = self.grid.tile_radius + 5
             if item.birth_track:
                 item.radius = item.birth_track[0]
             elif not item.birth_track and item.fat_track:
@@ -173,7 +182,7 @@ class GameDrawer(object):
     def draw_timers(self, item):
         """ Draws current state of a timer """
         if item.lifespan:
-            timer_fat = item.radius / 5
+            timer_fat = 2
 
             if item.lifespan.available and item.time_color:
                 if item.radius >= timer_fat:
@@ -192,8 +201,8 @@ class GameDrawer(object):
             aim_dir_idx = item.get_aiming_direction(self.grid, current_tile)[1]
             # aim_tile = item.get_aiming_direction(self.grid, current_tile)[0]
 
-            aim_fat  = item.radius / 5
-            aim_dist = aim_fat
+            aim_fat  = 2
+            aim_dist = aim_fat * 3
             aim_rect = [item.rect[0] - aim_dist,
                         item.rect[1] - aim_dist,
                         item.rect[2] + aim_dist * 2,
