@@ -177,7 +177,8 @@ class GameDrawer(object):
 
                 self.draw_img(item)
                 self.draw_aim(current_tile, item)
-                self.draw_hover(current_tile, item)
+                if not item.type in ['sign']:
+                    self.draw_hover(current_tile, item)
 
     def draw_timers(self, item):
         """ Draws current state of a timer """
