@@ -331,7 +331,7 @@ class GameDrawer(object):
         """ Draws the Mouse image"""
         if current_tile and self.grid.mouse_img:
             self.grid.pygame.draw.circle(self.grid.game_display,
-                               self.grid.gelb05,
+                               self.grid.white,
                                current_tile,
                                self.grid.tile_radius,
                                1)
