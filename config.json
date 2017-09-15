@@ -17,10 +17,10 @@
 
   "PATHS": {
     "caption"  : "cir",
-    "img_dir"  : "./img/",
     "data_dir" : "./data/",
-    "sound_dir": "./sound/",
-    "tmp_dir" : "./tmp/",
-    "font_file": "./fonts/HelveticaNeueMed.ttf"
+    "img_dir"  : "./cosmetics/img/",
+    "sound_dir": "./cosmetics/sound/",
+    "font_file": "./cosmetics/fonts/HelveticaNeueMed.ttf",
+    "tmp_dir"  : "./tmp/"
   }
 }
