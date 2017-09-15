@@ -7,7 +7,8 @@
 #                             BUG FIXES                           #
 # --------------------------------------------------------------- #
 # TODO: Fix movement to occupado / mitosis
-# TODO: Create drop mode
+# TODO: Create drop mode on my_body
+# TODO: Create eat mode in bag items
 # TODO: Create trade mode
 # TODO: Create craft mode
 # --------------------------------------------------------------- #

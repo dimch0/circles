@@ -116,7 +116,7 @@ class DataLoader(object):
             result[name] = idx
         return result
 
-    def load_data(self):
+    def load_data(self, item_name=None):
         """
         This function loads all items and menu options from external data file.
         :param images: images instance
@@ -157,7 +157,14 @@ class DataLoader(object):
                         }
 
                         # CREATE ITEM
-                        item = self.create_new_item(klas, attributes_dict)
+                        if item_name:
+                            if item_name in attributes_dict["name"]:
+                                item = self.create_new_item(klas, attributes_dict)
+                            else:
+                                continue
+                        else:
+                            item = self.create_new_item(klas, attributes_dict)
+
                         yield item, klas
 
     def find_opts(self, opt, item):
@@ -251,7 +258,7 @@ class DataLoader(object):
 
     def load_item(self, item_name):
         new_item = None
-        for item, klas in self.load_data():
+        for item, klas in self.load_data(item_name):
             if item.name == item_name:
                 new_item = item
                 self.set_timers(new_item)

@@ -3,6 +3,7 @@
 #                                                    EVENTS                                                           #
 #                                                                                                                     #
 # ------------------------------------------------------------------------------------------------------------------- #
+import re
 import time
 import cir_utils
 from cir_editor import Editor
@@ -25,20 +26,6 @@ class GameEvents(GameEffects):
     #                         MOUSE MODES                             #
     #                                                                 #
     # --------------------------------------------------------------- #
-
-    # DROP ITEM
-    # def shit_mode_click(self, current_tile):
-    #     """
-    #     For mode 'shit', if clicked produces an item and exhausts mode uses
-    #     :param current_tile: the clicked circle
-    #     """
-    #     for bag_item in self.grid.mode_vs_options["bag"]:
-    #         if bag_item.name == mouse_mode:
-    #             if bag_item.uses:
-    #                 if current_tile not in self.grid.occupado_tiles.values():
-    #                     self.produce("shit", current_tile)
-    #                     bag_item.uses -= 1
-    #                     return 1
 
     def laino_mode_click(self, current_tile):
         if current_tile not in self.grid.occupado_tiles.values() and current_tile in self.grid.revealed_tiles:
@@ -107,6 +94,7 @@ class GameEvents(GameEffects):
             item_as_option.modable = True
             item_as_option.color = clicked_item.color
             item_as_option.img = clicked_item.img
+            item_as_option.uses = clicked_item.uses
             # ADD IN BAG AND REMOVE FROM FIELD
             del bag.options[bag_placeholder.name]
             bag.options[item_as_option.name] = item_as_option
@@ -119,6 +107,34 @@ class GameEvents(GameEffects):
             self.grid.mouse_mode = backup_mouse_mode
             self.grid.mouse_img = backup_mouse_img
             my_body.mode = backup_body_mode
+
+    # DROP ITEM
+    def drop_mode_click(self, current_tile, my_body):
+        """
+        Drops item
+        """
+        # TODO: SET BAG AS AN ATTRIBUTE TO MY_BODY
+        bag = [item for item in self.grid.rooms["ALL"]["items"] if item.name == "bag"][0]
+
+        if current_tile not in self.grid.occupado_tiles.values() and current_tile in self.grid.playing_tiles:
+            for bag_item in bag.options.values():
+                if self.grid.mouse_mode in bag_item.name and bag_item.uses >= 1:
+                    time_stamp_pattern = '\d{10,}.{1,}'
+                    time_stamp_string = re.search(time_stamp_pattern, self.grid.mouse_mode).group(0)
+                    item_name = self.grid.mouse_mode.replace(time_stamp_string, "")
+                    self.produce(item_name, current_tile)
+                    bag_item.uses -= 1
+                    # EMPTY BAG
+                    if bag_item.uses < 1:
+                        bag_item.name = "Placeholder" + str(time.time())
+                        bag_item.modable = False
+                        bag_item.color = None
+                        bag_item.img = None
+                        bag_item.uses = 0
+                        self.grid.clean_mouse()
+                    break
+        else:
+            self.grid.msg("INFO - No place here")
 
     # --------------------------------------------------------------- #
     #                                                                 #
@@ -165,6 +181,7 @@ class GameEvents(GameEffects):
         elif not my_body.in_menu:
             my_body.gen_direction(self.grid.pygame, self.grid, event)
 
+
     # --------------------------------------------------------------- #
     #                                                                 #
     #                         CLICK EVENTS                            #
@@ -192,6 +209,9 @@ class GameEvents(GameEffects):
 
         elif mouse_mode == "echo":
             self.echo_mode_click(current_tile, my_body)
+
+        elif mouse_mode:
+            self.drop_mode_click(current_tile, my_body)
 
         # --------------------------------------------------------------- #
         #                   CLICK ON ITEMS NO MOUSE MODE                  #

@@ -114,7 +114,7 @@ def show_debug_on_click(grid, current_circle, my_body):
     grid.msg("-"*12)
     if grid.show_debug:
         # grid.msg("DEBUG = click tile  : {0}".format( current_circle ))
-        # grid.msg("DEBUG = mouse mode  : {0}".format( grid.mouse_mode ))
+        grid.msg("DEBUG = mouse mode  : {0}".format( grid.mouse_mode ))
         # grid.msg("DEBUG = my_body mode: {0}".format( my_body.mode ))
         # grid.msg("DEBUG = menu        : {0}".format( my_body.in_menu ))
         # grid.msg("DEBUG = grid items  : {0}".format( len(grid.items) ))
