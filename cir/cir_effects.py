@@ -47,7 +47,7 @@ class GameEffects(object):
         if radius:
             new_item.radius = radius
             new_item.default_radius = radius
-        if not birth == None:
+        if not birth in [None, 0]:
             new_item.birth_time.duration = birth
         if vibe_freq:
             new_item.vibe_freq.duration = vibe_freq

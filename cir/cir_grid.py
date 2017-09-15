@@ -10,7 +10,7 @@ import time
 import json
 import shutil
 from math import sqrt
-from cir_utils import in_circle, inside_polygon, bcolors
+from cir_utils import in_circle, inside_polygon, bcolors, get_short_name
 
 CONFIG_JSON_FILE = "config.json"
 
@@ -250,11 +250,19 @@ class Grid(object):
         self.mouse_img = None
 
     def set_mouse_mode(self, option):
-        self.mouse_mode = option.name
-        if option.img:
-            self.mouse_img = option.img
+
+        new_mode = get_short_name(option.name)
+        if self.mouse_mode == option.name:
+            self.clean_mouse()
         else:
-            self.mouse_img = None
+            self.mouse_mode = new_mode
+            print self.mouse_mode
+            if option.img:
+                self.mouse_img = option.img
+            else:
+                self.mouse_img = None
+
+
 
     # --------------------------------------------------------------- #
     #                             ROOMS                               #
@@ -365,5 +373,7 @@ class Grid(object):
             msg_color = bcolors.INFO
         if "ERROR - " in msg:
             msg_color = bcolors.ERROR
+        if "DISPLAY - " in msg:
+            msg_color = bcolors.BOLD
         if will_show_msg:
             print(msg_color + msg + bcolors.ENDC)

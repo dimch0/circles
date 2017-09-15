@@ -42,7 +42,7 @@
 # --------------------------------------------------------------- #
 #                             REJECTED                            #
 # --------------------------------------------------------------- #
-# TODO: Fix duplicate print (recursive calling of loop - NOT FIXED)
+# TODO: recursive calling of loop - NOT FIXED
 
 
 import pygame
@@ -66,9 +66,6 @@ def game_loop(game_over, scenario="scenario_1"):
 
     # TESTING
 
-    # for tn, tp in grid.tile_dict.items():
-    #     if tp in grid.playing_tiles:
-    #         print tn
 
     # --------------------------------------------------------------- #
     #                            GAME LOOP                            #

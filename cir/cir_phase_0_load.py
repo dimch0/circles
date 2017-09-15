@@ -282,6 +282,7 @@ class DataLoader(object):
         self.grid.start_time    = time.time()
 
         my_body = None
+        my_body_inventory = None
 
         self.grid.msg("INFO - Loading {0}".format(self.grid.scenario))
         for item, klas in self.load_data():
@@ -293,6 +294,8 @@ class DataLoader(object):
             elif item.type == "my_body":
                 my_body = item
                 my_body.gen_birth_track()
+            elif item.type == "inventory":
+                my_body_inventory = item
 
             self.set_room(item)
             self.set_timers(item)
@@ -314,5 +317,5 @@ class DataLoader(object):
             self.grid.room_color = self.grid.black
             self.grid.game_menu = False
 
-
+        my_body.inventory = my_body_inventory
         return my_body

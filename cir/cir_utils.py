@@ -3,6 +3,7 @@
 #                                                    UTILS                                                            #
 #                                                                                                                     #
 # ------------------------------------------------------------------------------------------------------------------- #
+import re
 import math
 
 
@@ -98,8 +99,7 @@ def get_next_point(pointA, pointB, dist):
 
 
 def get_mirror_point(pointA, pointB):
-
-    # print("INFO: Mirroring {0}".format(pointB))
+    """ Showing the mirror point of A if B is center """
     dist = 2
     t = 1
     pointC = get_next_point(pointA, pointB, dist)
@@ -118,7 +118,7 @@ def show_debug_on_click(grid, current_circle, my_body):
         # grid.msg("DEBUG = my_body mode: {0}".format( my_body.mode ))
         # grid.msg("DEBUG = menu        : {0}".format( my_body.in_menu ))
         # grid.msg("DEBUG = grid items  : {0}".format( len(grid.items) ))
-        grid.msg("DEBUG = grid items  : {0}".format( [(item.name, item.pos) for item in grid.items] ))
+        # grid.msg("DEBUG = grid items  : {0}".format( [(item.name, item.pos) for item in grid.items] ))
         # grid.msg("DEBUG = occupado    : {0}".format( len(grid.occupado_tiles) ))
         # grid.msg("DEBUG = overlap     : {0}".format( [(item.name, item.pos) for item in grid.overlap] ))
         # grid.msg("DEBUG = playing     : {0}".format( len(grid.playing_tiles) ))
@@ -152,6 +152,17 @@ def rot_center(pygame, image, angle):
     rot_rect.center = rot_image.get_rect().center
     rot_image = rot_image.subsurface(rot_rect).copy()
     return rot_image
+
+
+def get_short_name(name_with_timestamp):
+    """ Removes the timestamp from a name """
+    time_stamp_pattern = '\d{10,}.{1,}'
+    if re.search(time_stamp_pattern, name_with_timestamp):
+        time_stamp_string = re.search(time_stamp_pattern, name_with_timestamp).group(0)
+        item_name = name_with_timestamp.replace(time_stamp_string, "")
+    else:
+        item_name = name_with_timestamp
+    return item_name
 
 
 class bcolors:
