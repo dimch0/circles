@@ -113,10 +113,6 @@ class GameEvents(GameEffects):
 
 
     def empty_inventory(self, bag_item):
-        copy_item = self.produce(product_name=cir_utils.get_short_name(bag_item.name),
-                                 pos=bag_item.pos,
-                                 birth=0)
-        copy_item.destroy(self.grid)
 
         bag_item.uses -= 1
         if bag_item.uses < 1:
