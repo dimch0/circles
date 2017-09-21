@@ -256,7 +256,6 @@ class Grid(object):
             self.clean_mouse()
         else:
             self.mouse_mode = new_mode
-            print self.mouse_mode
             if option.img:
                 self.mouse_img = option.img
             else:
@@ -375,5 +374,15 @@ class Grid(object):
             msg_color = bcolors.ERROR
         if "DISPLAY - " in msg:
             msg_color = bcolors.BOLD
+
+            font = getattr(self.fonts, 'small')
+            txt = font.render(msg, True, self.white)
+            txt_rect = txt.get_rect()
+            txt_rect.center = (200, 200)
+            self.game_display.blit(txt, txt_rect)
+            self.pygame.display.update()
+
         if will_show_msg:
             print(msg_color + msg + bcolors.ENDC)
+
+

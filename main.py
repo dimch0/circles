@@ -7,8 +7,6 @@
 #                             BUG FIXES                           #
 # --------------------------------------------------------------- #
 # TODO: Fix movement to occupado / mitosis
-# TODO: Create drop mode on my_body
-# TODO: Create eat mode in bag items
 # TODO: Create trade mode
 # TODO: Create craft mode
 # --------------------------------------------------------------- #
@@ -90,7 +88,7 @@ def game_loop(game_over, scenario="scenario_1"):
                 grid.event_effects.execute_key_events(event, my_body)
             # CLICK EVENTS
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                grid.event_effects.execute_click_events(event, my_body, CURRENT_TILE)
+                grid.event_effects.execute_click_events(my_body, CURRENT_TILE)
         # --------------------------------------------------------------- #
         #                          PHASE 2: DRAWING                       #
         # --------------------------------------------------------------- #

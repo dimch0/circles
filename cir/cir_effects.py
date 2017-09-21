@@ -191,5 +191,35 @@ class GameEffects(object):
                 my_body.close_menu(self.grid)
             self.grid.needs_to_change_room = True
         else:
-            self.grid.msg("INFO - )Door far")
+            self.grid.msg("DISPLAY - It far")
             item.in_menu = False
+
+
+    # --------------------------------------------------------------- #
+    #                                                                 #
+    #                          CONSUMABLES                            #
+    #                                                                 #
+    # --------------------------------------------------------------- #
+    def consume(self, consumator_item, consumable_item):
+        self.grid.msg("INFO - Consumed {0}".format(consumable_item.name))
+        self.grid.msg("DISPLAY - Nom nom nom")
+
+        if hasattr(consumator_item, "lifespan"):
+            if consumator_item.lifespan:
+
+                # TODO: READ FROM CONSUMABLE ITEM ATTRIBUTE:
+                # TODO: Consume signal as well
+
+                if consumable_item.name in ['shrimp', 'shit']:
+                    consumator_item.lifespan.update(-999)
+                elif consumable_item.name in ['lemon', 'tomato' 'carrot', 'fresh', 'chilli', 'banana', 'corn', 'apple']:
+                    consumator_item.lifespan.limit += 1
+                    consumator_item.lifespan.update(30)
+                elif consumable_item.name in ['pizza', 'hotdog', 'icecream']:
+                    consumator_item.lifespan.limit -= 1
+                    consumator_item.lifespan.update(60)
+                else:
+                    consumator_item.lifespan.update(10)
+
+
+

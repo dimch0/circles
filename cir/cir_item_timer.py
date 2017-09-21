@@ -20,7 +20,7 @@ class TimerItem(Item):
 
         # METRICS
         self.duration = 0
-        self.limit = 0
+        self.limit = self.duration
         self.step = 1
         self.start_time = None
         self._number_of_steps = 1
@@ -94,14 +94,3 @@ class TimerItem(Item):
             self.duration += delta
             self._filled_degrees = int((self.step * self.number_of_steps) / steps_before) - \
                                   (self.step_degrees * steps_delta)
-
-
-        # print "dur: ", self.duration
-        # print current_duration + delta
-        # print self.limit
-        # print "current    step :", self.step
-        # print "number of steps :", self.number_of_steps
-        # print "start   degrees :", self.start_degrees
-        # print "filled  degrees :", self.filled_degrees
-        # print "step    degrees :", self.step_degrees
-        # print "-" * 35

@@ -110,7 +110,7 @@ def get_mirror_point(pointA, pointB):
 
 
 def show_debug_on_click(grid, current_circle, my_body):
-    """  Debug print on click event  """
+    """  Debug on click event  """
     grid.msg("-"*12)
     if grid.show_debug:
         # grid.msg("DEBUG = click tile  : {0}".format( current_circle ))
@@ -130,7 +130,7 @@ def show_debug_on_click(grid, current_circle, my_body):
 
 
 def show_debug_on_space(grid, my_body):
-    """  Debug print on space bar event  """
+    """  Debug on space bar event  """
     grid.msg("-"*12)
     if grid.show_debug:
         grid.msg("DEBUG = Key SPACE pressed")
