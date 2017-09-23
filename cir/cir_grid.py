@@ -15,6 +15,7 @@ from cir_utils import in_circle, inside_polygon, bcolors, get_short_name
 CONFIG_JSON_FILE = "config.json"
 
 
+
 class Grid(object):
     """ master class for the grid """
 
@@ -28,7 +29,6 @@ class Grid(object):
         self.display_height = 0
         self.game_display = None
         self.set_config()
-        # self.data_file = None
         self.scenario = scenario
         self.set_data_file()
         self.game_menu = True
@@ -43,7 +43,7 @@ class Grid(object):
         self.loader = None
         self.updater = None
         self.event_effects = None
-
+        self.messages = []
         # -------------------------------------------------- #
         #                        TILES                       #
         # -------------------------------------------------- #
@@ -112,9 +112,10 @@ class Grid(object):
         try:
             for root, dirs, files in os.walk(self.data_dir, topdown=False):
                 for file in files:
-                    data_file = os.path.join(root, file)
-                    file_name = os.path.splitext(file)[0]
-                    setattr(self, file_name, data_file)
+                    if file.endswith(".csv"):
+                        data_file = os.path.join(root, file)
+                        file_name = os.path.splitext(file)[0]
+                        setattr(self, file_name, data_file)
 
         except Exception as e:
             self.msg("ERROR - Could not set data file as attribute: {0}".format(e))
@@ -359,6 +360,22 @@ class Grid(object):
         self.msg("INFO - Game finished")
         quit()
 
+
+    def log_msg(self, msg):
+        """ Log a message in a temp log file """
+
+        # if os.path.exists(self.log_file):
+        #     append_write = 'a'  # append if already exists
+        #     print "append"
+        # else:
+        #     append_write = 'w'  # make a new file if not
+        #     print "create"
+        #
+        # with open(self.log_file, append_write) as log_file:
+        #     log_file.write(msg + '\n')
+        if not msg in self.messages:
+            self.messages.append(msg)
+
     def msg(self, msg):
         """ Display messages in terminal """
         will_show_msg = True
@@ -375,12 +392,7 @@ class Grid(object):
         if "DISPLAY - " in msg:
             msg_color = bcolors.BOLD
 
-            font = getattr(self.fonts, 'small')
-            txt = font.render(msg, True, self.white)
-            txt_rect = txt.get_rect()
-            txt_rect.center = (200, 200)
-            self.game_display.blit(txt, txt_rect)
-            self.pygame.display.update()
+            self.log_msg(msg)
 
         if will_show_msg:
             print(msg_color + msg + bcolors.ENDC)

@@ -5,7 +5,6 @@
 # ------------------------------------------------------------------------------------------------------------------- #
 import csv
 import time
-import xlrd
 
 import cir_item
 import cir_item_body
@@ -19,24 +18,6 @@ from cir_phase_2_draw import GameDrawer
 from cir_phase_3_update import VarUpdater
 
 
-
-
-def csv_from_excel(excel_file):
-
-    wb = xlrd.open_workbook(excel_file)
-    sh = wb.sheet_by_name('Sheet1')
-    csv_file = excel_file.replace('xls', 'csv')
-
-
-    your_csv_file = open(csv_file, 'wb')
-    wr = csv.writer(your_csv_file, quoting=csv.QUOTE_ALL)
-
-    for rownum in xrange(sh.nrows):
-        wr.writerow(sh.row_values(rownum))
-
-    your_csv_file.close()
-    return csv_file
-
 class DataLoader(object):
 
     def __init__(self, grid=None):
@@ -49,8 +30,11 @@ class DataLoader(object):
         """ Extends the current scenario data file with the all data file """
         lines_to_write = []
 
-        self.csv_all = csv_from_excel(self.grid.all)
-        self.csv_data = csv_from_excel(self.grid.data_file)
+        # self.csv_all = csv_from_excel(self.grid.all)
+        # self.csv_data = csv_from_excel(self.grid.data_file)
+
+        self.csv_all = self.grid.all
+        self.csv_data = self.grid.data_file
 
         with open(self.csv_all, 'rb') as all:
             data_all = csv.reader(all, delimiter=',')

@@ -3,6 +3,7 @@
 #                                                     DRAW                                                            #
 #                                                                                                                     #
 # ------------------------------------------------------------------------------------------------------------------- #
+import os
 import cir_utils
 import math
 
@@ -351,6 +352,28 @@ class GameDrawer(object):
                                1)
 
 
+    def draw_msg(self):
+
+        # if os.path.exists(self.grid.log_file):
+        #     with open(self.grid.log_file, 'r') as log:
+        #         for msg in log:
+        #             print msg
+        #
+        #             font = getattr(self.grid.fonts, 'small')
+        #             txt = font.render(msg, True, self.grid.white)
+        #             txt_rect = txt.get_rect()
+        #             txt_rect.center = (200, 200)
+        #             self.grid.game_display.blit(txt, txt_rect)
+        if self.grid.messages:
+            for idx, msg in enumerate(self.grid.messages):
+                font = getattr(self.grid.fonts, 'small')
+                msg = msg.replace("DISPLAY - ", "")
+                txt = font.render(msg, True, self.grid.white)
+                # txt_rect = txt.get_rect()
+                txt_rect = self.grid.pygame.Rect(20, 59, 20, 100)
+                txt_rect.center = (50, 50 + (20 * idx))
+                self.grid.game_display.blit(txt, txt_rect)
+
     # --------------------------------------------------------------- #
     #                                                                 #
     #                           BACKGROUND                            #
@@ -432,5 +455,6 @@ class GameDrawer(object):
         self.draw_background_stuff()
         # ANIMATIONS
         self.draw_animations(current_tile)
+        self.draw_msg()
         # UPDATE
         self.grid.pygame.display.update()

@@ -74,7 +74,7 @@ class GameEvents(GameEffects):
             backup_body_mode = my_body.mode
 
         for empty_item in inventory.options.values():
-            if "bag_placeholder" in empty_item.name:
+            if "inventory_placeholder" in empty_item.name:
                 inventory_placeholder = empty_item
                 break
 
