@@ -10,7 +10,7 @@
 # TODO: Create trade mode
 # TODO: Create craft mode
 # --------------------------------------------------------------- #
-#                             FEATURES                            #
+#                             FEAT`URES                            #
 # --------------------------------------------------------------- #
 # TODO: Item generation
 # TODO: Create save button

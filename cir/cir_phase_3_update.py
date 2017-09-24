@@ -34,6 +34,9 @@ class VarUpdater(object):
     #                                                                 #
     # --------------------------------------------------------------- #
     def destruction(self, item):
+        if item.name in ['my_body']:
+            self.grid.msg("SCREEN - you dead")
+
         if not item.birth_track:
 
             item.available = False

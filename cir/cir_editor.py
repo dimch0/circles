@@ -14,8 +14,13 @@ class Editor(object):
     def execute_editor_clicks(self, clicked_item, my_body):
         """ EDITOR CLICKS """
 
+        # PHONE
+        if clicked_item.name == "EDITOR4":
+            self.grid.show_debug = not self.grid.show_debug
+            self.grid.show_grid = not self.grid.show_grid
+
         # BUS
-        if clicked_item.name == "EDITOR5":
+        elif clicked_item.name == "EDITOR5":
             my_body.change_speed(0.5)
 
         # MAPS

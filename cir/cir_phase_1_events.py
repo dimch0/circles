@@ -304,7 +304,7 @@ class GameEvents(GameEffects):
                                 else:
                                     CLICKED_ITEM.destroy(self.grid)
                             else:
-                                self.grid.msg("SCREEN - It far")
+                                self.grid.msg("SCREEN - {0} is far".format(CLICKED_ITEM.name))
                         else:
                             self.grid.msg("SCREEN - No eat this")
 

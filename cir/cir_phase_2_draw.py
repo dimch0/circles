@@ -368,7 +368,8 @@ class GameDrawer(object):
 
                 # txt_rect = txt.get_rect()
                 txt_rect = self.grid.pygame.Rect(20, 59, 20, 100)
-                txt_rect.center = (50, 50 + (20 * idx))
+                # txt_rect.center = (self.grid.tile_dict["16_2"][0], 50 + (20 * idx))
+                txt_rect.center = (self.grid.tile_dict["7_1"][0] - self.grid.tile_radius + 10, 55 + (18 * idx))
                 self.grid.game_display.blit(txt, txt_rect)
 
     # --------------------------------------------------------------- #

@@ -357,18 +357,20 @@ class Grid(object):
     def game_exit(self):
         self.clean_tmp_dir()
         self.pygame.quit()
-        self.msg("INFO - Game finished")
+        self.msg("SCREEN - game finish")
         quit()
 
 
     def log_msg(self, msg):
         """ Log a message in a temp log file """
 
+        msg_lines = 6
+
         if not self.messages or (self.messages and not msg == self.messages[-1]):
             self.messages.append(msg)
 
-        if len(self.messages) > 5:
-            self.messages = self.messages[-5:]
+        if len(self.messages) > msg_lines:
+            self.messages = self.messages[-msg_lines:]
 
 
     def msg(self, msg):
