@@ -27,7 +27,6 @@
 # TODO: Animate item activation
 # TODO: Animate demo
 # TODO: Add sounds
-# TODO: Log messages on screen
 # --------------------------------------------------------------- #
 #                               DONE                              #
 # --------------------------------------------------------------- #
