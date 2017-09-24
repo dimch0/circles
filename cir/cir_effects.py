@@ -191,7 +191,7 @@ class GameEffects(object):
                 my_body.close_menu(self.grid)
             self.grid.needs_to_change_room = True
         else:
-            self.grid.msg("DISPLAY - It far")
+            self.grid.msg("SCREEN - door is far")
             item.in_menu = False
 
 
@@ -202,7 +202,7 @@ class GameEffects(object):
     # --------------------------------------------------------------- #
     def consume(self, consumator_item, consumable_item):
         self.grid.msg("INFO - Consumed {0}".format(consumable_item.name))
-        self.grid.msg("DISPLAY - Nom nom nom")
+        self.grid.msg("SCREEN - nom nom nom")
 
         if hasattr(consumator_item, "lifespan"):
             if consumator_item.lifespan:

@@ -354,21 +354,19 @@ class GameDrawer(object):
 
     def draw_msg(self):
 
-        # if os.path.exists(self.grid.log_file):
-        #     with open(self.grid.log_file, 'r') as log:
-        #         for msg in log:
-        #             print msg
-        #
-        #             font = getattr(self.grid.fonts, 'small')
-        #             txt = font.render(msg, True, self.grid.white)
-        #             txt_rect = txt.get_rect()
-        #             txt_rect.center = (200, 200)
-        #             self.grid.game_display.blit(txt, txt_rect)
         if self.grid.messages:
             for idx, msg in enumerate(self.grid.messages):
                 font = getattr(self.grid.fonts, 'small')
-                msg = msg.replace("DISPLAY - ", "")
-                txt = font.render(msg, True, self.grid.white)
+                msg = msg.replace("SCREEN - ", "")
+
+                if idx == len(self.grid.messages)-1:
+                    color = self.grid.white
+                else:
+                    color = self.grid.room_color
+
+                msg = msg.lower()
+                txt = font.render(msg, True, color)
+
                 # txt_rect = txt.get_rect()
                 txt_rect = self.grid.pygame.Rect(20, 59, 20, 100)
                 txt_rect.center = (50, 50 + (20 * idx))

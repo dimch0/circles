@@ -37,7 +37,7 @@ class GameEvents(GameEffects):
 
     def echo_mode_click(self, current_tile, my_body):
         """ Signal effect """
-        self.grid.msg("DISPLAY - Echo!")
+        self.grid.msg("SCREEN - Echo!")
         if not cir_utils.in_circle(my_body.pos, my_body.radius, current_tile) and not my_body.move_track:
             signal = self.produce("signal",
                                   my_body.pos,
@@ -99,7 +99,7 @@ class GameEvents(GameEffects):
             inventory.options[item_as_option.name] = item_as_option
             clicked_item.destroy(self.grid, fast=True)
         else:
-            self.grid.msg("DISPLAY - No space in bag")
+            self.grid.msg("SCREEN - No space in bag")
 
         if reopen_inventory:
             inventory.open_menu(self.grid)
@@ -147,7 +147,7 @@ class GameEvents(GameEffects):
                     self.empty_inventory(bag_item)
                     break
         else:
-            self.grid.msg("DISPLAY - No place here")
+            self.grid.msg("SCREEN - No place here")
 
     # --------------------------------------------------------------- #
     #                                                                 #
@@ -253,12 +253,12 @@ class GameEvents(GameEffects):
 
                             # SMEL
                             elif CLICKED_ITEM.name == "smel":
-                                self.grid.msg("DISPLAY - Sniff hair")
+                                self.grid.msg("SCREEN - Sniff hair")
 
                             # MEDI
                             elif CLICKED_ITEM.name == "medi":
                                 self.satellite()
-                                self.grid.msg("DISPLAY - Ommmm")
+                                self.grid.msg("SCREEN - Ommmm")
                                 # ober_item.range += 3
                                 # ober_item.vibe_speed += 3
                                 # my_body.gen_radar_track(self.grid)
@@ -304,9 +304,9 @@ class GameEvents(GameEffects):
                                 else:
                                     CLICKED_ITEM.destroy(self.grid)
                             else:
-                                self.grid.msg("DISPLAY - It far")
+                                self.grid.msg("SCREEN - It far")
                         else:
-                            self.grid.msg("DISPLAY - No eat this")
+                            self.grid.msg("SCREEN - No eat this")
 
                     # TERMINATE
                     elif mouse_mode in ["EDITOR9"]:

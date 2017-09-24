@@ -364,17 +364,12 @@ class Grid(object):
     def log_msg(self, msg):
         """ Log a message in a temp log file """
 
-        # if os.path.exists(self.log_file):
-        #     append_write = 'a'  # append if already exists
-        #     print "append"
-        # else:
-        #     append_write = 'w'  # make a new file if not
-        #     print "create"
-        #
-        # with open(self.log_file, append_write) as log_file:
-        #     log_file.write(msg + '\n')
-        if not msg in self.messages:
+        if not self.messages or (self.messages and not msg == self.messages[-1]):
             self.messages.append(msg)
+
+        if len(self.messages) > 5:
+            self.messages = self.messages[-5:]
+
 
     def msg(self, msg):
         """ Display messages in terminal """
@@ -389,9 +384,8 @@ class Grid(object):
             msg_color = bcolors.INFO
         if "ERROR - " in msg:
             msg_color = bcolors.ERROR
-        if "DISPLAY - " in msg:
+        if "SCREEN - " in msg:
             msg_color = bcolors.BOLD
-
             self.log_msg(msg)
 
         if will_show_msg:
