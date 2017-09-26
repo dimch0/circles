@@ -386,7 +386,7 @@ class Grid(object):
             msg_color = bcolors.INFO
         if "ERROR - " in msg:
             msg_color = bcolors.ERROR
-        if "SCREEN - " in msg or "INFO - " in msg:
+        if "SCREEN - " in msg:
             msg_color = bcolors.BOLD
             self.log_msg(msg)
 

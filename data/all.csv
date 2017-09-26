@@ -20,8 +20,8 @@ EDITOR,,,,,,,,,,,,,,,,,,,,
 ALL,,EDITOR1,item,editor,grey04,emoji_eye_y,21_3,,,TRUE,TRUE,,,,,,,,,1
 ALL,,EDITOR2,item,editor,grey04,laino2,21_5,,,TRUE,TRUE,,,,,,,,,1
 ALL,,EDITOR3,item,editor,grey04,stone,21_7,,,TRUE,TRUE,,,,,,,,,1
-ALL,,EDITOR4,item,editor,grey04,phone,21_9,,,TRUE,TRUE,,,,,,,,,1
-ALL,,EDITOR5,item,editor,grey04,bus,21_11,,,TRUE,TRUE,,,,,,,,,1
+ALL,,EDITOR4,item,editor,grey04,phone,21_9,,,TRUE,,,,,,,,,,1
+ALL,,EDITOR5,item,editor,grey04,bus,21_11,,,TRUE,,,,,,,,,,1
 ALL,,EDITOR6,item,editor,grey04,world,21_13,,,TRUE,,,,,,,,,,1
 ALL,,EDITOR7,item,editor,grey04,cam,21_15,,,TRUE,,,,,,,,,,1
 ALL,,EDITOR8,item,editor,grey04,tv,21_17,,,TRUE,,,,,,,,,,1
