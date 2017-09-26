@@ -174,7 +174,7 @@ class GameDrawer(object):
                                                  self.grid.tile_radius,
                                                  1)
 
-                # EFFECT ACTIVATION
+                # DRAW EFFECT ACTIVATION
                 if item.effect_track:
                     eff_cir = item.effect_track[0]
                     item.color = eff_cir["color"]
@@ -182,7 +182,6 @@ class GameDrawer(object):
                                                  item.default_color,
                                                  item.pos,
                                                  eff_cir["radius"])
-
                     item.effect_track.pop(0)
                     if not item.effect_track:
                         item.color = item.default_color
