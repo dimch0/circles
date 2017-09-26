@@ -74,13 +74,11 @@ class Item(object):
             self._rect = []
         return self._rect
 
-
     def gen_birth_track(self):
         if self.type == "signal":
             self.birth_track = range(1, self.radius)
         else:
             self.birth_track = range(1, self.radius + 1)
-
 
     def gen_fat(self):
         if not self.fat_track:
@@ -94,6 +92,14 @@ class Item(object):
             final_result = result + reverse_result
             final_result.append(self.default_radius)
             self.fat_track = final_result
+
+    def gen_effect_track(self, effect_color):
+        if not self.effect_track:
+            for n in range(1, self.radius + 1):
+                eff_cir = {
+                    "color": effect_color,
+                    "radius": n}
+                self.effect_track.append(eff_cir)
 
     # --------------------------------------------------------------- #
     #                                                                 #

@@ -182,26 +182,8 @@ class GameEvents(GameEffects):
         elif event.key == self.grid.pygame.K_1:
 
             self.grid.msg("INFO - Key 1 pressed")
-
-            if not my_body.effect_track:
-                l1 = []
-                l2 = []
-                for n in range(1, my_body.radius+1):
-                    eff_cir = {
-                        "color" : self.grid.black,
-                        "border": 0,
-                        "radius": n}
-                    l1.append(eff_cir)
-
-                for n in range(1, my_body.radius+1):
-                    eff_cir2 = {
-                        "color" : my_body.default_color,
-                        "border": 0,
-                        "radius": n}
-                    l2.append(eff_cir2)
-
-                my_body.effect_track = l1 + l2
-
+            # EFFECT_GEN
+            my_body.gen_effect_track(self.grid.white)
 
             # self.grid.change_room("11_11")
         elif event.key == self.grid.pygame.K_2:

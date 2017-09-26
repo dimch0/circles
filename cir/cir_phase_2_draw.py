@@ -173,18 +173,17 @@ class GameDrawer(object):
                                                  item.pos,
                                                  self.grid.tile_radius,
                                                  1)
-                # Draw activation / deactivation here
+
+                # EFFECT ACTIVATION
                 if item.effect_track:
                     eff_cir = item.effect_track[0]
-                    if not eff_cir["color"] == self.grid.black:
-                        item.color = self.grid.black
+                    item.color = eff_cir["color"]
                     self.grid.pygame.draw.circle(self.grid.game_display,
-                                                 eff_cir["color"],
+                                                 item.default_color,
                                                  item.pos,
-                                                 eff_cir["radius"],
-                                                 eff_cir["border"])
-                    item.effect_track.pop(0)
+                                                 eff_cir["radius"])
 
+                    item.effect_track.pop(0)
                     if not item.effect_track:
                         item.color = item.default_color
 

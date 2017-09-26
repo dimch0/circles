@@ -209,7 +209,7 @@ class GameEffects(object):
 
                 # TODO: READ FROM CONSUMABLE ITEM ATTRIBUTE:
                 # TODO: Consume signal as well
-
+                consumator_item.gen_effect_track(consumable_item.color)
                 if consumable_item.name in ['shrimp', 'shit']:
                     consumator_item.lifespan.update(-999)
                 elif consumable_item.name in ['lemon', 'tomato' 'carrot', 'fresh', 'chilli', 'banana', 'corn', 'apple']:
