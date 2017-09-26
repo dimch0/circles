@@ -370,7 +370,7 @@ class GameDrawer(object):
                 font = getattr(self.grid.fonts, 'small')
                 msg = msg.replace("SCREEN - ", "")
 
-                if idx == len(self.grid.messages)-1:
+                if idx == 0:
                     color = self.grid.white
                 else:
                     color = self.grid.room_color
@@ -381,7 +381,8 @@ class GameDrawer(object):
                 # txt_rect = txt.get_rect()
                 txt_rect = self.grid.pygame.Rect(20, 59, 20, 100)
                 # txt_rect.center = (self.grid.tile_dict["16_2"][0], 50 + (20 * idx))
-                txt_rect.center = (self.grid.tile_dict["7_1"][0] - self.grid.tile_radius + 10, 55 + (18 * idx))
+                # txt_rect.center = (self.grid.tile_dict["17_7"][0], (7 * self.grid.tile_radius) + 18 + (18 * idx))
+                txt_rect.center = (self.grid.tile_dict["0_2"][0], self.grid.tile_dict["0_2"][1] + (18 * idx))
                 self.grid.game_display.blit(txt, txt_rect)
 
     # --------------------------------------------------------------- #

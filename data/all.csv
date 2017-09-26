@@ -8,7 +8,7 @@ ALL,,product_shit,item,,gelb18,laino2,,,,,,TRUE,TRUE,,,,,,,1
 ALL,,observer,body,,grey04,emoji_eye_y,,,,,,,,,2,1,,60,2,1
 ,,,,,,,,,,,,,,,,,,,,
 BAG,,,,,,,,,,,,,,,,,,,,
-ALL,ALL,bag,item,inventory,,plastic_bag,7_19,bag,TRUE,TRUE,,,,,,,,,,1
+ALL,ALL,bag,item,inventory,,plastic_bag,17_3,bag,TRUE,TRUE,,,,,,,,,,1
 ALL,,inventory_placeholder,item,option,,,,bag,,TRUE,,,,,,,,,,1
 ALL,,inventory_placeholder2,item,option,,,,bag,,TRUE,,,,,,,,,,1
 ALL,,inventory_placeholder3,item,option,,,,bag,,TRUE,,,,,,,,,,1

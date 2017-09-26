@@ -364,13 +364,13 @@ class Grid(object):
     def log_msg(self, msg):
         """ Log a message in a temp log file """
 
-        msg_lines = 6
+        msg_lines = 36
 
-        if not self.messages or (self.messages and not msg == self.messages[-1]):
-            self.messages.append(msg)
+        if not self.messages or (self.messages and not msg == self.messages[0]):
+            self.messages.insert(0, msg) # append the item at the beginning of the list
 
         if len(self.messages) > msg_lines:
-            self.messages = self.messages[-msg_lines:]
+            self.messages = self.messages[0:msg_lines]
 
 
     def msg(self, msg):
@@ -386,7 +386,7 @@ class Grid(object):
             msg_color = bcolors.INFO
         if "ERROR - " in msg:
             msg_color = bcolors.ERROR
-        if "SCREEN - " in msg:
+        if "SCREEN - " in msg or "INFO - " in msg:
             msg_color = bcolors.BOLD
             self.log_msg(msg)
 

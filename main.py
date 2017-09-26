@@ -7,12 +7,12 @@
 #                             BUG FIXES                           #
 # --------------------------------------------------------------- #
 # TODO: Fix movement to occupado / mitosis
+# --------------------------------------------------------------- #
+#                             FEATURES                            #
+# --------------------------------------------------------------- #
+# TODO: Create item generation
 # TODO: Create trade mode
 # TODO: Create craft mode
-# --------------------------------------------------------------- #
-#                             FEAT`URES                            #
-# --------------------------------------------------------------- #
-# TODO: Item generation
 # TODO: Create save button
 # TODO: Create load button
 # TODO: Create inside body view room 400
@@ -24,7 +24,6 @@
 # --------------------------------------------------------------- #
 # TODO: Fix rotation on direction (PROPOSED remove rotation)
 # TODO: Indicate uses / metrics
-# TODO: Animate item activation
 # TODO: Animate demo
 # TODO: Add sounds
 # --------------------------------------------------------------- #
