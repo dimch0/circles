@@ -67,7 +67,7 @@ def game_loop(game_over, scenario="scenario_1"):
     # --------------------------------------------------------------- #
     #                            GAME LOOP                            #
     # --------------------------------------------------------------- #
-    grid.msg("INFO - Game started")
+    grid.msg("SCREEN - game started")
 
     while not grid.game_over:
 

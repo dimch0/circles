@@ -306,7 +306,7 @@ class GameEvents(GameEffects):
                                 if CLICKED_ITEM in my_body.inventory.options.values():
                                     self.empty_inventory(CLICKED_ITEM)
                                 else:
-                                    CLICKED_ITEM.destroy(self.grid)
+                                    CLICKED_ITEM.destroy(self.grid, fast=True)
                             else:
                                 self.grid.msg("SCREEN - {0} is far".format(CLICKED_ITEM.name))
                         else:

@@ -56,6 +56,7 @@ class GameEffects(object):
         if lifespan:
             new_item.lifespan = lifespan
 
+        new_item.birth_time.duration = 0
         new_item.default_img = new_item.img
         new_item.available = True
         new_item.gen_birth_track()

@@ -53,6 +53,7 @@ class Item(object):
         self.direction = None
         self.last_rotation = None
         self.birth_time = 0.033
+        # self.birth_time = 0
         self.move_track = []
         self.vibe_track = []
         self.rot_track = []

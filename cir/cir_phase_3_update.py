@@ -95,13 +95,13 @@ class VarUpdater(object):
         if item.birth_track:
 
             if item.birth_time and not isinstance(item.birth_time, float):
-                
-                if item.birth_time.duration > 0:
-                    item.birth_time.tick()
-                    if item.birth_time.is_over:
-                        self.update_birth_track(item)
-                else:
-                    item.birth_track.pop(0)
+                item.birth_track.pop(0)
+                # if item.birth_time.duration > 0:
+                #     item.birth_time.tick()
+                #     if item.birth_time.is_over:
+                #         self.update_birth_track(item)
+                # else:
+                #     item.birth_track.pop(0)
             # else:
             #     item.birth_track = []
 
