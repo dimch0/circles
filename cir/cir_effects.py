@@ -207,20 +207,27 @@ class GameEffects(object):
 
         if hasattr(consumator_item, "lifespan"):
             if consumator_item.lifespan:
-
-                # TODO: READ FROM CONSUMABLE ITEM ATTRIBUTE:
-                # TODO: Consume signal as well
                 consumator_item.gen_effect_track(consumable_item.color)
-                if consumable_item.name in ['shrimp', 'shit']:
+                if any(name in consumable_item.name for name in ['shrimp',
+                                                                 'shit']):
                     consumator_item.lifespan.update(-999)
-                elif consumable_item.name in ['lemon', 'tomato' 'carrot', 'fresh', 'chilli', 'banana', 'corn', 'apple']:
-                    consumator_item.lifespan.limit += 1
-                    consumator_item.lifespan.update(30)
-                elif consumable_item.name in ['pizza', 'hotdog', 'icecream']:
-                    consumator_item.lifespan.limit -= 1
+                elif any(name in consumable_item.name for name in ['lemon',
+                                                                   'tomato',
+                                                                   'carrot',
+                                                                   'chilli',
+                                                                   'banana',
+                                                                   'corn',
+                                                                   'apple']):
+                    consumator_item.lifespan.limit += 15
                     consumator_item.lifespan.update(60)
+                elif any(name in consumable_item.name for name in ['fresh']):
+                    consumator_item.lifespan.limit += 15
+                    consumator_item.lifespan.update(30)
+                    consumator_item.change_speed(3)
+                elif any(name in consumable_item.name for name in ['pizza',
+                                                                   'hotdog',
+                                                                   'icecream']):
+                    consumator_item.lifespan.update(120)
+                    consumator_item.lifespan.limit -= 15
                 else:
-                    consumator_item.lifespan.update(10)
-
-
-
+                    consumator_item.lifespan.update(30)

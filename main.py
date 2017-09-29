@@ -7,6 +7,10 @@
 #                             BUG FIXES                           #
 # --------------------------------------------------------------- #
 # TODO: Fix movement to occupado / mitosis
+# TODO: Consume effect: READ FROM CONSUMABLE ITEM ATTRIBUTE
+# TODO: Inherit consumption effect when producing / eating item from menu
+# TODO: Consume signal as well
+# TODO: Consume on right click
 # --------------------------------------------------------------- #
 #                             FEATURES                            #
 # --------------------------------------------------------------- #
