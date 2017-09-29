@@ -357,7 +357,7 @@ class GameDrawer(object):
         """ DEBUG: Shows the movement in cyan and the correct track in red """
         for move_step in item.move_track:
             self.grid.pygame.draw.circle(self.grid.game_display,
-                               self.grid.white,
+                               self.grid.cyan01,
                                move_step,
                                2,
                                1)
@@ -434,7 +434,7 @@ class GameDrawer(object):
                 self.draw_body(current_tile, item)
 
                 # Show movement track in color
-                if self.grid.show_movement and len(item.move_track) > 1:
+                if self.grid.show_debug and len(item.move_track) > 1:
                     self.draw_movement(item)
 
                 # Image rotation
