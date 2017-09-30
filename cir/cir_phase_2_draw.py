@@ -437,13 +437,13 @@ class GameDrawer(object):
                 if self.grid.show_debug and len(item.move_track) > 1:
                     self.draw_movement(item)
 
-                # Image rotation
-                if item.rot_track:
-                    item.rotate(self.grid.pygame)
-
-                # Item reverse rotation
-                if item.last_rotation and not item.move_track and not item.direction:
-                    item.rotate_reverse(self.grid.pygame)
+                # # Image rotation
+                # if item.rot_track:
+                #     item.rotate(self.grid.pygame)
+                #
+                # # Item reverse rotation
+                # if item.last_rotation and not item.move_track and not item.direction:
+                #     item.rotate_reverse(self.grid.pygame)
 
                 # Timers
                 self.draw_timers(item)
