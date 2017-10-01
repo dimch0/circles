@@ -26,7 +26,6 @@
 # --------------------------------------------------------------- #
 #                             COSMETICS                           #
 # --------------------------------------------------------------- #
-# TODO: Fix rotation on direction (PROPOSED remove rotation)
 # TODO: Indicate uses / metrics
 # TODO: Animate demo
 # TODO: Add sounds
@@ -43,7 +42,7 @@
 #                             REJECTED                            #
 # --------------------------------------------------------------- #
 # TODO: recursive calling of loop - NOT FIXED
-
+# TODO: Fix rotation on direction - REMOVED
 
 import pygame
 from cir.cir_game_menu import game_menu

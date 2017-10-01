@@ -10,6 +10,7 @@ from cir_effects import GameEffects
 
 
 
+
 class GameEvents(GameEffects):
 
     def __init__(self, grid):

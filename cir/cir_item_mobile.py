@@ -83,7 +83,8 @@ class MobileItem(Item):
                 if event.key == arrow:
                     if not (self.vibe_track or self.rot_revert or self.rot_track):
                         self.direction = idx
-                        self.gen_rot_track(self.direction)
+                        # Uncomment the below line to activate rotation
+                        # self.gen_rot_track(self.direction)
 
     def update_pos(self):
         """
