@@ -279,7 +279,7 @@ class GameEvents(GameEffects):
                         self.editor.execute_editor_clicks(CLICKED_ITEM, my_body)
 
                     # ENTER
-                    elif CLICKED_ITEM.type == "door":
+                    elif "door" in CLICKED_ITEM.type:
                         self.enter_room(my_body, CLICKED_ITEM)
 
                     # SET MOUSE MODE

@@ -195,12 +195,15 @@ class DataLoader(object):
 
     def set_door(self, item):
         door = cir_item.Item()
-        door.type = "door"
+        door.type = item.type
         door.name = "Enter_" + item.room
         door.room = item.name.replace("Enter_", "")
         door.pos = cir_utils.get_mirror_point(item.pos, self.grid.center_tile)
         door.color = item.color
-        door.img = item.img
+        if "door_enter" in item.type:
+            door.img = self.grid.images.neon_exit
+        else:
+            door.img = item.img
         door.default_img = item.default_img
         # door.options = item.options
         # door.default_options = door.default_options
@@ -273,7 +276,7 @@ class DataLoader(object):
 
             if item.type == "editor" and self.grid.show_editor:
                 item.room = "ALL"
-            elif item.type == "door":
+            elif "door" in item.type:
                 self.set_door(item)
             elif item.type == "my_body":
                 my_body = item

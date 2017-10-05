@@ -84,7 +84,7 @@ class GameDrawer(object):
                 self.grid.game_display.blit(item.img, self.set_emoji_pos(item.pos))
             elif item.img.get_width() == (self.grid.tile_radius - 5) * 2:
                 self.grid.game_display.blit(item.img, self.set_map_pos(item.pos))
-            elif item.type in ['sign']:
+            elif item.type in ['sign', 'door_enter']:
                 self.grid.game_display.blit(item.img, self.set_neon_pos(item.pos))
             else:
                 self.grid.game_display.blit(item.img, self.set_img_pos(item.pos))
