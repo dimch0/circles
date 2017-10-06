@@ -74,7 +74,6 @@ class GameEvents(GameEffects):
                 reopen_inventory = True
                 backup_mouse_mode = self.grid.mouse_mode
                 backup_mouse_img = self.grid.mouse_img
-                backup_body_mode = my_body.mode
 
             for empty_item in inventory.options.values():
                 if "inventory_placeholder" in empty_item.name:
@@ -109,7 +108,6 @@ class GameEvents(GameEffects):
                 inventory.open_menu(self.grid)
                 self.grid.mouse_mode = backup_mouse_mode
                 self.grid.mouse_img = backup_mouse_img
-                my_body.mode = backup_body_mode
 
 
     def empty_inventory(self, inventory_item):
@@ -291,11 +289,10 @@ class GameEvents(GameEffects):
                     # SET MOUSE MODE
                     if CLICKED_ITEM.modable and not (mouse_mode in ['eat'] and CLICKED_ITEM.consumable):
                         self.grid.set_mouse_mode(CLICKED_ITEM)
-                        my_body.mode = CLICKED_ITEM.name
 
                     # SET MENU
                     if CLICKED_ITEM.in_menu and not mouse_mode:
-                        if not CLICKED_ITEM.mode and not (CLICKED_ITEM.has_opts and CLICKED_ITEM.type == "option"):
+                        if not (CLICKED_ITEM.has_opts and CLICKED_ITEM.type == "option"):
                             CLICKED_ITEM.close_menu(self.grid)
 
                     elif CLICKED_ITEM.has_opts and not CLICKED_ITEM.in_menu:

@@ -37,7 +37,7 @@ class Item(object):
         self.clickable = True
         self.collectible = False
         self.consumable = False
-        self.mode = None
+        # self.mode = None
         self.options = {}
         self.overlap = []
         self.effects = None
