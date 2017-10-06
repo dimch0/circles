@@ -7,23 +7,19 @@
 #                             BUG FIXES                           #
 # --------------------------------------------------------------- #
 # TODO: Fix movement to occupado / mitosis
-# TODO: Fix eating from invisible item in bag
-# TODO: Fix duplicate collecting while birth track
+# TODO: Avoid recursive calling of loop
 # --------------------------------------------------------------- #
 #                             FEATURES                            #
 # --------------------------------------------------------------- #
-# TODO: Consume effect: READ FROM CONSUMABLE ITEM ATTRIBUTE
-# TODO: Inherit consumption effect when producing / eating item from menu
-# TODO: Consume signal as well
-# TODO: Consume on right click
-# TODO: Add consumption effect on a vibe
+# TODO: Consume signal (add effect attr to signal)
+# TODO: Consume vibe (add effect attr to vibe)
 # --------------------------------------------------------------- #
 #                             BACKLOG                             #
 # --------------------------------------------------------------- #
-# TODO: Create trade mode
-# TODO: Create craft mode
 # TODO: Create save button
 # TODO: Create load button
+# TODO: Create trade mode
+# TODO: Create craft mode
 # TODO: Create item generation
 # TODO: Create inside body view room 400
 # TODO: Create spirit mode NEW SCENARIO
@@ -35,20 +31,7 @@
 # TODO: Indicate uses / metrics
 # TODO: Animate demo
 # TODO: Add sounds
-# --------------------------------------------------------------- #
-#                               DONE                              #
-# --------------------------------------------------------------- #
-# TODO: No ober item found if item is not option? PROPOSED: DO NOT USE SUB-OPTIONS
-# TODO: Fix map update - problem found: my_body overlaps with first map tile
-# TODO: Fix menu - no ober item found / body moves out of option - still not clickable (removed cond from drawing)
-# TODO: Fixed constant hit bug - line 113 cir_item
-# TODO: Placeholder was cleaning bag_placeholders too :(
-# TODO: Trigger doesn't suicide - cause: generated reversed birth track in self.destroy()
-# --------------------------------------------------------------- #
-#                             REJECTED                            #
-# --------------------------------------------------------------- #
-# TODO: recursive calling of loop - NOT FIXED
-# TODO: Fix rotation on direction - REMOVED
+
 
 import pygame
 from cir.cir_game_menu import game_menu
@@ -95,7 +78,7 @@ def game_loop(game_over, scenario="scenario_1"):
                 grid.event_effects.execute_key_events(event, my_body)
             # CLICK EVENTS
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                grid.event_effects.execute_click_events(my_body, CURRENT_TILE)
+                grid.event_effects.execute_click_events(event, my_body, CURRENT_TILE)
         # --------------------------------------------------------------- #
         #                          PHASE 2: DRAWING                       #
         # --------------------------------------------------------------- #

@@ -115,8 +115,8 @@ class Item(object):
                 if not ober_item:
                     if self.category in item.name:
                         ober_item = item
-                    elif item.mode and (self.category in item.mode):
-                        ober_item = item
+                    # elif item.mode and (self.category in item.mode):
+                    #     ober_item = item
         if ober_item:
             grid.msg("INFO - Option belongs to {0}".format(ober_item.name))
         else:
@@ -133,7 +133,7 @@ class Item(object):
         if not self.vibe_track:
             grid.msg("INFO - Open menu {0}".format(self.name))
             grid.clean_mouse()
-            self.mode = None
+            # self.mode = None
             self.in_menu = True
             olap_pos = []
 

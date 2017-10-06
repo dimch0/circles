@@ -62,52 +62,54 @@ class GameEvents(GameEffects):
 
     def collect_mode_click(self, my_body, clicked_item):
         """ Collect item: add it to inventory options """
-        # CHECK FOR EMPTY SLOT IN BAG
-        inventory_placeholder = None
-        inventory = my_body.inventory
-        reopen_inventory = False
+        if not any([clicked_item.birth_track, clicked_item.move_track]):
 
-        if inventory.in_menu:
-            inventory.close_menu(self.grid)
-            reopen_inventory = True
-            backup_mouse_mode = self.grid.mouse_mode
-            backup_mouse_img = self.grid.mouse_img
-            backup_body_mode = my_body.mode
+            # CHECK FOR EMPTY SLOT IN BAG
+            inventory_placeholder = None
+            inventory = my_body.inventory
+            reopen_inventory = False
 
-        for empty_item in inventory.options.values():
-            if "inventory_placeholder" in empty_item.name:
-                inventory_placeholder = empty_item
-                break
+            if inventory.in_menu:
+                inventory.close_menu(self.grid)
+                reopen_inventory = True
+                backup_mouse_mode = self.grid.mouse_mode
+                backup_mouse_img = self.grid.mouse_img
+                backup_body_mode = my_body.mode
 
-        # PRODUCE MODABLE ITEM AS OPTION
-        if inventory_placeholder:
-            item_name = cir_utils.get_short_name(inventory_placeholder.name)
+            for empty_item in inventory.options.values():
+                if "inventory_placeholder" in empty_item.name:
+                    inventory_placeholder = empty_item
+                    break
 
-            item_as_option = self.produce(product_name=item_name,
-                                          pos=inventory_placeholder.pos,
-                                          birth=0,
-                                          add_to_items=False)
-            item_as_option.name = clicked_item.name + str(time.time())
-            item_as_option.type = "option"
-            item_as_option.modable = True
-            item_as_option.consumable = clicked_item.consumable
-            item_as_option.effects = clicked_item.effects
-            item_as_option.color = clicked_item.color
-            item_as_option.img = clicked_item.img
-            item_as_option.uses = clicked_item.uses
-            # ADD IN BAG AND REMOVE FROM FIELD
-            if inventory_placeholder in my_body.inventory.options.values():
-                my_body.inventory.options = {k:v for k, v in my_body.inventory.options.items() if not v == inventory_placeholder}
-            inventory.options[item_as_option.name] = item_as_option
-            clicked_item.destroy(self.grid, fast=True)
-        else:
-            self.grid.msg("SCREEN - No space in bag")
+            # PRODUCE MODABLE ITEM AS OPTION
+            if inventory_placeholder:
+                item_name = cir_utils.get_short_name(inventory_placeholder.name)
 
-        if reopen_inventory:
-            inventory.open_menu(self.grid)
-            self.grid.mouse_mode = backup_mouse_mode
-            self.grid.mouse_img = backup_mouse_img
-            my_body.mode = backup_body_mode
+                item_as_option = self.produce(product_name=item_name,
+                                              pos=inventory_placeholder.pos,
+                                              birth=0,
+                                              add_to_items=False)
+                item_as_option.name = clicked_item.name + str(time.time())
+                item_as_option.type = "option"
+                item_as_option.modable = True
+                item_as_option.consumable = clicked_item.consumable
+                item_as_option.effects = clicked_item.effects
+                item_as_option.color = clicked_item.color
+                item_as_option.img = clicked_item.img
+                item_as_option.uses = clicked_item.uses
+                # ADD IN BAG AND REMOVE FROM FIELD
+                if inventory_placeholder in my_body.inventory.options.values():
+                    my_body.inventory.options = {k:v for k, v in my_body.inventory.options.items() if not v == inventory_placeholder}
+                inventory.options[item_as_option.name] = item_as_option
+                clicked_item.destroy(self.grid, fast=True)
+            else:
+                self.grid.msg("SCREEN - No space in bag")
+
+            if reopen_inventory:
+                inventory.open_menu(self.grid)
+                self.grid.mouse_mode = backup_mouse_mode
+                self.grid.mouse_img = backup_mouse_img
+                my_body.mode = backup_body_mode
 
 
     def empty_inventory(self, inventory_item):
@@ -120,17 +122,19 @@ class GameEvents(GameEffects):
             inventory_item.modable = False
             inventory_item.color = None
             inventory_item.img = None
+            inventory_item.effects = ''
             inventory_item.uses = 0
 
 
 
-    def drop_mode_click(self, current_tile, my_body):
+
+    def drop_mode_click(self, clicked_tile, my_body):
         """
         Drops item
         """
 
         # Drop item from inventory to body and consume
-        if current_tile == my_body.pos:
+        if clicked_tile == my_body.pos:
             for bag_item in my_body.inventory.options.values():
                 if self.grid.mouse_mode in bag_item.name and bag_item.uses >= 1:
                     if bag_item.consumable:
@@ -139,12 +143,12 @@ class GameEvents(GameEffects):
                         break
 
         # Drop item on an empty tile
-        elif current_tile not in self.grid.occupado_tiles.values() and current_tile in self.grid.playing_tiles:
+        elif clicked_tile not in self.grid.occupado_tiles.values() and clicked_tile in self.grid.revealed_tiles:
             for bag_item in my_body.inventory.options.values():
                 if self.grid.mouse_mode in bag_item.name and bag_item.uses >= 1:
 
                     item_name = cir_utils.get_short_name(self.grid.mouse_mode)
-                    self.produce(item_name, current_tile)
+                    self.produce(item_name, clicked_tile)
 
                     self.empty_inventory(bag_item)
                     break
@@ -206,13 +210,14 @@ class GameEvents(GameEffects):
     #                         CLICK EVENTS                            #
     #                                                                 #
     # --------------------------------------------------------------- #
-    def execute_click_events(self, my_body, current_tile):
+    def execute_click_events(self, event, my_body, current_tile):
 
         mouse_mode = self.grid.mouse_mode
 
         # --------------------------------------------------------------- #
         #                    MOUSE MODE CLICK NO ITEM                     #
         # --------------------------------------------------------------- #
+
         if mouse_mode in ["laino", "EDITOR2"]:
             self.laino_mode_click(current_tile)
 
@@ -300,8 +305,9 @@ class GameEvents(GameEffects):
                     # --------------------------------------------------------------- #
                     #                   MOUSE MODE CLICK ON ITEM                      #
                     # --------------------------------------------------------------- #
+
                     # EAT
-                    if mouse_mode in ["eat"]:
+                    if mouse_mode in ["eat"] or event.button == 3:
                         if CLICKED_ITEM.consumable:
                             if (CLICKED_ITEM.pos in self.grid.adj_tiles(my_body.pos)) or (CLICKED_ITEM in my_body.inventory.options.values()):
                                 self.consume(my_body, CLICKED_ITEM)
@@ -319,12 +325,17 @@ class GameEvents(GameEffects):
                         self.terminate_mode_click(CLICKED_ITEM)
 
                     # COLLECT
-                    elif mouse_mode in ["collect"]:
+                    elif mouse_mode in ["collect", None, ""]:
                         if CLICKED_ITEM.collectible:
-                            self.collect_mode_click(my_body, CLICKED_ITEM)
+                            if (CLICKED_ITEM.pos in self.grid.adj_tiles(my_body.pos)):
+                                self.collect_mode_click(my_body, CLICKED_ITEM)
+                            else:
+                                self.grid.msg("SCREEN - {0} is far".format(CLICKED_ITEM.name))
 
                 # CLOSE MENU IF OUTSIDE ADJ ITEMS
                 elif current_tile not in self.grid.adj_tiles(CLICKED_ITEM.pos):
+                    if event.button == 3:
+                        self.grid.clean_mouse()
                     if CLICKED_ITEM.in_menu:
                         if not CLICKED_ITEM.type == "inventory":
                             CLICKED_ITEM.close_menu(self.grid)
