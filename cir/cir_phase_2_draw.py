@@ -370,10 +370,11 @@ class GameDrawer(object):
                 font = getattr(self.grid.fonts, 'small')
                 msg = msg.replace("SCREEN - ", "")
 
-                if idx == 0:
-                    color = self.grid.white
-                else:
-                    color = self.grid.room_color
+                color = self.grid.white
+                # if idx == 0:
+                #     color = self.grid.white
+                # else:
+                #     color = self.grid.room_color
 
                 msg = msg.lower()
                 txt = font.render(msg, True, color)

@@ -119,11 +119,11 @@ class DataLoader(object):
                         #                        ATTRIBUTES DICT                          #
                         # --------------------------------------------------------------- #
                         attributes_dict = {
-                            "type"        : row[col_idx["type"]],
-                            "has_opts"    : row[col_idx["has_opts"]],
-                            "category"    : row[col_idx["category"]],
+                            "type"        : str(row[col_idx["type"]]),
+                            "has_opts"    : str(row[col_idx["has_opts"]]),
+                            "category"    : str(row[col_idx["category"]]),
                             "available"   : bool(row[col_idx["available"]]),
-                            "name"        : row[col_idx["name"]],
+                            "name"        : str(row[col_idx["name"]]),
                             "pos"         : self.grid.tile_dict[row[col_idx["pos"]]] if len(row[col_idx["pos"]]) > 0 else None,
                             "color"       : getattr(self.grid, row[col_idx["color"]]) if len(row[col_idx["color"]]) > 0 else None,
                             "img"         : getattr(self.grid.images, row[col_idx["img"]]) if len(row[col_idx["img"]]) > 0 else None,
@@ -134,10 +134,11 @@ class DataLoader(object):
                             "collectible" : bool(row[col_idx["collectible"]]),
                             "consumable"  : bool(row[col_idx["consumable"]]),
                             "uses"        : int(float(row[col_idx["uses"]])) if len(row[col_idx["uses"]]) > 0 else None,
-                            "room"        : row[col_idx["room"]],
+                            "room"        : str(row[col_idx["room"]]),
                             "lifespan"    : float(row[col_idx["lifespan"]]) if len(row[col_idx["lifespan"]]) > 0 else None,
                             "vibe_freq"   : float(row[col_idx["vibe_freq"]]) if len(row[col_idx["vibe_freq"]]) > 0 else None,
-                            "layer"       : int(float(row[col_idx["layer"]])) if len(row[col_idx["layer"]]) > 0 else 1
+                            "layer"       : int(float(row[col_idx["layer"]])) if len(row[col_idx["layer"]]) > 0 else 1,
+                            "effects"     : str(row[col_idx["effects"]])
                         }
 
                         # CREATE ITEM

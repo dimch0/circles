@@ -90,7 +90,8 @@ class GameEvents(GameEffects):
             item_as_option.name = clicked_item.name + str(time.time())
             item_as_option.type = "option"
             item_as_option.modable = True
-            item_as_option.consumable = True
+            item_as_option.consumable = clicked_item.consumable
+            item_as_option.effects = clicked_item.effects
             item_as_option.color = clicked_item.color
             item_as_option.img = clicked_item.img
             item_as_option.uses = clicked_item.uses

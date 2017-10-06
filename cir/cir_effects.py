@@ -8,6 +8,7 @@
 import os
 import time
 from cir_editor import Editor
+import cir_utils
 
 class GameEffects(object):
 
@@ -203,31 +204,64 @@ class GameEffects(object):
     # --------------------------------------------------------------- #
     def consume(self, consumator_item, consumable_item):
         self.grid.msg("INFO - Consumed {0}".format(consumable_item.name))
-        self.grid.msg("SCREEN - nom nom nom")
+        # self.grid.msg("SCREEN - nom nom nom")
 
-        if hasattr(consumator_item, "lifespan"):
-            if consumator_item.lifespan:
+        if hasattr(consumator_item, "effects"):
+            effects = consumable_item.effects.split()
+            if effects:
                 consumator_item.gen_effect_track(consumable_item.color)
-                if any(name in consumable_item.name for name in ['shrimp',
-                                                                 'shit']):
-                    consumator_item.lifespan.update(-999)
-                elif any(name in consumable_item.name for name in ['lemon',
-                                                                   'tomato',
-                                                                   'carrot',
-                                                                   'chilli',
-                                                                   'banana',
-                                                                   'corn',
-                                                                   'apple']):
-                    consumator_item.lifespan.limit += 15
-                    consumator_item.lifespan.update(60)
-                elif any(name in consumable_item.name for name in ['fresh']):
-                    consumator_item.lifespan.limit += 15
-                    consumator_item.lifespan.update(30)
-                    consumator_item.change_speed(3)
-                elif any(name in consumable_item.name for name in ['pizza',
-                                                                   'hotdog',
-                                                                   'icecream']):
-                    consumator_item.lifespan.update(120)
-                    consumator_item.lifespan.limit -= 15
-                else:
-                    consumator_item.lifespan.update(30)
+                self.grid.msg("SCREEN - u eat {0}".format(cir_utils.get_short_name(consumable_item.name)))
+
+                for effect in effects:
+                    effect = effect.split("_")
+                    eff_att = effect[0]
+                    amount = float(effect[1])
+                    if eff_att == 'LS':
+                        if hasattr(consumator_item, "lifespan"):
+                            consumator_item.lifespan.limit += amount
+                            if amount >= 0:
+                                self.grid.msg("SCREEN - max life +{0}".format(int(amount)))
+                            else:
+                                self.grid.msg("SCREEN - max life {0}".format(int(amount)))
+                    elif eff_att == 'LP':
+                        if hasattr(consumator_item, "lifespan"):
+                            consumator_item.lifespan.update(amount)
+                            if amount >= 0:
+                                self.grid.msg("SCREEN - life +{0}".format(int(amount)))
+                            else:
+                                self.grid.msg("SCREEN - life {0}".format(int(amount)))
+                    elif eff_att == 'SP':
+                        if hasattr(consumator_item, "speed"):
+                            consumator_item.change_speed(amount)
+                            if amount >= 0:
+                                self.grid.msg("SCREEN - speed +{0}".format(int(amount)))
+                            else:
+                                self.grid.msg("SCREEN - speed {0}".format(int(amount)))
+
+
+        # if hasattr(consumator_item, "lifespan"):
+        #     if consumator_item.lifespan:
+        #         consumator_item.gen_effect_track(consumable_item.color)
+        #         if any(name in consumable_item.name for name in ['shrimp',
+        #                                                          'shit']):
+        #             consumator_item.lifespan.update(-999)
+        #         elif any(name in consumable_item.name for name in ['lemon',
+        #                                                            'tomato',
+        #                                                            'carrot',
+        #                                                            'chilli',
+        #                                                            'banana',
+        #                                                            'corn',
+        #                                                            'apple']):
+        #             consumator_item.lifespan.limit += 15
+        #             consumator_item.lifespan.update(60)
+        #         elif any(name in consumable_item.name for name in ['fresh']):
+        #             consumator_item.lifespan.limit += 15
+        #             consumator_item.lifespan.update(30)
+        #             consumator_item.change_speed(3)
+        #         elif any(name in consumable_item.name for name in ['pizza',
+        #                                                            'hotdog',
+        #                                                            'icecream']):
+        #             consumator_item.lifespan.update(120)
+        #             consumator_item.lifespan.limit -= 15
+        #         else:
+        #             consumator_item.lifespan.update(30)

@@ -7,18 +7,24 @@
 #                             BUG FIXES                           #
 # --------------------------------------------------------------- #
 # TODO: Fix movement to occupado / mitosis
+# TODO: Fix eating from invisible item in bag
+# TODO: Fix duplicate collecting while birth track
+# --------------------------------------------------------------- #
+#                             FEATURES                            #
+# --------------------------------------------------------------- #
 # TODO: Consume effect: READ FROM CONSUMABLE ITEM ATTRIBUTE
 # TODO: Inherit consumption effect when producing / eating item from menu
 # TODO: Consume signal as well
 # TODO: Consume on right click
+# TODO: Add consumption effect on a vibe
 # --------------------------------------------------------------- #
-#                             FEATURES                            #
+#                             BACKLOG                             #
 # --------------------------------------------------------------- #
-# TODO: Create item generation
 # TODO: Create trade mode
 # TODO: Create craft mode
 # TODO: Create save button
 # TODO: Create load button
+# TODO: Create item generation
 # TODO: Create inside body view room 400
 # TODO: Create spirit mode NEW SCENARIO
 # TODO: Log statistics during a lifespan, calculate karma

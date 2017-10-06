@@ -364,13 +364,14 @@ class Grid(object):
     def log_msg(self, msg):
         """ Log a message in a temp log file """
 
-        msg_lines = 36
+        msg_lines = 6
 
-        if not self.messages or (self.messages and not msg == self.messages[0]):
-            self.messages.insert(0, msg) # append the item at the beginning of the list
+        if not self.messages or (self.messages and not msg == self.messages[-1]):
+            self.messages.append(msg)
+            # self.messages.insert(0, msg) # append the item at the beginning of the list
 
         if len(self.messages) > msg_lines:
-            self.messages = self.messages[0:msg_lines]
+            self.messages.pop(0)
 
 
     def msg(self, msg):

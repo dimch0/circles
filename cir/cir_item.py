@@ -40,6 +40,7 @@ class Item(object):
         self.mode = None
         self.options = {}
         self.overlap = []
+        self.effects = None
         # --------------------------------------------------------------- #
         #                              STATS                              #
         # --------------------------------------------------------------- #
@@ -129,36 +130,27 @@ class Item(object):
     #                                                                 #
     # --------------------------------------------------------------- #
     def open_menu(self, grid):
-        grid.msg("INFO - Open menu {0}".format(self.name))
-        grid.clean_mouse()
-        self.mode = None
-        self.in_menu = True
-        olap_pos = []
+        if not self.vibe_track:
+            grid.msg("INFO - Open menu {0}".format(self.name))
+            grid.clean_mouse()
+            self.mode = None
+            self.in_menu = True
+            olap_pos = []
 
-        # ober_item = None
-        # if self.type in ['option']:
-        #     ober_item = self.get_ober_item(grid)
-        # if ober_item:
-        #     ober_item.close_menu(grid)
-        #     ober_item.options = self.options
-        #     ober_item.open_menu(grid)
-        #     ober_item.mode = self.name
-        # NORMAL OPTIONS
-        # else:
-        for idx, option in enumerate(self.options.values()):
-            option.pos = grid.adj_tiles(self.pos)[idx]
-            olap_pos.append(option.pos)
-            if option not in grid.items:
-                grid.items.append(option)
+            for idx, option in enumerate(self.options.values()):
+                option.pos = grid.adj_tiles(self.pos)[idx]
+                olap_pos.append(option.pos)
+                if option not in grid.items:
+                    grid.items.append(option)
 
-        # OVERLAP
-        if olap_pos:
-            for olap_item in grid.items:
-                if not olap_item.type in ["option"]:
-                    if olap_item.pos in olap_pos:
-                        olap_item.clickable = False
-                        if not olap_item in grid.overlap:
-                            grid.overlap.append(olap_item)
+            # OVERLAP
+            if olap_pos:
+                for olap_item in grid.items:
+                    if not olap_item.type in ["option"]:
+                        if olap_item.pos in olap_pos:
+                            olap_item.clickable = False
+                            if not olap_item in grid.overlap:
+                                grid.overlap.append(olap_item)
 
     def close_menu(self, grid):
 
