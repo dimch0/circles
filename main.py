@@ -13,11 +13,11 @@
 # --------------------------------------------------------------- #
 # TODO: Consume signal (add effect attr to signal)
 # TODO: Consume vibe (add effect attr to vibe)
+# TODO: Create save button
+# TODO: Create load button
 # --------------------------------------------------------------- #
 #                             BACKLOG                             #
 # --------------------------------------------------------------- #
-# TODO: Create save button
-# TODO: Create load button
 # TODO: Create trade mode
 # TODO: Create craft mode
 # TODO: Create item generation
