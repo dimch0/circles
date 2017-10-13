@@ -207,7 +207,8 @@ class GameEffects(object):
         elif hasattr(consumator, "effects"):
             effects = consumable.effects.split()
             if effects:
-                consumator.gen_effect_track(consumable.color)
+                if consumator.color:
+                    consumator.gen_effect_track(consumable.color)
                 self.grid.msg("SCREEN - u eat {0}".format(cir_utils.get_short_name(consumable.name)))
 
         if effects:

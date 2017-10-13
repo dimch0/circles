@@ -168,16 +168,13 @@ class GameDrawer(object):
 
             # DRAW EFFECT ACTIVATION
             if item.effect_track:
-                if item.color:
+                if item.default_color:
                     eff_cir = item.effect_track[0]
                     item.color = eff_cir["color"]
                     self.grid.pygame.draw.circle(self.grid.game_display,
                                                  item.default_color,
                                                  item.pos,
                                                  eff_cir["radius"])
-                # item.effect_track.pop(0)
-                # if not item.effect_track:
-                #     item.color = item.default_color
 
 
             self.draw_img(item)

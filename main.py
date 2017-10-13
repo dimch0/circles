@@ -13,7 +13,6 @@
 #                             FEATURES                            #
 # --------------------------------------------------------------- #
 # TODO: Consume signal (add effect attr to signal)
-# TODO: Consume vibe (add effect attr to vibe)
 # TODO: Create save button
 # TODO: Create load button
 # --------------------------------------------------------------- #

@@ -204,7 +204,7 @@ class DataLoader(object):
         door.default_img = item.default_img
         # door.options = item.options
         # door.default_options = door.default_options
-        door.default_color = door.default_color
+        door.default_color = item.color
         door.radius = item.radius
         door.default_radius = item.radius
         door.available = False

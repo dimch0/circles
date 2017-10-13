@@ -98,12 +98,12 @@ class VarUpdater(object):
     #                            SIGNALS                              #
     #                                                                 #
     # --------------------------------------------------------------- #
-    def signal_hit(self, signal, my_body):
+    def signal_hit(self, signal, sender):
         hit = False
         if signal.type == "signal":
             if not signal.marked_for_destruction:
                 if (signal.pos in self.grid.occupado_tiles.values() and not signal.intersects(
-                        my_body)) or signal.direction == None:
+                        sender)) or signal.direction == None:
                     signal.destroy(self.grid)
                     hit = True
         return hit
@@ -208,16 +208,16 @@ class VarUpdater(object):
                         # Set revealed tiles
                         self.grid.set_rev_tiles()
 
+                        if item.effects:
+                            for hit_item in self.grid.items:
+                                if hit_item.available and not hit_item.name == item.name:
+                                    cir1 = (hit_item.pos, hit_item.radius - (hit_item.radius / 2.5))
+                                    if intersecting(cir1, vibe_area):
+                                        if not hit_item in item.hit_items:
+                                            # CONSUME VIBE
+                                            self.grid.event_effects.consume(hit_item, item)
 
-                        for hit_item in self.grid.items:
-                            if hit_item.available and not hit_item.name == item.name:
-                                cir1 = (hit_item.pos, hit_item.radius - (hit_item.radius / 2.5))
-                                if intersecting(cir1, vibe_area):
-                                    if not hit_item in item.hit_items:
-                                        # CONSUME VIBE
-                                        self.grid.event_effects.consume(hit_item, item)
-
-                                        item.hit_items.append(hit_item)
+                                            item.hit_items.append(hit_item)
 
                         item.vibe_track.pop(0)
                         if not item.vibe_track:
