@@ -197,38 +197,45 @@ class GameEffects(object):
     #                          CONSUMABLES                            #
     #                                                                 #
     # --------------------------------------------------------------- #
-    def consume(self, consumator_item, consumable_item):
-        self.grid.msg("INFO - Consumed {0}".format(consumable_item.name))
+    def consume(self, consumator, consumable):
+
         # self.grid.msg("SCREEN - nom nom nom")
+        effects = None
 
-        if hasattr(consumator_item, "effects"):
-            effects = consumable_item.effects.split()
+        if isinstance(consumable, str):
+            effects = consumable.split()
+        elif hasattr(consumator, "effects"):
+            effects = consumable.effects.split()
             if effects:
-                consumator_item.gen_effect_track(consumable_item.color)
-                self.grid.msg("SCREEN - u eat {0}".format(cir_utils.get_short_name(consumable_item.name)))
+                consumator.gen_effect_track(consumable.color)
+                self.grid.msg("SCREEN - u eat {0}".format(cir_utils.get_short_name(consumable.name)))
 
+        if effects:
+            try:
                 for effect in effects:
                     effect = effect.split("_")
                     eff_att = effect[0]
                     amount = float(effect[1])
-                    if eff_att == 'LS' and consumator_item.lifespan:
-                        consumator_item.lifespan.limit += amount
+                    if eff_att == 'LS' and consumator.lifespan:
+                        consumator.lifespan.limit += amount
                         if amount >= 0:
                             self.grid.msg("SCREEN - max life +{0}".format(int(amount)))
                         else:
                             self.grid.msg("SCREEN - max life {0}".format(int(amount)))
 
-                    elif eff_att == 'LP' and consumator_item.lifespan:
-                        consumator_item.lifespan.update(amount)
+                    elif eff_att == 'LP' and consumator.lifespan:
+                        consumator.lifespan.update(amount)
                         if amount >= 0:
                             self.grid.msg("SCREEN - life +{0}".format(int(amount)))
                         else:
                             self.grid.msg("SCREEN - life {0}".format(int(amount)))
 
                     elif eff_att == 'SP':
-                        if hasattr(consumator_item, "speed"):
-                            consumator_item.change_speed(amount)
+                        if hasattr(consumator, "speed"):
+                            consumator.change_speed(amount)
                             if amount >= 0:
                                 self.grid.msg("SCREEN - speed +{0}".format(int(amount)))
                             else:
                                 self.grid.msg("SCREEN - speed {0}".format(int(amount)))
+            except Exception as e:
+                self.grid.msg("ERROR - invalid effects '{0}' \n {1}".format(effects, e))

@@ -157,6 +157,12 @@ class VarUpdater(object):
                 if item.marked_for_destruction:
                     self.destruction(item)
 
+                # REVEALED / AVAILABLE
+                if item.pos in self.grid.revealed_tiles:
+                    if not item.available and not item in self.grid.overlap:
+                        item.available = True
+                        item.gen_birth_track()
+
                 if item.available:
 
                     # TIMERS
@@ -168,19 +174,54 @@ class VarUpdater(object):
                     #         if adj_item.type == 'body' and adj_item.pos in self.grid.adj_tiles(item.pos):
                     #             item.gen_fat()
 
-                    # MOVEMENT
+                    # ANIMATE MOVEMENT
                     if item.direction != None:
                         item.gen_move_track(self.grid)
-                    if item.move_track:
-                        item.update_pos()
+                    if item.move_track and not item.birth_track:
+                        item.pos = item.move_track[0]
+                        item.move_track.pop(0)
 
-                    # FAT
-                    if item.fat_track:
+                    # ANIMATE BIRTH
+                    if item.birth_track:
+                        item.radius = item.birth_track[0]
+                        item.birth_track.pop(0)
+
+                    # ANIMATE FAT
+                    elif not item.birth_track and item.fat_track:
+                        item.radius = item.fat_track[0]
                         item.fat_track.pop(0)
 
-                    # BIRTH
-                    if item.birth_track:
-                        item.birth_track.pop(0)
+                    # ANIMATE EFFECT
+                    if item.effect_track:
+                        item.effect_track.pop(0)
+                        if not item.effect_track:
+                            item.color = item.default_color
+
+                    # ANIMATE VIBE
+                    if item.vibe_track:
+
+                        vibe_area = ((item.pos), item.vibe_track[0][0])
+
+                        # Reveal vibe effect
+                        if not vibe_area in self.grid.revealed_radius:
+                            self.grid.revealed_radius.append(vibe_area)
+                        # Set revealed tiles
+                        self.grid.set_rev_tiles()
+
+
+                        for hit_item in self.grid.items:
+                            if hit_item.available and not hit_item.name == item.name:
+                                cir1 = (hit_item.pos, hit_item.radius - (hit_item.radius / 2.5))
+                                if intersecting(cir1, vibe_area):
+                                    if not hit_item in item.hit_items:
+                                        # CONSUME VIBE
+                                        self.grid.event_effects.consume(hit_item, item)
+
+                                        item.hit_items.append(hit_item)
+
+                        item.vibe_track.pop(0)
+                        if not item.vibe_track:
+                            item.hit_items = []
 
                     # SIGNAL HIT
                     if self.signal_hit(item, my_body):

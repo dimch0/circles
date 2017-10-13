@@ -90,21 +90,20 @@ class GameDrawer(object):
                 self.grid.game_display.blit(item.img, self.set_img_pos(item.pos))
 
 
-    def draw_radar(self, item):
-        """ Radar animation """
-        radar_radius, thick = item.radar(self.grid)
-
+    def draw_vibe(self, item):
+        """ Vibe animation """
+        vibe_radius, thick = item.vibe_track[0]
         if item.color:
-            wave_color = item.color
+            vibe_color = item.color
         else:
-            wave_color = self.grid.white
+            vibe_color = self.grid.white
 
-        if radar_radius and thick:
-            self.grid.pygame.draw.circle(self.grid.game_display,
-                               wave_color,
-                               item.pos,
-                               int(radar_radius),
-                               int(thick))
+        # if vibe_radius and thick:
+        self.grid.pygame.draw.circle(self.grid.game_display,
+                           vibe_color,
+                           item.pos,
+                           int(vibe_radius),
+                           int(thick))
 
 
     def draw_revealed_radius(self):
@@ -149,48 +148,42 @@ class GameDrawer(object):
     def draw_body(self, current_tile, item):
         """ Draws each body and it's image if available """
 
-        if item.available:
-            blit_item = True
+        if item.available and not (not item.birth_track and item.marked_for_destruction):
+
             if item.birth_track:
                 item.radius = item.birth_track[0]
-            elif not item.birth_track and item.fat_track:
-                item.radius = item.fat_track[0]
 
-            if not item.birth_track and item.marked_for_destruction:
-                blit_item = False
+            if item.color:
+                self.grid.pygame.draw.circle(self.grid.game_display,
+                                   item.color,
+                                   item.pos,
+                                   item.radius,
+                                   0)
+            if item.category == "bag":
+                self.grid.pygame.draw.circle(self.grid.game_display,
+                                             self.grid.gelb05,
+                                             item.pos,
+                                             self.grid.tile_radius,
+                                             1)
 
-
-            if blit_item:
+            # DRAW EFFECT ACTIVATION
+            if item.effect_track:
                 if item.color:
-                    self.grid.pygame.draw.circle(self.grid.game_display,
-                                       item.color,
-                                       item.pos,
-                                       item.radius,
-                                       0)
-                if item.category == "bag":
-                    self.grid.pygame.draw.circle(self.grid.game_display,
-                                                 self.grid.gelb05,
-                                                 item.pos,
-                                                 self.grid.tile_radius,
-                                                 1)
-
-                # DRAW EFFECT ACTIVATION
-                if item.effect_track:
                     eff_cir = item.effect_track[0]
                     item.color = eff_cir["color"]
                     self.grid.pygame.draw.circle(self.grid.game_display,
                                                  item.default_color,
                                                  item.pos,
                                                  eff_cir["radius"])
-                    item.effect_track.pop(0)
-                    if not item.effect_track:
-                        item.color = item.default_color
+                # item.effect_track.pop(0)
+                # if not item.effect_track:
+                #     item.color = item.default_color
 
 
-                self.draw_img(item)
-                self.draw_aim(current_tile, item)
-                if not item.type in ['sign']:
-                    self.draw_hover(current_tile, item)
+            self.draw_img(item)
+            self.draw_aim(current_tile, item)
+            if not item.type in ['sign']:
+                self.draw_hover(current_tile, item)
 
     def draw_timers(self, item):
         """ Draws current state of a timer """
@@ -405,9 +398,6 @@ class GameDrawer(object):
         self.draw_mask()
 
 
-
-
-
     # --------------------------------------------------------------- #
     #                                                                 #
     #                           ANIMATIONS                            #
@@ -415,38 +405,23 @@ class GameDrawer(object):
     # --------------------------------------------------------------- #
     def draw_animations(self, current_tile):
         """ Main drawing function """
-        # TEST PLACE
-
-        # self.grid.pygame.draw.lines(grid.game_display,
-        #                   grid.dark_grey,
-        #                   False,
-        #                   [(693, 450), (795, 510)],
-        #                   grid.tile_radius * 2)
 
         for item in self.grid.items:
 
             if item.available:
 
-                # Radar
+                # VIBE
                 if item.vibe_track:
-                    self.draw_radar(item)
+                    self.draw_vibe(item)
 
-                # Items
+                # ITEMS
                 self.draw_body(current_tile, item)
 
-                # Show movement track in color
+                # SHOW MOVEMENT
                 if self.grid.show_debug and len(item.move_track) > 1:
                     self.draw_movement(item)
 
-                # Image rotation
-                if item.rot_track:
-                    item.rotate(self.grid.pygame)
-
-                # Item reverse rotation
-                if item.last_rotation and not item.move_track and not item.direction:
-                    item.rotate_reverse(self.grid.pygame)
-
-                # Timers
+                # TIMERS
                 self.draw_timers(item)
 
 

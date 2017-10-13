@@ -8,6 +8,7 @@
 # --------------------------------------------------------------- #
 # TODO: Fix movement to occupado / mitosis
 # TODO: Avoid recursive calling of loop
+# TODO: Fix block drop
 # --------------------------------------------------------------- #
 #                             FEATURES                            #
 # --------------------------------------------------------------- #
@@ -51,9 +52,7 @@ def game_loop(game_over, scenario="scenario_1"):
     if game_over:
         grid.rename_button("play", "replay")
 
-
     # TESTING
-
 
     # --------------------------------------------------------------- #
     #                            GAME LOOP                            #

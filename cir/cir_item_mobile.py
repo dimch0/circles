@@ -81,72 +81,8 @@ class MobileItem(Item):
             ]
             for idx, arrow in enumerate(arrows):
                 if event.key == arrow:
-                    if not (self.vibe_track or self.rot_revert or self.rot_track):
+                    if not self.vibe_track:
                         self.direction = idx
-                        # Uncomment the below line to activate rotation
-                        # self.gen_rot_track(self.direction)
-
-    def update_pos(self):
-        """
-        :return: move self.pos per point in move_track
-        """
-        if self.move_track and not self.birth_track:
-            self.pos = self.move_track[0]
-            self.move_track.pop(0)
-
-    # --------------------------------------------------------------- #
-    #                                                                 #
-    #                           ROTATION                              #
-    #                                                                 #
-    # --------------------------------------------------------------- #
-    def gen_rot_track(self, idx):
-        """
-        Generates rotating track and revert rotating track
-        :param idx:  index of direction
-        :param item: item to whom belongs the image
-        """
-        step = 15
-        end_point = step * 4
-        track = None
-        if idx == 1:
-            track = range(-step, -end_point, -step)
-        elif idx == 2:
-            track = range(-step, -end_point * 2, -step)
-        elif idx == 3:
-            track = range(-step, -end_point * 3, -step)
-        elif idx == 4:
-            track = range(step, end_point * 2, step)
-        elif idx == 5:
-            track = range(step, end_point, step)
-
-        if track:
-            self.rot_track = track
-            if not self.rot_revert:
-                if idx == 3:
-                    self.rot_revert = range(-step, -end_point * 3, -step)
-                else:
-                    self.rot_revert = cir_utils.negative_list(self.rot_track)
-
-    def rotate(self, pygame):
-        """ Rotates the image """
-        self.img = cir_utils.rot_center(pygame, self.default_img, self.rot_track[0])
-
-        if len(self.rot_track) == 1:
-            self.last_rotation = self.rot_track[-1]
-        self.rot_track.pop(0)
-
-    def rotate_reverse(self, pygame):
-        """ Returns the image to start position """
-        if self.last_rotation:
-            self.img = cir_utils.rot_center(pygame, self.default_img, self.last_rotation)
-
-        if self.rot_revert:
-            self.img = cir_utils.rot_center(pygame, self.img, self.rot_revert[0])
-            self.rot_revert.pop(0)
-
-        elif not self.rot_revert:
-            self.img = self.default_img
-            self.last_rotation = False
 
 
     # --------------------------------------------------------------- #

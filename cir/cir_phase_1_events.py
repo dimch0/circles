@@ -113,8 +113,9 @@ class GameEvents(GameEffects):
 
         inventory_item.uses -= 1
         if inventory_item.uses < 1:
-            if cir_utils.get_short_name(self.grid.mouse_mode) in inventory_item.name:
-                self.grid.clean_mouse()
+            if self.grid.mouse_mode:
+                if cir_utils.get_short_name(self.grid.mouse_mode) in inventory_item.name:
+                    self.grid.clean_mouse()
             inventory_item.name = "inventory_placeholder" + str(time.time())
             inventory_item.modable = False
             inventory_item.color = None
@@ -131,7 +132,7 @@ class GameEvents(GameEffects):
         """
 
         # Drop item from inventory to body and consume
-        if clicked_tile == my_body.pos:
+        if clicked_tile == my_body.pos and not my_body.effect_track:
             for bag_item in my_body.inventory.options.values():
                 if self.grid.mouse_mode in bag_item.name and bag_item.uses >= 1:
                     if bag_item.consumable:
@@ -174,7 +175,7 @@ class GameEvents(GameEffects):
         # --------------------------------------------------------------- #
         elif event.key == self.grid.pygame.K_SPACE:
 
-            # GEN RADAR
+            # GEN VIBE
             my_body.gen_vibe_track(self.grid)
 
             # DEBUG
@@ -214,34 +215,33 @@ class GameEvents(GameEffects):
         # --------------------------------------------------------------- #
         #                    MOUSE MODE CLICK NO ITEM                     #
         # --------------------------------------------------------------- #
+        if not event.button == 3:
+            if mouse_mode in ["laino", "EDITOR2"]:
+                self.laino_mode_click(current_tile)
 
-        if mouse_mode in ["laino", "EDITOR2"]:
-            self.laino_mode_click(current_tile)
+            elif mouse_mode in ["shit"]:
+                self.laino_mode_click(current_tile)
 
-        elif mouse_mode in ["shit"]:
-            self.laino_mode_click(current_tile)
+            elif mouse_mode in ["see", "EDITOR1"]:
+                self.see_mode_click(current_tile)
 
-        elif mouse_mode in ["see", "EDITOR1"]:
-            self.see_mode_click(current_tile)
+            elif mouse_mode in ["EDITOR3"]:
+                if current_tile not in self.grid.occupado_tiles.values() and current_tile in self.grid.revealed_tiles:
+                    self.produce("block_of_steel", current_tile)
 
-        elif mouse_mode in ["EDITOR3"]:
-            if current_tile not in self.grid.occupado_tiles.values() and current_tile in self.grid.revealed_tiles:
-                self.produce("block_of_steel", current_tile)
+            elif mouse_mode == "echo":
+                self.echo_mode_click(current_tile, my_body)
 
-        elif mouse_mode == "echo":
-            self.echo_mode_click(current_tile, my_body)
-
-        elif mouse_mode and any(mouse_mode in inventory_item.name for inventory_item in my_body.inventory.options.values()):
-            self.drop_mode_click(current_tile, my_body)
+            elif mouse_mode and any(mouse_mode in inventory_item.name for inventory_item in my_body.inventory.options.values()):
+                self.drop_mode_click(current_tile, my_body)
 
         # --------------------------------------------------------------- #
         #                   CLICK ON ITEMS NO MOUSE MODE                  #
         # --------------------------------------------------------------- #
         for CLICKED_ITEM in self.grid.items:
-            if CLICKED_ITEM.clickable and CLICKED_ITEM.available:
+            if CLICKED_ITEM.clickable and CLICKED_ITEM.available and CLICKED_ITEM.type not in ["trigger"]:
                 if current_tile == CLICKED_ITEM.pos:
-
-                    self.grid.msg("INFO - Clicked CLICKED_ITEM: {0}".format(CLICKED_ITEM.name))
+                    self.grid.msg("INFO - clicked item: {0}".format(CLICKED_ITEM.name))
 
                     # OPTION CLICKED
                     if CLICKED_ITEM.type == "option":
@@ -304,7 +304,7 @@ class GameEvents(GameEffects):
 
                     # EAT
                     if mouse_mode in ["eat"] or event.button == 3:
-                        if CLICKED_ITEM.consumable:
+                        if CLICKED_ITEM.consumable and not CLICKED_ITEM.birth_track and not my_body.effect_track:
                             if (CLICKED_ITEM.pos in self.grid.adj_tiles(my_body.pos)) or (CLICKED_ITEM in my_body.inventory.options.values()):
                                 self.consume(my_body, CLICKED_ITEM)
                                 if CLICKED_ITEM in my_body.inventory.options.values():
@@ -314,7 +314,7 @@ class GameEvents(GameEffects):
                             else:
                                 self.grid.msg("SCREEN - {0} is far".format(CLICKED_ITEM.name))
                         else:
-                            self.grid.msg("SCREEN - No eat this")
+                            self.grid.msg("SCREEN - no eat this")
 
                     # TERMINATE
                     elif mouse_mode in ["EDITOR9"]:

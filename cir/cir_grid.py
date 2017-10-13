@@ -393,5 +393,3 @@ class Grid(object):
 
         if will_show_msg:
             print(msg_color + msg + bcolors.ENDC)
-
-

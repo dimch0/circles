@@ -46,20 +46,17 @@ class Item(object):
         self.time_color = None
         self.room = None
         self.uses = 1
+        self.marked_for_destruction = False
         # --------------------------------------------------------------- #
         #                            ANIMATION                            #
         # --------------------------------------------------------------- #
         self.direction = None
-        self.last_rotation = None
         self.move_track = []
         self.vibe_track = []
-        self.rot_track = []
-        self.rot_revert = []
         self.birth_track = []
         self.fat_track = []
         self.effect_track = []
-        self.marked_for_destruction = False
-        self.htis = []
+        self.hit_items = []
 
     @property
     def rect(self):
@@ -170,10 +167,10 @@ class Item(object):
     #                           INTERSECTS                            #
     #                                                                 #
     # --------------------------------------------------------------- #
-    def intersects(self, item2):
-        """ Checks and returns a bool if this item is intersecting with item2 """
+    def intersects(self, intersecting_item):
+        """ Checks and returns a bool if this item is intersecting with intersecting_item """
         cir1 = (self.pos, self.radius)
-        cir2 = (item2.pos, item2.radius)
+        cir2 = (intersecting_item.pos, intersecting_item.radius)
         return cir_utils.intersecting(cir1, cir2)
 
     # --------------------------------------------------------------- #
