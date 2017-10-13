@@ -29,7 +29,6 @@ class GameEffects(object):
                 product_name,
                 pos=None,
                 radius=None,
-                birth=None,
                 vibe_freq=None,
                 lifespan=None,
                 add_to_items=True):
@@ -48,8 +47,6 @@ class GameEffects(object):
         if radius:
             new_item.radius = radius
             new_item.default_radius = radius
-        if not birth in [None, 0]:
-            new_item.birth_time.duration = birth
         if vibe_freq:
             new_item.vibe_freq.duration = vibe_freq
         if pos:
@@ -57,7 +54,6 @@ class GameEffects(object):
         if lifespan:
             new_item.lifespan = lifespan
 
-        new_item.birth_time.duration = 0
         new_item.default_img = new_item.img
         new_item.available = True
         new_item.gen_birth_track()
@@ -169,7 +165,6 @@ class GameEffects(object):
                                lifespan=2)
         trigger.range = 4.5
         trigger.vibe_speed = speed
-        trigger.birth_time = 0
 
         self.grid.loader.set_timers(trigger)
         trigger.vibe_freq = None
@@ -216,20 +211,20 @@ class GameEffects(object):
                     effect = effect.split("_")
                     eff_att = effect[0]
                     amount = float(effect[1])
-                    if eff_att == 'LS':
-                        if hasattr(consumator_item, "lifespan"):
-                            consumator_item.lifespan.limit += amount
-                            if amount >= 0:
-                                self.grid.msg("SCREEN - max life +{0}".format(int(amount)))
-                            else:
-                                self.grid.msg("SCREEN - max life {0}".format(int(amount)))
-                    elif eff_att == 'LP':
-                        if hasattr(consumator_item, "lifespan"):
-                            consumator_item.lifespan.update(amount)
-                            if amount >= 0:
-                                self.grid.msg("SCREEN - life +{0}".format(int(amount)))
-                            else:
-                                self.grid.msg("SCREEN - life {0}".format(int(amount)))
+                    if eff_att == 'LS' and consumator_item.lifespan:
+                        consumator_item.lifespan.limit += amount
+                        if amount >= 0:
+                            self.grid.msg("SCREEN - max life +{0}".format(int(amount)))
+                        else:
+                            self.grid.msg("SCREEN - max life {0}".format(int(amount)))
+
+                    elif eff_att == 'LP' and consumator_item.lifespan:
+                        consumator_item.lifespan.update(amount)
+                        if amount >= 0:
+                            self.grid.msg("SCREEN - life +{0}".format(int(amount)))
+                        else:
+                            self.grid.msg("SCREEN - life {0}".format(int(amount)))
+
                     elif eff_att == 'SP':
                         if hasattr(consumator_item, "speed"):
                             consumator_item.change_speed(amount)
@@ -237,31 +232,3 @@ class GameEffects(object):
                                 self.grid.msg("SCREEN - speed +{0}".format(int(amount)))
                             else:
                                 self.grid.msg("SCREEN - speed {0}".format(int(amount)))
-
-
-        # if hasattr(consumator_item, "lifespan"):
-        #     if consumator_item.lifespan:
-        #         consumator_item.gen_effect_track(consumable_item.color)
-        #         if any(name in consumable_item.name for name in ['shrimp',
-        #                                                          'shit']):
-        #             consumator_item.lifespan.update(-999)
-        #         elif any(name in consumable_item.name for name in ['lemon',
-        #                                                            'tomato',
-        #                                                            'carrot',
-        #                                                            'chilli',
-        #                                                            'banana',
-        #                                                            'corn',
-        #                                                            'apple']):
-        #             consumator_item.lifespan.limit += 15
-        #             consumator_item.lifespan.update(60)
-        #         elif any(name in consumable_item.name for name in ['fresh']):
-        #             consumator_item.lifespan.limit += 15
-        #             consumator_item.lifespan.update(30)
-        #             consumator_item.change_speed(3)
-        #         elif any(name in consumable_item.name for name in ['pizza',
-        #                                                            'hotdog',
-        #                                                            'icecream']):
-        #             consumator_item.lifespan.update(120)
-        #             consumator_item.lifespan.limit -= 15
-        #         else:
-        #             consumator_item.lifespan.update(30)

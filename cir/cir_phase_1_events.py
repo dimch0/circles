@@ -42,8 +42,8 @@ class GameEvents(GameEffects):
         if not cir_utils.in_circle(my_body.pos, my_body.radius, current_tile) and not my_body.move_track:
             signal = self.produce("signal",
                                   my_body.pos,
-                                  radius=int(self.grid.tile_radius / 3),
-                                  birth=0)
+                                  radius=int(self.grid.tile_radius / 3)
+                                  )
             signal.color = my_body.color
             signal.direction = signal.get_aiming_direction(self.grid, current_tile)[1]
 
@@ -58,7 +58,7 @@ class GameEvents(GameEffects):
             "placeholder"
             ]
         if not any(non_terminate in current_tile.type for non_terminate in non_terminates):
-            current_tile.destroy(self.grid, fast=True)
+            current_tile.destroy(self.grid)
 
     def collect_mode_click(self, my_body, clicked_item):
         """ Collect item: add it to inventory options """
@@ -86,7 +86,6 @@ class GameEvents(GameEffects):
 
                 item_as_option = self.produce(product_name=item_name,
                                               pos=inventory_placeholder.pos,
-                                              birth=0,
                                               add_to_items=False)
                 item_as_option.name = clicked_item.name + str(time.time())
                 item_as_option.type = "option"
@@ -100,7 +99,7 @@ class GameEvents(GameEffects):
                 if inventory_placeholder in my_body.inventory.options.values():
                     my_body.inventory.options = {k:v for k, v in my_body.inventory.options.items() if not v == inventory_placeholder}
                 inventory.options[item_as_option.name] = item_as_option
-                clicked_item.destroy(self.grid, fast=True)
+                clicked_item.destroy(self.grid)
             else:
                 self.grid.msg("SCREEN - No space in bag")
 
@@ -311,7 +310,7 @@ class GameEvents(GameEffects):
                                 if CLICKED_ITEM in my_body.inventory.options.values():
                                     self.empty_inventory(CLICKED_ITEM)
                                 else:
-                                    CLICKED_ITEM.destroy(self.grid, fast=True)
+                                    CLICKED_ITEM.destroy(self.grid)
                             else:
                                 self.grid.msg("SCREEN - {0} is far".format(CLICKED_ITEM.name))
                         else:

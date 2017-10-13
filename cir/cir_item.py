@@ -10,7 +10,7 @@ class Item(object):
 
     def __init__(self):
         # --------------------------------------------------------------- #
-        #                            BASICS                               #
+        #                            BASIC                                #
         # --------------------------------------------------------------- #
         self.name = None
         self.type = None
@@ -37,9 +37,7 @@ class Item(object):
         self.clickable = True
         self.collectible = False
         self.consumable = False
-        # self.mode = None
         self.options = {}
-        self.overlap = []
         self.effects = None
         # --------------------------------------------------------------- #
         #                              STATS                              #
@@ -53,8 +51,6 @@ class Item(object):
         # --------------------------------------------------------------- #
         self.direction = None
         self.last_rotation = None
-        self.birth_time = 0.033
-        # self.birth_time = 0
         self.move_track = []
         self.vibe_track = []
         self.rot_track = []
@@ -63,6 +59,7 @@ class Item(object):
         self.fat_track = []
         self.effect_track = []
         self.marked_for_destruction = False
+        self.htis = []
 
     @property
     def rect(self):
@@ -184,7 +181,7 @@ class Item(object):
     #                             DESTROY                             #
     #                                                                 #
     # --------------------------------------------------------------- #
-    def destroy(self, grid, fast=False):
+    def destroy(self, grid):
 
         self.marked_for_destruction = True
 
@@ -197,9 +194,6 @@ class Item(object):
                 self.vibe_freq = None
             if hasattr(self, "move_track"):
                 self.move_track = []
-            if fast and self.birth_time:
-                self.birth_time.duration = 0
             if self.type not in ["trigger"]:
                 self.gen_birth_track()
                 self.birth_track.reverse()
-

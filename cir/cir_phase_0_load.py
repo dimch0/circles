@@ -184,11 +184,6 @@ class DataLoader(object):
             lifespan.color = item.time_color
             item.lifespan = lifespan
 
-        if item.birth_time:
-            birth = cir_item_timer.TimerItem()
-            birth.duration = item.birth_time
-            item.birth_time = birth
-
         if hasattr(item, "vibe_freq"):
             vibefr = cir_item_timer.TimerItem()
             vibefr.duration = item.vibe_freq

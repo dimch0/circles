@@ -60,13 +60,6 @@ class VarUpdater(object):
     #                             TIMERS                              #
     #                                                                 #
     # --------------------------------------------------------------- #
-    def update_birth_track(self, item):
-        """ Birth timer effect """
-        if item.birth_track:
-            item.birth_track.pop(0)
-            item.birth_time.restart()
-
-
     def vibe_freq_over_effect(self, item):
         """ Vibe frequency timer over effect """
         if not item.move_track:
@@ -98,18 +91,7 @@ class VarUpdater(object):
                     if item.vibe_freq.is_over:
                         self.vibe_freq_over_effect(item)
 
-        if item.birth_track:
 
-            if item.birth_time and not isinstance(item.birth_time, float):
-                item.birth_track.pop(0)
-                # if item.birth_time.duration > 0:
-                #     item.birth_time.tick()
-                #     if item.birth_time.is_over:
-                #         self.update_birth_track(item)
-                # else:
-                #     item.birth_track.pop(0)
-            # else:
-            #     item.birth_track = []
 
     # --------------------------------------------------------------- #
     #                                                                 #
@@ -195,6 +177,10 @@ class VarUpdater(object):
                     # FAT
                     if item.fat_track:
                         item.fat_track.pop(0)
+
+                    # BIRTH
+                    if item.birth_track:
+                        item.birth_track.pop(0)
 
                     # SIGNAL HIT
                     if self.signal_hit(item, my_body):
