@@ -136,7 +136,7 @@ def show_debug_on_space(grid, my_body):
         grid.msg("DEBUG = Key SPACE pressed")
         grid.msg("DEBUG = revealed tiles  : {0}".format( len(grid.revealed_tiles) ))
         grid.msg("DEBUG = revealed_radius : {0}".format( len(grid.revealed_radius) ))
-        grid.msg("DEBUG = vibe speed      : {0}".format( my_body.vibe_speed ))
+        grid.msg("DEBUG = vibe speed      : {0}".format( my_body.vspeed ))
 
 
 def negative_list(original_list):

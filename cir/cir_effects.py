@@ -29,7 +29,7 @@ class GameEffects(object):
                 product_name,
                 pos=None,
                 radius=None,
-                vibe_freq=None,
+                vfreq=None,
                 lifespan=None,
                 add_to_items=True):
         """
@@ -38,7 +38,7 @@ class GameEffects(object):
         :param pos: set new position (optional)
         :param radius: set new radius (optional)
         :param birth: set new birth timer (optional)
-        :param vibe_freq: set new vibe frequency (optional)
+        :param vfreq: set new vibe frequency (optional)
         :param lifespan: set new lifespan (optional)
         :return: the new item object
         """
@@ -47,8 +47,8 @@ class GameEffects(object):
         if radius:
             new_item.radius = radius
             new_item.default_radius = radius
-        if vibe_freq:
-            new_item.vibe_freq.duration = vibe_freq
+        if vfreq:
+            new_item.vfreq.duration = vfreq
         if pos:
             new_item.pos = pos
         if lifespan:
@@ -164,10 +164,10 @@ class GameEffects(object):
                                pos=self.grid.center_tile,
                                lifespan=2)
         trigger.range = 4.5
-        trigger.vibe_speed = speed
+        trigger.vspeed = speed
 
         self.grid.loader.set_timers(trigger)
-        trigger.vibe_freq = None
+        trigger.vfreq = None
         trigger.birth_track = []
         trigger.gen_vibe_track(self.grid)
 
@@ -207,8 +207,7 @@ class GameEffects(object):
         elif hasattr(consumator, "effects"):
             effects = consumable.effects.split()
             if effects:
-                if consumator.color:
-                    consumator.gen_effect_track(consumable.color)
+
                 self.grid.msg("SCREEN - u eat {0}".format(cir_utils.get_short_name(consumable.name)))
 
         if effects:
@@ -217,7 +216,9 @@ class GameEffects(object):
                     effect = effect.split("_")
                     eff_att = effect[0]
                     amount = float(effect[1])
+
                     if eff_att == 'LS' and consumator.lifespan:
+                        consumator.gen_effect_track(consumable.color)
                         consumator.lifespan.limit += amount
                         if amount >= 0:
                             self.grid.msg("SCREEN - max life +{0}".format(int(amount)))
@@ -225,6 +226,7 @@ class GameEffects(object):
                             self.grid.msg("SCREEN - max life {0}".format(int(amount)))
 
                     elif eff_att == 'LP' and consumator.lifespan:
+                        consumator.gen_effect_track(consumable.color)
                         consumator.lifespan.update(amount)
                         if amount >= 0:
                             self.grid.msg("SCREEN - life +{0}".format(int(amount)))
@@ -233,6 +235,7 @@ class GameEffects(object):
 
                     elif eff_att == 'SP':
                         if hasattr(consumator, "speed"):
+                            consumator.gen_effect_track(consumable.color)
                             consumator.change_speed(amount)
                             if amount >= 0:
                                 self.grid.msg("SCREEN - speed +{0}".format(int(amount)))

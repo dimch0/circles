@@ -66,5 +66,5 @@ class Editor(object):
 
         # HOT-DOG
         elif clicked_item.name == "EDITOR18":
-            my_body.vibe_speed += 0.1
+            my_body.vspeed += 0.1
             my_body.gen_fat()

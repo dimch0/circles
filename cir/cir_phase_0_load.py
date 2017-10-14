@@ -136,7 +136,8 @@ class DataLoader(object):
                             "uses"        : int(float(row[col_idx["uses"]])) if len(row[col_idx["uses"]]) > 0 else None,
                             "room"        : str(row[col_idx["room"]]),
                             "lifespan"    : float(row[col_idx["lifespan"]]) if len(row[col_idx["lifespan"]]) > 0 else None,
-                            "vibe_freq"   : float(row[col_idx["vibe_freq"]]) if len(row[col_idx["vibe_freq"]]) > 0 else None,
+                            "vfreq"       : float(row[col_idx["vfreq"]]) if len(row[col_idx["vfreq"]]) > 0 else None,
+                            "vspeed"      : int(float(row[col_idx["vspeed"]])) if len(row[col_idx["vspeed"]]) > 0 else 1,
                             "layer"       : int(float(row[col_idx["layer"]])) if len(row[col_idx["layer"]]) > 0 else 1,
                             "effects"     : str(row[col_idx["effects"]])
                         }
@@ -185,10 +186,10 @@ class DataLoader(object):
             item.lifespan = lifespan
 
 
-        if hasattr(item, "vibe_freq"):
+        if hasattr(item, "vfreq"):
             vibefr = cir_item_timer.TimerItem()
-            vibefr.duration = item.vibe_freq
-            item.vibe_freq = vibefr
+            vibefr.duration = item.vfreq
+            item.vfreq = vibefr
 
     def set_door(self, item):
         door = cir_item.Item()

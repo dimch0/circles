@@ -15,8 +15,8 @@ class BodyItem(MobileItem):
         super(BodyItem, self).__init__()
         self.range = 1
         # VIBE SPEED CAN NOT BE LESS THAN 1 !!!
-        self.vibe_speed = 1
-        self.vibe_freq = None
+        self.vspeed = 1
+        self.vfreq = None
         self.inventory = None
         # self.muscle = 1
         # self.mind = 0
@@ -51,7 +51,7 @@ class BodyItem(MobileItem):
             vibe_thickness = range(1, (grid.tile_radius / 3) + 1)
             vibe_thickness.reverse()
             vibe_limit = (grid.tile_radius * 2 * self.range) + grid.tile_radius + 1
-            vibe_radius = get_list_drange(grid.tile_radius , vibe_limit, self.vibe_speed)
+            vibe_radius = get_list_drange(grid.tile_radius, vibe_limit, self.vspeed)
             vibe_delimiter = (vibe_radius[-1] - vibe_radius[0]) / vibe_thickness[0]
             result = []
 

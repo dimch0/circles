@@ -60,7 +60,7 @@ class VarUpdater(object):
     #                             TIMERS                              #
     #                                                                 #
     # --------------------------------------------------------------- #
-    def vibe_freq_over_effect(self, item):
+    def vfreq_over_effect(self, item):
         """ Vibe frequency timer over effect """
         if not item.move_track:
             item.gen_vibe_track(self.grid)
@@ -73,8 +73,8 @@ class VarUpdater(object):
 
             if legal_moves:
                 item.move_track = item.move_to_tile(self.grid, random.choice(legal_moves))
-                if item.vibe_freq:
-                    item.vibe_freq.restart()
+                if item.vfreq:
+                    item.vfreq.restart()
 
 
     def timer_effect(self, item):
@@ -84,12 +84,12 @@ class VarUpdater(object):
             if item.lifespan.is_over:
                 item.destroy(self.grid)
 
-        if hasattr(item, "vibe_freq"):
-            if item.vibe_freq and not isinstance(item.vibe_freq, float):
-                if item.vibe_freq.duration:
-                    item.vibe_freq.tick()
-                    if item.vibe_freq.is_over:
-                        self.vibe_freq_over_effect(item)
+        if hasattr(item, "vfreq"):
+            if item.vfreq and not isinstance(item.vfreq, float):
+                if item.vfreq.duration:
+                    item.vfreq.tick()
+                    if item.vfreq.is_over:
+                        self.vfreq_over_effect(item)
 
 
 

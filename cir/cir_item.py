@@ -187,8 +187,8 @@ class Item(object):
                 self.close_menu(grid)
             if hasattr(self, "lifespan"):
                 self.lifespan = None
-            if hasattr(self, "vibe_freq"):
-                self.vibe_freq = None
+            if hasattr(self, "vfreq"):
+                self.vfreq = None
             if hasattr(self, "move_track"):
                 self.move_track = []
             if self.type not in ["trigger"]:
