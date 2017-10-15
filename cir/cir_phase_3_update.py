@@ -109,8 +109,15 @@ class VarUpdater(object):
         return hit
 
 
-    def signal_hit_effect(self, item):
+    def signal_hit_effect(self, signal):
         self.grid.msg("INFO - Hit!")
+        for hit_item in self.grid.items:
+            if hit_item.available and not hit_item.name == signal.name:
+                cir1 = (hit_item.pos, hit_item.radius)
+                cir2 = (signal.pos, signal.radius)
+                if intersecting(cir1, cir2):
+                    self.grid.event_effects.consume(hit_item, signal)
+
 
 
     def update_occupado(self):
@@ -216,7 +223,6 @@ class VarUpdater(object):
                                         if not hit_item in item.hit_items:
                                             # CONSUME VIBE
                                             self.grid.event_effects.consume(hit_item, item)
-
                                             item.hit_items.append(hit_item)
 
                         item.vibe_track.pop(0)
