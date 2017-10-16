@@ -199,8 +199,12 @@ class GameEffects(object):
     #                                                                 #
     # --------------------------------------------------------------- #
     def consume(self, consumator, consumable):
+        """
+        Consume effects
+        :param consumator: item obj, that will consume the consumable effects
+        :param consumable: item obj, that has consumable effects or the effects as a string
+        """
 
-        # self.grid.msg("SCREEN - nom nom nom")
         effects = None
 
         if isinstance(consumable, str):
@@ -211,7 +215,7 @@ class GameEffects(object):
         if effects:
             try:
                 if consumator.type == "my_body":
-                    self.grid.msg(u"SCREEN - u eat {0}".format(cir_utils.get_short_name(consumable.name)))
+                    self.grid.msg(u"SCREEN - you eat {0}".format(cir_utils.get_short_name(consumable.name)))
 
                 for effect in effects:
                     effect = effect.split("_")
@@ -224,22 +228,21 @@ class GameEffects(object):
                     attr_str = ''
 
                     if eff_att == 'LS' and consumator.lifespan:
-                        consumator.gen_effect_track(consumable.color)
                         consumator.lifespan.limit += amount
                         attr_str = 'max life'
 
                     elif eff_att == 'LP' and consumator.lifespan:
-                        consumator.gen_effect_track(consumable.color)
                         consumator.lifespan.update(amount)
                         attr_str = 'life'
 
                     elif eff_att == 'SP' and hasattr(consumator, "speed"):
-                        consumator.gen_effect_track(consumable.color)
                         consumator.change_speed(amount)
                         attr_str = 'speed'
 
+                    if attr_str:
+                        consumator.gen_effect_track(consumable.color)
                     if consumator.type == "my_body":
-                        self.grid.msg(u"SCREEN - {0} {1}".format(attr_str, modifier_str))
+                        self.grid.msg(u"SCREEN - {0} {1}".format(modifier_str, attr_str))
 
             except Exception as e:
                 self.grid.msg("ERROR - invalid effects '{0}' \n {1}".format(effects, e))
