@@ -118,17 +118,6 @@ class VarUpdater(object):
                 if intersecting(cir1, cir2):
                     self.grid.event_effects.consume(hit_item, signal)
 
-
-
-    def update_occupado(self):
-        for item in self.grid.items:
-            if not item.type in ["signal", "trigger", "option"]:
-                for tile in self.grid.playing_tiles:
-                    circle_1 = (tile, self.grid.tile_radius)
-                    circle_2 = (item.pos, self.grid.tile_radius)
-                    if intersecting(circle_1, circle_2):
-                        self.grid.occupado_tiles[item.name] = tile
-
     # --------------------------------------------------------------- #
     #                                                                 #
     #                           CHANGE VARS                           #
@@ -209,19 +198,18 @@ class VarUpdater(object):
 
                         vibe_area = ((item.pos), item.vibe_track[0][0])
 
-                        # Reveal vibe effect
+                        # REVEAL
                         if not vibe_area in self.grid.revealed_radius:
                             self.grid.revealed_radius.append(vibe_area)
-                        # Set revealed tiles
                         self.grid.set_rev_tiles()
 
+                        # CONSUME VIBE
                         if item.effects:
                             for hit_item in self.grid.items:
                                 if hit_item.available and not get_short_name(hit_item.name) == get_short_name(item.name):
                                     cir1 = (hit_item.pos, hit_item.radius - (hit_item.radius / 2.5))
                                     if intersecting(cir1, vibe_area):
                                         if not hit_item in item.hit_items:
-                                            # CONSUME VIBE
                                             self.grid.event_effects.consume(hit_item, item)
                                             item.hit_items.append(hit_item)
 
@@ -229,7 +217,7 @@ class VarUpdater(object):
                         if not item.vibe_track:
                             item.hit_items = []
 
-                    # SIGNAL HIT
+                    # CONSUME SIGNAL
                     if self.signal_hit(item, my_body):
                         self.signal_hit_effect(item)
 
@@ -238,6 +226,6 @@ class VarUpdater(object):
 
         self.grid.sort_items_by_layer()
 
-        self.update_occupado()
+        self.grid.set_occupado()
 
         self.grid.clock.tick(self.grid.fps)

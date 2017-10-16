@@ -258,43 +258,7 @@ class GameDrawer(object):
 
     def draw_mask(self):
         """ Draws the mas around the playing board """
-        if self.grid.cols == 24 and self.grid.rows == 24:
-            rect1 = [
-                (0,0),
-                (self.grid.center_tile[0] - ((4 * self.grid.cathetus) + (self.grid.cathetus / 2) + 5), (self.grid.display_height))
-                    ]
-            rect2 = [
-                (self.grid.center_tile[0] + ((4 * self.grid.cathetus) + (self.grid.cathetus / 2) + 5), 0),
-                (self.grid.center_tile[0], self.grid.display_height)
-                    ]
-            tri1 = [
-                (self.grid.center_tile[0] - ((4 * self.grid.cathetus) + (self.grid.cathetus / 2) + 5), (self.grid.center_tile[0] - 13 * self.grid.tile_radius)),
-                (self.grid.center_tile[0] - ((4 * self.grid.cathetus) + (self.grid.cathetus / 2) + 5), 0),
-                (self.grid.center_tile[0] + ((2 * self.grid.cathetus) + (self.grid.cathetus / 2) + 0), 0)
-            ]
-            tri2 = [
-                (self.grid.center_tile[0] + ((4 * self.grid.cathetus) + (self.grid.cathetus / 2) + 5), (self.grid.center_tile[0] - 14 * self.grid.tile_radius)),
-                (self.grid.center_tile[0] + ((4 * self.grid.cathetus) + (self.grid.cathetus / 2) + 5), 0),
-                (self.grid.center_tile[0] - ((2 * self.grid.cathetus) + (self.grid.cathetus / 2) + 5), 0)
-            ]
-            tri3 = [
-                (self.grid.center_tile[0] - ((4 * self.grid.cathetus) + (self.grid.cathetus / 2) + 5), (self.grid.center_tile[0] - 5 * self.grid.tile_radius)),
-                (self.grid.center_tile[0] - ((4 * self.grid.cathetus) + (self.grid.cathetus / 2) + 5), self.grid.display_height),
-                (self.grid.center_tile[0] + ((2 * self.grid.cathetus) + (self.grid.cathetus / 2) + 5), self.grid.display_height)
-            ]
-            tri4 = [
-                (self.grid.center_tile[0] + ((4 * self.grid.cathetus) + (self.grid.cathetus / 2) + 5), (self.grid.center_tile[0] - 5 * self.grid.tile_radius)),
-                (self.grid.center_tile[0] + ((4 * self.grid.cathetus) + (self.grid.cathetus / 2) + 5), self.grid.display_height),
-                (self.grid.center_tile[0] - ((2 * self.grid.cathetus) + (self.grid.cathetus / 2) + 5), self.grid.display_height)
-            ]
-
-            self.grid.pygame.draw.rect(self.grid.game_display, self.grid.fog_color, rect1, 0)
-            self.grid.pygame.draw.rect(self.grid.game_display, self.grid.fog_color, rect2, 0)
-            self.grid.pygame.draw.polygon(self.grid.game_display, self.grid.white, tri1, 0)
-            self.grid.pygame.draw.polygon(self.grid.game_display, self.grid.red, tri2, 0)
-            self.grid.pygame.draw.polygon(self.grid.game_display, self.grid.fog_color, tri3, 0)
-            self.grid.pygame.draw.polygon(self.grid.game_display, self.grid.fog_color, tri4, 0)
-        else:
+        if self.grid.cols == 22 and self.grid.rows == 22:
             fat = int((4 * self.grid.tile_radius) + (4.5 * self.grid.cathetus))
             fat_tri = int(3 * self.grid.tile_radius) - 8
 

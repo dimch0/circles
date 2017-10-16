@@ -139,11 +139,6 @@ def show_debug_on_space(grid, my_body):
         grid.msg("DEBUG = vibe speed      : {0}".format( my_body.vspeed ))
 
 
-def negative_list(original_list):
-    """ Returns the negative values of a list """
-    return [-x for x in original_list]
-
-
 def get_short_name(name_with_timestamp):
     """ Removes the timestamp from a name """
     time_stamp_pattern = '\d{10,}.{1,}'

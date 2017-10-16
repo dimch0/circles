@@ -10,7 +10,7 @@ import time
 import json
 import shutil
 from math import sqrt
-from cir_utils import in_circle, inside_polygon, bcolors, get_short_name
+from cir_utils import in_circle, inside_polygon, bcolors, get_short_name, intersecting
 
 CONFIG_JSON_FILE = "config.json"
 
@@ -242,6 +242,15 @@ class Grid(object):
                         self.items.remove(item)
                     except Exception as e:
                         self.msg("ERROR - ERROR Could not remove placeholder: {0}".format(e))
+
+    def set_occupado(self):
+        for item in self.items:
+            if not item.type in ["signal", "trigger", "option"]:
+                for tile in self.playing_tiles:
+                    circle_1 = (tile, self.tile_radius)
+                    circle_2 = (item.pos, self.tile_radius)
+                    if intersecting(circle_1, circle_2):
+                        self.occupado_tiles[item.name] = tile
 
     # --------------------------------------------------------------- #
     #                             MOUSE                               #
