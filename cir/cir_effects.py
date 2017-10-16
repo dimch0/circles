@@ -349,16 +349,16 @@ class GameEffects(object):
         if effects:
             try:
                 if consumator.type == "my_body":
-                    self.grid.msg(u"SCREEN - you eat {0}".format(cir_utils.get_short_name(consumable.name)))
+                    self.grid.msg("SCREEN - you eat {0}".format(cir_utils.get_short_name(consumable.name)))
 
                 for effect in effects:
                     effect = effect.split("_")
                     eff_att = effect[0]
                     amount = float(effect[1])
                     if amount >= 0:
-                        modifier_str = u"↑{0}".format(abs(int(amount)))
+                        modifier_str = "+{0}".format(abs(int(amount)))
                     else:
-                        modifier_str = u"↓{0}".format(abs(int(amount)))
+                        modifier_str = "-{0}".format(abs(int(amount)))
                     attr_str = ''
 
                     if eff_att == 'LS' and consumator.lifespan:
@@ -376,7 +376,7 @@ class GameEffects(object):
                     if attr_str:
                         consumator.gen_effect_track(consumable.color)
                     if consumator.type == "my_body":
-                        self.grid.msg(u"SCREEN - {0} {1}".format(modifier_str, attr_str))
+                        self.grid.msg("SCREEN - {0} {1}".format(modifier_str, attr_str))
 
             except Exception as e:
                 self.grid.msg("ERROR - invalid effects '{0}' \n {1}".format(effects, e))

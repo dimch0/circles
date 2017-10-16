@@ -8,6 +8,7 @@
 import os
 
 
+
 def hex2rgb(hex_str):
     """ Converts color from hex string to rgb tuple """
     return tuple(int(hex_str[i:i + 2], 16) for i in (0, 2, 4))

@@ -129,6 +129,7 @@ class GameDrawer(object):
 
         # Background
         self.draw_background()
+        # self.draw_msg()
 
         # Buttons
         for button in self.grid.buttons:
@@ -144,6 +145,8 @@ class GameDrawer(object):
                 if button.text:
                     self.grid.game_display.blit(button.text, button.text_rect)
                 self.draw_hover(current_tile, button)
+
+
 
 
     def draw_body(self, current_tile, item):
@@ -320,11 +323,17 @@ class GameDrawer(object):
 
     def draw_msg(self):
         if self.grid.messages:
-            for idx, msg in enumerate(self.grid.messages):
-                font = getattr(self.grid.fonts, 'small')
-                msg = msg.replace(u"SCREEN - ", u"")
+            check_messages = self.grid.messages
 
-                color = self.grid.white
+            for idx, msg in enumerate(check_messages):
+                msg = msg.replace("SCREEN - ", "")
+                font = getattr(self.grid.fonts, 'small')
+                if "+" in msg or "-" in msg:
+                    color = self.grid.grey05
+                else:
+                    color = self.grid.white
+
+
                 # if idx == 0:
                 #     color = self.grid.white
                 # else:

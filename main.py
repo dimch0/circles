@@ -17,6 +17,8 @@
 # TODO: Create save button
 # TODO: Create load button
 # TODO: Create map
+# TODO: Feed with shrimp
+# TODO: Display last msg on game over
 # --------------------------------------------------------------- #
 #                             BACKLOG                             #
 # --------------------------------------------------------------- #
@@ -40,6 +42,16 @@ from cir.cir_game_menu import game_menu
 from cir.cir_grid import Grid
 from cir.cir_phase_0_load import DataLoader
 pygame.init()
+
+
+# unistr = u"♛   ↑"
+# pygame.font.init()
+# srf = pygame.display.set_mode((500,500))
+# f = pygame.font.Font("/home/dimcho/PycharmProjects/dzhrt/CIR/cosmetics/fonts/HelveticaNeueMed.ttf",64)
+# srf.blit(f.render(unistr,True,(255,0,0)),(0,0))
+# pygame.display.flip()
+# from time import sleep
+# sleep(3)
 
 
 def game_loop(game_over, scenario="scenario_1"):
