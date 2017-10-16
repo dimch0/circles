@@ -43,6 +43,7 @@ class GameEffects(object):
         :param lifespan: set new lifespan (optional)
         :return: the new item object
         """
+        product_name = cir_utils.get_short_name(product_name)
         new_item = self.grid.loader.load_item(product_name)
 
         if radius:
@@ -60,7 +61,7 @@ class GameEffects(object):
         new_item.gen_birth_track()
         if add_to_items:
             if new_item.name in self.grid.occupado_tiles.keys():
-                new_item.name = new_item.name + str(time.time())
+                new_item.name = new_item.name + '-' + str(time.time())
             self.grid.items.append(new_item)
 
         return new_item
@@ -79,14 +80,14 @@ class GameEffects(object):
         empty_tile = item.check_for_empty_adj_tile(self.grid)
         if empty_tile:
             placeholder = self.produce("placeholder", empty_tile)
-            placeholder.name = "placeholder" + str(time.time())
+            placeholder.name = "placeholder-" + str(time.time())
             searched_name = item.name.split()[0]
             new_copy = self.produce(searched_name, item.pos)
             new_copy.color = item.color
             new_copy.img = item.img
             new_copy.speed = item.speed
             new_copy.radius = item.radius
-            new_copy.name = "new copy" + str(time.time())
+            new_copy.name = "new copy-" + str(time.time())
             new_copy.birth_track = []
             new_copy.move_track = new_copy.move_to_tile(self.grid, empty_tile)
             if new_copy.lifespan:
@@ -99,7 +100,7 @@ class GameEffects(object):
         """
         for other_item in self.grid.items:
             if "new copy" in other_item.name:
-                other_item.name = str(item.name + " - copy" + str(time.time()))
+                other_item.name = str(item.name + " - copy-" + str(time.time()))
 
             if item.name in other_item.name or other_item.name in str(item.name + " - copy"):
                 empty_tile = other_item.check_for_empty_adj_tile(self.grid)
@@ -264,7 +265,7 @@ class GameEffects(object):
                 item_as_option = self.produce(product_name=item_name,
                                               pos=inventory_placeholder.pos,
                                               add_to_items=False)
-                item_as_option.name = clicked_item.name + str(time.time())
+                item_as_option.name = clicked_item.name + '-' + str(time.time())
                 item_as_option.type = "option"
                 item_as_option.modable = True
                 item_as_option.consumable = clicked_item.consumable
@@ -293,7 +294,7 @@ class GameEffects(object):
             if self.grid.mouse_mode:
                 if cir_utils.get_short_name(self.grid.mouse_mode) in inventory_item.name:
                     self.grid.clean_mouse()
-            inventory_item.name = "inventory_placeholder" + str(time.time())
+            inventory_item.name = "inventory_placeholder" + '-' + str(time.time())
             inventory_item.modable = False
             inventory_item.color = None
             inventory_item.img = None

@@ -133,7 +133,7 @@ class DataLoader(object):
                             "modable"     : bool(row[col_idx["modable"]]),
                             "collectible" : bool(row[col_idx["collectible"]]),
                             "consumable"  : bool(row[col_idx["consumable"]]),
-                            "uses"        : int(float(row[col_idx["uses"]])) if len(row[col_idx["uses"]]) > 0 else None,
+                            "uses"        : int(float(row[col_idx["uses"]])) if len(row[col_idx["uses"]]) > 0 else 1,
                             "room"        : str(row[col_idx["room"]]),
                             "lifespan"    : float(row[col_idx["lifespan"]]) if len(row[col_idx["lifespan"]]) > 0 else None,
                             "vfreq"       : float(row[col_idx["vfreq"]]) if len(row[col_idx["vfreq"]]) > 0 else None,

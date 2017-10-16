@@ -141,7 +141,7 @@ def show_debug_on_space(grid, my_body):
 
 def get_short_name(name_with_timestamp):
     """ Removes the timestamp from a name """
-    time_stamp_pattern = '\d{10,}.{1,}'
+    time_stamp_pattern = '-\d{10,}.{1,}'
     if re.search(time_stamp_pattern, name_with_timestamp):
         time_stamp_string = re.search(time_stamp_pattern, name_with_timestamp).group(0)
         item_name = name_with_timestamp.replace(time_stamp_string, "")
