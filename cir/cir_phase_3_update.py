@@ -4,7 +4,7 @@
 #                                                                                                                     #
 # ------------------------------------------------------------------------------------------------------------------- #
 import random
-from cir_utils import get_mirror_point, intersecting
+from cir_utils import get_mirror_point, intersecting, get_short_name
 
 class VarUpdater(object):
 
@@ -217,7 +217,7 @@ class VarUpdater(object):
 
                         if item.effects:
                             for hit_item in self.grid.items:
-                                if hit_item.available and not hit_item.name == item.name:
+                                if hit_item.available and not get_short_name(hit_item.name) == get_short_name(item.name):
                                     cir1 = (hit_item.pos, hit_item.radius - (hit_item.radius / 2.5))
                                     if intersecting(cir1, vibe_area):
                                         if not hit_item in item.hit_items:

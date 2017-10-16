@@ -1,6 +1,6 @@
 scenario,room,name,klas,type,color,img,pos,category,has_opts,available,modable,collectible,consumable,uses,speed,range,time_color,lifespan,vspeed,vfreq,layer,effects
 BODY,,,,,,,,,,,,,,,,,,,,,,
-scenario_1,11_11,my_body,body,my_body,gelb05,galab,11_11,,TRUE,TRUE,,,,,2,1,black,30,,,2,
+scenario_1,11_11,my_body,body,my_body,gelb05,galab,11_11,,TRUE,TRUE,,,,,2,1,black,30,,,2,LS_-15
 scenario_1,,eat,item,option,,emoji_lips_y,,my_body,,TRUE,TRUE,,,,,,,,,,,
 scenario_1,,collect,item,option,,grab,,my_body,,TRUE,TRUE,,,,,,,,,,,
 scenario_1,,suicide,item,option,,suicide,,my_body,,TRUE,,,,,,,,,,,1,
