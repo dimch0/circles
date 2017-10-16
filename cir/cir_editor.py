@@ -68,3 +68,21 @@ class Editor(object):
         elif clicked_item.name == "EDITOR18":
             my_body.vspeed += 0.1
             my_body.gen_fat()
+
+        # FEM SULEIMAN
+        elif clicked_item.name == "EDITOR25":
+            for rev_tile in self.grid.revealed_tiles:
+                if rev_tile not in self.grid.occupado_tiles.values():
+                    new_observer = self.grid.event_effects.produce("observer", rev_tile)
+                    new_observer.lifespan.restart()
+
+        # FULL MOON
+        elif clicked_item.name == "EDITOR20":
+            my_body.range += 3
+            my_body.vspeed += 6
+            my_body.gen_effect_track(self.grid.red01)
+
+        # BARREL
+        elif clicked_item.name == "EDITOR19":
+            my_body.effects += " LP_-180"
+            my_body.gen_effect_track(self.grid.black)

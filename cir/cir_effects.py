@@ -341,6 +341,7 @@ class GameEffects(object):
         """
 
         effects = None
+        protected_types = ['trigger']
 
         if isinstance(consumable, str):
             effects = consumable.split()
@@ -361,18 +362,18 @@ class GameEffects(object):
                     else:
                         modifier_str = "-{0}".format(abs(int(amount)))
                     attr_str = ''
+                    if not consumator.type in protected_types:
+                        if eff_att == 'LS' and consumator.lifespan:
+                            consumator.lifespan.limit += amount
+                            attr_str = 'max life'
 
-                    if eff_att == 'LS' and consumator.lifespan:
-                        consumator.lifespan.limit += amount
-                        attr_str = 'max life'
+                        elif eff_att == 'LP' and consumator.lifespan:
+                            consumator.lifespan.update(amount)
+                            attr_str = 'life'
 
-                    elif eff_att == 'LP' and consumator.lifespan:
-                        consumator.lifespan.update(amount)
-                        attr_str = 'life'
-
-                    elif eff_att == 'SP' and hasattr(consumator, "speed"):
-                        consumator.change_speed(amount)
-                        attr_str = 'speed'
+                        elif eff_att == 'SP' and hasattr(consumator, "speed"):
+                            consumator.change_speed(amount)
+                            attr_str = 'speed'
 
                     if attr_str:
                         consumator.gen_effect_track(consumable.color)
