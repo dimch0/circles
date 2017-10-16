@@ -14,25 +14,26 @@ class BodyItem(MobileItem):
     def __init__(self):
         super(BodyItem, self).__init__()
         self.range = 1
-        # VIBE SPEED CAN NOT BE LESS THAN 1 !!!
+        # VIBE SPEED CAN NOT BE < 1!
         self.vspeed = 1
         self.vfreq = None
         self.inventory = None
+
         # self.muscle = 1
-        # self.mind = 0
+        # self.knw = 0
         # self.ego = 0
-        # self.charm = 1
-        # self.lux = 1
+        # self.hygiene = 100
+        # self.stress = 0
+
         # self.vision = 1
         # self.audio = 0
         # self.smell = 0
         # self.touch = 0
         # self.eat = 0
+
         # self.spirit_pool = 100
-        # self.lifespan = 100
-        # self.hygiene = 100
-        # self.stress = 0
         # self.status = []
+
 
     # --------------------------------------------------------------- #
     #                                                                 #

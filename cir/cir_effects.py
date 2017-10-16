@@ -207,40 +207,39 @@ class GameEffects(object):
             effects = consumable.split()
         elif hasattr(consumator, "effects"):
             effects = consumable.effects.split()
-            if effects and consumator.type == "my_body":
-                self.grid.msg("SCREEN - u eat {0}".format(cir_utils.get_short_name(consumable.name)))
 
         if effects:
             try:
+                if consumator.type == "my_body":
+                    self.grid.msg(u"SCREEN - u eat {0}".format(cir_utils.get_short_name(consumable.name)))
+
                 for effect in effects:
                     effect = effect.split("_")
                     eff_att = effect[0]
                     amount = float(effect[1])
-                    abs_amount = abs(int(amount))
+                    if amount >= 0:
+                        modifier_str = u"↑{0}".format(abs(int(amount)))
+                    else:
+                        modifier_str = u"↓{0}".format(abs(int(amount)))
+                    attr_str = ''
 
                     if eff_att == 'LS' and consumator.lifespan:
                         consumator.gen_effect_track(consumable.color)
                         consumator.lifespan.limit += amount
-                        if amount >= 0:
-                            self.grid.msg(u"SCREEN - {0}: max life ↑{1}".format(consumator.name, abs_amount))
-                        else:
-                            self.grid.msg(u"SCREEN - {0}: max life ↓€{1}".format(consumator.name, abs_amount))
+                        attr_str = 'max life'
 
                     elif eff_att == 'LP' and consumator.lifespan:
                         consumator.gen_effect_track(consumable.color)
                         consumator.lifespan.update(amount)
-                        if amount >= 0:
-                            self.grid.msg(u"SCREEN - {0}: life ↑{1}".format(consumator.name, abs_amount))
-                        else:
-                            self.grid.msg(u"SCREEN - {0}: life ↓{1}".format(consumator.name, abs_amount))
+                        attr_str = 'life'
 
-                    elif eff_att == 'SP':
-                        if hasattr(consumator, "speed"):
-                            consumator.gen_effect_track(consumable.color)
-                            consumator.change_speed(amount)
-                            if amount >= 0:
-                                self.grid.msg(u"SCREEN - speed ↑{0}".format(abs_amount))
-                            else:
-                                self.grid.msg(u"SCREEN - speed ↓{0}".format(abs_amount))
+                    elif eff_att == 'SP' and hasattr(consumator, "speed"):
+                        consumator.gen_effect_track(consumable.color)
+                        consumator.change_speed(amount)
+                        attr_str = 'speed'
+
+                    if consumator.type == "my_body":
+                        self.grid.msg(u"SCREEN - {0} {1}".format(attr_str, modifier_str))
+
             except Exception as e:
                 self.grid.msg("ERROR - invalid effects '{0}' \n {1}".format(effects, e))

@@ -10,10 +10,10 @@
 # TODO: Fix movement to occupado / mitosis
 # TODO: Avoid recursive calling of loop
 # TODO: Fix block drop
+# TODO: Fix unicode characters
 # --------------------------------------------------------------- #
 #                             FEATURES                            #
 # --------------------------------------------------------------- #
-# TODO: Consume signal (add effect attr to signal)
 # TODO: Create save button
 # TODO: Create load button
 # --------------------------------------------------------------- #
