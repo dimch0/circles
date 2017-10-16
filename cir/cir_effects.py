@@ -206,8 +206,7 @@ class GameEffects(object):
             effects = consumable.split()
         elif hasattr(consumator, "effects"):
             effects = consumable.effects.split()
-            if effects:
-
+            if effects and consumator.type == "my_body":
                 self.grid.msg("SCREEN - u eat {0}".format(cir_utils.get_short_name(consumable.name)))
 
         if effects:
@@ -221,17 +220,17 @@ class GameEffects(object):
                         consumator.gen_effect_track(consumable.color)
                         consumator.lifespan.limit += amount
                         if amount >= 0:
-                            self.grid.msg("SCREEN - max life +{0}".format(int(amount)))
+                            self.grid.msg("SCREEN - {0}: max life +{1}".format(consumator.name, int(amount)))
                         else:
-                            self.grid.msg("SCREEN - max life {0}".format(int(amount)))
+                            self.grid.msg("SCREEN - {0}: max life {1}".format(consumator.name, int(amount)))
 
                     elif eff_att == 'LP' and consumator.lifespan:
                         consumator.gen_effect_track(consumable.color)
                         consumator.lifespan.update(amount)
                         if amount >= 0:
-                            self.grid.msg("SCREEN - life +{0}".format(int(amount)))
+                            self.grid.msg("SCREEN - {0}: life +{1}".format(consumator.name, int(amount)))
                         else:
-                            self.grid.msg("SCREEN - life {0}".format(int(amount)))
+                            self.grid.msg("SCREEN - {0}: life {1}".format(consumator.name, int(amount)))
 
                     elif eff_att == 'SP':
                         if hasattr(consumator, "speed"):

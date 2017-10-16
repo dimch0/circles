@@ -5,7 +5,7 @@ ALL,,trigger,body,trigger,,,,,,TRUE,,,,,,,,,,,1,
 ALL,,signal,body,signal,,,,,,TRUE,,,,,10,1,,,,,3,LP_-15
 ALL,,shit,item,,gelb19,laino2,,,,,TRUE,TRUE,TRUE,1,,,,,,,1,
 ALL,,product_shit,item,,gelb18,laino2,,,,,,TRUE,TRUE,,,,,,,,1,
-ALL,,observer,body,,grey04,emoji_eye_y,,,,,,,,,2,1,,60,,2,1,LP_-30
+ALL,,observer,body,,grey04,emoji_eye_y,,,,,,,,,2,1,black,60,,2,1,LP_-30
 ,,,,,,,,,,,,,,,,,,,,,,
 BAG,,,,,,,,,,,,,,,,,,,,,,
 ALL,ALL,bag,item,inventory,,plastic_bag,17_3,bag,TRUE,TRUE,,,,,,,,,,,1,
