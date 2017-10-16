@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------------------------------------------- #
 #                                                                                                                     #
 #                                                     DRAW                                                            #
@@ -354,11 +355,10 @@ class GameDrawer(object):
 
 
     def draw_msg(self):
-
         if self.grid.messages:
             for idx, msg in enumerate(self.grid.messages):
                 font = getattr(self.grid.fonts, 'small')
-                msg = msg.replace("SCREEN - ", "")
+                msg = msg.replace(u"SCREEN - ", u"")
 
                 color = self.grid.white
                 # if idx == 0:
@@ -367,13 +367,14 @@ class GameDrawer(object):
                 #     color = self.grid.room_color
 
                 msg = msg.lower()
+                # msg = u"黒澤 明 €"
                 txt = font.render(msg, True, color)
 
-                # txt_rect = txt.get_rect()
                 txt_rect = self.grid.pygame.Rect(20, 59, 20, 100)
                 # txt_rect.center = (self.grid.tile_dict["16_2"][0], 50 + (20 * idx))
                 # txt_rect.center = (self.grid.tile_dict["17_7"][0], (7 * self.grid.tile_radius) + 18 + (18 * idx))
                 txt_rect.center = (self.grid.tile_dict["0_2"][0], self.grid.tile_dict["0_2"][1] + (18 * idx))
+
                 self.grid.game_display.blit(txt, txt_rect)
 
     # --------------------------------------------------------------- #

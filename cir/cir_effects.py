@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------------------------------------------- #
 #                                                                                                                     #
 #                                                                                                                     #
@@ -215,30 +216,31 @@ class GameEffects(object):
                     effect = effect.split("_")
                     eff_att = effect[0]
                     amount = float(effect[1])
+                    abs_amount = abs(int(amount))
 
                     if eff_att == 'LS' and consumator.lifespan:
                         consumator.gen_effect_track(consumable.color)
                         consumator.lifespan.limit += amount
                         if amount >= 0:
-                            self.grid.msg("SCREEN - {0}: max life +{1}".format(consumator.name, int(amount)))
+                            self.grid.msg(u"SCREEN - {0}: max life ↑{1}".format(consumator.name, abs_amount))
                         else:
-                            self.grid.msg("SCREEN - {0}: max life {1}".format(consumator.name, int(amount)))
+                            self.grid.msg(u"SCREEN - {0}: max life ↓€{1}".format(consumator.name, abs_amount))
 
                     elif eff_att == 'LP' and consumator.lifespan:
                         consumator.gen_effect_track(consumable.color)
                         consumator.lifespan.update(amount)
                         if amount >= 0:
-                            self.grid.msg("SCREEN - {0}: life +{1}".format(consumator.name, int(amount)))
+                            self.grid.msg(u"SCREEN - {0}: life ↑{1}".format(consumator.name, abs_amount))
                         else:
-                            self.grid.msg("SCREEN - {0}: life {1}".format(consumator.name, int(amount)))
+                            self.grid.msg(u"SCREEN - {0}: life ↓{1}".format(consumator.name, abs_amount))
 
                     elif eff_att == 'SP':
                         if hasattr(consumator, "speed"):
                             consumator.gen_effect_track(consumable.color)
                             consumator.change_speed(amount)
                             if amount >= 0:
-                                self.grid.msg("SCREEN - speed +{0}".format(int(amount)))
+                                self.grid.msg(u"SCREEN - speed ↑{0}".format(abs_amount))
                             else:
-                                self.grid.msg("SCREEN - speed {0}".format(int(amount)))
+                                self.grid.msg(u"SCREEN - speed ↓{0}".format(abs_amount))
             except Exception as e:
                 self.grid.msg("ERROR - invalid effects '{0}' \n {1}".format(effects, e))
