@@ -19,11 +19,17 @@ class BodyItem(MobileItem):
         self.vfreq = None
         self.inventory = None
 
-        # self.muscle = 1
-        # self.knw = 0
-        # self.ego = 0
-        # self.hygiene = 100
-        # self.stress = 0
+        self.muscle = 1
+        self.ego = 0
+        self.hygiene = 100
+        self.stress = 0
+
+        self.knw_limit = 3
+        self.knw = {"maths"  : 1,
+                    "art"    : 2,
+                    "bio"    : 0,
+                    "spirit" : 0,
+                    "geo"    : 0}
 
         # self.vision = 1
         # self.audio = 0
