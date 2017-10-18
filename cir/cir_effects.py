@@ -201,7 +201,7 @@ class GameEffects(object):
 
     def laino_mode_click(self, current_tile):
         if current_tile not in self.grid.occupado_tiles.values() and current_tile in self.grid.revealed_tiles:
-            self.produce("product_shit", current_tile)
+            self.produce("shit", current_tile)
 
     def see_mode_click(self, current_tile):
         if current_tile not in self.grid.occupado_tiles.values() and current_tile in self.grid.revealed_tiles:

@@ -61,7 +61,6 @@ def game_loop(game_over, scenario="scenario_1"):
     grid               = Grid(pygame, scenario)
     grid.loader        = DataLoader(grid)
     my_body            = grid.loader.load_game()
-    my_body.img = grid.images.galab3
 
     if game_over:
         grid.rename_button("play", "replay")
