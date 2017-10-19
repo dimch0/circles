@@ -81,14 +81,14 @@ class GameEvents(GameEffects):
         #                    MOUSE MODE CLICK NO ITEM                     #
         # --------------------------------------------------------------- #
         if not event.button == 3:
-            if mouse_mode in ["laino", "EDITOR2"]:
-                self.laino_mode_click(current_tile)
+            if mouse_mode in ["EDITOR1"]:
+                if current_tile not in self.grid.occupado_tiles.values() and current_tile in self.grid.revealed_tiles:
+                    new_observer = self.produce("observer", current_tile)
+                    new_observer.lifespan.restart()
 
-            elif mouse_mode in ["shit"]:
-                self.laino_mode_click(current_tile)
-
-            elif mouse_mode in ["see", "EDITOR1"]:
-                self.see_mode_click(current_tile)
+            elif mouse_mode in ["EDITOR2"]:
+                if current_tile not in self.grid.occupado_tiles.values() and current_tile in self.grid.revealed_tiles:
+                    self.produce("shit", current_tile)
 
             elif mouse_mode in ["EDITOR3"]:
                 if current_tile not in self.grid.occupado_tiles.values() and current_tile in self.grid.revealed_tiles:
@@ -98,7 +98,7 @@ class GameEvents(GameEffects):
                 self.echo_mode_click(current_tile, my_body)
 
             elif mouse_mode and any(mouse_mode in inventory_item.name for inventory_item in my_body.inventory.options.values()):
-                self.drop_mode_click(current_tile, my_body)
+                self.drop(current_tile, my_body)
 
         # --------------------------------------------------------------- #
         #                   CLICK ON ITEMS NO MOUSE MODE                  #
@@ -189,7 +189,7 @@ class GameEvents(GameEffects):
                     elif mouse_mode in ["collect", None, ""]:
                         if CLICKED_ITEM.collectible:
                             if (CLICKED_ITEM.pos in self.grid.adj_tiles(my_body.pos)):
-                                self.collect_mode_click(my_body, CLICKED_ITEM)
+                                self.collect(my_body, CLICKED_ITEM)
                             else:
                                 self.grid.msg("SCREEN - {0} is far".format(CLICKED_ITEM.name))
 

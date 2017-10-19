@@ -111,22 +111,23 @@ def get_mirror_point(pointA, pointB):
 
 def show_debug_on_click(grid, current_circle, my_body):
     """  Debug on click event  """
-    grid.msg("-"*12)
     if grid.show_debug:
-        # grid.msg("DEBUG = click tile  : {0}".format( current_circle ))
-        grid.msg("DEBUG = mouse mode  : {0}".format( grid.mouse_mode ))
-        # grid.msg("DEBUG = my_body mode: {0}".format( my_body.mode ))
-        # grid.msg("DEBUG = menu        : {0}".format( my_body.in_menu ))
-        # grid.msg("DEBUG = grid items  : {0}".format( len(grid.items) ))
-        # grid.msg("DEBUG = grid items  : {0}".format( [(item.name, item.pos) for item in grid.items] ))
-        # grid.msg("DEBUG = occupado    : {0}".format( len(grid.occupado_tiles) ))
-        # grid.msg("DEBUG = overlap     : {0}".format( [(item.name, item.pos) for item in grid.overlap] ))
-        # grid.msg("DEBUG = playing     : {0}".format( len(grid.playing_tiles) ))
-        # grid.msg("DEBUG = move track  : {0}".format( my_body.move_track ))
-        # grid.msg("DEBUG = all tiles   : {0}".format( len(grid.tiles) ))
-        # grid.msg("DEBUG = current room: {0}".format( grid.current_room ))
-        # grid.msg("DEBUG = prev room   : {0}".format( grid.previous_room ))
-        # grid.msg("DEBUG = revealed    : {0}".format( grid.revealed_radius ))
+        grid.msg("DEBUG - click tile  : {0}, {1}".format( grid.pos_to_name(current_circle), current_circle ))
+        grid.msg("DEBUG - mouse mode  : {0}".format( grid.mouse_mode ))
+        # grid.msg("DEBUG - my_body mode: {0}".format( my_body.mode ))
+        # grid.msg("DEBUG - menu        : {0}".format( my_body.in_menu ))
+        # grid.msg("DEBUG - grid items  : {0}".format( len(grid.items) ))
+        # grid.msg("DEBUG - grid items  : {0}".format( [(item.name, item.pos) for item in grid.items] ))
+        # grid.msg("DEBUG - occupado    : {0}".format( len(grid.occupado_tiles) ))
+        # grid.msg("DEBUG - overlap     : {0}".format( [(item.name, item.pos) for item in grid.overlap] ))
+        # grid.msg("DEBUG - playing     : {0}".format( len(grid.playing_tiles) ))
+        # grid.msg("DEBUG - move track  : {0}".format( my_body.move_track ))
+        # grid.msg("DEBUG - all tiles   : {0}".format( len(grid.tiles) ))
+        # grid.msg("DEBUG - current room: {0}".format( grid.current_room ))
+        # grid.msg("DEBUG - prev room   : {0}".format( grid.previous_room ))
+        # grid.msg("DEBUG - revealed    : {0}".format( grid.revealed_radius ))
+        if hasattr(current_circle, 'uses'):
+            grid.msg("DEBUG - uses    : {0}".format(current_circle.uses))
 
 
 def show_debug_on_space(grid, my_body):

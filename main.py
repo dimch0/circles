@@ -9,7 +9,6 @@
 # --------------------------------------------------------------- #
 # TODO: Fix movement to occupado / mitosis
 # TODO: Avoid recursive calling of loop
-# TODO: Fix block drop
 # TODO: Fix unicode characters
 # --------------------------------------------------------------- #
 #                             FEATURES                            #

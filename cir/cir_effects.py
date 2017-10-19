@@ -46,13 +46,13 @@ class GameEffects(object):
         product_name = cir_utils.get_short_name(product_name)
         new_item = self.grid.loader.load_item(product_name)
 
+        if pos:
+            new_item.pos = pos
         if radius:
             new_item.radius = radius
             new_item.default_radius = radius
         if vfreq:
             new_item.vfreq.duration = vfreq
-        if pos:
-            new_item.pos = pos
         if lifespan:
             new_item.lifespan = lifespan
 
@@ -198,16 +198,6 @@ class GameEffects(object):
     #                         MOUSE MODES                             #
     #                                                                 #
     # --------------------------------------------------------------- #
-
-    def laino_mode_click(self, current_tile):
-        if current_tile not in self.grid.occupado_tiles.values() and current_tile in self.grid.revealed_tiles:
-            self.produce("shit", current_tile)
-
-    def see_mode_click(self, current_tile):
-        if current_tile not in self.grid.occupado_tiles.values() and current_tile in self.grid.revealed_tiles:
-            new_observer = self.produce("observer", current_tile)
-            new_observer.lifespan.restart()
-
     def echo_mode_click(self, current_tile, my_body):
         """ Signal effect """
         self.grid.msg("SCREEN - Echo!")
@@ -238,12 +228,13 @@ class GameEffects(object):
     #                         MOUSE MODES                             #
     #                                                                 #
     # --------------------------------------------------------------- #
-    def collect_mode_click(self, my_body, clicked_item):
+    def collect(self, my_body, clicked_item):
         """ Collect item: add it to inventory options """
         if not any([clicked_item.birth_track, clicked_item.move_track]):
 
             # CHECK FOR EMPTY SLOT IN BAG
             inventory_placeholder = None
+
             inventory = my_body.inventory
             reopen_inventory = False
 
@@ -265,6 +256,7 @@ class GameEffects(object):
                 item_as_option = self.produce(product_name=item_name,
                                               pos=inventory_placeholder.pos,
                                               add_to_items=False)
+
                 item_as_option.name = clicked_item.name + '-' + str(time.time())
                 item_as_option.type = "option"
                 item_as_option.modable = True
@@ -273,6 +265,8 @@ class GameEffects(object):
                 item_as_option.color = clicked_item.color
                 item_as_option.img = clicked_item.img
                 item_as_option.uses = clicked_item.uses
+                if hasattr(clicked_item, "lifespan"):
+                    item_as_option.lifespan = clicked_item.lifespan
                 # ADD IN BAG AND REMOVE FROM FIELD
                 if inventory_placeholder in my_body.inventory.options.values():
                     my_body.inventory.options = {k: v for k, v in my_body.inventory.options.items() if
@@ -289,6 +283,7 @@ class GameEffects(object):
 
     def empty_inventory(self, inventory_item):
 
+        print "Hmm", inventory_item.name, inventory_item.uses
         inventory_item.uses -= 1
         if inventory_item.uses < 1:
             if self.grid.mouse_mode:
@@ -300,8 +295,9 @@ class GameEffects(object):
             inventory_item.img = None
             inventory_item.effects = ''
             inventory_item.uses = 0
+            inventory_item.lifespan = None
 
-    def drop_mode_click(self, clicked_tile, my_body):
+    def drop(self, clicked_tile, my_body):
         """
         Drops item
         """
@@ -320,8 +316,9 @@ class GameEffects(object):
             for bag_item in my_body.inventory.options.values():
                 if self.grid.mouse_mode in bag_item.name and bag_item.uses >= 1:
                     item_name = cir_utils.get_short_name(self.grid.mouse_mode)
-                    self.produce(item_name, clicked_tile)
-
+                    dropped_item = self.produce(item_name, clicked_tile)
+                    if hasattr(bag_item, "lifespan"):
+                        dropped_item.lifespan = bag_item.lifespan
                     self.empty_inventory(bag_item)
                     break
         else:
@@ -376,7 +373,11 @@ class GameEffects(object):
                             attr_str = 'speed'
 
                     if attr_str:
-                        consumator.gen_effect_track(consumable.color)
+                        if consumable.color:
+                            consumator.gen_effect_track(consumable.color)
+                        else:
+                            consumator.gen_effect_track(self.grid.white)
+
                     if consumator.type == "my_body":
                         self.grid.msg("SCREEN - {0} {1}".format(modifier_str, attr_str))
 

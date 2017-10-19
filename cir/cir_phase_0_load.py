@@ -220,6 +220,7 @@ class DataLoader(object):
         for name in ["play", "quit"]:
             butt = cir_item_button.ButtonItem()
             butt.name = name
+            # butt.color = self.grid.room_color
             butt.font = getattr(self.grid.fonts, 'small')
             butt.text_color = self.grid.white
             if name == "play":
@@ -275,6 +276,7 @@ class DataLoader(object):
                 item.room = "ALL"
             elif "door" in item.type:
                 self.set_door(item)
+                self.grid.playing_tiles.append(item.pos)
             elif item.type == "my_body":
                 my_body = item
                 my_body.gen_birth_track()
@@ -285,7 +287,7 @@ class DataLoader(object):
             self.set_timers(item)
             self.set_opts(item)
 
-        self.set_buttons()
+
         self.grid.load_current_room()
 
         if not my_body in self.grid.items:
@@ -300,6 +302,7 @@ class DataLoader(object):
         #     self.grid.fog_color = self.grid.pink
         #     self.grid.room_color = self.grid.black
         #     self.grid.game_menu = False
+        self.set_buttons()
 
         my_body.inventory = my_body_inventory
         return my_body

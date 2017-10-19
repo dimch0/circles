@@ -57,9 +57,6 @@ class GameDrawer(object):
         return (img_x, img_y)
 
 
-    def draw_background(self):
-        self.grid.game_display.fill(self.grid.fog_color)
-
 
     def draw_hover(self, current_tile, item):
         """ Highlights the hovered tile """
@@ -128,7 +125,7 @@ class GameDrawer(object):
         """ Drawing the buttons in the game menu """
 
         # Background
-        self.draw_background()
+        self.grid.game_display.fill(self.grid.fog_color)
         # self.draw_msg()
 
         # Buttons
@@ -154,7 +151,7 @@ class GameDrawer(object):
 
         if item.available and not (not item.birth_track and item.marked_for_destruction):
 
-            if item.birth_track:
+            if item.birth_track and item.color:
                 item.radius = item.birth_track[0]
 
             if item.color:
@@ -355,11 +352,11 @@ class GameDrawer(object):
     #                           BACKGROUND                            #
     #                                                                 #
     # --------------------------------------------------------------- #
-    def draw_background_stuff(self):
+    def draw_background(self):
         """ Drawing deeper level background stuff """
 
         # Background
-        self.draw_background()
+        self.grid.game_display.fill(self.grid.fog_color)
 
         # Revealed radius
         if self.grid.revealed_radius:
@@ -404,15 +401,18 @@ class GameDrawer(object):
         if self.grid.show_grid:
             self.draw_grid()
 
+        # MSG
+        self.draw_msg()
+
     def draw(self, current_tile):
         """
         Draws everything
         :param current_tile: coordinates of current tile
         """
         # BACKGROUND
-        self.draw_background_stuff()
+        self.draw_background()
         # ANIMATIONS
         self.draw_animations(current_tile)
-        self.draw_msg()
+
         # UPDATE
         self.grid.pygame.display.update()

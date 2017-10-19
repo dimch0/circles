@@ -207,6 +207,13 @@ class Grid(object):
         return points
 
 
+    def pos_to_name(self, pos):
+        """ Returns name from pos """
+        for tile_name, tile_pos in self.tile_dict.items():
+            if tile_pos == pos:
+                return tile_name
+
+
     def adj_tiles(self, center):
         """
         :param grid: the center tile
