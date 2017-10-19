@@ -1,6 +1,6 @@
 scenario,room,name,klas,type,color,img,pos,category,has_opts,available,modable,collectible,consumable,uses,speed,range,time_color,lifespan,vspeed,vfreq,layer,effects
 BODY,,,,,,,,,,,,,,,,,,,,,,
-scenario_1,11_11,my_body,body,my_body,gelb05,galab3,11_11,,TRUE,TRUE,,,,,2,1,black,30,,,2,LP_-15
+scenario_1,11_11,my_body,body,my_body,gelb05,galab,11_11,,TRUE,TRUE,,,,,2,1,black,30,,,2,LP_-15
 ,,eat,item,option,,emoji_lips_y,,my_body,,TRUE,TRUE,,,,,,,,,,,
 ,,collect,item,option,,grab,,my_body,,TRUE,TRUE,,,,,,,,,,,
 scenario_1,,suicide,item,option,,suicide,,my_body,,TRUE,,,,,,,,,,,1,
@@ -13,7 +13,7 @@ scenario_1,,option4,body,option,,,,my_body,,TRUE,,,,,,,,,,,,
 ,,,,,,,,,,,,,,,,,,,,,,
 NEON,,,,,,,,,,,,,,,,,,,,,,
 ,11_9,neon1,item,sign,,neon_bar,11_1,,,TRUE,,,,,,,,,,,,
-,11_11,neon2,item,sign,,neon_exit,9_3,,,TRUE,,,,,,,,,,,,
+,11_11,neon2,item,sign,,neon_exit,9_5,,,TRUE,,,,,,,,,,,,
 ,11_11,neon3,item,sign,,neon_fruit,6_6,,,TRUE,,,,,,,,,,,,
 ,11_11,neon4,item,sign,,neon_gym,6_10,,,TRUE,,,,,,,,,,,,
 ,11_9,neon5,item,sign,,neon_hotel,6_16,,,TRUE,,,,,,,,,,,,
@@ -58,14 +58,14 @@ scenario_1,11_9,Enter_10_10,item,door_enter,grey01,neon_hotel,6_16,,,,,,,,,,,,,,
 scenario_1,10_8,Enter_9_7,item,door,grey03,,6_6,,,,,,,,,,,,,,,
 scenario_1,9_7,Enter_9_5,item,door,grey03,,11_1,,,,,,,,,,,,,,,
 scenario_1,9_7,Enter_8_8,item,door,grey03,,6_16,,,,,,,,,,,,,,,
-scenario_1,9_5,Enter_10_4,item,door,grey03,,15_7,,,,,,,,,,,,,,,
-scenario_1,10_4,Enter_10_6,item,door,grey03,,11_19,,,,,,,,,,,,,,,
-scenario_1,10_4,Enter_11_3,item,door,grey03,,15_7,,,,,,,,,,,,,,,
-scenario_1,11_3,Enter_12_4,item,door,grey03,,15_15,,,,,,,,,,,,,,,
-scenario_1,12_4,Enter_12_6,item,door,grey03,,11_19,,,,,,,,,,,,,,,
-scenario_1,12_4,Enter_13_5,item,door,grey03,,15_15,,,,,,,,,,,,,,,
-scenario_1,12_6,Enter_11_5,item,door,grey03,,7_7,,,,,,,,,,,,,,,
-scenario_1,13_5,Enter_13_7,item,door,grey03,,11_19,,,,,,,,,,,,,,,
+scenario_1,9_5,Enter_10_4,item,door,grey03,,16_6,,,,,,,,,,,,,,,
+scenario_1,10_4,Enter_10_6,item,door,grey03,,11_21,,,,,,,,,,,,,,,
+scenario_1,10_4,Enter_11_3,item,door,grey03,,16_6,,,,,,,,,,,,,,,
+scenario_1,11_3,Enter_12_4,item,door,grey03,,16_16,,,,,,,,,,,,,,,
+scenario_1,12_4,Enter_12_6,item,door,grey03,,11_21,,,,,,,,,,,,,,,
+scenario_1,12_4,Enter_13_5,item,door,grey03,,16_16,,,,,,,,,,,,,,,
+scenario_1,12_6,Enter_11_5,item,door,grey03,,6_6,,,,,,,,,,,,,,,
+scenario_1,13_5,Enter_13_7,item,door,grey03,,11_21,,,,,,,,,,,,,,,
 scenario_1,13_7,Enter_12_8,item,door,grey03,,6_16,,,,,,,,,,,,,,,
 scenario_1,13_7,Enter_13_9,item,door,grey03,,11_21,,,,,,,,,,,,,,,
 scenario_1,13_7,Enter_14_8,item,door,grey03,,16_16,,,,,,,,,,,,,,,
@@ -172,46 +172,65 @@ scenario_1,11_7,block_27,item,,grey08,,15_13,,,,,TRUE,TRUE,,,,,,,,,
 scenario_1,11_7,Block_28,item,,grey09,,15_15,,,,,TRUE,TRUE,,,,,,,,,
 ,,,,,,,,,,,,,,,,,,,,,,
 ROOM_11_11 (FOOD),,,,,,,,,,,,,,,,,,,,,,
-scenario_1,11_11,pretzel,item,food,grey04,pretzel,14_6,gelb09,,,,TRUE,TRUE,,,,,,,,,LP_30
-scenario_1,11_11,carrot,item,food,grey04,carrot,13_11,gelb14,,,,TRUE,TRUE,,,,,,,,,LS_15 LP_60
-scenario_1,11_11,corn,item,food,grey04,corn,13_13,gelb15,,,,TRUE,TRUE,,,,,,,,,LS_10 LP_60
-scenario_1,11_11,apple,item,food,grey04,apple,13_15,gelb14,,,,TRUE,TRUE,,,,,,,,,LS_15 LP_60
-scenario_1,11_11,banana,item,food,grey04,banana,13_17,gelb12,,,,TRUE,TRUE,,,,,,,,,LS_15 LP_60
-scenario_1,11_11,chilli,item,food,grey04,chilli,8_10,gelb17,,,,TRUE,TRUE,,,,,,,,,LS_30 LP_45
-scenario_1,11_11,lemon,item,food,grey04,lemon,8_12,gelb10,,,,TRUE,TRUE,,,,,,,,,LS_15 LP_60
-scenario_1,11_11,tomato,item,food,grey04,tomato,8_14,gelb17,,,,TRUE,TRUE,,,,,,,,,LS_15 LP_60
-scenario_1,11_11,icecream,item,food,grey04,icecream,8_16,gelb10,,,,TRUE,TRUE,,,,,,,,,LS_-15 LP_120
-scenario_1,11_11,hotdog,item,food,grey04,hotdog,8_6,gelb10,,,,TRUE,TRUE,,,,,,,,,LS_15 LP_30 SP_3
-scenario_1,11_11,pizza,item,food,grey04,pizza,15_11,gelb12,,,,TRUE,TRUE,,,,,,,,,LS_15 LP_30 SP_3
-scenario_1,11_11,fresh,item,food,grey04,fresh2,9_9,gelb14,,,,TRUE,TRUE,,,,,,,,,LS_15 LP_30 SP_3
-scenario_1,11_11,bread,item,food,grey04,bread,7_11,gelb12,,,,TRUE,TRUE,,,,,,,,,LP_30
-scenario_1,11_11,shrimp,item,food,grey04,shrimp,7_13,gelb10,,,,TRUE,TRUE,,,,,,,,,LP_-180
+scenario_1,11_11,pretzel,item,food,grey04,pretzel,7_7,gelb09,,,,TRUE,TRUE,,,,,,,,,LP_30
+scenario_1,11_11,carrot,item,food,grey04,carrot,7_9,gelb14,,,,TRUE,TRUE,,,,,,,,,LS_15 LP_60
+scenario_1,11_11,corn,item,food,grey04,corn,7_11,gelb15,,,,TRUE,TRUE,,,,,,,,,LS_10 LP_60
+scenario_1,11_11,apple,item,food,grey04,apple,7_13,gelb14,,,,TRUE,TRUE,,,,,,,,,LS_15 LP_60
+scenario_1,11_11,banana,item,food,grey04,banana,7_15,gelb12,,,,TRUE,TRUE,,,,,,,,,LS_15 LP_60
+scenario_1,11_11,chilli,item,food,grey04,chilli,8_6,gelb17,,,,TRUE,TRUE,,,,,,,,,LS_30 LP_45
+scenario_1,11_11,lemon,item,food,grey04,lemon,8_8,gelb10,,,,TRUE,TRUE,,,,,,,,,LS_15 LP_60
+scenario_1,11_11,tomato,item,food,grey04,tomato,8_10,gelb17,,,,TRUE,TRUE,,,,,,,,,LS_15 LP_60
+scenario_1,11_11,icecream,item,food,grey04,icecream,8_12,gelb10,,,,TRUE,TRUE,,,,,,,,,LS_-15 LP_120
+scenario_1,11_11,hotdog,item,food,grey04,hotdog,8_14,gelb10,,,,TRUE,TRUE,,,,,,,,,LS_15 LP_30 SP_3
+scenario_1,11_11,pizza,item,food,grey04,pizza,8_16,gelb12,,,,TRUE,TRUE,,,,,,,,,LS_15 LP_30 SP_3
+scenario_1,11_11,fresh,item,food,grey04,fresh,9_9,gelb14,,,,TRUE,TRUE,,,,,,,,,LS_15 LP_30 SP_3
+scenario_1,11_11,bread,item,food,grey04,bread,9_5,gelb12,,,,TRUE,TRUE,,,,,,,,,LP_30
+scenario_1,11_11,shrimp,item,food,grey04,shrimp,9_7,gelb10,,,,TRUE,TRUE,,,,,,,,,LP_-180
 ,,,,,,,,,,,,,,,,,,,,,,
 "ROOM_10_10 (HOTEL, MUSIC)",,,,,,,,,,,,,,,,,,,,,,
 scenario_1,10_10,music_box,body,vibrator,grey04,radio,11_11,,,,,TRUE,,,,3,,,3,1.5,,LP_3
 scenario_1,10_10,toilette,body,,grey04,toilette,8_8,,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,,,,,,,,,
 ROOM_11_13,,,,,,,,,,,,,,,,,,,,,,
-scenario_1,11_13,barrel,body,,grey04,barrel,11_11,,,,,,TRUE,,,,,,,,,
-scenario_1,11_13,fence,body,,grey04,y_fence,8_8,,,,,,,,,,,,,,,
-scenario_1,11_13,shades,item,,grey04,shades,7_7,,,,,TRUE,,,,,,,,,,
-scenario_1,11_13,gas_col,item,,grey04,gas,7_9,,,,,,,,,,,,,,,
-scenario_1,11_13,pistol,item,,grey04,pistol,7_11,,,,,TRUE,,,,,,,,,,
-scenario_1,11_13,pingpong,item,,grey04,pingpong,7_13,,,,,,TRUE,,,,,,,,,
-scenario_1,11_13,shower,item,,grey04,shower,7_15,,,,,,TRUE,,,,,,,,,
-scenario_1,11_13,pawprint,item,,grey04,pawprint,8_6,,,,,,,,,,,,,,,
-scenario_1,11_13,phone,item,,grey04,phone,8_8,,,,,,,,,,,,,,,
-scenario_1,11_13,key1,item,,grey04,key1,8_10,,,,,TRUE,,,,,,,,,,
-scenario_1,11_13,bus,item,,grey04,bus,8_12,,,,,,,,,,,,,,,
-scenario_1,11_13,car,item,,grey04,car,8_14,,,,,,,,,,,,,,,
-scenario_1,11_13,bike,item,,grey04,bike,8_16,,,,,,,,,,,,,,,
-scenario_1,11_13,lipstick,item,,grey04,lipstick,9_3,,,,,TRUE,TRUE,,,,,,,,,
-scenario_1,11_13,guba4,item,,grey04,shroom1,9_5,,,,,TRUE,TRUE,,,,,,,,,
-scenario_1,11_13,egg,item,,grey04,egg,9_7,,,,,TRUE,TRUE,,,,,,,,,
-scenario_1,11_13,ant1,item,,grey04,ant1,9_9,,,,,,,,,,,,,,,
-scenario_1,11_13,lizzard3,item,,grey04,lizzard3,9_11,,,,,,,,,,,,,,,
-scenario_1,11_13,battery,item,,grey04,battery,9_13,,,,,TRUE,,,,,,,,,,
-scenario_1,11_13,box,item,,grey04,box,9_15,,,,,,TRUE,,,,,,,,,
-scenario_1,11_13,block42,item,,grey04,,9_17,,,,,,,,,,,,,,,
-scenario_1,11_13,block43,item,,grey04,,10_2,,,,,,,,,,,,,,,
-scenario_1,11_13,block44,item,,grey04,,10_4,,,,,,,,,,,,,,,
+scenario_1,11_13,barrel,body,,grey04,barrel,7_7,,,,,,TRUE,,,,,,,,,
+scenario_1,11_13,fence,body,,grey04,y_fence,7_9,,,,,,,,,,,,,,,
+scenario_1,11_13,shades,item,,grey04,shades,7_11,,,,,TRUE,,,,,,,,,,
+scenario_1,11_13,gas_col,item,,grey04,gas,7_13,,,,,,,,,,,,,,,
+scenario_1,11_13,pistol,item,,grey04,pistol,7_15,,,,,TRUE,,,,,,,,,,
+scenario_1,11_13,pingpong,item,,grey04,pingpong,8_6,,,,,,TRUE,,,,,,,,,
+scenario_1,11_13,shower,item,,grey04,shower,8_8,,,,,,TRUE,,,,,,,,,
+scenario_1,11_13,pawprint,item,,grey04,pawprint,8_10,,,,,,,,,,,,,,,
+scenario_1,11_13,phone,item,,grey04,phone,8_12,,,,,,,,,,,,,,,
+scenario_1,11_13,key1,item,,grey04,key1,8_14,,,,,TRUE,,,,,,,,,,
+scenario_1,11_13,bus,item,,grey04,bus,8_16,,,,,,,,,,,,,,,
+scenario_1,11_13,car,item,,grey04,car,9_3,,,,,,,,,,,,,,,
+scenario_1,11_13,bike,item,,grey04,bike,9_5,,,,,,,,,,,,,,,
+scenario_1,11_13,lipstick,item,,grey04,lipstick,9_7,,,,,TRUE,TRUE,,,,,,,,,
+scenario_1,11_13,guba4,item,,grey04,shroom1,9_9,,,,,TRUE,TRUE,,,,,,,,,
+scenario_1,11_13,egg,item,,grey04,egg,9_11,,,,,TRUE,TRUE,,,,,,,,,
+scenario_1,11_13,ant1,item,,grey04,ant1,9_13,,,,,,,,,,,,,,,
+scenario_1,11_13,lizzard3,item,,grey04,lizzard3,9_15,,,,,,,,,,,,,,,
+scenario_1,11_13,battery,item,,grey04,battery,9_17,,,,,TRUE,,,,,,,,,,
+scenario_1,11_13,box,item,,grey04,box,10_2,,,,,,TRUE,,,,,,,,,
+scenario_1,11_13,block42,item,,grey04,cage,10_4,,,,,,,,,,,,,,,
+scenario_1,11_13,kofa1,item,,grey04,kofa1,10_6,,,,,,,,,,,,,,,
+scenario_1,11_13,kofa2,item,,grey04,kofa2,10_8,,,,,,,,,,,,,,,
+scenario_1,11_13,kofa3,item,,grey04,kofa3,10_10,,,,,,,,,,,,,,,
+scenario_1,11_13,bag2,item,,grey04,plastic_bag2,10_12,,,,,,,,,,,,,,,
+scenario_1,11_13,bag3,item,,grey04,car,10_14,,,,,,,,,,,,,,,
+scenario_1,11_13,block45,item,,grey04,,10_16,,,,,,,,,,,,,,,
+scenario_1,11_13,block46,item,,grey04,,10_18,,,,,,,,,,,,,,,
+scenario_1,11_13,block47,item,,grey04,,12_2,,,,,,,,,,,,,,,
+scenario_1,11_13,block48,item,,grey04,,12_4,,,,,,,,,,,,,,,
+,,,,,,,12_6,,,,,,,,,,,,,,,
+,,,,,,,12_8,,,,,,,,,,,,,,,
+,,,,,,,12_10,,,,,,,,,,,,,,,
+,,,,,,,12_12,,,,,,,,,,,,,,,
+,,,,,,,12_14,,,,,,,,,,,,,,,
+,,,,,,,12_16,,,,,,,,,,,,,,,
+,,,,,,,12_18,,,,,,,,,,,,,,,
+,,,,,,,13_3,,,,,,,,,,,,,,,
+,,,,,,,13_5,,,,,,,,,,,,,,,
+,,,,,,,13_7,,,,,,,,,,,,,,,
+,,,,,,,13_9,,,,,,,,,,,,,,,
+,,,,,,,13_11,,,,,,,,,,,,,,,

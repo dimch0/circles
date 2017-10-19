@@ -283,7 +283,6 @@ class GameEffects(object):
 
     def empty_inventory(self, inventory_item):
 
-        print "Hmm", inventory_item.name, inventory_item.uses
         inventory_item.uses -= 1
         if inventory_item.uses < 1:
             if self.grid.mouse_mode:

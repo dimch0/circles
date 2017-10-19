@@ -69,13 +69,11 @@ class GameEvents(GameEffects):
 
             # CHECK FOR DOOR
             doors = {door.pos : door  for door in self.grid.items if "door" in door.type}
-            print doors
-            print my_body.direction
+
             for doorpos, door in doors.items():
                 for adj_idx, adj_to_mybod  in enumerate(self.grid.adj_tiles(my_body.pos)):
 
                     if adj_to_mybod == doorpos:
-                        print True
                         if my_body.direction == adj_idx:
                             self.enter_room(my_body, door)
 

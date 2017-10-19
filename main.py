@@ -10,6 +10,8 @@
 # TODO: Fix movement to occupado / mitosis
 # TODO: Avoid recursive calling of loop
 # TODO: Fix unicode characters
+# TODO: Fix revealed unavailable doors
+# TODO: Fix bounce
 # --------------------------------------------------------------- #
 #                             FEATURES                            #
 # --------------------------------------------------------------- #
