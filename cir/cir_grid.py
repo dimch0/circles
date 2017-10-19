@@ -56,8 +56,7 @@ class Grid(object):
         self.playing_tiles = []
         self.set_playing_tiles()
         self.occupado_tiles = {}
-        self.revealed_radius = [((self.center_tile), self.tile_radius)]
-        self.revealed_tiles = [self.center_tile]
+        self.revealed_tiles = {}
         # -------------------------------------------------- #
         #                        ROOMS                       #
         # -------------------------------------------------- #
@@ -182,6 +181,21 @@ class Grid(object):
 
         return current_tile
 
+    def names_to_pos(self, names):
+        """ Returns a list of pos tuples """
+        points = []
+        for name in names:
+            for tile_name, tile_pos in self.tile_dict.items():
+                if tile_name == name:
+                    points.append(tile_pos)
+        return points
+
+    def pos_to_name(self, pos):
+        """ Returns name from pos """
+        for tile_name, tile_pos in self.tile_dict.items():
+            if tile_pos == pos:
+                return tile_name
+
     def set_playing_tiles(self):
         """ Defining the playing tiles """
         hex_board = [
@@ -197,21 +211,7 @@ class Grid(object):
                 if not tile in self.playing_tiles:
                     self.playing_tiles.append(tile)
 
-    def names_to_pos(self, names):
-        """ Returns a list of pos tuples """
-        points = []
-        for name in names:
-            for tile_name, tile_pos in self.tile_dict.items():
-                if tile_name == name:
-                    points.append(tile_pos)
-        return points
-
-
-    def pos_to_name(self, pos):
-        """ Returns name from pos """
-        for tile_name, tile_pos in self.tile_dict.items():
-            if tile_pos == pos:
-                return tile_name
+        self.playing_tiles.extend(self.names_to_pos(["11_1", "16_6", "16_16", "11_21", "6_16", "6_6"]))
 
 
     def adj_tiles(self, center, empty=False, playing=False):
@@ -232,7 +232,7 @@ class Grid(object):
                ]
         if empty:
             for adj_tile in adj_tiles:
-                if adj_tile in self.revealed_tiles:
+                if adj_tile in self.revealed_tiles.keys():
                     return adj_tile
         elif playing:
             for adj_tile in adj_tiles:
@@ -241,16 +241,6 @@ class Grid(object):
         else:
             return adj_tiles
 
-
-
-    def set_rev_tiles(self):
-        """ Reveal tiles in the revealed areas (radius) """
-        for tile in self.tiles:
-            if tile in self.playing_tiles and tile not in self.revealed_tiles:
-                for rev_rad in self.revealed_radius:
-                    if in_circle(rev_rad[0], rev_rad[1], tile):
-                        self.revealed_tiles.append(tile)
-        return self.revealed_tiles
 
     def clean_placeholders(self, item):
         """ Cleans the placeholders (eg for mitosis) """
@@ -314,7 +304,7 @@ class Grid(object):
         """ Saves the current room to self.rooms """
         self.rooms[self.current_room] = {
             "items": self.items,
-            "revealed_radius": self.revealed_radius
+            "revealed_tiles": self.revealed_tiles
         }
 
     def load_current_room(self):
@@ -322,18 +312,19 @@ class Grid(object):
         or an empty room if the number is not in self.rooms """
         self.msg("INFO - Loading room: {0}".format(self.current_room))
         self.occupado_tiles = {}
+
+        # NEW ROOM
         if not self.current_room in self.rooms.keys():
             self.rooms[self.current_room] = {
             "items"          : [],
-            "revealed_radius": [],
+            "revealed_tiles": {},
             }
+
         self.items = self.rooms[self.current_room]["items"]
         if "ALL" in self.rooms.keys():
             self.items.extend(self.rooms["ALL"]["items"])
         self.items = list(set(self.items))
-        self.revealed_radius = self.rooms[self.current_room]["revealed_radius"]
-        self.revealed_tiles = []
-        self.set_rev_tiles()
+        self.revealed_tiles = self.rooms[self.current_room]["revealed_tiles"]
 
     def change_room(self, room):
         """ Saves the current room and loads a new room """
@@ -341,7 +332,6 @@ class Grid(object):
         self.capture_room()
         self.current_room = str(room)
         self.load_current_room()
-
         self.needs_to_change_room = False
 
     # --------------------------------------------------------------- #
@@ -392,16 +382,12 @@ class Grid(object):
 
     def log_msg(self, msg):
         """ Log a message in a temp log file """
-
-        msg_lines = 6
-
         if not self.messages or (self.messages and not msg == self.messages[-1]):
             self.messages.append(msg)
             # self.messages.insert(0, msg) # append the item at the beginning of the list
 
-        if len(self.messages) > msg_lines:
+        if len(self.messages) > self.max_msg:
             self.messages.pop(0)
-
 
     def msg(self, msg):
         """ Display messages in terminal """

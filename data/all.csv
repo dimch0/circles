@@ -6,6 +6,7 @@ ALL,,signal,body,signal,,,,,,TRUE,,,,,10,1,,,,,3,LP_-15
 ALL,,shit,body,,gelb09,laino2,,,,,,TRUE,TRUE,,,1,black,5,,2,1,LP_-15
 ALL,,observer,body,,grey05,emoji_eye_y,,,,,,,,,2,1,black,60,,2,1,LP_-30
 ,,,,,,,,,,,,,,,,,,,,,,
+ALL,,plug,item,plug,,,,,,,,,,,,,,,,,,
 BAG,,,,,,,,,,,,,,,,,,,,,,
 ALL,ALL,bag,item,inventory,,plastic_bag,17_3,bag,TRUE,TRUE,,,,,,,,,,,1,
 ALL,,inventory_placeholder,item,option,,,,bag,,TRUE,,,,,,,,,,,1,

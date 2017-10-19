@@ -1,9 +1,10 @@
 {
   "CONSTANTS": {
-    "tile_radius": 20,
+    "tile_radius": 30,
     "rows"       : 22,
     "cols"       : 22,
-    "fps"        : 60
+    "fps"        : 60,
+    "max_msg"    : 6
     },
 
   "VISIBILITY": {

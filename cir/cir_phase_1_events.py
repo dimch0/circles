@@ -43,8 +43,6 @@ class GameEvents(GameEffects):
             # GEN VIBE
             my_body.gen_vibe_track(self.grid)
 
-            # DEBUG
-            cir_utils.show_debug_on_space(self.grid, my_body)
         # --------------------------------------------------------------- #
         #                             NUMBERS                             #
         # --------------------------------------------------------------- #
@@ -81,20 +79,18 @@ class GameEvents(GameEffects):
         #                    MOUSE MODE CLICK NO ITEM                     #
         # --------------------------------------------------------------- #
         if not event.button == 3:
-            if mouse_mode in ["EDITOR1"]:
-                if current_tile not in self.grid.occupado_tiles.values() and current_tile in self.grid.revealed_tiles:
+            if current_tile not in self.grid.occupado_tiles.values() and current_tile in self.grid.revealed_tiles.keys():
+                if mouse_mode in ["EDITOR1"]:
                     new_observer = self.produce("observer", current_tile)
                     new_observer.lifespan.restart()
 
-            elif mouse_mode in ["EDITOR2"]:
-                if current_tile not in self.grid.occupado_tiles.values() and current_tile in self.grid.revealed_tiles:
+                elif mouse_mode in ["EDITOR2"]:
                     self.produce("shit", current_tile)
 
-            elif mouse_mode in ["EDITOR3"]:
-                if current_tile not in self.grid.occupado_tiles.values() and current_tile in self.grid.revealed_tiles:
+                elif mouse_mode in ["EDITOR3"]:
                     self.produce("block_of_steel", current_tile)
 
-            elif mouse_mode == "echo":
+            if mouse_mode == "echo":
                 self.echo_mode_click(current_tile, my_body)
 
             elif mouse_mode and any(mouse_mode in inventory_item.name for inventory_item in my_body.inventory.options.values()):
@@ -106,7 +102,9 @@ class GameEvents(GameEffects):
         for CLICKED_ITEM in self.grid.items:
             if CLICKED_ITEM.clickable and CLICKED_ITEM.available and CLICKED_ITEM.type not in ["trigger"]:
                 if current_tile == CLICKED_ITEM.pos:
-                    self.grid.msg("INFO - clicked item: {0}".format(CLICKED_ITEM.name))
+                    self.grid.msg("INFO - clicked item: {0} {1}".format(
+                                                    CLICKED_ITEM.name,
+                                                    CLICKED_ITEM.pos))
 
                     # OPTION CLICKED
                     if CLICKED_ITEM.type == "option":

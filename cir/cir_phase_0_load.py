@@ -25,6 +25,7 @@ class DataLoader(object):
         self.csv_all = None
         self.csv_data = None
         self.data_file = None
+        self.door_slots = self.grid.names_to_pos(["11_1", "16_6", "16_16", "11_21", "6_16", "6_6"])
 
     def set_data_file(self):
         """ Extends the current scenario data file with the all data file """
@@ -73,9 +74,11 @@ class DataLoader(object):
                 if dummy:
                     if hasattr(dummy, attribute):
                         setattr(dummy, attribute, value)
+
                     if attribute == "img":
                         if hasattr(dummy, "default_img"):
                             setattr(dummy, "default_img", value)
+
                     if attribute == "color":
                         if hasattr(dummy, "default_color"):
                             setattr(dummy, "default_color", value)
@@ -191,6 +194,16 @@ class DataLoader(object):
             vibefr.duration = item.vfreq
             item.vfreq = vibefr
 
+
+    def load_item(self, item_name):
+        new_item = None
+        for item, klas in self.load_data(item_name):
+            if item.name == item_name:
+                new_item = item
+                self.set_timers(new_item)
+                break
+        return new_item
+
     def set_door(self, item):
         door = cir_item.Item()
         door.type = item.type
@@ -203,12 +216,10 @@ class DataLoader(object):
         else:
             door.img = item.img
         door.default_img = item.default_img
-        # door.options = item.options
-        # door.default_options = door.default_options
         door.default_color = item.color
         door.radius = item.radius
         door.default_radius = item.radius
-        door.available = False
+        door.available = True
 
         self.set_room(door)
         self.set_timers(door)
@@ -231,24 +242,34 @@ class DataLoader(object):
             self.grid.buttons.append(butt)
 
 
+
     def set_room(self, item):
         if item.room not in [None, ""]:
             if item.room not in self.grid.rooms.keys():
                 self.grid.rooms[item.room] = {
-                    "items"          : [],
-                    "revealed_radius": []}
+                        "items"          : [],
+                        "revealed_tiles" : {}
+                                             }
             self.grid.rooms[item.room]["items"].append(item)
 
+    def set_door_plugs(self):
+        for room, value in self.grid.rooms.items():
+            room_door_pos = []
+            for door_item in value["items"]:
+                if "door" in  door_item.type:
+                    if not door_item.pos in room_door_pos:
+                        room_door_pos.append(door_item.pos)
 
+            plugs_pos = list(set(self.door_slots) - set(room_door_pos))
 
-    def load_item(self, item_name):
-        new_item = None
-        for item, klas in self.load_data(item_name):
-            if item.name == item_name:
-                new_item = item
-                self.set_timers(new_item)
-                break
-        return new_item
+            for plug_pos in plugs_pos:
+                plug = self.load_item("plug")
+                plug.name = plug.name + str(time.time())
+                time.sleep(0.001)
+                plug.color = self.grid.fog_color
+                plug.pos = plug_pos
+                plug.available = True
+                value["items"].append(plug)
 
 
     def load_game(self):
@@ -276,7 +297,6 @@ class DataLoader(object):
                 item.room = "ALL"
             elif "door" in item.type:
                 self.set_door(item)
-                self.grid.playing_tiles.append(item.pos)
             elif item.type == "my_body":
                 my_body = item
                 my_body.gen_birth_track()
@@ -288,21 +308,25 @@ class DataLoader(object):
             self.set_opts(item)
 
 
-        self.grid.load_current_room()
 
         if not my_body in self.grid.items:
             self.grid.items.append(my_body)
 
 
         if self.grid.scenario in ["scenario_1"]:
+
             self.grid.fog_color = self.grid.grey01
             self.grid.room_color = self.grid.grey03
+            self.set_door_plugs()
+
 
         # elif self.grid.scenario in ["scenario_2"]:
         #     self.grid.fog_color = self.grid.pink
         #     self.grid.room_color = self.grid.black
         #     self.grid.game_menu = False
         self.set_buttons()
+        self.grid.load_current_room()
+
 
         my_body.inventory = my_body_inventory
         return my_body

@@ -60,7 +60,7 @@ class GameDrawer(object):
 
     def draw_hover(self, current_tile, item):
         """ Highlights the hovered tile """
-        if current_tile:
+        if current_tile and not item.type in ["plug"]:
             if cir_utils.in_circle(item.pos, self.grid.tile_radius, current_tile):
                 if item.type == "map_tile" and not self.grid.mouse_mode:
                     radius = self.grid.tile_radius - 4
@@ -102,23 +102,6 @@ class GameDrawer(object):
                            item.pos,
                            int(vibe_radius),
                            int(thick))
-
-
-    def draw_revealed_radius(self):
-        """ Drawing the revealed areas (radius) """
-        for revealed in self.grid.revealed_radius:
-            self.grid.pygame.draw.circle(self.grid.game_display,
-                               self.grid.room_color,
-                               revealed[0],
-                               int(revealed[1]),
-                               0)
-            drawn = revealed
-            if drawn:
-                for to_be_drawn in self.grid.revealed_radius:
-                    if drawn[0] == to_be_drawn[0]:
-                        if drawn[1] < to_be_drawn[1]:
-                            if drawn in self.grid.revealed_radius:
-                                self.grid.revealed_radius.remove(drawn)
 
 
     def draw_menu_buttons(self, current_tile):
@@ -256,44 +239,6 @@ class GameDrawer(object):
             self.grid.game_display.blit(text, rect)
 
 
-    def draw_mask(self):
-        """ Draws the mas around the playing board """
-        if self.grid.cols == 22 and self.grid.rows == 22:
-            fat = int((4 * self.grid.tile_radius) + (4.5 * self.grid.cathetus))
-            fat_tri = int(3 * self.grid.tile_radius) - 8
-
-            point_lines = [
-                {   "fat"   : 50,
-                    "points": ["11_1", "16_6", "16_16", "11_21", "6_16", "6_6", "11_1"]},
-                {   "fat"   : fat,
-                    "points": ["19_1", "19_21"]},
-                {   "fat"   : fat,
-                    "points": ["3_1", "3_21"]},
-                {   "fat"   : fat_tri,
-                    "points": ["16_4", "13_1", "13_3"]},
-                {   "fat"   : fat_tri,
-                    "points": ["15_1", "16_2"]},
-                {   "fat"   : fat_tri,
-                    "points": ["13_3", "13_1", "16_4", "15_1"]},
-                {   "fat"   : fat_tri,
-                    "points": ["9_3", "9_1", "6_4", "7_1"]},
-                {   "fat"   : fat_tri,
-                    "points": ["9_19", "9_21", "6_18", "7_21"]},
-                {   "fat"   : fat_tri,
-                    "points": ["13_19", "13_21", "16_18", "15_21"]},
-            ]
-
-            for fig in point_lines:
-                self.grid.pygame.draw.lines(self.grid.game_display,
-                                            self.grid.fog_color,
-                                            False,
-                                            self.grid.names_to_pos(fig["points"]),
-                                            fig["fat"])
-
-            lin1 = [(0, 0), (self.grid.display_width, self.grid.display_height)]
-            self.grid.pygame.draw.rect(self.grid.game_display, self.grid.fog_color, lin1, fat_tri)
-
-
     def draw_mouse_image(self, current_tile):
         """ Draws the Mouse image"""
         if current_tile and self.grid.mouse_img:
@@ -353,17 +298,24 @@ class GameDrawer(object):
     #                                                                 #
     # --------------------------------------------------------------- #
     def draw_background(self):
-        """ Drawing deeper level background stuff """
 
-        # Background
+        # BACKGROUND
         self.grid.game_display.fill(self.grid.fog_color)
 
-        # Revealed radius
-        if self.grid.revealed_radius:
-            self.draw_revealed_radius()
+        # REVEALED
+        for rev_tile, rev_radius in self.grid.revealed_tiles.items():
+            if rev_radius:
+                rradius = rev_radius[0]
+            else:
+                rradius = self.grid.tile_radius
 
-        # Mask
-        self.draw_mask()
+            self.grid.pygame.draw.circle(self.grid.game_display,
+                                         self.grid.room_color,
+                                         rev_tile,
+                                         rradius,
+                                         0)
+            if rev_radius:
+                rev_radius.pop(0)
 
 
     # --------------------------------------------------------------- #

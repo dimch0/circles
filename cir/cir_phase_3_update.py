@@ -4,7 +4,7 @@
 #                                                                                                                     #
 # ------------------------------------------------------------------------------------------------------------------- #
 import random
-from cir_utils import get_mirror_point, intersecting, get_short_name
+from cir_utils import get_mirror_point, intersecting, get_short_name, in_circle
 
 class VarUpdater(object):
 
@@ -32,7 +32,7 @@ class VarUpdater(object):
             if not my_body in self.grid.items:
                 self.grid.items.append(my_body)
             my_body.pos = get_mirror_point(item.pos, self.grid.center_tile)
-            self.grid.revealed_tiles.append(my_body.pos)
+            self.grid.revealed_tiles[my_body.pos] = []
             my_body.gen_birth_track()
             arrival_point = self.grid.adj_tiles(my_body.pos, playing=True)
             my_body.move_track = my_body.move_to_tile(self.grid, arrival_point)
@@ -53,7 +53,8 @@ class VarUpdater(object):
 
             item.available = False
             self.grid.msg("INFO - Destroying: {0}".format(item.name))
-            self.grid.items.remove(item)
+            if item in self.grid.items:
+                self.grid.items.remove(item)
             if item.name in self.grid.occupado_tiles:
                 del self.grid.occupado_tiles[item.name]
             if item.name == "my_body":
@@ -157,11 +158,11 @@ class VarUpdater(object):
                 if item.marked_for_destruction:
                     self.destruction(item)
 
-                # REVEALED / AVAILABLE
-                if item.pos in self.grid.revealed_tiles:
-                    if not item.available and not item in self.grid.overlap:
-                        item.available = True
-                        item.gen_birth_track()
+                # # REVEALED / AVAILABLE
+                # if item.pos in self.grid.revealed_tiles.keys():
+                #     if not item.available and not item in self.grid.overlap:
+                #         item.available = True
+                #         item.gen_birth_track()
 
                 if item.available:
 
@@ -202,14 +203,21 @@ class VarUpdater(object):
 
                         vibe_area = ((item.pos), item.vibe_track[0][0])
 
-                        # REVEAL
-                        if not vibe_area in self.grid.revealed_radius:
-                            self.grid.revealed_radius.append(vibe_area)
-                        self.grid.set_rev_tiles()
+                        # REVEAL TILE
+                        for rtile in self.grid.playing_tiles:
+                            if not rtile in self.grid.revealed_tiles.keys():
+                                if in_circle(item.pos, item.vibe_track[0][0], rtile):
+                                    self.grid.revealed_tiles[rtile] = range(1, self.grid.tile_radius + 1)
 
-                        # CONSUME VIBE
-                        if item.effects:
-                            for hit_item in self.grid.items:
+                        for hit_item in self.grid.items:
+                            # REVEALED / AVAILABLE
+                            if hit_item.pos in self.grid.revealed_tiles.keys():
+                                if not hit_item.available and not hit_item in self.grid.overlap:
+                                    hit_item.available = True
+                                    hit_item.gen_birth_track()
+
+                            # CONSUME VIBE
+                            if item.effects:
                                 if hit_item.available and not get_short_name(hit_item.name) == get_short_name(item.name):
                                     cir1 = (hit_item.pos, hit_item.radius - (hit_item.radius / 2.5))
                                     if intersecting(cir1, vibe_area):

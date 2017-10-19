@@ -145,7 +145,7 @@ class GameEffects(object):
                             map_tile.type = "map_tile"
                             map_tile.img = image
                             map_tile.available = True
-                            self.grid.revealed_tiles.append(pos)
+                            self.grid.revealed_tiles[pos] = []
 
             except Exception as e:
                 self.grid.msg("ERROR - Could not show map: {0}".format(e))
@@ -217,7 +217,8 @@ class GameEffects(object):
             "editor",
             "option",
             "trigger",
-            "placeholder"
+            "placeholder",
+            "plug"
         ]
         if not any(non_terminate in current_tile.type for non_terminate in non_terminates):
             current_tile.destroy(self.grid)
@@ -312,7 +313,7 @@ class GameEffects(object):
                         break
 
         # Drop item on an empty tile
-        elif clicked_tile not in self.grid.occupado_tiles.values() and clicked_tile in self.grid.revealed_tiles:
+        elif clicked_tile not in self.grid.occupado_tiles.values() and clicked_tile in self.grid.revealed_tiles.keys():
             for bag_item in my_body.inventory.options.values():
                 if self.grid.mouse_mode in bag_item.name and bag_item.uses >= 1:
                     item_name = cir_utils.get_short_name(self.grid.mouse_mode)

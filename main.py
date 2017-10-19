@@ -10,13 +10,14 @@
 # TODO: Fix movement to occupado / mitosis
 # TODO: Avoid recursive calling of loop
 # TODO: Fix unicode characters
+# TODO: Fix revealed non-existing doors; playing tiles include door pos and they are revealed regulary
 # --------------------------------------------------------------- #
 #                             FEATURES                            #
 # --------------------------------------------------------------- #
 # TODO: Create save button
 # TODO: Create load button
 # TODO: Create map
-# TODO: Feed with shrimp
+# TODO: Feed with shrimp and other consumables
 # TODO: Display last msg on game over
 # --------------------------------------------------------------- #
 #                             BACKLOG                             #
