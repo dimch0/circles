@@ -214,14 +214,15 @@ class Grid(object):
                 return tile_name
 
 
-    def adj_tiles(self, center):
+    def adj_tiles(self, center, empty=False, playing=False):
         """
         :param grid: the center tile
         :return: a list of 6 adjacent to the center tiles
         """
         self_x = center[0]
         self_y = center[1]
-        return [
+
+        adj_tiles = [
                 (self_x, self_y - 2 * self.tile_radius),
                 (self_x + self.cathetus, self_y - self.tile_radius),
                 (self_x + self.cathetus, self_y + self.tile_radius),
@@ -229,6 +230,18 @@ class Grid(object):
                 (self_x - self.cathetus, self_y + self.tile_radius),
                 (self_x - self.cathetus, self_y - self.tile_radius)
                ]
+        if empty:
+            for adj_tile in adj_tiles:
+                if adj_tile in self.revealed_tiles:
+                    return adj_tile
+        elif playing:
+            for adj_tile in adj_tiles:
+                if adj_tile in self.playing_tiles:
+                    return adj_tile
+        else:
+            return adj_tiles
+
+
 
     def set_rev_tiles(self):
         """ Reveal tiles in the revealed areas (radius) """

@@ -32,7 +32,11 @@ class VarUpdater(object):
             if not my_body in self.grid.items:
                 self.grid.items.append(my_body)
             my_body.pos = get_mirror_point(item.pos, self.grid.center_tile)
+            self.grid.revealed_tiles.append(my_body.pos)
             my_body.gen_birth_track()
+            arrival_point = self.grid.adj_tiles(my_body.pos, playing=True)
+            my_body.move_track = my_body.move_to_tile(self.grid, arrival_point)
+
 
     # --------------------------------------------------------------- #
     #                                                                 #
