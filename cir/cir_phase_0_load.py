@@ -25,7 +25,6 @@ class DataLoader(object):
         self.csv_all = None
         self.csv_data = None
         self.data_file = None
-        self.door_slots = self.grid.names_to_pos(["11_1", "16_6", "16_16", "11_21", "6_16", "6_6"])
 
     def set_data_file(self):
         """ Extends the current scenario data file with the all data file """
@@ -252,26 +251,6 @@ class DataLoader(object):
                                              }
             self.grid.rooms[item.room]["items"].append(item)
 
-    def set_door_plugs(self):
-        for room, value in self.grid.rooms.items():
-            room_door_pos = []
-            for door_item in value["items"]:
-                if "door" in  door_item.type:
-                    if not door_item.pos in room_door_pos:
-                        room_door_pos.append(door_item.pos)
-
-            plugs_pos = list(set(self.door_slots) - set(room_door_pos))
-
-            for plug_pos in plugs_pos:
-                plug = self.load_item("plug")
-                plug.name = plug.name + str(time.time())
-                time.sleep(0.001)
-                plug.color = self.grid.fog_color
-                plug.pos = plug_pos
-                plug.available = True
-                value["items"].append(plug)
-
-
     def load_game(self):
         """
         Main loading execution of all items, cosmetics and preconditions
@@ -317,7 +296,6 @@ class DataLoader(object):
 
             self.grid.fog_color = self.grid.grey01
             self.grid.room_color = self.grid.grey03
-            self.set_door_plugs()
 
 
         # elif self.grid.scenario in ["scenario_2"]:

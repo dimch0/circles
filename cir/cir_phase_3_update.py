@@ -34,8 +34,6 @@ class VarUpdater(object):
             my_body.pos = get_mirror_point(item.pos, self.grid.center_tile)
             self.grid.revealed_tiles[my_body.pos] = []
             my_body.gen_birth_track()
-            arrival_point = self.grid.adj_tiles(my_body.pos, playing=True)
-            my_body.move_track = my_body.move_to_tile(self.grid, arrival_point)
 
 
     # --------------------------------------------------------------- #
@@ -135,8 +133,12 @@ class VarUpdater(object):
         """
 
         if not self.grid.game_menu:
+
+
             # ITEMS
             for item in self.grid.items:
+
+
 
                 # OCCUPADO
                 # self.update_occupado(item)
@@ -158,11 +160,12 @@ class VarUpdater(object):
                 if item.marked_for_destruction:
                     self.destruction(item)
 
-                # # REVEALED / AVAILABLE
-                # if item.pos in self.grid.revealed_tiles.keys():
-                #     if not item.available and not item in self.grid.overlap:
-                #         item.available = True
-                #         item.gen_birth_track()
+                # REVEAL DOORS
+                if "door" in item.type:
+                    for adj_to_door in self.grid.adj_tiles(item.pos):
+                        if adj_to_door in self.grid.revealed_tiles.keys():
+                            if not item.available:
+                                item.available = True
 
                 if item.available:
 
@@ -235,6 +238,14 @@ class VarUpdater(object):
 
                     # CLEAN PLACEHOLDERS
                     self.grid.clean_placeholders(item)
+
+            # for
+
+            # FORCE BODY MOVE
+            if my_body.pos in self.grid.door_slots:
+                arrival_point = self.grid.adj_tiles(my_body.pos, playing=True)
+                my_body.move_track = my_body.move_to_tile(self.grid, arrival_point)
+                my_body.direction = None
 
         self.grid.sort_items_by_layer()
 

@@ -190,7 +190,7 @@ class GameEffects(object):
                 my_body.close_menu(self.grid)
             self.grid.needs_to_change_room = True
         else:
-            self.grid.msg("SCREEN - door is far")
+            self.grid.msg("SCREEN - {0} is far".format(item.type))
             item.in_menu = False
 
     # --------------------------------------------------------------- #
@@ -217,8 +217,7 @@ class GameEffects(object):
             "editor",
             "option",
             "trigger",
-            "placeholder",
-            "plug"
+            "placeholder"
         ]
         if not any(non_terminate in current_tile.type for non_terminate in non_terminates):
             current_tile.destroy(self.grid)

@@ -10,7 +10,6 @@
 # TODO: Fix movement to occupado / mitosis
 # TODO: Avoid recursive calling of loop
 # TODO: Fix unicode characters
-# TODO: Fix revealed non-existing doors; playing tiles include door pos and they are revealed regulary
 # --------------------------------------------------------------- #
 #                             FEATURES                            #
 # --------------------------------------------------------------- #

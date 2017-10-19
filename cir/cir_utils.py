@@ -117,7 +117,7 @@ def show_debug_on_click(grid, current_circle, my_body):
         grid.msg("DEBUG - mouse mode  : {0}".format( grid.mouse_mode ))
         grid.msg("DEBUG - menu        : {0}".format( my_body.in_menu ))
         grid.msg("DEBUG - grid items  : {0}".format( len(grid.items) ))
-        grid.msg("DEBUG - grid items  : {0}".format( [(item.name, item.pos) for item in grid.items] ))
+        grid.msg("DEBUG - grid items  : {0}".format( [(item.name, item.pos) for item in grid.items if not "EDITOR" in item.name] ))
         grid.msg("DEBUG - occupado    : {0}".format( [(occ, occpos, grid.pos_to_name(occpos)) for occ, occpos in grid.occupado_tiles.items()] ))
         grid.msg("DEBUG - occupado    : {0}".format( len(grid.occupado_tiles) ))
         grid.msg("DEBUG - overlap     : {0}".format( [(item.name, item.pos) for item in grid.overlap] ))
@@ -128,6 +128,7 @@ def show_debug_on_click(grid, current_circle, my_body):
         grid.msg("DEBUG - prev room   : {0}".format( grid.previous_room ))
         grid.msg("DEBUG - revealed    : {0}".format( grid.revealed_tiles ))
         grid.msg("DEBUG - revealed    : {0}".format( len(grid.revealed_tiles.keys() ) ))
+        grid.msg("DEBUG - available   : {0}".format( [(item.name, item.pos) for item in grid.items if not "EDITOR" in item.name and item.available] ))
 
 def get_short_name(name_with_timestamp):
     """ Removes the timestamp from a name """

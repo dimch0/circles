@@ -60,10 +60,24 @@ class GameEvents(GameEffects):
             self.grid.msg("INFO - Key 3 pressed")
             self.grid.change_room("11_7")
         # --------------------------------------------------------------- #
-        #                             OTHER                               #
+        #                            QWEADS                               #
         # --------------------------------------------------------------- #
         elif not my_body.in_menu:
+
+            # GEN DIRECTION
             my_body.gen_direction(self.grid.pygame, self.grid, event)
+
+            # CHECK FOR DOOR
+            doors = {door.pos : door  for door in self.grid.items if "door" in door.type}
+            print doors
+            print my_body.direction
+            for doorpos, door in doors.items():
+                for adj_idx, adj_to_mybod  in enumerate(self.grid.adj_tiles(my_body.pos)):
+
+                    if adj_to_mybod == doorpos:
+                        print True
+                        if my_body.direction == adj_idx:
+                            self.enter_room(my_body, door)
 
 
     # --------------------------------------------------------------- #

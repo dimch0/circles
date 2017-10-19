@@ -57,6 +57,7 @@ class Grid(object):
         self.set_playing_tiles()
         self.occupado_tiles = {}
         self.revealed_tiles = {}
+        self.door_slots = self.names_to_pos(["11_1", "16_6", "16_16", "11_21", "6_16", "6_6"])
         # -------------------------------------------------- #
         #                        ROOMS                       #
         # -------------------------------------------------- #
@@ -211,7 +212,6 @@ class Grid(object):
                 if not tile in self.playing_tiles:
                     self.playing_tiles.append(tile)
 
-        self.playing_tiles.extend(self.names_to_pos(["11_1", "16_6", "16_16", "11_21", "6_16", "6_6"]))
 
 
     def adj_tiles(self, center, empty=False, playing=False):
