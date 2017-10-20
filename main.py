@@ -9,25 +9,25 @@
 # --------------------------------------------------------------- #
 # TODO: Fix movement to occupado / mitosis
 # TODO: Avoid recursive calling of loop
-# TODO: Fix unicode characters
 # --------------------------------------------------------------- #
-#                             FEATURES                            #
+#                             GENERAL                             #
 # --------------------------------------------------------------- #
-# TODO: Create map
+# TODO: Display last msg on game over
+# TODO: Scenario settings
+# TODO: Create spirit mode NEW SCENARIO
+# TODO: Log statistics during a lifespan, calculate karma
 # TODO: Create save button
 # TODO: Create load button
+# TODO: Create installation .exe file
+# --------------------------------------------------------------- #
+#                             URBAN                               #
+# --------------------------------------------------------------- #
+# TODO: Create map
 # TODO: Feed with shrimp and other consumables
-# TODO: Display last msg on game over
-# --------------------------------------------------------------- #
-#                             BACKLOG                             #
-# --------------------------------------------------------------- #
 # TODO: Create trade mode
 # TODO: Create craft mode
 # TODO: Create item generation / kofa / kenef
 # TODO: Create inside body view room 400
-# TODO: Create spirit mode NEW SCENARIO
-# TODO: Log statistics during a lifespan, calculate karma
-# TODO: Create installation .exe file
 # --------------------------------------------------------------- #
 #                             COSMETICS                           #
 # --------------------------------------------------------------- #
@@ -43,17 +43,7 @@ from cir.cir_phase_0_load import DataLoader
 pygame.init()
 
 
-# unistr = u"♛   ↑"
-# pygame.font.init()
-# srf = pygame.display.set_mode((500,500))
-# f = pygame.font.Font("/home/dimcho/PycharmProjects/dzhrt/CIR/cosmetics/fonts/HelveticaNeueMed.ttf",64)
-# srf.blit(f.render(unistr,True,(255,0,0)),(0,0))
-# pygame.display.flip()
-# from time import sleep
-# sleep(3)
-
-
-def game_loop(game_over, scenario="scenario_1"):
+def game_loop(game_over, scenario="scenario_01"):
     # --------------------------------------------------------------- #
     #                        PHASE 0: LOADING                         #
     # --------------------------------------------------------------- #

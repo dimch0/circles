@@ -61,7 +61,7 @@ class Editor(object):
                 my_body.lifespan.restart()
 
         elif clicked_item.name == "EDITOR17":
-            self.grid.scenario = 'scenario_2'
+            self.grid.scenario = 'scenario_02'
             self.grid.game_over = True
 
         # HOT-DOG

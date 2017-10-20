@@ -292,11 +292,12 @@ class DataLoader(object):
             self.grid.items.append(my_body)
 
 
-        if self.grid.scenario in ["scenario_1"]:
-
+        if self.grid.scenario in ["scenario_01"]:
             self.grid.fog_color = self.grid.grey01
             self.grid.room_color = self.grid.grey03
 
+        self.grid.fog_color = self.grid.grey01
+        self.grid.room_color = self.grid.grey03
 
         # elif self.grid.scenario in ["scenario_2"]:
         #     self.grid.fog_color = self.grid.pink

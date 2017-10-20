@@ -24,12 +24,12 @@ class Grid(object):
         #                      SETTINGS                      #
         # -------------------------------------------------- #
         self.pygame = pygame
+        self.scenario = scenario
         self.cathetus = 0
         self.display_width = 0
         self.display_height = 0
         self.game_display = None
         self.set_config()
-        self.scenario = scenario
         self.set_data_file()
         self.game_menu = True
         self.game_over = False
@@ -99,8 +99,13 @@ class Grid(object):
             with open(CONFIG_JSON_FILE) as jsonfile:
                 conf = json.load(jsonfile)
             for section in conf.keys():
-                for status, value in conf[section].items():
-                    setattr(self, status, value)
+                for metric, value in conf[section].items():
+                    if 'scenario' in metric:
+                        if self.scenario == metric:
+                            for grid_metric, grid_val in value.items():
+                                setattr(self, grid_metric, grid_val)
+                    else:
+                        setattr(self, metric, value)
         except Exception as e:
             self.msg("ERROR - Could not set config: {0}".format(e))
 
