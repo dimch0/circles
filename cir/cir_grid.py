@@ -49,6 +49,7 @@ class Grid(object):
         # -------------------------------------------------- #
         #                        TILES                       #
         # -------------------------------------------------- #
+        # TODO: Remove tile_dict and change tiles to a dict
         self.tiles = []
         self.tile_dict = {}
         self.set_display()
@@ -101,7 +102,6 @@ class Grid(object):
                     if 'scenario' in metric:
                         if self.scenario == metric:
                             for grid_metric, grid_val in value.items():
-                                print grid_metric, grid_val
                                 setattr(self, grid_metric, grid_val)
                     else:
                         setattr(self, metric, value)
@@ -126,7 +126,7 @@ class Grid(object):
 
         if hasattr(self, self.scenario):
             scenario_data_file = getattr(self, self.scenario)
-            new_data_file = './tmp/data_file.csv'
+            new_data_file = os.path.join(self.tmp_dir, "data_file.csv")
             if os.path.exists(new_data_file):
                 os.remove(new_data_file)
             shutil.copy(scenario_data_file, new_data_file)

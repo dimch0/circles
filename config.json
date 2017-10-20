@@ -36,7 +36,7 @@
     "img_dir"  : "./cosmetics/img/",
     "sound_dir": "./cosmetics/sound/",
     "font_file": "./cosmetics/fonts/HelveticaNeueMed.ttf",
-    "tmp_dir"  : "./tmp/",
+    "tmp_dir"  : "./data/tmp",
     "log_file" : "./tmp/log_file.txt"
   }
 }
