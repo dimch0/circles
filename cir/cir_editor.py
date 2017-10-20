@@ -35,19 +35,23 @@ class Editor(object):
         elif clicked_item.name == "EDITOR8":
             my_body.range += 0.5
 
+        # PIZZA
         if clicked_item.name == "EDITOR11":
             if my_body.lifespan:
-                my_body.lifespan.update(10)
+                my_body.lifespan.update(30)
 
+        # CIGARETTE
         elif clicked_item.name == "EDITOR12":
             if my_body.lifespan:
                 my_body.lifespan.update(-10)
 
+        # APE
         elif clicked_item.name == "EDITOR13":
             my_body.img = self.grid.images.ape
             my_body.default_img = self.grid.images.ape
             my_body.speed = 10
 
+        # SPRITZ
         elif clicked_item.name == "EDITOR14":
             my_body.lifespan = None
             # my_body.lifespan.update(200)
@@ -55,11 +59,13 @@ class Editor(object):
         elif clicked_item.name == "EDITOR15" and not self.grid.current_room == "999":
             self.grid.event_effects.satellite()
 
+        # PILL
         elif clicked_item.name == "EDITOR16":
             if my_body.lifespan:
                 my_body.lifespan.duration = 60
                 my_body.lifespan.restart()
 
+        # SHROOM
         elif clicked_item.name == "EDITOR17":
             self.grid.scenario = 'scenario_02'
             self.grid.game_over = True
