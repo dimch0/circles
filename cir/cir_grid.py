@@ -29,6 +29,8 @@ class Grid(object):
         self.display_width = 0
         self.display_height = 0
         self.game_display = None
+        self.fog_color = None
+        self.room_color = None
         self.set_config()
         self.set_data_file()
         self.game_menu = True
@@ -78,11 +80,7 @@ class Grid(object):
         self.mouse_mode = None
         self.mouse_img = None
         self.mode_img = None
-        # -------------------------------------------------- #
-        #                        THEME                       #
-        # -------------------------------------------------- #
-        self.fog_color = None
-        self.room_color = None
+
 
     # --------------------------------------------------------------- #
     #                            SETTINGS                             #
@@ -103,6 +101,7 @@ class Grid(object):
                     if 'scenario' in metric:
                         if self.scenario == metric:
                             for grid_metric, grid_val in value.items():
+                                print grid_metric, grid_val
                                 setattr(self, grid_metric, grid_val)
                     else:
                         setattr(self, metric, value)

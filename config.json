@@ -1,5 +1,5 @@
 {
-  "GRID": {
+  "SCENARIOS": {
     "scenario_01": {
           "tile_radius": 8,
           "rows"       : 22,
@@ -10,7 +10,9 @@
     "scenario_02": {
           "tile_radius": 22,
           "rows"       : 22,
-          "cols"       : 22
+          "cols"       : 22,
+          "fog_color"  : "red01",
+          "room_color" : "red03"
     }
 
     },

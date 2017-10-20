@@ -287,25 +287,12 @@ class DataLoader(object):
             self.set_opts(item)
 
 
-
         if not my_body in self.grid.items:
             self.grid.items.append(my_body)
-
-
-        if self.grid.scenario in ["scenario_01"]:
-            self.grid.fog_color = self.grid.grey01
-            self.grid.room_color = self.grid.grey03
-
-        self.grid.fog_color = self.grid.grey01
-        self.grid.room_color = self.grid.grey03
-
-        # elif self.grid.scenario in ["scenario_2"]:
-        #     self.grid.fog_color = self.grid.pink
-        #     self.grid.room_color = self.grid.black
-        #     self.grid.game_menu = False
+        self.grid.fog_color = getattr(self.grid, self.grid.fog_color)
+        self.grid.room_color = getattr(self.grid, self.grid.room_color)
         self.set_buttons()
         self.grid.load_current_room()
-
 
         my_body.inventory = my_body_inventory
         return my_body
