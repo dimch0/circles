@@ -10,14 +10,12 @@
 # TODO: Fix movement to occupado / mitosis
 # TODO: Avoid recursive calling of loop
 # TODO: Fix unicode characters
-# TODO: Fix revealed unavailable doors
-# TODO: Fix bounce
 # --------------------------------------------------------------- #
 #                             FEATURES                            #
 # --------------------------------------------------------------- #
+# TODO: Create map
 # TODO: Create save button
 # TODO: Create load button
-# TODO: Create map
 # TODO: Feed with shrimp and other consumables
 # TODO: Display last msg on game over
 # --------------------------------------------------------------- #
@@ -25,7 +23,7 @@
 # --------------------------------------------------------------- #
 # TODO: Create trade mode
 # TODO: Create craft mode
-# TODO: Create item generation
+# TODO: Create item generation / kofa / kenef
 # TODO: Create inside body view room 400
 # TODO: Create spirit mode NEW SCENARIO
 # TODO: Log statistics during a lifespan, calculate karma

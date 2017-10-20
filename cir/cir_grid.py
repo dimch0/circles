@@ -256,7 +256,8 @@ class Grid(object):
     def set_occupado(self):
         for item in self.items:
             if not item.type in ["signal", "trigger", "option"]:
-                for tile in self.playing_tiles:
+                tiles_to_check = set(self.playing_tiles + self.door_slots)
+                for tile in tiles_to_check:
                     circle_1 = (tile, self.tile_radius)
                     circle_2 = (item.pos, self.tile_radius)
                     if intersecting(circle_1, circle_2):

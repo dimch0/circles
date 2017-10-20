@@ -160,13 +160,6 @@ class VarUpdater(object):
                 if item.marked_for_destruction:
                     self.destruction(item)
 
-                # REVEAL DOORS
-                if "door" in item.type:
-                    for adj_to_door in self.grid.adj_tiles(item.pos):
-                        if adj_to_door in self.grid.revealed_tiles.keys():
-                            if not item.available:
-                                item.available = True
-
                 if item.available:
 
                     # TIMERS
@@ -211,6 +204,12 @@ class VarUpdater(object):
                             if not rtile in self.grid.revealed_tiles.keys():
                                 if in_circle(item.pos, item.vibe_track[0][0], rtile):
                                     self.grid.revealed_tiles[rtile] = range(1, self.grid.tile_radius + 1)
+                                    # REVEAL ADJ DOORS
+                                    for adj_rtile in self.grid.adj_tiles(rtile):
+                                        for ditem in self.grid.items:
+                                            if "door" in ditem.type and ditem.pos == adj_rtile:
+                                                if not ditem.available:
+                                                    ditem.available = True
 
                         for hit_item in self.grid.items:
                             # REVEALED / AVAILABLE
