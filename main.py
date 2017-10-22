@@ -43,7 +43,7 @@ from cir.cir_phase_0_load import DataLoader
 pygame.init()
 
 
-def game_loop(game_over, scenario="scenario_01"):
+def game_loop(game_over, scenario="scenario_01", msg=[]):
     # --------------------------------------------------------------- #
     #                        PHASE 0: LOADING                         #
     # --------------------------------------------------------------- #
@@ -53,14 +53,14 @@ def game_loop(game_over, scenario="scenario_01"):
 
     if game_over:
         grid.rename_button("play", "replay")
+        grid.messages = [msg[-1]]
+    else:
+        grid.messages = ["SCREEN - game started"]
 
-    # TESTING
 
     # --------------------------------------------------------------- #
     #                            GAME LOOP                            #
     # --------------------------------------------------------------- #
-    grid.msg("SCREEN - game started")
-
     while not grid.game_over:
 
         CURRENT_TILE = grid.mouse_in_tile(pygame.mouse.get_pos())
@@ -91,7 +91,7 @@ def game_loop(game_over, scenario="scenario_01"):
 
     # GAME OVER
     if grid.game_over:
-        game_loop(grid.game_over, grid.scenario)
+        game_loop(grid.game_over, grid.scenario, grid.messages)
 
     # GAME EXIT
     grid.game_exit()

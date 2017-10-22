@@ -109,7 +109,7 @@ class GameDrawer(object):
 
         # Background
         self.grid.game_display.fill(self.grid.fog_color)
-        # self.draw_msg()
+        self.draw_msg()
 
         # Buttons
         for button in self.grid.buttons:
