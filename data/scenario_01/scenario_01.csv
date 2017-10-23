@@ -5,7 +5,7 @@ scenario_01,11_11,my_body,body,my_body,gelb05,galab,11_11,,TRUE,TRUE,,,,,2,1,bla
 ,,collect,item,option,,grab,,my_body,,TRUE,TRUE,,,,,,,,,,,
 scenario_01,,suicide,item,option,,suicide,,my_body,,TRUE,,,,,,,,,,,1,
 scenario_01,,echo,item,option,,bow,,my_body,,TRUE,TRUE,,,,,,,,,,1,
-scenario_01,12_12,lover,body,body,red03,bqlgalab,13_9,,,,,,,,1,1,,,,,,
+scenario_01,12_12,lover,body,body,red03,bqlgalab,13_9,,,TRUE,,,,,1,1,,,,,,
 scenario_01,,option,body,option,,,,my_body,,TRUE,,,,,,,,,,,,
 scenario_01,,option2,body,option,,,,my_body,,TRUE,,,,,,,,,,,,
 scenario_01,,option3,body,option,,,,my_body,,TRUE,,,,,,,,,,,,

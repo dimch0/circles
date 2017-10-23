@@ -15,12 +15,12 @@ class Item(object):
         self.name = None
         self.type = None
         self.category = None
-        self.pos = ()
         self.color = None
-        self.default_color = self.color
         self.img = None
-        self.default_img = self.img
         self.radius = None
+        self.pos = ()
+        self.default_color = self.color
+        self.default_img = self.img
         self.default_radius = self.radius
         self._rect = []
         self.border = 0

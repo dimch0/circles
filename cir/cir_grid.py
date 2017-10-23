@@ -205,6 +205,10 @@ class Grid(object):
 
     def set_playing_tiles(self):
         """ Defining the playing tiles """
+
+        # hex_board = self.names_to_pos(self.hex_board)
+        # self.playing_tiles.extend(hex_board)
+
         hex_board = [
             (self.center_tile[0], self.center_tile[1] - (9 * self.tile_radius)),
             (self.center_tile[0] + (5 * self.cathetus), self.center_tile[1] - (4 * self.tile_radius)),
@@ -213,6 +217,8 @@ class Grid(object):
             (self.center_tile[0] - (4 * self.cathetus) - 1, self.center_tile[1] + (4 * self.tile_radius)),
             (self.center_tile[0] - (4 * self.cathetus) - 1, self.center_tile[1] - (4 * self.tile_radius))
         ]
+
+
         for tile in self.tiles:
             if inside_polygon(hex_board, tile):
                 if not tile in self.playing_tiles:
@@ -269,52 +275,50 @@ class Grid(object):
                     if intersecting(circle_1, circle_2):
                         self.occupado_tiles[item.name] = tile
 
-    def get_map_dot(self, pos, room_pos):
-        dot_pos = None
+    def get_map_dot(self, pos, room_pos, dot_col, dot_rad):
+        """
+        Gen map dot pos and return a dict
+        :param pos:
+        :param room_pos:
+        :return: dict:
+        'dot_pos' : {'pos': dot_pos,
+                     'color': dot_col,
+                     'radius': dot_rad}
+        """
+        result = {}
+        map_scale = 10
+
         dix = (self.center_tile[0] - pos[0]) / 10
         diy = (self.center_tile[1] - pos[1]) / 10
         dot_pos = (room_pos[0] - dix, room_pos[1] - diy)
-        return dot_pos
+
+        result[dot_pos] = {'pos': dot_pos,
+                           'color': dot_col,
+                           'radius': dot_rad / map_scale}
+        return result
 
 
     def gen_map_dots(self):
-        # GEN MAP DOTS
         map_dots = {}
+
         for room_name, room  in self.rooms.items():
             if room_name not in ['999', 'ALL']:
 
                 room_pos = self.names_to_pos([room_name])[0]
 
                 for tile in room['revealed_tiles']:
-                    dot_pos = self.get_map_dot(tile, room_pos)
-                    map_dots[dot_pos] = {'pos'   : dot_pos,
-                                         'color' : self.room_color,
-                                         'radius': self.tile_radius / 10}
+                    map_dots.update(self.get_map_dot(tile, room_pos, self.room_color, self.tile_radius))
 
                 for item in room['items']:
+                    if item.color and item.available:
+                        if item.type not in ['editor', 'my_body']:
+                            map_dots.update(self.get_map_dot(item.pos, room_pos, item.color, item.radius))
 
+                        elif item.type in ['my_body'] and room_name == self.previous_room:
+                            map_dots.update(self.get_map_dot(item.pos, room_pos, item.color, item.radius))
 
-                    if item.color and not item.type in ['editor', 'my_body'] and item.available:
-                        dot_pos = self.get_map_dot(item.pos, room_pos)
-                        map_dots[dot_pos] = {'pos': dot_pos,
-                                             'color': item.color,
-                                             'radius': item.radius / 10}
-
-                    elif item.color and item.type in ['my_body'] and item.available:
-                        if room_name == self.previous_room:
-                            dot_pos = self.get_map_dot(item.pos, room_pos)
-                            map_dots[dot_pos] = {'pos': dot_pos,
-                                                 'color': item.color,
-                                                 'radius': item.radius / 10}
-                    if item.type in ['door_enter'] and item.available:
-                        print item.name
-                        print item.color
-                        print item.available
-
-                        dot_pos = self.get_map_dot(item.pos, room_pos)
-                        map_dots[dot_pos] = {'pos': dot_pos,
-                                             'color': self.red01,
-                                             'radius': item.radius / 10}
+                        if item.type in ['door_enter']:
+                            map_dots.update(self.get_map_dot(item.pos, room_pos, self.red01, item.radius))
 
         self.map_dots = map_dots
 

@@ -48,8 +48,6 @@ def inside_polygon(poly, point):
     """
     Return True if a coordinate (x, y) is inside a polygon defined by
     a list of verticies [(x1, y1), (x2, x2), ... , (xN, yN)].
-
-    Reference: http://www.ariel.com.au/a/python-point-int-poly.html
     """
     x = point[0]
     y = point[1]
@@ -129,7 +127,8 @@ def show_debug_on_click(grid, current_circle, my_body):
         grid.msg("DEBUG - revealed    : {0}".format( grid.revealed_tiles ))
         grid.msg("DEBUG - revealed    : {0}".format( len(grid.revealed_tiles.keys() ) ))
         grid.msg("DEBUG - available   : {0}".format( [(item.name, item.pos) for item in grid.items if not "EDITOR" in item.name and item.available] ))
-        grid.msg("DEBUG - game menu    : {0}".format( grid.game_menu ))
+        grid.msg("DEBUG - game menu   : {0}".format( grid.game_menu ))
+        grid.msg("DEBUG - my body     : {0} {1} {2}".format( my_body in grid.items, my_body.available, my_body.color ))
 
 def get_short_name(name_with_timestamp):
     """ Removes the timestamp from a name """

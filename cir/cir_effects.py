@@ -114,13 +114,12 @@ class GameEffects(object):
     #                                                                 #
     # --------------------------------------------------------------- #
     def show_map(self, my_body):
-        """ Shows the map room """
+        """ Shows the map room 999 """
 
         if not self.grid.current_room == "999":
             self.grid.previous_room = self.grid.current_room
-            self.grid.gen_map_dots()
             self.grid.change_room("999")
-
+            self.grid.gen_map_dots()
             self.grid.draw_map = True
         else:
             self.grid.change_room(self.grid.previous_room)
@@ -163,7 +162,7 @@ class GameEffects(object):
                 my_body.close_menu(self.grid)
             self.grid.needs_to_change_room = True
         else:
-            self.grid.msg("SCREEN - {0} is far".format(item.type))
+            self.grid.msg("SCREEN - no enter".format(item.type))
             item.in_menu = False
 
     # --------------------------------------------------------------- #
@@ -269,32 +268,6 @@ class GameEffects(object):
             inventory_item.uses = 0
             inventory_item.lifespan = None
 
-    def drop(self, clicked_tile, my_body):
-        """
-        Drops item
-        """
-
-        # Drop item from inventory to body and consume
-        if clicked_tile == my_body.pos and not my_body.effect_track:
-            for bag_item in my_body.inventory.options.values():
-                if self.grid.mouse_mode in bag_item.name and bag_item.uses >= 1:
-                    if bag_item.consumable:
-                        self.consume(my_body, bag_item)
-                        self.empty_inventory(bag_item)
-                        break
-
-        # Drop item on an empty tile
-        elif clicked_tile not in self.grid.occupado_tiles.values() and clicked_tile in self.grid.revealed_tiles.keys():
-            for bag_item in my_body.inventory.options.values():
-                if self.grid.mouse_mode in bag_item.name and bag_item.uses >= 1:
-                    item_name = cir_utils.get_short_name(self.grid.mouse_mode)
-                    dropped_item = self.produce(item_name, clicked_tile)
-                    if hasattr(bag_item, "lifespan"):
-                        dropped_item.lifespan = bag_item.lifespan
-                    self.empty_inventory(bag_item)
-                    break
-        else:
-            self.grid.msg("SCREEN - No place here")
 
 
     # --------------------------------------------------------------- #
@@ -309,6 +282,7 @@ class GameEffects(object):
         :param consumable: item obj, that has consumable effects or the effects as a string
         """
 
+        consumed = False
         effects = None
         protected_types = ['trigger']
 
@@ -319,8 +293,6 @@ class GameEffects(object):
 
         if effects:
             try:
-                if consumator.type == "my_body":
-                    self.grid.msg("SCREEN - you eat {0}".format(cir_utils.get_short_name(consumable.name)))
 
                 for effect in effects:
                     effect = effect.split("_")
@@ -345,13 +317,55 @@ class GameEffects(object):
                             attr_str = 'speed'
 
                     if attr_str:
+                        consumed = True
                         if consumable.color:
                             consumator.gen_effect_track(consumable.color)
                         else:
                             consumator.gen_effect_track(self.grid.white)
 
-                    if consumator.type == "my_body":
-                        self.grid.msg("SCREEN - {0} {1}".format(modifier_str, attr_str))
+                        if consumator.type == "my_body":
+                            self.grid.msg("SCREEN - you eat {0}".format(cir_utils.get_short_name(consumable.name)))
+                            self.grid.msg("SCREEN - {0} {1}".format(modifier_str, attr_str))
 
             except Exception as e:
                 self.grid.msg("ERROR - invalid effects '{0}' \n {1}".format(effects, e))
+
+        return consumed
+
+    def drop(self, clicked, my_body, item=None):
+        """
+        Drops item
+        """
+        # Drop item on an empty tile
+        if isinstance(clicked, tuple):
+            if clicked not in self.grid.occupado_tiles.values() and clicked in self.grid.revealed_tiles.keys():
+                if clicked in self.grid.adj_tiles(my_body.pos):
+                    for bag_item in my_body.inventory.options.values():
+                        if self.grid.mouse_mode in bag_item.name and bag_item.uses >= 1:
+                            item_name = cir_utils.get_short_name(self.grid.mouse_mode)
+                            dropped_item = self.produce(item_name, clicked)
+                            if hasattr(bag_item, "lifespan"):
+                                dropped_item.lifespan = bag_item.lifespan
+                            self.empty_inventory(bag_item)
+                            break
+                else:
+                    self.grid.msg("SCREEN - no reach")
+            else:
+                self.grid.msg("SCREEN - no place here")
+
+        # Drop item from inventory to body and consume
+        else:
+            if clicked and not clicked.effect_track:
+                if clicked.pos in self.grid.adj_tiles(my_body.pos) or clicked.type == "my_body":
+                    for bag_item in my_body.inventory.options.values():
+                        if self.grid.mouse_mode in bag_item.name and bag_item.uses >= 1:
+                            if bag_item.consumable and not clicked in my_body.inventory.options.values():
+                                if self.consume(clicked, bag_item):
+                                    self.empty_inventory(bag_item)
+                                    break
+                else:
+                    self.grid.msg("SCREEN - no reach")
+            else:
+                self.grid.msg("SCREEN - No place here")
+
+

@@ -158,8 +158,8 @@ class GameEvents(GameEffects):
                         self.editor.execute_editor_clicks(CLICKED_ITEM, my_body)
 
                     # ENTER
-                    elif "door" in CLICKED_ITEM.type:
-                        self.enter_room(my_body, CLICKED_ITEM)
+                    # elif "door" in CLICKED_ITEM.type:
+                    #     self.enter_room(my_body, CLICKED_ITEM)
 
                     # SET MOUSE MODE
                     if CLICKED_ITEM.modable and not (mouse_mode in ['eat'] and CLICKED_ITEM.consumable):
@@ -177,20 +177,24 @@ class GameEvents(GameEffects):
                     # --------------------------------------------------------------- #
                     #                   MOUSE MODE CLICK ON ITEM                      #
                     # --------------------------------------------------------------- #
-
                     # EAT
                     if mouse_mode in ["eat"] or event.button == 3:
                         if CLICKED_ITEM.consumable and not CLICKED_ITEM.birth_track and not my_body.effect_track:
                             if (CLICKED_ITEM.pos in self.grid.adj_tiles(my_body.pos)) or (CLICKED_ITEM in my_body.inventory.options.values()):
-                                self.consume(my_body, CLICKED_ITEM)
-                                if CLICKED_ITEM in my_body.inventory.options.values():
-                                    self.empty_inventory(CLICKED_ITEM)
-                                else:
-                                    CLICKED_ITEM.destroy(self.grid)
+                                if self.consume(my_body, CLICKED_ITEM):
+                                    if CLICKED_ITEM in my_body.inventory.options.values():
+                                        self.empty_inventory(CLICKED_ITEM)
+                                    else:
+                                        CLICKED_ITEM.destroy(self.grid)
                             else:
                                 self.grid.msg("SCREEN - {0} is far".format(CLICKED_ITEM.name))
                         else:
                             self.grid.msg("SCREEN - no eat this")
+
+                    # DROP
+                    elif mouse_mode:
+                        if any(mouse_mode in inventory_item.name for inventory_item in my_body.inventory.options.values()):
+                            self.drop(CLICKED_ITEM, my_body)
 
                     # TERMINATE
                     elif mouse_mode in ["EDITOR9"]:

@@ -20,9 +20,8 @@
 # --------------------------------------------------------------- #
 #                             URBAN                               #
 # --------------------------------------------------------------- #
-# TODO: Feed with shrimp and other consumables
-# TODO: Create trade mode
 # TODO: Create craft mode
+# TODO: Create trade mode
 # TODO: Create item generation / kofa / kenef
 # TODO: Create inside body view room 400
 # --------------------------------------------------------------- #
