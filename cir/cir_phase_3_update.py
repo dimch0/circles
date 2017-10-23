@@ -22,7 +22,9 @@ class VarUpdater(object):
             room_number = item.name.replace("Enter_", "")
             self.grid.msg("INFO - Leaving room: {0}".format(self.grid.current_room))
             inventory_in_menu = my_body.inventory.in_menu
+
             self.grid.change_room(room_number)
+
             if inventory_in_menu:
                 my_body.inventory.open_menu(self.grid)
             else:
@@ -34,6 +36,9 @@ class VarUpdater(object):
             my_body.pos = get_mirror_point(item.pos, self.grid.center_tile)
             self.grid.revealed_tiles[my_body.pos] = []
             my_body.gen_birth_track()
+            for item in self.grid.items:
+                if item.pos == my_body.pos and 'door' in  item.type:
+                    item.available = True
 
 
     # --------------------------------------------------------------- #

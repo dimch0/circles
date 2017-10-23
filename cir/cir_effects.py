@@ -116,42 +116,15 @@ class GameEffects(object):
     def show_map(self, my_body):
         """ Shows the map room """
 
-        self.grid.capture_room()
-
         if not self.grid.current_room == "999":
             self.grid.previous_room = self.grid.current_room
+            self.grid.gen_map_dots()
             self.grid.change_room("999")
-            diff = 10
-            try:
-                for root, dirs, files in os.walk(self.grid.tmp_dir):
 
-                    for file in files:
-
-                        if file.endswith("png"):
-
-
-                            img_file = os.path.join(root, file)
-                            name = os.path.splitext(file)[0]
-                            image = self.grid.pygame.image.load(img_file)
-
-                            image_height = self.grid.tile_radius * 2
-                            image = self.grid.pygame.transform.scale(
-                                image, (
-                                    image_height - diff,
-                                    image_height))
-                            pos = self.grid.tile_dict[name]
-                            map_tile = self.produce(product_name="trigger", pos=pos)
-
-                            map_tile.type = "map_tile"
-                            map_tile.img = image
-                            map_tile.available = True
-                            self.grid.revealed_tiles[pos] = []
-
-            except Exception as e:
-                self.grid.msg("ERROR - Could not show map: {0}".format(e))
-
+            self.grid.draw_map = True
         else:
             self.grid.change_room(self.grid.previous_room)
+            self.grid.draw_map = False
             if my_body not in self.grid.items:
                 self.grid.items.append(my_body)
 

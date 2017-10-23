@@ -46,26 +46,22 @@ class GameDrawer(object):
         img_y = item_pos[1] - self.grid.tile_radius * 1.25
         return (img_x, img_y)
 
-    def set_map_pos(self, item_pos):
-        """
-        Centers the emoji image posotion
-        :param grid:  grid object
-        :return: coordinates of the centered image
-        """
-        img_x = item_pos[0] - self.grid.tile_radius + 5
-        img_y = item_pos[1] - self.grid.tile_radius
-        return (img_x, img_y)
 
+    def draw_map(self):
+
+        for map_dot in self.grid.map_dots.values():
+            self.grid.pygame.draw.circle(self.grid.game_display,
+                                         map_dot['color'],
+                                         map_dot['pos'],
+                                         map_dot['radius'],
+                                         0)
 
 
     def draw_hover(self, current_tile, item):
         """ Highlights the hovered tile """
         if current_tile and not item.type in ["plug"]:
             if cir_utils.in_circle(item.pos, self.grid.tile_radius, current_tile):
-                if item.type == "map_tile" and not self.grid.mouse_mode:
-                    radius = self.grid.tile_radius - 4
-                else:
-                    radius = self.grid.tile_radius
+                radius = self.grid.tile_radius
                 self.grid.pygame.draw.circle(self.grid.game_display,
                                              self.grid.white,
                                              item.pos,
@@ -80,8 +76,6 @@ class GameDrawer(object):
 
             if item.img.get_width() == self.grid.tile_radius:
                 self.grid.game_display.blit(item.img, self.set_emoji_pos(item.pos))
-            elif item.img.get_width() == (self.grid.tile_radius - 5) * 2:
-                self.grid.game_display.blit(item.img, self.set_map_pos(item.pos))
             elif item.type in ['sign', 'door_enter']:
                 self.grid.game_display.blit(item.img, self.set_neon_pos(item.pos))
             else:
@@ -317,6 +311,10 @@ class GameDrawer(object):
             if rev_radius:
                 rev_radius.pop(0)
 
+        # MAP
+        if self.grid.draw_map:
+            self.draw_map()
+
 
     # --------------------------------------------------------------- #
     #                                                                 #
@@ -325,6 +323,8 @@ class GameDrawer(object):
     # --------------------------------------------------------------- #
     def draw_animations(self, current_tile):
         """ Main drawing function """
+
+        # print self.grid.center_tile
 
         for item in self.grid.items:
 

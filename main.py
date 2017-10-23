@@ -20,7 +20,6 @@
 # --------------------------------------------------------------- #
 #                             URBAN                               #
 # --------------------------------------------------------------- #
-# TODO: Create map
 # TODO: Feed with shrimp and other consumables
 # TODO: Create trade mode
 # TODO: Create craft mode

@@ -61,6 +61,8 @@ class Grid(object):
         self.occupado_tiles = {}
         self.revealed_tiles = {}
         self.door_slots = self.names_to_pos(["11_1", "16_6", "16_16", "11_21", "6_16", "6_6"])
+        self.draw_map = False
+        self.map_dots = {}
         # -------------------------------------------------- #
         #                        ROOMS                       #
         # -------------------------------------------------- #
@@ -267,6 +269,55 @@ class Grid(object):
                     if intersecting(circle_1, circle_2):
                         self.occupado_tiles[item.name] = tile
 
+    def get_map_dot(self, pos, room_pos):
+        dot_pos = None
+        dix = (self.center_tile[0] - pos[0]) / 10
+        diy = (self.center_tile[1] - pos[1]) / 10
+        dot_pos = (room_pos[0] - dix, room_pos[1] - diy)
+        return dot_pos
+
+
+    def gen_map_dots(self):
+        # GEN MAP DOTS
+        map_dots = {}
+        for room_name, room  in self.rooms.items():
+            if room_name not in ['999', 'ALL']:
+
+                room_pos = self.names_to_pos([room_name])[0]
+
+                for tile in room['revealed_tiles']:
+                    dot_pos = self.get_map_dot(tile, room_pos)
+                    map_dots[dot_pos] = {'pos'   : dot_pos,
+                                         'color' : self.room_color,
+                                         'radius': self.tile_radius / 10}
+
+                for item in room['items']:
+
+
+                    if item.color and not item.type in ['editor', 'my_body'] and item.available:
+                        dot_pos = self.get_map_dot(item.pos, room_pos)
+                        map_dots[dot_pos] = {'pos': dot_pos,
+                                             'color': item.color,
+                                             'radius': item.radius / 10}
+
+                    elif item.color and item.type in ['my_body'] and item.available:
+                        if room_name == self.previous_room:
+                            dot_pos = self.get_map_dot(item.pos, room_pos)
+                            map_dots[dot_pos] = {'pos': dot_pos,
+                                                 'color': item.color,
+                                                 'radius': item.radius / 10}
+                    if item.type in ['door_enter'] and item.available:
+                        print item.name
+                        print item.color
+                        print item.available
+
+                        dot_pos = self.get_map_dot(item.pos, room_pos)
+                        map_dots[dot_pos] = {'pos': dot_pos,
+                                             'color': self.red01,
+                                             'radius': item.radius / 10}
+
+        self.map_dots = map_dots
+
     # --------------------------------------------------------------- #
     #                             MOUSE                               #
     # --------------------------------------------------------------- #
@@ -291,19 +342,6 @@ class Grid(object):
     # --------------------------------------------------------------- #
     #                             ROOMS                               #
     # --------------------------------------------------------------- #
-    def capture_room(self):
-        """ Takes a screenshot of the current room """
-
-        if not self.current_room == "999":
-
-            width = (2 * self.tile_radius) + (8 * self.cathetus)
-            height = 18 * self.tile_radius
-            top = self.center_tile[0] - (width / 2)
-            left = self.center_tile[1] - (height / 2)
-            rect = self.pygame.Rect(top, left, width, height)
-            sub = self.game_display.subsurface(rect)
-            self.pygame.image.save(sub, os.path.join(self.tmp_dir, self.current_room + ".png"))
-
     def save_current_room(self):
         """ Saves the current room to self.rooms """
         self.rooms[self.current_room] = {
@@ -333,7 +371,6 @@ class Grid(object):
     def change_room(self, room):
         """ Saves the current room and loads a new room """
         self.save_current_room()
-        self.capture_room()
         self.current_room = str(room)
         self.load_current_room()
         self.needs_to_change_room = False

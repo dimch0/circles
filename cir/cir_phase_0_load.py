@@ -218,7 +218,7 @@ class DataLoader(object):
         door.default_color = item.color
         door.radius = item.radius
         door.default_radius = item.radius
-        door.available = True
+        door.available = False
 
         self.set_room(door)
         self.set_timers(door)
