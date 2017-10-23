@@ -302,8 +302,7 @@ class Grid(object):
             left = self.center_tile[1] - (height / 2)
             rect = self.pygame.Rect(top, left, width, height)
             sub = self.game_display.subsurface(rect)
-
-            self.pygame.image.save(sub, self.tmp_dir + str(self.current_room) + ".png")
+            self.pygame.image.save(sub, os.path.join(self.tmp_dir, self.current_room + ".png"))
 
     def save_current_room(self):
         """ Saves the current room to self.rooms """

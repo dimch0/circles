@@ -13,7 +13,6 @@
 #                             GENERAL                             #
 # --------------------------------------------------------------- #
 # TODO: Display last msg on game over
-# TODO: Scenario settings
 # TODO: Create spirit mode NEW SCENARIO
 # TODO: Log statistics during a lifespan, calculate karma
 # TODO: Create save button

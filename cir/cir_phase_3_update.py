@@ -210,6 +210,7 @@ class VarUpdater(object):
                                             if "door" in ditem.type and ditem.pos == adj_rtile:
                                                 if not ditem.available:
                                                     ditem.available = True
+                                                    ditem.gen_birth_track()
 
                         for hit_item in self.grid.items:
                             # REVEALED / AVAILABLE

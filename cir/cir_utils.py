@@ -129,6 +129,7 @@ def show_debug_on_click(grid, current_circle, my_body):
         grid.msg("DEBUG - revealed    : {0}".format( grid.revealed_tiles ))
         grid.msg("DEBUG - revealed    : {0}".format( len(grid.revealed_tiles.keys() ) ))
         grid.msg("DEBUG - available   : {0}".format( [(item.name, item.pos) for item in grid.items if not "EDITOR" in item.name and item.available] ))
+        grid.msg("DEBUG - game menu    : {0}".format( grid.game_menu ))
 
 def get_short_name(name_with_timestamp):
     """ Removes the timestamp from a name """
