@@ -33,6 +33,8 @@ def game_menu(grid, my_body, end_msg=''):
                                 grid.game_menu = False
                                 if grid.game_over:
                                     grid.game_over = False
+                                if button.name == "replay":
+                                    grid.messages = ["SCREEN - game started"]
                             elif button.name == "quit":
                                 grid.game_exit()
         if grid.game_menu:
