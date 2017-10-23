@@ -12,7 +12,6 @@
 # --------------------------------------------------------------- #
 #                             GENERAL                             #
 # --------------------------------------------------------------- #
-# TODO: Display last msg on game over
 # TODO: Create spirit mode NEW SCENARIO
 # TODO: Log statistics during a lifespan, calculate karma
 # TODO: Create save button
@@ -42,7 +41,7 @@ from cir.cir_phase_0_load import DataLoader
 pygame.init()
 
 
-def game_loop(game_over, scenario="scenario_01", msg=[]):
+def game_loop(game_over, scenario="scenario_01", msg=list()):
     # --------------------------------------------------------------- #
     #                        PHASE 0: LOADING                         #
     # --------------------------------------------------------------- #
