@@ -163,7 +163,7 @@ class GameDrawer(object):
     def draw_timers(self, item):
         """ Draws current state of a timer """
         if item.lifespan:
-            timer_fat = 2
+            timer_fat = item.radius / 7
 
             if item.lifespan.available and item.time_color:
                 if item.radius >= timer_fat:

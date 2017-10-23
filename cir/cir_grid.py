@@ -311,7 +311,7 @@ class Grid(object):
 
                 for item in room['items']:
                     if item.color and item.available:
-                        if item.type not in ['editor', 'my_body']:
+                        if item.type not in ['editor', 'my_body', 'option', 'signal']:
                             map_dots.update(self.get_map_dot(item.pos, room_pos, item.color, item.radius))
 
                         elif item.type in ['my_body'] and room_name == self.previous_room:

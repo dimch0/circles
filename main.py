@@ -30,6 +30,7 @@
 # TODO: Indicate uses / metrics
 # TODO: Animate demo
 # TODO: Add sounds
+# TODO: Remove blue colors
 
 
 import pygame
