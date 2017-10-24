@@ -192,8 +192,7 @@ class GameEvents(GameEffects):
                             self.grid.msg("SCREEN - no eat this")
 
                     # DROP
-                    elif mouse_mode:
-                        if any(mouse_mode in inventory_item.name for inventory_item in my_body.inventory.options.values()):
+                    elif mouse_mode and any(mouse_mode in inventory_item.name for inventory_item in my_body.inventory.options.values()):
                             self.drop(CLICKED_ITEM, my_body)
 
                     # TERMINATE

@@ -182,7 +182,7 @@ class GameEffects(object):
             signal.direction = signal.get_aiming_direction(self.grid, current_tile)[1]
 
 
-    def terminate_mode_click(self, current_tile):
+    def terminate_mode_click(self, item):
         """ Terminate this shit """
         non_terminates = [
             "my_body",
@@ -191,8 +191,9 @@ class GameEffects(object):
             "trigger",
             "placeholder"
         ]
-        if not any(non_terminate in current_tile.type for non_terminate in non_terminates):
-            current_tile.destroy(self.grid)
+
+        if not any(non_terminate in item.type for non_terminate in non_terminates):
+            item.destroy(self.grid)
 
 
     # --------------------------------------------------------------- #

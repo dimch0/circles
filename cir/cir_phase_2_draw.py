@@ -59,7 +59,7 @@ class GameDrawer(object):
 
     def draw_hover(self, current_tile, item):
         """ Highlights the hovered tile """
-        if current_tile and not item.type in ["plug"]:
+        if current_tile and not item.type in ["door", "door_enter"]:
             if cir_utils.in_circle(item.pos, self.grid.tile_radius, current_tile):
                 radius = self.grid.tile_radius
                 self.grid.pygame.draw.circle(self.grid.game_display,
@@ -147,8 +147,6 @@ class GameDrawer(object):
                                                  item.default_color,
                                                  item.pos,
                                                  eff_cir["radius"])
-
-
             self.draw_img(item)
             self.draw_aim(current_tile, item)
             if not item.type in ['sign']:
