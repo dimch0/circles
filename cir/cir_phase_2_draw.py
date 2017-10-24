@@ -137,12 +137,6 @@ class GameDrawer(object):
                                    item.pos,
                                    item.radius,
                                    0)
-            if item.category == "bag":
-                self.grid.pygame.draw.circle(self.grid.game_display,
-                                             self.grid.gelb05,
-                                             item.pos,
-                                             self.grid.tile_radius,
-                                             1)
 
             # DRAW EFFECT ACTIVATION
             if item.effect_track:

@@ -56,7 +56,6 @@ class Grid(object):
         self.center_tile = None
         self.previous_tile = None
         self.find_center_tile()
-        self.playing_tiles = []
         self.set_playing_tiles()
         self.occupado_tiles = {}
         self.revealed_tiles = {}
@@ -205,26 +204,14 @@ class Grid(object):
 
     def set_playing_tiles(self):
         """ Defining the playing tiles """
-
-        # hex_board = self.names_to_pos(self.hex_board)
-        # self.playing_tiles.extend(hex_board)
-
-        hex_board = [
-            (self.center_tile[0], self.center_tile[1] - (9 * self.tile_radius)),
-            (self.center_tile[0] + (5 * self.cathetus), self.center_tile[1] - (4 * self.tile_radius)),
-            (self.center_tile[0] + (4 * self.cathetus), self.center_tile[1] + (5 * self.tile_radius)),
-            (self.center_tile[0], self.center_tile[1] + (9 * self.tile_radius) + 1),
-            (self.center_tile[0] - (4 * self.cathetus) - 1, self.center_tile[1] + (4 * self.tile_radius)),
-            (self.center_tile[0] - (4 * self.cathetus) - 1, self.center_tile[1] - (4 * self.tile_radius))
-        ]
-
-
+        self.playing_tiles = self.names_to_pos(self.playing_tiles)
+        inside_tiles = []
         for tile in self.tiles:
-            if inside_polygon(hex_board, tile):
+            if inside_polygon(self.playing_tiles, tile):
                 if not tile in self.playing_tiles:
-                    self.playing_tiles.append(tile)
-
-
+                    if not tile in inside_tiles:
+                        inside_tiles.append(tile)
+        self.playing_tiles.extend(inside_tiles)
 
     def adj_tiles(self, center, empty=False, playing=False):
         """
