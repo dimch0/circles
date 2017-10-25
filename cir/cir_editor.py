@@ -29,7 +29,7 @@ class Editor(object):
 
         # CAMERA
         elif clicked_item.name == "EDITOR7":
-            self.grid.capture_room()
+            pass
 
         # TV
         elif clicked_item.name == "EDITOR8":

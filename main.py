@@ -27,6 +27,7 @@
 # --------------------------------------------------------------- #
 #                             COSMETICS                           #
 # --------------------------------------------------------------- #
+# TODO: If effect_track -> overwrite with gen_eff_track
 # TODO: Indicate uses / metrics
 # TODO: Animate demo
 # TODO: Add sounds
