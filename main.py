@@ -11,8 +11,8 @@
 # --------------------------------------------------------------- #
 #                             GENERAL                             #
 # --------------------------------------------------------------- #
-# TODO: Create spirit mode NEW SCENARIO
 # TODO: Log statistics during a lifespan, calculate karma
+# TODO: Create spirit mode NEW SCENARIO
 # TODO: Create save button
 # TODO: Create load button
 # TODO: Create installation .exe file
@@ -26,7 +26,6 @@
 # --------------------------------------------------------------- #
 #                             COSMETICS                           #
 # --------------------------------------------------------------- #
-# TODO: If effect_track -> overwrite with gen_eff_track
 # TODO: Indicate uses / metrics
 # TODO: Animate demo
 # TODO: Add sounds

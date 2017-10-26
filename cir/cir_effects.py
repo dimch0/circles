@@ -356,7 +356,7 @@ class GameEffects(object):
 
         # Drop item from inventory to body and consume
         else:
-            if clicked and not clicked.effect_track:
+            if clicked:
                 if clicked.pos in self.grid.adj_tiles(my_body.pos) or clicked.type == "my_body":
                     for bag_item in my_body.inventory.options.values():
                         if self.grid.mouse_mode in bag_item.name and bag_item.uses >= 1:

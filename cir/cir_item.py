@@ -97,6 +97,14 @@ class Item(object):
                     "radius": n}
                 self.effect_track.append(eff_cir)
 
+        result = []
+        for n in range(1, self.radius + 1):
+            eff_cir = {
+                "color": effect_color,
+                "radius": n}
+            result.append(eff_cir)
+        self.effect_track = result
+
     # --------------------------------------------------------------- #
     #                                                                 #
     #                          MODE OPTIONS                           #
