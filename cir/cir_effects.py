@@ -235,7 +235,7 @@ class GameEffects(object):
                 item_as_option.modable = True
                 item_as_option.consumable = clicked_item.consumable
                 item_as_option.effects = clicked_item.effects
-                item_as_option.color = clicked_item.color
+                item_as_option.color = my_body.inventory.color
                 item_as_option.img = clicked_item.img
                 item_as_option.uses = clicked_item.uses
                 if hasattr(clicked_item, "lifespan"):
@@ -263,7 +263,6 @@ class GameEffects(object):
                     self.grid.clean_mouse()
             inventory_item.name = "inventory_placeholder" + '-' + str(time.time())
             inventory_item.modable = False
-            inventory_item.color = None
             inventory_item.img = None
             inventory_item.effects = ''
             inventory_item.uses = 0
