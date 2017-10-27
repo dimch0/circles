@@ -79,8 +79,7 @@ class Editor(object):
         elif clicked_item.name == "EDITOR25":
             for rev_tile in self.grid.revealed_tiles.keys():
                 if rev_tile not in self.grid.occupado_tiles.values():
-                    new_observer = self.grid.event_effects.produce("observer", rev_tile)
-                    new_observer.lifespan.restart()
+                    self.grid.event_effects.produce("observer", rev_tile)
 
         # FULL MOON
         elif clicked_item.name == "EDITOR20":

@@ -6,11 +6,13 @@
 import csv
 import time
 
-import cir_item
-import cir_item_body
-import cir_item_timer
-import cir_item_button
-import cir_utils
+import cir_utils as cu
+
+from cir_item import Item
+from cir_item_body import BodyItem
+from cir_item_body_observer import Observer
+from cir_item_timer import TimerItem
+from cir_item_button import ButtonItem
 
 from cir_cosmetic import Images, Fonts, Colors
 from cir_phase_1_events import GameEvents
@@ -59,12 +61,14 @@ class DataLoader(object):
         dummy = None
         try:
             if klas == "body":
-                dummy = cir_item_body.BodyItem()
+                dummy = BodyItem()
             elif klas == "timer":
-                dummy = cir_item_timer.TimerItem()
+                dummy = TimerItem()
                 dummy.timer_tile_radius = self.grid.tile_radius
-            elif klas in "item":
-                dummy = cir_item.Item()
+            elif klas == "item":
+                dummy = Item()
+            elif klas == "observer":
+                dummy = Observer()
         except Exception as e:
             self.grid.msg("ERROR - {0}, could not create item of klas: {1}".format(e, klas))
 
@@ -179,7 +183,7 @@ class DataLoader(object):
     def set_timers(self, item):
         """ Set timers """
         if item.lifespan:
-            lifespan = cir_item_timer.TimerItem()
+            lifespan = TimerItem()
             lifespan.radius = self.grid.tile_radius
             lifespan.default_radius = self.grid.tile_radius
             lifespan.duration = item.lifespan
@@ -189,7 +193,7 @@ class DataLoader(object):
 
 
         if hasattr(item, "vfreq"):
-            vibefr = cir_item_timer.TimerItem()
+            vibefr = TimerItem()
             vibefr.duration = item.vfreq
             item.vfreq = vibefr
 
@@ -204,11 +208,11 @@ class DataLoader(object):
         return new_item
 
     def set_door(self, item):
-        door = cir_item.Item()
+        door = Item()
         door.type = item.type
         door.name = "Enter_" + item.room
         door.room = item.name.replace("Enter_", "")
-        door.pos = cir_utils.get_mirror_point(item.pos, self.grid.center_tile)
+        door.pos = cu.get_mirror_point(item.pos, self.grid.center_tile)
         door.color = item.color
         if "door_enter" in item.type:
             door.img = self.grid.images.neon_exit
@@ -228,7 +232,7 @@ class DataLoader(object):
         """ Assign all items to the grid object """
 
         for name in ["play", "quit"]:
-            butt = cir_item_button.ButtonItem()
+            butt = ButtonItem()
             butt.name = name
             # butt.color = self.grid.room_color
             butt.font = getattr(self.grid.fonts, 'small')

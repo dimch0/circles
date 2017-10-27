@@ -93,8 +93,7 @@ class GameEvents(GameEffects):
         if not event.button == 3:
             if current_tile not in self.grid.occupado_tiles.values() and current_tile in self.grid.revealed_tiles.keys():
                 if mouse_mode in ["EDITOR1"]:
-                    new_observer = self.produce("observer", current_tile)
-                    new_observer.lifespan.restart()
+                    self.produce("observer", current_tile)
 
                 elif mouse_mode in ["EDITOR2"]:
                     self.produce("shit", current_tile)

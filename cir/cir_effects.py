@@ -55,6 +55,10 @@ class GameEffects(object):
             new_item.vfreq.duration = vfreq
         if lifespan:
             new_item.lifespan = lifespan
+        else:
+            if hasattr(new_item, 'lifespan'):
+                if new_item.lifespan:
+                    new_item.lifespan.restart()
 
         new_item.default_img = new_item.img
         new_item.available = True

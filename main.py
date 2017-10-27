@@ -28,7 +28,7 @@
 # --------------------------------------------------------------- #
 # TODO: Indicate uses / metrics
 # TODO: Animate demo
-# TODO: Add sounds
+# TODO: Add soundsq
 # TODO: Remove blue colors
 
 

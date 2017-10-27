@@ -3,8 +3,7 @@
 #                                                   UPDATE                                                            #
 #                                                                                                                     #
 # ------------------------------------------------------------------------------------------------------------------- #
-import random
-from cir_utils import get_mirror_point, intersecting, get_short_name, in_circle
+from cir_utils import get_mirror_point, intersecting, get_short_name, in_circle, dist_between
 
 class VarUpdater(object):
 
@@ -73,31 +72,28 @@ class VarUpdater(object):
         if not item.move_track:
             item.gen_vibe_track(self.grid)
 
-        if len(item.vibe_track) == 1:
-            legal_moves = []
-            for item_adj in self.grid.adj_tiles(item.pos):
-                if item_adj in self.grid.playing_tiles and item_adj not in self.grid.occupado_tiles.values():
-                    legal_moves.append(item_adj)
-
-            if legal_moves:
-                item.move_track = item.move_to_tile(self.grid, random.choice(legal_moves))
-                if item.vfreq:
-                    item.vfreq.restart()
+            if item.type in ['observer']:
+                item.action(self.grid)
 
 
     def timer_effect(self, item):
         """ Timer effects  """
+
+        # LIFESPAN
         if item.lifespan:
             item.lifespan.tick()
             if item.lifespan.is_over:
                 item.destroy(self.grid)
 
+        # VIBE TIMER
         if hasattr(item, "vfreq"):
             if item.vfreq and not isinstance(item.vfreq, float):
                 if item.vfreq.duration:
                     item.vfreq.tick()
                     if item.vfreq.is_over:
                         self.vfreq_over_effect(item)
+
+        # MOVE TIMER
 
 
 
@@ -206,8 +202,10 @@ class VarUpdater(object):
 
                         # REVEAL TILE
                         for rtile in self.grid.playing_tiles:
-                            if not rtile in self.grid.revealed_tiles.keys():
-                                if in_circle(item.pos, item.vibe_track[0][0], rtile):
+                            if in_circle(item.pos, item.vibe_track[0][0], rtile):
+                                if not rtile in item.hit_tiles:
+                                    item.hit_tiles.append(rtile)
+                                if not rtile in self.grid.revealed_tiles.keys():
                                     self.grid.revealed_tiles[rtile] = range(1, self.grid.tile_radius + 1)
                                     # REVEAL ADJ DOORS
                                     for adj_rtile in self.grid.adj_tiles(rtile):
@@ -236,6 +234,7 @@ class VarUpdater(object):
                         item.vibe_track.pop(0)
                         if not item.vibe_track:
                             item.hit_items = []
+                            item.hit_tiles = []
 
                     # CONSUME SIGNAL
                     if self.signal_hit(item, my_body):
