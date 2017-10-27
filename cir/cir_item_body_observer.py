@@ -5,13 +5,11 @@
 # ------------------------------------------------------------------------------------------------------------------- #
 import random
 from cir_item_body import BodyItem
-from cir_utils import *
+import cir_utils as cu
 
 
 class Observer(BodyItem):
-    """
-    This class holds all attributes and metrics of your body
-    """
+
     def __init__(self):
         super(Observer, self).__init__()
 
@@ -49,7 +47,7 @@ class Observer(BodyItem):
                                     if grid.pos_to_name(untile) == '14_8':
                                         print "AIDE 1"
                                 else:
-                                    if dist_between(self.nearest_untile, self.pos) > dist_between(untile, self.pos):
+                                    if cu.dist_between(self.nearest_untile, self.pos) > cu.dist_between(untile, self.pos):
                                         self.nearest_untile = untile
                                         if grid.pos_to_name(untile) == '14_8':
                                             print "AIDE 2", untile not in grid.revealed_tiles
@@ -61,7 +59,7 @@ class Observer(BodyItem):
                         if not best_legal:
                             best_legal = move_tile
                         else:
-                            if dist_between(best_legal, self.nearest_untile) > dist_between(move_tile, self.nearest_untile):
+                            if cu.dist_between(best_legal, self.nearest_untile) > cu.dist_between(move_tile, self.nearest_untile):
                                 self.nearest_untile = move_tile
                     if best_legal:
                         move_to_tile = best_legal
