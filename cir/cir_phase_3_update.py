@@ -72,8 +72,10 @@ class VarUpdater(object):
         if not item.move_track:
             item.gen_vibe_track(self.grid)
 
-            if item.type in ['observer']:
+            if item.type in ['observer'] and not item.in_action:
                 item.action(self.grid)
+
+            item.vfreq.restart()
 
 
     def timer_effect(self, item):
@@ -92,6 +94,8 @@ class VarUpdater(object):
                     item.vfreq.tick()
                     if item.vfreq.is_over:
                         self.vfreq_over_effect(item)
+                        # item.vfreq.restart()
+
 
         # MOVE TIMER
 

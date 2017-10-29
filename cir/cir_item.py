@@ -58,8 +58,7 @@ class Item(object):
         self.effect_track = []
         self.hit_items = []
         self.hit_tiles = []
-        # OBSERVER
-        self.nearest_untile = None
+
 
     @property
     def rect(self):
