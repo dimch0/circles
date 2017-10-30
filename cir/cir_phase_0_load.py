@@ -269,6 +269,8 @@ class DataLoader(object):
         self.grid.drawer        = GameDrawer(self.grid)
         self.grid.updater       = VarUpdater(self.grid)
         self.grid.start_time    = time.time()
+        self.grid.fog_color = getattr(self.grid, self.grid.fog_color)
+        self.grid.room_color = getattr(self.grid, self.grid.room_color)
 
         my_body = None
         my_body_inventory = None
@@ -293,8 +295,7 @@ class DataLoader(object):
 
         if not my_body in self.grid.items:
             self.grid.items.append(my_body)
-        self.grid.fog_color = getattr(self.grid, self.grid.fog_color)
-        self.grid.room_color = getattr(self.grid, self.grid.room_color)
+
         self.set_buttons()
         self.grid.load_current_room()
 

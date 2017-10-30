@@ -299,6 +299,8 @@ class GameEffects(object):
         if effects:
             try:
                 for effect in effects:
+
+                    # Exclude # (non-consumable) effects
                     if not "#" in effect:
                         effect = effect.split("_")
                         eff_att = effect[0]
@@ -323,10 +325,11 @@ class GameEffects(object):
 
                         if attr_str:
                             consumed = True
-                            if consumable.color:
+                            # if consumable.color:
+                            if 0:
                                 consumator.gen_effect_track(consumable.color)
                             else:
-                                consumator.gen_effect_track(self.grid.white)
+                                consumator.gen_effect_track(self.grid.gelb04)
 
                             if consumator.type == "my_body":
                                 self.grid.msg("SCREEN - you eat {0}".format(cir_utils.get_short_name(consumable.name)))
