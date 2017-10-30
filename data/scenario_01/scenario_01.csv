@@ -1,6 +1,6 @@
 scenario,room,name,klas,type,color,img,pos,category,has_opts,available,modable,collectible,consumable,uses,speed,range,time_color,lifespan,vspeed,vfreq,layer,effects
 BODY,,,,,,,,,,,,,,,,,,,,,,
-scenario_01,11_11,my_body,body,my_body,gelb05,galab,11_11,,TRUE,TRUE,,,,,2,1,grey01,30,,,2,LP_-15
+scenario_01,11_11,my_body,body,my_body,gelb05,galab,11_11,,TRUE,TRUE,,,,,2,1,grey01,30,,,2,LP_-15 #rev
 Options,,,,,,,,,,,,,,,,,,,,,,
 scenario_01,,option,body,option,,,,my_body,,TRUE,,,,,,,,,,,,
 scenario_01,,option2,body,option,,,,my_body,,TRUE,,,,,,,,,,,,
@@ -19,7 +19,7 @@ scenario_01,,inventory_placeholder6,item,option,grey03,,,bag,,TRUE,,,,,,,,,,,1,
 Subbodies,,,,,,,,,,,,,,,,,,,,,,
 scenario_01,,signal,body,signal,,,,,,TRUE,,,,,10,1,,,,,3,LP_-15
 scenario_01,,shit,body,,gelb09,laino2,,,,,,TRUE,TRUE,,,1,grey01,5,,2,1,LP_-15
-scenario_01,,observer,observer,observer,grey05,emoji_eye_y,,,,,,,,,2,1,grey01,60,,2,1,LP_-30
+scenario_01,,observer,observer,observer,grey05,emoji_eye_y,,,,,,,,,2,1,grey01,60,,2,1,LP_-30 #rev
 scenario_01,12_12,lover,body,body,red03,bqlgalab,13_9,,,TRUE,,,,,1,1,,,,,,
 COMMON,,,,,,,,,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,,,,,,,,,

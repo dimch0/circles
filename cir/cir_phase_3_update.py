@@ -204,27 +204,30 @@ class VarUpdater(object):
 
                         vibe_area = ((item.pos), item.vibe_track[0][0])
 
+
                         # REVEAL TILE
                         for rtile in self.grid.playing_tiles:
                             if in_circle(item.pos, item.vibe_track[0][0], rtile):
                                 if not rtile in item.hit_tiles:
                                     item.hit_tiles.append(rtile)
-                                if not rtile in self.grid.revealed_tiles.keys():
-                                    self.grid.revealed_tiles[rtile] = range(1, self.grid.tile_radius + 1)
-                                    # REVEAL ADJ DOORS
-                                    for adj_rtile in self.grid.adj_tiles(rtile):
-                                        for ditem in self.grid.items:
-                                            if "door" in ditem.type and ditem.pos == adj_rtile:
-                                                if not ditem.available:
-                                                    ditem.available = True
-                                                    ditem.gen_birth_track()
+                                if "#rev" in item.effects:
+                                    if not rtile in self.grid.revealed_tiles.keys():
+                                        self.grid.revealed_tiles[rtile] = range(1, self.grid.tile_radius + 1)
+                                        # REVEAL ADJ DOORS
+                                        for adj_rtile in self.grid.adj_tiles(rtile):
+                                            for ditem in self.grid.items:
+                                                if "door" in ditem.type and ditem.pos == adj_rtile:
+                                                    if not ditem.available:
+                                                        ditem.available = True
+                                                        ditem.gen_birth_track()
 
                         for hit_item in self.grid.items:
                             # REVEALED / AVAILABLE
-                            if hit_item.pos in self.grid.revealed_tiles.keys():
-                                if not hit_item.available and not hit_item in self.grid.overlap:
-                                    hit_item.available = True
-                                    hit_item.gen_birth_track()
+                            if "#rev" in item.effects:
+                                if hit_item.pos in self.grid.revealed_tiles.keys():
+                                    if not hit_item.available and not hit_item in self.grid.overlap:
+                                        hit_item.available = True
+                                        hit_item.gen_birth_track()
 
                             # CONSUME VIBE
                             if item.effects:

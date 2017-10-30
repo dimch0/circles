@@ -143,6 +143,7 @@ class GameEffects(object):
                                lifespan=2)
         trigger.range = 4.5
         trigger.vspeed = speed
+        trigger.effects = "#rev"
 
         self.grid.loader.set_timers(trigger)
         trigger.vfreq = None
@@ -297,39 +298,39 @@ class GameEffects(object):
 
         if effects:
             try:
-
                 for effect in effects:
-                    effect = effect.split("_")
-                    eff_att = effect[0]
-                    amount = float(effect[1])
-                    if amount >= 0:
-                        modifier_str = "+{0}".format(abs(int(amount)))
-                    else:
-                        modifier_str = "-{0}".format(abs(int(amount)))
-                    attr_str = ''
-                    if not consumator.type in protected_types:
-                        if eff_att == 'LS' and consumator.lifespan:
-                            consumator.lifespan.limit += amount
-                            attr_str = 'max life'
-
-                        elif eff_att == 'LP' and consumator.lifespan:
-                            consumator.lifespan.update(amount)
-                            attr_str = 'life'
-
-                        elif eff_att == 'SP' and hasattr(consumator, "speed"):
-                            consumator.change_speed(amount)
-                            attr_str = 'speed'
-
-                    if attr_str:
-                        consumed = True
-                        if consumable.color:
-                            consumator.gen_effect_track(consumable.color)
+                    if not "#" in effect:
+                        effect = effect.split("_")
+                        eff_att = effect[0]
+                        amount = float(effect[1])
+                        if amount >= 0:
+                            modifier_str = "+{0}".format(abs(int(amount)))
                         else:
-                            consumator.gen_effect_track(self.grid.white)
+                            modifier_str = "-{0}".format(abs(int(amount)))
+                        attr_str = ''
+                        if not consumator.type in protected_types:
+                            if eff_att == 'LS' and consumator.lifespan:
+                                consumator.lifespan.limit += amount
+                                attr_str = 'max life'
 
-                        if consumator.type == "my_body":
-                            self.grid.msg("SCREEN - you eat {0}".format(cir_utils.get_short_name(consumable.name)))
-                            self.grid.msg("SCREEN - {0} {1}".format(modifier_str, attr_str))
+                            elif eff_att == 'LP' and consumator.lifespan:
+                                consumator.lifespan.update(amount)
+                                attr_str = 'life'
+
+                            elif eff_att == 'SP' and hasattr(consumator, "speed"):
+                                consumator.change_speed(amount)
+                                attr_str = 'speed'
+
+                        if attr_str:
+                            consumed = True
+                            if consumable.color:
+                                consumator.gen_effect_track(consumable.color)
+                            else:
+                                consumator.gen_effect_track(self.grid.white)
+
+                            if consumator.type == "my_body":
+                                self.grid.msg("SCREEN - you eat {0}".format(cir_utils.get_short_name(consumable.name)))
+                                self.grid.msg("SCREEN - {0} {1}".format(modifier_str, attr_str))
 
             except Exception as e:
                 self.grid.msg("ERROR - invalid effects '{0}' \n {1}".format(effects, e))
