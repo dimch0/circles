@@ -76,7 +76,7 @@ class GameDrawer(object):
 
             if item.img.get_width() == self.grid.tile_radius:
                 self.grid.game_display.blit(item.img, self.set_emoji_pos(item.pos))
-            elif item.type in ['sign', 'door_enter']:
+            elif item.type in ['door_enter']:
                 self.grid.game_display.blit(item.img, self.set_neon_pos(item.pos))
             else:
                 self.grid.game_display.blit(item.img, self.set_img_pos(item.pos))
@@ -149,8 +149,7 @@ class GameDrawer(object):
                                                  eff_cir["radius"])
             self.draw_img(item)
             self.draw_aim(current_tile, item)
-            if not item.type in ['sign']:
-                self.draw_hover(current_tile, item)
+            self.draw_hover(current_tile, item)
 
     def draw_timers(self, item):
         """ Draws current state of a timer """

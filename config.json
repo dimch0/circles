@@ -1,7 +1,7 @@
 {
   "SCENARIOS": {
     "scenario_01": {
-          "tile_radius": 16,
+          "tile_radius": 32,
           "rows"       : 22,
           "cols"       : 22,
           "fog_color"  : "grey01",
