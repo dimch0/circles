@@ -51,7 +51,7 @@ def game_loop(game_over, scenario="scenario_01", msg=list()):
         # grid.rename_button("play", "replay")
         grid.messages = [msg[-1]]
     else:
-        grid.messages = ["SCREEN - game started"]
+        grid.messages = ["SCREEN - start"]
 
 
     # --------------------------------------------------------------- #
