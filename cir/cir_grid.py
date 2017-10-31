@@ -46,6 +46,7 @@ class Grid(object):
         self.updater = None
         self.event_effects = None
         self.messages = []
+        self.shift = False
         # -------------------------------------------------- #
         #                        TILES                       #
         # -------------------------------------------------- #
@@ -418,7 +419,7 @@ class Grid(object):
             self.messages.append(msg)
             # self.messages.insert(0, msg) # append the item at the beginning of the list
 
-        if len(self.messages) > self.max_msg:
+        if len(self.messages) > 36:
             self.messages.pop(0)
 
     def msg(self, msg):

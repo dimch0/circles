@@ -232,15 +232,23 @@ class DataLoader(object):
         """ Assign all items to the grid object """
 
         for name in ["play", "quit"]:
-            butt = ButtonItem()
+            # butt = ButtonItem()
+            # butt.name = name
+            # # butt.color = self.grid.room_color
+            # butt.font = getattr(self.grid.fonts, 'small')
+            # butt.text_color = self.grid.white
+
+            butt = Item()
             butt.name = name
             # butt.color = self.grid.room_color
-            butt.font = getattr(self.grid.fonts, 'small')
-            butt.text_color = self.grid.white
+
+
             if name == "play":
                 butt.pos = self.grid.tile_dict['11_9']
+                butt.img = self.grid.images.play
             elif name == "quit":
                 butt.pos = self.grid.tile_dict['11_13']
+                butt.img = self.grid.images.power
 
             self.grid.buttons.append(butt)
 

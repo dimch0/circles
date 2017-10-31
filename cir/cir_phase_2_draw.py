@@ -116,8 +116,9 @@ class GameDrawer(object):
                                        0)
                 if button.img:
                     self.draw_img(button)
-                if button.text:
-                    self.grid.game_display.blit(button.text, button.text_rect)
+                if hasattr(button, 'text'):
+                    if button.text:
+                        self.grid.game_display.blit(button.text, button.text_rect)
                 self.draw_hover(current_tile, button)
 
 
@@ -154,7 +155,7 @@ class GameDrawer(object):
     def draw_timers(self, item):
         """ Draws current state of a timer """
         if item.lifespan:
-            timer_fat = item.radius / 7
+            timer_fat = item.radius / 5
 
             if item.lifespan.available and item.time_color:
                 if item.radius >= timer_fat:
@@ -250,9 +251,7 @@ class GameDrawer(object):
 
     def draw_msg(self):
         if self.grid.messages:
-            check_messages = self.grid.messages
-
-            for idx, msg in enumerate(check_messages):
+            for idx, msg in enumerate(self.grid.messages[-self.grid.max_msg:]):
                 msg = msg.replace("SCREEN - ", "")
                 font = getattr(self.grid.fonts, 'small')
                 if "+" in msg or "-" in msg:

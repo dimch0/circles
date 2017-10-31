@@ -24,60 +24,71 @@ class GameEvents(GameEffects):
     #                                                                 #
     # --------------------------------------------------------------- #
     def execute_key_events(self, event, my_body):
+
+        if event.type == self.grid.pygame.KEYDOWN:
+            # --------------------------------------------------------------- #
+            #                             ESCAPE                              #
+            # --------------------------------------------------------------- #
+            if event.key == self.grid.pygame.K_ESCAPE:
+                if not self.grid.game_menu:
+                    self.grid.rename_button("replay", "play")
+                    self.grid.game_menu = True
+
+                    if self.grid.current_room in ["999"]:
+                        self.grid.event_effects.show_map(my_body)
+                        self.grid.game_menu = False
+            # --------------------------------------------------------------- #
+            #                             SPACE                               #
+            # --------------------------------------------------------------- #
+            elif event.key == self.grid.pygame.K_SPACE:
+                # GEN VIBE
+                my_body.gen_vibe_track(self.grid)
+            # --------------------------------------------------------------- #
+            #                             NUMBERS                             #
+            # --------------------------------------------------------------- #
+            elif event.key == self.grid.pygame.K_1:
+
+                self.grid.msg("INFO - Key 1 pressed")
+                # EFFECT_GEN
+                my_body.gen_effect_track(self.grid.white)
+
+                # self.grid.change_room("11_11")
+            elif event.key == self.grid.pygame.K_2:
+                self.grid.msg("INFO - Key 2 pressed")
+                self.grid.change_room("11_9")
+            elif event.key == self.grid.pygame.K_3:
+                self.grid.msg("INFO - Key 3 pressed")
+                self.grid.change_room("11_7")
+            # --------------------------------------------------------------- #
+            #                            SHIFT                                #
+            # --------------------------------------------------------------- #
+            elif event.key in [self.grid.pygame.K_RSHIFT, self.grid.pygame.K_LSHIFT]:
+                self.grid.shift = True
+
+            # --------------------------------------------------------------- #
+            #                            QWEADS                               #
+            # --------------------------------------------------------------- #
+            elif not my_body.in_menu:
+
+                # GEN DIRECTION
+                my_body.gen_direction(self.grid.pygame, self.grid, event)
+
+                # CHECK FOR DOOR
+                doors = {door.pos : door  for door in self.grid.items if "door" in door.type}
+
+                for doorpos, door in doors.items():
+                    for adj_idx, adj_to_mybod  in enumerate(self.grid.adj_tiles(my_body.pos)):
+
+                        if adj_to_mybod == doorpos:
+                            if my_body.direction == adj_idx:
+                                self.enter_room(my_body, door)
+
         # --------------------------------------------------------------- #
-        #                             ESCAPE                              #
+        #                            SHIFT                                #
         # --------------------------------------------------------------- #
-        if event.key == self.grid.pygame.K_ESCAPE:
-            if not self.grid.game_menu:
-                self.grid.rename_button("replay", "play")
-                self.grid.game_menu = True
-
-                if self.grid.current_room in ["999"]:
-                    self.grid.event_effects.show_map(my_body)
-                    self.grid.game_menu = False
-        # --------------------------------------------------------------- #
-        #                             SPACE                               #
-        # --------------------------------------------------------------- #
-        elif event.key == self.grid.pygame.K_SPACE:
-
-            # GEN VIBE
-            my_body.gen_vibe_track(self.grid)
-
-        # --------------------------------------------------------------- #
-        #                             NUMBERS                             #
-        # --------------------------------------------------------------- #
-        elif event.key == self.grid.pygame.K_1:
-
-            self.grid.msg("INFO - Key 1 pressed")
-            # EFFECT_GEN
-            my_body.gen_effect_track(self.grid.white)
-
-            # self.grid.change_room("11_11")
-        elif event.key == self.grid.pygame.K_2:
-            self.grid.msg("INFO - Key 2 pressed")
-            self.grid.change_room("11_9")
-        elif event.key == self.grid.pygame.K_3:
-            self.grid.msg("INFO - Key 3 pressed")
-            self.grid.change_room("11_7")
-        # --------------------------------------------------------------- #
-        #                            QWEADS                               #
-        # --------------------------------------------------------------- #
-        elif not my_body.in_menu:
-
-            # GEN DIRECTION
-            my_body.gen_direction(self.grid.pygame, self.grid, event)
-
-            # CHECK FOR DOOR
-            doors = {door.pos : door  for door in self.grid.items if "door" in door.type}
-
-            for doorpos, door in doors.items():
-                for adj_idx, adj_to_mybod  in enumerate(self.grid.adj_tiles(my_body.pos)):
-
-                    if adj_to_mybod == doorpos:
-                        if my_body.direction == adj_idx:
-                            self.enter_room(my_body, door)
-
-
+        elif event.type == self.grid.pygame.KEYUP:
+            if event.key in [self.grid.pygame.K_RSHIFT, self.grid.pygame.K_LSHIFT]:
+                self.grid.shift = False
     # --------------------------------------------------------------- #
     #                                                                 #
     #                         CLICK EVENTS                            #
@@ -185,6 +196,8 @@ class GameEvents(GameEffects):
                                         self.empty_inventory(CLICKED_ITEM)
                                     else:
                                         CLICKED_ITEM.destroy(self.grid)
+                                else:
+                                    self.grid.msg("SCREEN - no eat this")
                             else:
                                 self.grid.msg("SCREEN - {0} is far".format(CLICKED_ITEM.name))
                         else:

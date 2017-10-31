@@ -71,7 +71,7 @@ def game_loop(game_over, scenario="scenario_01", msg=list()):
             if event.type == pygame.QUIT:
                 grid.game_exit()
             # KEY EVENTS
-            elif event.type == pygame.KEYDOWN:
+            elif event.type in [pygame.KEYDOWN, pygame.KEYUP]:
                 grid.event_effects.execute_key_events(event, my_body)
             # CLICK EVENTS
             elif event.type == pygame.MOUSEBUTTONDOWN:

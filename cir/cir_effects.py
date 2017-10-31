@@ -298,17 +298,18 @@ class GameEffects(object):
 
         if effects:
             try:
+                eff_msg = []
                 for effect in effects:
 
                     # Exclude # (non-consumable) effects
-                    if not "#" in effect:
-                        effect = effect.split("_")
+                    if not '#' in effect:
+                        effect = effect.split('_')
                         eff_att = effect[0]
                         amount = float(effect[1])
                         if amount >= 0:
-                            modifier_str = "+{0}".format(abs(int(amount)))
+                            modifier_str = '+{0}'.format(abs(int(amount)))
                         else:
-                            modifier_str = "-{0}".format(abs(int(amount)))
+                            modifier_str = '-{0}'.format(abs(int(amount)))
                         attr_str = ''
                         if not consumator.type in protected_types:
                             if eff_att == 'LS' and consumator.lifespan:
@@ -319,21 +320,24 @@ class GameEffects(object):
                                 consumator.lifespan.update(amount)
                                 attr_str = 'life'
 
-                            elif eff_att == 'SP' and hasattr(consumator, "speed"):
+                            elif eff_att == 'SP' and hasattr(consumator, 'speed'):
                                 consumator.change_speed(amount)
                                 attr_str = 'speed'
 
                         if attr_str:
-                            consumed = True
-                            # if consumable.color:
-                            if 0:
-                                consumator.gen_effect_track(consumable.color)
-                            else:
-                                consumator.gen_effect_track(self.grid.gelb04)
+                            eff_msg.append(modifier_str + ' ' + attr_str)
 
-                            if consumator.type == "my_body":
-                                self.grid.msg("SCREEN - you eat {0}".format(cir_utils.get_short_name(consumable.name)))
-                                self.grid.msg("SCREEN - {0} {1}".format(modifier_str, attr_str))
+                if eff_msg:
+                    consumed = True
+                    # # if consumable.color:
+                    # if 0:
+                    # #     consumator.gen_effect_track(consumable.color)
+                    # else:
+                    consumator.gen_effect_track(self.grid.gelb04)
+                    if consumator.type == 'my_body':
+                        self.grid.msg('SCREEN - you eat {0}'.format(cir_utils.get_short_name(consumable.name)))
+                        for effm in eff_msg:
+                            self.grid.msg('SCREEN - {0}'.format(effm))
 
             except Exception as e:
                 self.grid.msg("ERROR - invalid effects '{0}' \n {1}".format(effects, e))

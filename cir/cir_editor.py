@@ -19,24 +19,36 @@ class Editor(object):
             self.grid.show_grid = not self.grid.show_grid
 
         elif clicked_item.name == "edit_fast":
-            my_body.change_speed(0.5)
+            modifier = 0.5
+            if self.grid.shift:
+                modifier = modifier * 10
+            my_body.change_speed(modifier)
             my_body.gen_effect_track(self.grid.white)
 
         elif clicked_item.name == "edit_map":
             self.grid.event_effects.show_map(my_body)
 
         elif clicked_item.name == "edit_slow":
-            my_body.change_speed(-0.5)
+            modifier = 0.5
+            if self.grid.shift:
+                modifier = modifier * 10
+            my_body.change_speed(-modifier)
             my_body.gen_effect_track(self.grid.red01)
 
         elif clicked_item.name == "edit_heal":
             if my_body.lifespan:
-                my_body.lifespan.update(30)
+                modifier = 10
+                if self.grid.shift:
+                    modifier = modifier * 6
+                my_body.lifespan.update(modifier)
                 my_body.gen_effect_track(self.grid.white)
 
         elif clicked_item.name == "edit_poison":
             if my_body.lifespan:
-                my_body.lifespan.update(-10)
+                modifier = 10
+                if self.grid.shift:
+                    modifier = modifier * 6
+                my_body.lifespan.update(-modifier)
                 my_body.gen_effect_track(self.grid.red01)
 
         elif clicked_item.name == "edit_inf":
@@ -55,14 +67,32 @@ class Editor(object):
                 if rev_tile not in self.grid.occupado_tiles.values():
                     self.grid.event_effects.produce("observer", rev_tile)
 
-        elif clicked_item.name == "edit_fi":
+        elif clicked_item.name == "edit_pi":
             # my_body.range += 0.5
             # my_body.vspeed += 0.1
+            modifier = 0.5
+            if self.grid.shift:
+                modifier = modifier * 10
+
+            my_body.range += modifier
+            my_body.vspeed += modifier
             my_body.gen_fat()
-            my_body.range += 4
-            my_body.vspeed += 6
             my_body.gen_effect_track(self.grid.white)
 
-        elif clicked_item.name == "edit_nuke":
+        elif clicked_item.name == "edit_freq":
+            modifier = 0.5
+            if self.grid.shift:
+                modifier = modifier * 10
+            my_body.vspeed += modifier
+            my_body.gen_effect_track(self.grid.white)
+
+        elif clicked_item.name == "edit_fist":
             my_body.effects += " LP_-180"
             my_body.gen_effect_track(self.grid.white)
+
+        elif clicked_item.name == "edit_book":
+            more_msg = 24
+            if self.grid.max_msg < more_msg:
+                self.grid.max_msg += more_msg
+            else:
+                self.grid.max_msg -= more_msg

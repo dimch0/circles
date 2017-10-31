@@ -1,7 +1,7 @@
 {
   "SCENARIOS": {
     "scenario_01": {
-          "tile_radius": 32,
+          "tile_radius": 31,
           "rows"       : 22,
           "cols"       : 22,
           "fog_color"  : "grey01",
@@ -71,7 +71,7 @@
 
   "CONSTANTS": {
     "fps"        : 60,
-    "max_msg"    : 6
+    "max_msg"    : 12
     },
 
   "VISIBILITY": {
