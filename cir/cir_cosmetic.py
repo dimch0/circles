@@ -87,7 +87,7 @@ class Fonts(object):
     """
     def __init__(self, grid):
         self.tiny = grid.pygame.font.Font(grid.font_file, int(grid.tile_radius * 0.45))
-        self.small = grid.pygame.font.Font(grid.font_file, int(grid.tile_radius * 0.60))
+        self.small = grid.pygame.font.Font(grid.font_file, int(grid.tile_radius * 0.72))
         self.medium = grid.pygame.font.Font(grid.font_file, int(grid.tile_radius))
         self.large = grid.pygame.font.Font(grid.font_file, grid.tile_radius * 2)
 
