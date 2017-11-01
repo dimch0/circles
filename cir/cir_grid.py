@@ -277,8 +277,8 @@ class Grid(object):
         result = {}
         map_scale = 10
 
-        dix = (self.center_tile[0] - pos[0]) / 10
-        diy = (self.center_tile[1] - pos[1]) / 10
+        dix = (self.center_tile[0] - pos[0]) / map_scale
+        diy = (self.center_tile[1] - pos[1]) / map_scale
         dot_pos = (room_pos[0] - dix, room_pos[1] - diy)
 
         result[dot_pos] = {'pos': dot_pos,
