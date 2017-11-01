@@ -263,7 +263,7 @@ class DataLoader(object):
 
     def load_game(self):
         """
-        Main loading execution of all items, cosmetics and preconditions
+        Main loading execution of all items, res and preconditions
         :return: my_body
         """
 

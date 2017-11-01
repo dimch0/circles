@@ -21,32 +21,36 @@ class Grid(object):
 
     def __init__(self, pygame=None, scenario=None):
         # -------------------------------------------------- #
-        #                      SETTINGS                      #
+        #                      HELPERS                       #
         # -------------------------------------------------- #
         self.pygame = pygame
         self.scenario = scenario
-        self.cathetus = 0
-        self.display_width = 0
-        self.display_height = 0
-        self.game_display = None
-        self.fog_color = None
-        self.room_color = None
-        self.set_config()
-        self.set_data_file()
-        self.game_menu = True
-        self.game_over = False
-        self.start_time = None
-        self.seconds_in_game = 0
-        self.seconds_in_pause = 0
-        self.clock = pygame.time.Clock()
         self.images = None
         self.fonts = None
         self.drawer = None
         self.loader = None
         self.updater = None
         self.event_effects = None
-        self.messages = []
+        # -------------------------------------------------- #
+        #                      SETTINGS                      #
+        # -------------------------------------------------- #
+        self.cathetus = 0
+        self.display_width = 0
+        self.display_height = 0
+        self.game_display = None
+        self.fog_color = None
+        self.room_color = None
+        self.door_slots = []
+        self.set_config()
+        self.set_data_file()
+        self.game_menu = True
+        self.game_over = False
+        self.start_time = None
         self.shift = False
+        self.seconds_in_game = 0
+        self.seconds_in_pause = 0
+        self.clock = pygame.time.Clock()
+        self.messages = []
         # -------------------------------------------------- #
         #                        TILES                       #
         # -------------------------------------------------- #
@@ -60,7 +64,6 @@ class Grid(object):
         self.set_playing_tiles()
         self.occupado_tiles = {}
         self.revealed_tiles = {}
-        self.door_slots = self.names_to_pos(["11_1", "16_6", "16_16", "11_21", "6_16", "6_6"])
         self.draw_map = False
         self.map_dots = {}
         # -------------------------------------------------- #
@@ -84,12 +87,23 @@ class Grid(object):
         self.mouse_img = None
         self.mode_img = None
 
-
     # --------------------------------------------------------------- #
     #                            SETTINGS                             #
     # --------------------------------------------------------------- #
     def set_game_display(self):
         self.game_display = self.pygame.display.set_mode((self.display_width, self.display_height))
+
+
+    def read_config(self, conf_file):
+        if os.path.exists(conf_file):
+            with open(conf_file) as jsonfile:
+                conf = json.load(jsonfile)
+            for section in conf.keys():
+                for metric, value in conf[section].items():
+                    setattr(self, metric, value)
+
+        else:
+            self.msg('ERROR - No such file: {0}'.format(conf_file))
 
     def set_config(self):
         """
@@ -97,16 +111,9 @@ class Grid(object):
         and calculating the display metrics
         """
         try:
-            with open(CONFIG_JSON_FILE) as jsonfile:
-                conf = json.load(jsonfile)
-            for section in conf.keys():
-                for metric, value in conf[section].items():
-                    if 'scenario' in metric:
-                        if self.scenario == metric:
-                            for grid_metric, grid_val in value.items():
-                                setattr(self, grid_metric, grid_val)
-                    else:
-                        setattr(self, metric, value)
+            self.read_config(CONFIG_JSON_FILE)
+            conf_scenario = os.path.join(self.data_dir, self.scenario, 'config.json')
+            self.read_config(conf_scenario)
         except Exception as e:
             self.msg("ERROR - Could not set config: {0}".format(e))
 
@@ -118,11 +125,10 @@ class Grid(object):
         try:
             for root, dirs, files in os.walk(self.data_dir, topdown=False):
                 for file in files:
-                    if file.endswith(".csv"):
+                    if file.endswith('.csv'):
                         data_file = os.path.join(root, file)
                         file_name = os.path.splitext(file)[0]
                         setattr(self, file_name, data_file)
-
         except Exception as e:
             self.msg("ERROR - Could not set data file as attribute: {0}".format(e))
 
@@ -147,7 +153,6 @@ class Grid(object):
     # --------------------------------------------------------------- #
     def gen_tiles(self):
         """ Generating the grid tiles """
-
         self.tiles = []
         for x in range(0, self.cols + 1):
             for y in range(1, self.rows):
@@ -159,6 +164,7 @@ class Grid(object):
                         self.tiles.append(centre)
                         self.tile_dict[str(x) + '_' + str(y)] = centre
         self.tile_dict['center'] = self.find_center_tile()
+
 
     def find_center_tile(self):
         """ :return: the center tile (x, y) of the grid """
@@ -215,6 +221,9 @@ class Grid(object):
                         inside_tiles.append(tile)
         self.playing_tiles.extend(inside_tiles)
 
+        if self.door_slots:
+            self.door_slots = self.names_to_pos(self.door_slots)
+
     def adj_tiles(self, center, empty=False, playing=False):
         """
         :param grid: the center tile
@@ -255,14 +264,20 @@ class Grid(object):
                         self.msg("ERROR - ERROR Could not remove placeholder: {0}".format(e))
 
     def set_occupado(self):
+        tiles_to_check = set(self.playing_tiles + self.door_slots)
         for item in self.items:
             if not item.type in ["signal", "trigger", "option"]:
-                tiles_to_check = set(self.playing_tiles + self.door_slots)
+
                 for tile in tiles_to_check:
                     circle_1 = (tile, self.tile_radius)
                     circle_2 = (item.pos, self.tile_radius)
                     if intersecting(circle_1, circle_2):
                         self.occupado_tiles[item.name] = tile
+
+
+    # --------------------------------------------------------------- #
+    #                            MAP                                  #
+    # --------------------------------------------------------------- #
 
     def get_map_dot(self, pos, room_pos, dot_col, dot_rad):
         """
@@ -385,16 +400,13 @@ class Grid(object):
                     self.msg("INFO - Pause second: {0}".format(self.seconds_in_pause))
 
     # --------------------------------------------------------------- #
-    #                            BUTTONS                              #
+    #                            ITEMS                                #
     # --------------------------------------------------------------- #
     def rename_button(self, old_name, new_name):
         for button in self.buttons:
             if button.name == old_name:
                 button.name = new_name
 
-    # --------------------------------------------------------------- #
-    #                             ITEMS                               #
-    # --------------------------------------------------------------- #
     def sort_items_by_layer(self):
         self.items.sort(key=lambda x: x.layer, reverse=False)
 
@@ -413,7 +425,9 @@ class Grid(object):
         self.msg("SCREEN - game finish")
         quit()
 
-
+    # --------------------------------------------------------------- #
+    #                            LOG MSG                              #
+    # --------------------------------------------------------------- #
     def log_msg(self, msg):
         """ Log a message in a temp log file """
         if not self.messages or (self.messages and not msg == self.messages[-1]):
