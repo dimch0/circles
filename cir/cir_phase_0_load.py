@@ -184,13 +184,12 @@ class DataLoader(object):
         """ Set timers """
         if item.lifespan:
             lifespan = TimerItem()
-            lifespan.radius = self.grid.tile_radius
-            lifespan.default_radius = self.grid.tile_radius
+            lifespan.radius = item.radius
+            lifespan.default_radius = item.radius
             lifespan.duration = item.lifespan
-            lifespan.limit = lifespan.duration
+            lifespan.limit = item.lifespan
             lifespan.color = item.time_color
             item.lifespan = lifespan
-
 
         if hasattr(item, "vfreq"):
             vibefr = TimerItem()
@@ -230,7 +229,7 @@ class DataLoader(object):
 
     def set_buttons(self):
         """ Assign all items to the grid object """
-
+        center = self.grid.find_center_tile()
         for name in ["play", "quit"]:
             # butt = ButtonItem()
             # butt.name = name
@@ -242,12 +241,11 @@ class DataLoader(object):
             butt.name = name
             # butt.color = self.grid.room_color
 
-
             if name == "play":
-                butt.pos = self.grid.tile_dict['11_9']
+                butt.pos = self.grid.adj_tiles(center)[0]
                 butt.img = self.grid.images.play
             elif name == "quit":
-                butt.pos = self.grid.tile_dict['11_13']
+                butt.pos = self.grid.adj_tiles(center)[3]
                 butt.img = self.grid.images.power
 
             self.grid.buttons.append(butt)

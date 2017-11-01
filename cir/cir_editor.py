@@ -24,6 +24,7 @@ class Editor(object):
                 modifier = modifier * 10
             my_body.change_speed(modifier)
             my_body.gen_effect_track(self.grid.white)
+            self.grid.msg('SCREEN - +{0} speed'.format(modifier))
 
         elif clicked_item.name == "edit_map":
             self.grid.event_effects.show_map(my_body)
@@ -34,6 +35,7 @@ class Editor(object):
                 modifier = modifier * 10
             my_body.change_speed(-modifier)
             my_body.gen_effect_track(self.grid.red01)
+            self.grid.msg('SCREEN - -{0} speed'.format(modifier))
 
         elif clicked_item.name == "edit_heal":
             if my_body.lifespan:
@@ -42,6 +44,7 @@ class Editor(object):
                     modifier = modifier * 6
                 my_body.lifespan.update(modifier)
                 my_body.gen_effect_track(self.grid.white)
+                self.grid.msg('SCREEN - +{0} time'.format(modifier))
 
         elif clicked_item.name == "edit_poison":
             if my_body.lifespan:
@@ -50,10 +53,18 @@ class Editor(object):
                     modifier = modifier * 6
                 my_body.lifespan.update(-modifier)
                 my_body.gen_effect_track(self.grid.red01)
+                self.grid.msg('SCREEN - -{0} time'.format(modifier))
 
         elif clicked_item.name == "edit_inf":
-            my_body.lifespan = None
-            my_body.gen_effect_track(self.grid.white)
+            if my_body.lifespan:
+                my_body.lifespan = None
+                my_body.gen_effect_track(self.grid.white)
+                self.grid.msg('SCREEN - immortality on')
+            # else:
+            #     my_body.lifespan = float(60)
+            #     self.grid.loader.set_timers(my_body)
+            #     my_body.gen_effect_track(self.grid.white)
+            #     self.grid.msg('SCREEN - immortality off')
 
         elif clicked_item.name == "edit_sat" and not self.grid.current_room == "999":
             self.grid.event_effects.satellite()
@@ -73,11 +84,11 @@ class Editor(object):
             modifier = 0.5
             if self.grid.shift:
                 modifier = modifier * 10
-
             my_body.range += modifier
-            my_body.vspeed += modifier
-            my_body.gen_fat()
+            # my_body.gen_fat()
             my_body.gen_effect_track(self.grid.white)
+            self.grid.msg('SCREEN - +{0} range'.format(modifier))
+
 
         elif clicked_item.name == "edit_freq":
             modifier = 0.5
@@ -85,10 +96,18 @@ class Editor(object):
                 modifier = modifier * 10
             my_body.vspeed += modifier
             my_body.gen_effect_track(self.grid.white)
+            self.grid.msg('SCREEN - +{0} vibe speed'.format(modifier))
 
         elif clicked_item.name == "edit_fist":
-            my_body.effects += " LP_-180"
+            modifier = 1
+            if self.grid.shift:
+                modifier = 5
+
+            for modi in range(0, modifier):
+                my_body.effects += " LP_-30"
+
             my_body.gen_effect_track(self.grid.white)
+            self.grid.msg('SCREEN - +{0} muscle'.format(modifier))
 
         elif clicked_item.name == "edit_book":
             more_msg = 24

@@ -1,6 +1,6 @@
 scenario,room,name,klas,type,color,img,pos,category,has_opts,available,modable,collectible,consumable,uses,speed,range,time_color,lifespan,vspeed,vfreq,layer,effects
 BODY,,,,,,,,,,,,,,,,,,,,,,
-scenario_02,11_11,my_body,body,my_body,gelb05,galab,11_11,,TRUE,TRUE,,,,,2,1,fog_color,30,,,2,LP_-15 #rev
+scenario_02,11_11,my_body,body,my_body,gelb05,galab,center,,TRUE,TRUE,,,,,2,1,fog_color,30,,,2,LP_-15 #rev
 Options,,,,,,,,,,,,,,,,,,,,,,
 scenario_02,,option,body,option,,,,my_body,,TRUE,,,,,,,,,,,,
 scenario_02,,option2,body,option,,,,my_body,,TRUE,,,,,,,,,,,,

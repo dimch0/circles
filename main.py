@@ -28,8 +28,7 @@
 # --------------------------------------------------------------- #
 # TODO: Indicate uses / metrics
 # TODO: Animate demo
-# TODO: Add soundsq
-# TODO: Remove blue colors
+# TODO: Add sounds
 
 
 import pygame

@@ -80,9 +80,11 @@ class VarUpdater(object):
 
     def timer_effect(self, item):
         """ Timer effects  """
+        if item.name == "my_body" and "SCREEN - immortality off" in self.grid.messages:
+            import pdb; pdb.set_trace()
 
         # LIFESPAN
-        if item.lifespan:
+        if item.lifespan and not isinstance(item.lifespan, float):
             item.lifespan.tick()
             if item.lifespan.is_over:
                 item.destroy(self.grid)

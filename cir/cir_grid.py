@@ -158,6 +158,7 @@ class Grid(object):
                     if not centre in self.tiles:
                         self.tiles.append(centre)
                         self.tile_dict[str(x) + '_' + str(y)] = centre
+        self.tile_dict['center'] = self.find_center_tile()
 
     def find_center_tile(self):
         """ :return: the center tile (x, y) of the grid """
