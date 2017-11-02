@@ -212,14 +212,15 @@ class Grid(object):
 
     def set_playing_tiles(self):
         """ Defining the playing tiles """
-        self.playing_tiles = self.names_to_pos(self.playing_tiles)
-        inside_tiles = []
-        for tile in self.tiles:
-            if inside_polygon(self.playing_tiles, tile):
-                if not tile in self.playing_tiles:
-                    if not tile in inside_tiles:
-                        inside_tiles.append(tile)
-        self.playing_tiles.extend(inside_tiles)
+        if self.playing_tiles:
+            self.playing_tiles = self.names_to_pos(self.playing_tiles)
+            inside_tiles = []
+            for tile in self.tiles:
+                if inside_polygon(self.playing_tiles, tile):
+                    if not tile in self.playing_tiles:
+                        if not tile in inside_tiles:
+                            inside_tiles.append(tile)
+            self.playing_tiles.extend(inside_tiles)
 
         if self.door_slots:
             self.door_slots = self.names_to_pos(self.door_slots)
@@ -306,7 +307,7 @@ class Grid(object):
         map_dots = {}
 
         for room_name, room  in self.rooms.items():
-            if room_name not in ['999', 'ALL']:
+            if room_name not in ['map', 'ALL']:
 
                 room_pos = self.names_to_pos([room_name])[0]
 
@@ -390,7 +391,7 @@ class Grid(object):
         """ Counts the seconds in the game """
 
         if time.time() > self.start_time + self.seconds_in_game + self.seconds_in_pause:
-            if not self.game_menu and not self.current_room in ["999"]:
+            if not self.game_menu and not self.current_room in ["map"]:
                 self.seconds_in_game += 1
                 if self.show_seconds:
                     self.msg("INFO - Game second: {0}".format(self.seconds_in_game))

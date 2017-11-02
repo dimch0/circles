@@ -120,9 +120,9 @@ class GameEffects(object):
     def show_map(self, my_body):
         """ Shows the map room 999 """
 
-        if not self.grid.current_room == "999":
+        if not self.grid.current_room == "map":
             self.grid.previous_room = self.grid.current_room
-            self.grid.change_room("999")
+            self.grid.change_room("map")
             self.grid.gen_map_dots()
             self.grid.draw_map = True
         else:

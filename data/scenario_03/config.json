@@ -1,0 +1,11 @@
+{
+  "scenario_03": {
+    "tile_radius": 40,
+    "rows": 12,
+    "cols": 12,
+    "fog_color": "grey01",
+    "room_color": "grey03",
+    "playing_tiles": ["1_1", "11_1", "11_11", "1_11"],
+    "show_editor": 1
+  }
+}

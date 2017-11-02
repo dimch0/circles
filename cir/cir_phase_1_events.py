@@ -34,7 +34,7 @@ class GameEvents(GameEffects):
                     self.grid.rename_button("replay", "play")
                     self.grid.game_menu = True
 
-                    if self.grid.current_room in ["999"]:
+                    if self.grid.current_room in ["map"]:
                         self.grid.event_effects.show_map(my_body)
                         self.grid.game_menu = False
             # --------------------------------------------------------------- #

@@ -66,11 +66,15 @@ class Editor(object):
             #     my_body.gen_effect_track(self.grid.white)
             #     self.grid.msg('SCREEN - immortality off')
 
-        elif clicked_item.name == "edit_sat" and not self.grid.current_room == "999":
+        elif clicked_item.name == "edit_sat" and not self.grid.current_room == "map":
             self.grid.event_effects.satellite()
 
         elif clicked_item.name == "edit_spiral":
             self.grid.scenario = 'scenario_02'
+            self.grid.game_over = True
+
+        elif clicked_item.name == "edit_sock":
+            self.grid.scenario = 'scenario_03'
             self.grid.game_over = True
 
         elif clicked_item.name == "edit_pentagram":

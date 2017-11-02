@@ -1,0 +1,10 @@
+scenario,room,name,klas,type,color,img,pos,category,has_opts,available,modable,collectible,consumable,uses,speed,range,time_color,lifespan,vspeed,vfreq,layer,effects
+BODY,,,,,,,,,,,,,,,,,,,,,,
+Scenario_03,ALL,my_body,body,my_body,gelb05,galab,center,,TRUE,TRUE,,,,,2,1,fog_color,30,,,2,LP_-15 #rev
+Options,,,,,,,,,,,,,,,,,,,,,,
+Scenario_03,,option,body,option,,,,my_body,,TRUE,,,,,,,,,,,,
+Scenario_03,,option2,body,option,,,,my_body,,TRUE,,,,,,,,,,,,
+Scenario_03,,option3,body,option,,,,my_body,,TRUE,,,,,,,,,,,,
+Scenario_03,,option4,body,option,,,,my_body,,TRUE,,,,,,,,,,,,
+Scenario_03,,suicide,item,option,,suicide,,my_body,,TRUE,,,,,,,,,,,1,
+Scenario_03,,echo,item,option,,bow,,my_body,,TRUE,TRUE,,,,,,,,,,1,

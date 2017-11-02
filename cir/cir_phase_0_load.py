@@ -118,36 +118,38 @@ class DataLoader(object):
             col_idx = self.set_col_idx(header)
             for row in data:
                 if not row == header:
-                    scenario_col = row[col_idx["scenario"]]
-                    if str(self.grid.scenario) in scenario_col or "ALL" in scenario_col:
+                    scenario_col = row[col_idx["scenario"]].lower()
+                    if str(self.grid.scenario) in scenario_col or "all" in scenario_col:
                         klas = row[col_idx["klas"]]
                         # --------------------------------------------------------------- #
                         #                        ATTRIBUTES DICT                          #
                         # --------------------------------------------------------------- #
-                        attributes_dict = {
-                            "type"        : str(row[col_idx["type"]]),
-                            "has_opts"    : str(row[col_idx["has_opts"]]),
-                            "category"    : str(row[col_idx["category"]]),
-                            "available"   : bool(row[col_idx["available"]]),
-                            "name"        : str(row[col_idx["name"]]),
-                            "pos"         : self.grid.tile_dict[row[col_idx["pos"]]] if len(row[col_idx["pos"]]) > 0 else None,
-                            "color"       : getattr(self.grid, row[col_idx["color"]]) if len(row[col_idx["color"]]) > 0 else None,
-                            "img"         : getattr(self.grid.images, row[col_idx["img"]]) if len(row[col_idx["img"]]) > 0 else None,
-                            "speed"       : int(float(row[col_idx["speed"]])) if len(row[col_idx["speed"]]) > 0 else None,
-                            "range"       : int(float(row[col_idx["range"]])) if len(row[col_idx["range"]]) > 0 else None,
-                            "time_color"  : getattr(self.grid, row[col_idx["time_color"]]) if len(row[col_idx["time_color"]]) > 0 else None,
-                            "modable"     : bool(row[col_idx["modable"]]),
-                            "collectible" : bool(row[col_idx["collectible"]]),
-                            "consumable"  : bool(row[col_idx["consumable"]]),
-                            "uses"        : int(float(row[col_idx["uses"]])) if len(row[col_idx["uses"]]) > 0 else 1,
-                            "room"        : str(row[col_idx["room"]]),
-                            "lifespan"    : float(row[col_idx["lifespan"]]) if len(row[col_idx["lifespan"]]) > 0 else None,
-                            "vfreq"       : float(row[col_idx["vfreq"]]) if len(row[col_idx["vfreq"]]) > 0 else None,
-                            "vspeed"      : int(float(row[col_idx["vspeed"]])) if len(row[col_idx["vspeed"]]) > 0 else 1,
-                            "layer"       : int(float(row[col_idx["layer"]])) if len(row[col_idx["layer"]]) > 0 else 1,
-                            "effects"     : str(row[col_idx["effects"]])
-                        }
-
+                        try:
+                            attributes_dict = {
+                                "type"        : str(row[col_idx["type"]]),
+                                "has_opts"    : str(row[col_idx["has_opts"]]),
+                                "category"    : str(row[col_idx["category"]]),
+                                "available"   : bool(row[col_idx["available"]]),
+                                "name"        : str(row[col_idx["name"]]),
+                                "pos"         : self.grid.tile_dict[row[col_idx["pos"]]] if len(row[col_idx["pos"]]) > 0 else None,
+                                "color"       : getattr(self.grid, row[col_idx["color"]]) if len(row[col_idx["color"]]) > 0 else None,
+                                "img"         : getattr(self.grid.images, row[col_idx["img"]]) if len(row[col_idx["img"]]) > 0 else None,
+                                "speed"       : int(float(row[col_idx["speed"]])) if len(row[col_idx["speed"]]) > 0 else None,
+                                "range"       : int(float(row[col_idx["range"]])) if len(row[col_idx["range"]]) > 0 else None,
+                                "time_color"  : getattr(self.grid, row[col_idx["time_color"]]) if len(row[col_idx["time_color"]]) > 0 else None,
+                                "modable"     : bool(row[col_idx["modable"]]),
+                                "collectible" : bool(row[col_idx["collectible"]]),
+                                "consumable"  : bool(row[col_idx["consumable"]]),
+                                "uses"        : int(float(row[col_idx["uses"]])) if len(row[col_idx["uses"]]) > 0 else 1,
+                                "room"        : str(row[col_idx["room"]]),
+                                "lifespan"    : float(row[col_idx["lifespan"]]) if len(row[col_idx["lifespan"]]) > 0 else None,
+                                "vfreq"       : float(row[col_idx["vfreq"]]) if len(row[col_idx["vfreq"]]) > 0 else None,
+                                "vspeed"      : int(float(row[col_idx["vspeed"]])) if len(row[col_idx["vspeed"]]) > 0 else 1,
+                                "layer"       : int(float(row[col_idx["layer"]])) if len(row[col_idx["layer"]]) > 0 else 1,
+                                "effects"     : str(row[col_idx["effects"]])
+                            }
+                        except Exception as e:
+                            print "Could not set attributes_dict\n", e
                         # CREATE ITEM
                         if item_name:
                             if item_name in attributes_dict["name"]:

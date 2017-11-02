@@ -42,9 +42,9 @@ def game_loop(game_over, scenario="scenario_01", msg=list()):
     # --------------------------------------------------------------- #
     #                        PHASE 0: LOADING                         #
     # --------------------------------------------------------------- #
-    grid               = Grid(pygame, scenario)
-    grid.loader        = DataLoader(grid)
-    my_body            = grid.loader.load_game()
+    grid        = Grid(pygame, scenario)
+    grid.loader = DataLoader(grid)
+    my_body     = grid.loader.load_game()
 
     if game_over:
         # grid.rename_button("play", "replay")
