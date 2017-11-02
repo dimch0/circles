@@ -66,7 +66,8 @@ class BodyItem(MobileItem):
             for thick in vibe_thickness:
                 for rad_delim in rad_delimiter_list:
                     result.append(thick)
-
             self.vibe_track = zip(vibe_radius, result)
+            self.vibe_track.append((vibe_limit, 1))
             self.gen_fat()
+
         return self.vibe_track
