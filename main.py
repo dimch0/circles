@@ -4,33 +4,6 @@
 #                                                       MAIN                                                          #
 #                                                                                                                     #
 # ------------------------------------------------------------------------------------------------------------------- #
-# --------------------------------------------------------------- #
-#                             BUG FIXES                           #
-# --------------------------------------------------------------- #
-# TODO: Fix movement to occupado / mitosis
-# --------------------------------------------------------------- #
-#                             GENERAL                             #
-# --------------------------------------------------------------- #
-# TODO: Log statistics during a lifespan, calculate karma
-# TODO: Create spirit mode NEW SCENARIO
-# TODO: Create save button
-# TODO: Create load button
-# TODO: Create installation .exe file
-# --------------------------------------------------------------- #
-#                             URBAN                               #
-# --------------------------------------------------------------- #
-# TODO: Create craft mode
-# TODO: Create trade mode
-# TODO: Create item generation / kofa / kenef
-# TODO: Create inside body view room 400
-# --------------------------------------------------------------- #
-#                             COSMETICS                           #
-# --------------------------------------------------------------- #
-# TODO: Indicate uses / metrics
-# TODO: Animate demo
-# TODO: Add sounds
-
-
 import pygame
 from cir.cir_game_menu import game_menu
 from cir.cir_grid import Grid
