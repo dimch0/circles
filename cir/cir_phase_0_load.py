@@ -149,7 +149,11 @@ class DataLoader(object):
                                 "effects"     : str(row[col_idx["effects"]])
                             }
                         except Exception as e:
-                            print "Could not set attributes_dict\n", e
+                            self.grid.msg(
+                                'ERROR - Could not set attributes_dict {0}; klas: {1}; name: {2}'.format(
+                                    e,
+                                    klas,
+                                    str(row[col_idx["name"]])))
                         # CREATE ITEM
                         if item_name:
                             if item_name in attributes_dict["name"]:

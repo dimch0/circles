@@ -45,28 +45,33 @@ class GameEffects(object):
         """
         product_name = cir_utils.get_short_name(product_name)
         new_item = self.grid.loader.load_item(product_name)
+        if new_item:
 
-        if pos:
-            new_item.pos = pos
-        if radius:
-            new_item.radius = radius
-            new_item.default_radius = radius
-        if vfreq:
-            new_item.vfreq.duration = vfreq
-        if lifespan:
-            new_item.lifespan = lifespan
+            if pos:
+                new_item.pos = pos
+            if radius:
+                new_item.radius = radius
+                new_item.default_radius = radius
+            if vfreq:
+                new_item.vfreq.duration = vfreq
+            if lifespan:
+                new_item.lifespan = lifespan
+            else:
+                if hasattr(new_item, 'lifespan'):
+                    if new_item.lifespan:
+                        new_item.lifespan.restart()
+
+            new_item.default_img = new_item.img
+            new_item.available = True
+            new_item.gen_birth_track()
+            if add_to_items:
+                if new_item.name in self.grid.occupado_tiles.keys():
+                    new_item.name = new_item.name + '-' + str(time.time())
+                self.grid.items.append(new_item)
+
         else:
-            if hasattr(new_item, 'lifespan'):
-                if new_item.lifespan:
-                    new_item.lifespan.restart()
-
-        new_item.default_img = new_item.img
-        new_item.available = True
-        new_item.gen_birth_track()
-        if add_to_items:
-            if new_item.name in self.grid.occupado_tiles.keys():
-                new_item.name = new_item.name + '-' + str(time.time())
-            self.grid.items.append(new_item)
+            self.grid.msg('ERROR - Could not produce item {0}'.format(
+                cir_utils.get_short_name(product_name)))
 
         return new_item
 
@@ -183,8 +188,9 @@ class GameEffects(object):
                                   my_body.pos,
                                   radius=int(self.grid.tile_radius / 3)
                                   )
-            signal.color = my_body.color
-            signal.direction = signal.get_aiming_direction(self.grid, current_tile)[1]
+            if signal:
+                signal.color = my_body.color
+                signal.direction = signal.get_aiming_direction(self.grid, current_tile)[1]
 
 
     def terminate_mode_click(self, item):
@@ -234,23 +240,23 @@ class GameEffects(object):
                 item_as_option = self.produce(product_name=item_name,
                                               pos=inventory_placeholder.pos,
                                               add_to_items=False)
-
-                item_as_option.name = clicked_item.name + '-' + str(time.time())
-                item_as_option.type = "option"
-                item_as_option.modable = True
-                item_as_option.consumable = clicked_item.consumable
-                item_as_option.effects = clicked_item.effects
-                item_as_option.color = my_body.inventory.color
-                item_as_option.img = clicked_item.img
-                item_as_option.uses = clicked_item.uses
-                if hasattr(clicked_item, "lifespan"):
-                    item_as_option.lifespan = clicked_item.lifespan
-                # ADD IN BAG AND REMOVE FROM FIELD
-                if inventory_placeholder in my_body.inventory.options.values():
-                    my_body.inventory.options = {k: v for k, v in my_body.inventory.options.items() if
-                                                 not v == inventory_placeholder}
-                inventory.options[item_as_option.name] = item_as_option
-                clicked_item.destroy(self.grid)
+                if item_as_option:
+                    item_as_option.name = clicked_item.name + '-' + str(time.time())
+                    item_as_option.type = "option"
+                    item_as_option.modable = True
+                    item_as_option.consumable = clicked_item.consumable
+                    item_as_option.effects = clicked_item.effects
+                    item_as_option.color = my_body.inventory.color
+                    item_as_option.img = clicked_item.img
+                    item_as_option.uses = clicked_item.uses
+                    if hasattr(clicked_item, "lifespan"):
+                        item_as_option.lifespan = clicked_item.lifespan
+                    # ADD IN BAG AND REMOVE FROM FIELD
+                    if inventory_placeholder in my_body.inventory.options.values():
+                        my_body.inventory.options = {k: v for k, v in my_body.inventory.options.items() if
+                                                     not v == inventory_placeholder}
+                    inventory.options[item_as_option.name] = item_as_option
+                    clicked_item.destroy(self.grid)
             else:
                 self.grid.msg("SCREEN - No space in bag")
 
@@ -356,10 +362,11 @@ class GameEffects(object):
                         if self.grid.mouse_mode in bag_item.name and bag_item.uses >= 1:
                             item_name = cir_utils.get_short_name(self.grid.mouse_mode)
                             dropped_item = self.produce(item_name, clicked)
-                            if hasattr(bag_item, "lifespan"):
-                                dropped_item.lifespan = bag_item.lifespan
-                            self.empty_inventory(bag_item)
-                            break
+                            if dropped_item:
+                                if hasattr(bag_item, "lifespan"):
+                                    dropped_item.lifespan = bag_item.lifespan
+                                self.empty_inventory(bag_item)
+                                break
                 else:
                     self.grid.msg("SCREEN - no reach")
             else:
