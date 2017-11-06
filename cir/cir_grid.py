@@ -197,12 +197,21 @@ class Grid(object):
 
     def names_to_pos(self, names):
         """ Returns a list of pos tuples """
-        points = []
-        for name in names:
+
+        result = None
+
+        if isinstance(names, list):
+            result = []
+            for name in names:
+                for tile_name, tile_pos in self.tile_dict.items():
+                    if tile_name == name:
+                        result.append(tile_pos)
+        else:
             for tile_name, tile_pos in self.tile_dict.items():
-                if tile_name == name:
-                    points.append(tile_pos)
-        return points
+                if tile_name == names:
+                    result = tile_pos
+
+        return result
 
     def pos_to_name(self, pos):
         """ Returns name from pos """

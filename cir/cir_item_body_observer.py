@@ -6,6 +6,7 @@
 import random
 from cir_item_body import BodyItem
 import cir_utils as cu
+from cir_item import Item
 
 
 class Observer(BodyItem):
@@ -15,6 +16,18 @@ class Observer(BodyItem):
         self.nearest_untile = None
         self.in_action = False
 
+    def find_nearest(self, grid):
+        nearest_untile = None
+        for untile in grid.playing_tiles:
+            if untile not in grid.revealed_tiles.keys() and untile not in grid.door_slots:
+                if not nearest_untile:
+                    nearest_untile = untile
+                else:
+                    if cu.dist_between(nearest_untile, self.pos) > cu.dist_between(untile, self.pos):
+                        nearest_untile = untile
+        return nearest_untile
+
+
     def action(self, grid):
         self.in_action = True
         # TEST
@@ -23,9 +36,7 @@ class Observer(BodyItem):
         self.vfreq.duration = 0.3
 
         # import pdb; pdb.set_trace()
-        # Check if nearest is revealed
-        if self.nearest_untile in grid.revealed_tiles:
-            self.nearest_untile = None
+
 
 
         # Check for legal tiles to move
@@ -39,19 +50,18 @@ class Observer(BodyItem):
 
             # Get new nearest unrevealed tile
             if not self.nearest_untile:
-                for untile in grid.playing_tiles:
-                    if untile not in grid.revealed_tiles:
-                        if untile not in grid.door_slots:
+                self.nearest_untile = self.find_nearest(grid)
+                foo = Item()
+                foo.name = 'hui'
+                foo.color = grid.white
+                foo.available = True
+                foo.pos = self.nearest_untile
+                foo.radius = 5
+                foo.type = 'triggerw'
+                grid.items.append(foo)
 
-                            if not self.nearest_untile:
-                                self.nearest_untile = untile
-                                if grid.pos_to_name(untile) == '14_8':
-                                    print "AIDE 1"
-                            else:
-                                if cu.dist_between(self.nearest_untile, self.pos) > cu.dist_between(untile, self.pos):
-                                    self.nearest_untile = untile
-                                    if grid.pos_to_name(untile) == '14_8':
-                                        print "AIDE 2", untile not in grid.revealed_tiles
+
+            print "new newarest", self.nearest_untile
 
             # Choose nearest legal
             if self.nearest_untile:
@@ -64,7 +74,7 @@ class Observer(BodyItem):
                             self.nearest_untile = move_tile
                 if best_legal:
                     move_to_tile = best_legal
-                    print "best_legal", grid.pos_to_name(best_legal), grid.pos_to_name(self.nearest_untile)
+                    # print "best_legal", grid.pos_to_name(best_legal), grid.pos_to_name(self.nearest_untile)
                 else:
                     move_to_tile = random.choice(legal_moves)
             else:
@@ -72,8 +82,16 @@ class Observer(BodyItem):
 
             self.move_track = self.move_to_tile(grid, move_to_tile)
 
-        self.in_action = False
-            # # If no legal moves - vibe like crazy
+        self.in_action = False        # Check if nearest is revealed
+        if self.nearest_untile in grid.revealed_tiles.keys():
+            print "Clear untile"
+            self.nearest_untile = None
+
+        # print grid.names_to_pos('14_8')
+        # print grid.names_to_pos('14_8') not in grid.revealed_tiles.keys()
+        # print grid.revealed_tiles.keys()
+
+            # If no legal moves - vibe like crazy
             # if self.vfreq:
             #
             #     self.vfreq.restart()
