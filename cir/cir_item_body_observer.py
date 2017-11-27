@@ -16,18 +16,6 @@ class Observer(BodyItem):
         self.nearest_untile = None
         self.in_action = False
 
-    def find_nearest(self, grid):
-        nearest_untile = None
-        for untile in grid.playing_tiles:
-            if untile not in grid.revealed_tiles.keys() and untile not in grid.door_slots:
-                if not nearest_untile:
-                    nearest_untile = untile
-                else:
-                    if cu.dist_between(nearest_untile, self.pos) > cu.dist_between(untile, self.pos):
-                        nearest_untile = untile
-        return nearest_untile
-
-
     #     self.in_action = True
     #     # TEST
     #     self.speed = 10
@@ -48,6 +36,16 @@ class Observer(BodyItem):
     #             grid.items.append(foo)
 
 
+    def nearest_unrevealed(self, grid):
+        result = None
+        for playing_tile in grid.playing_tiles:
+            if playing_tile not in grid.revealed_tiles.keys() and playing_tile not in grid.door_slots:
+                if not result:
+                    result = playing_tile
+                else:
+                    if cu.dist_between(result, self.pos) > cu.dist_between(playing_tile, self.pos):
+                        result = playing_tile
+        return result
 
 
     # CHASER
@@ -71,8 +69,12 @@ class Observer(BodyItem):
 
         # Move
         if legal_moves:
+
             # Get new nearest unrevealed tile
-            target = self.search_pos(grid, "my_body")
+            target = self.nearest_unrevealed(grid)
+
+            # Get position of my body
+            # target = self.search_pos(grid, "my_body")
 
             # Choose nearest legal
             if target and target not in grid.adj_tiles(self.pos):
