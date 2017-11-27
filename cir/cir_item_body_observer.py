@@ -28,16 +28,40 @@ class Observer(BodyItem):
         return nearest_untile
 
 
+    #     self.in_action = True
+    #     # TEST
+    #     self.speed = 10
+    #     self.vspeed = 5
+    #     self.vfreq.duration = 0.3
+    #
+
+    #         # Get new nearest unrevealed tile
+    #         if not self.nearest_untile:
+    #             self.nearest_untile = self.find_nearest(grid)
+    #             foo = Item()
+    #             foo.name = 'hui'
+    #             foo.color = grid.white
+    #             foo.available = True
+    #             foo.pos = self.nearest_untile
+    #             foo.radius = 5
+    #             foo.type = 'triggerw'
+    #             grid.items.append(foo)
+
+
+
+
+    # CHASER
+    def search_pos(self, grid, search_item):
+        result = None
+        for item in grid.items:
+            if search_item in item.name:
+                result = item.pos
+        return result
+
+
     def action(self, grid):
-        self.in_action = True
         # TEST
-        self.speed = 10
-        self.vspeed = 5
-        self.vfreq.duration = 0.3
-
-        # import pdb; pdb.set_trace()
-
-
+        self.speed = 2
 
         # Check for legal tiles to move
         legal_moves = []
@@ -47,51 +71,17 @@ class Observer(BodyItem):
 
         # Move
         if legal_moves:
-
             # Get new nearest unrevealed tile
-            if not self.nearest_untile:
-                self.nearest_untile = self.find_nearest(grid)
-                foo = Item()
-                foo.name = 'hui'
-                foo.color = grid.white
-                foo.available = True
-                foo.pos = self.nearest_untile
-                foo.radius = 5
-                foo.type = 'triggerw'
-                grid.items.append(foo)
-
-
-            print "new newarest", self.nearest_untile
+            target = self.search_pos(grid, "my_body")
 
             # Choose nearest legal
-            if self.nearest_untile:
+            if target and target not in grid.adj_tiles(self.pos):
                 best_legal = None
                 for move_tile in legal_moves:
                     if not best_legal:
                         best_legal = move_tile
                     else:
-                        if cu.dist_between(best_legal, self.nearest_untile) > cu.dist_between(move_tile, self.nearest_untile):
-                            self.nearest_untile = move_tile
-                if best_legal:
-                    move_to_tile = best_legal
-                    # print "best_legal", grid.pos_to_name(best_legal), grid.pos_to_name(self.nearest_untile)
-                else:
-                    move_to_tile = random.choice(legal_moves)
-            else:
-                move_to_tile = random.choice(legal_moves)
+                        if cu.dist_between(best_legal, target) > cu.dist_between(move_tile, target):
+                            best_legal = move_tile
 
-            self.move_track = self.move_to_tile(grid, move_to_tile)
-
-        self.in_action = False        # Check if nearest is revealed
-        if self.nearest_untile in grid.revealed_tiles.keys():
-            print "Clear untile"
-            self.nearest_untile = None
-
-        # print grid.names_to_pos('14_8')
-        # print grid.names_to_pos('14_8') not in grid.revealed_tiles.keys()
-        # print grid.revealed_tiles.keys()
-
-            # If no legal moves - vibe like crazy
-            # if self.vfreq:
-            #
-            #     self.vfreq.restart()
+                self.move_track = self.move_to_tile(grid, best_legal)
