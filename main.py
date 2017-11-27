@@ -1,12 +1,11 @@
-# -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------------------------------------------- #
 #                                                                                                                     #
 #                                                       MAIN                                                          #
 #                                                                                                                     #
 # ------------------------------------------------------------------------------------------------------------------- #
 import pygame
-from cir.cir_game_menu import game_menu
 from cir.cir_grid import Grid
+from cir.cir_game_menu import game_menu
 from cir.cir_phase_0_load import DataLoader
 pygame.init()
 
@@ -20,7 +19,6 @@ def game_loop(game_over, scenario="scenario_01", msg=list()):
     my_body     = grid.loader.load_game()
 
     if game_over:
-        # grid.rename_button("play", "replay")
         grid.messages = [msg[-1]]
     else:
         grid.messages = ["SCREEN - start"]

@@ -58,7 +58,7 @@ class MobileItem(Item):
         :param options: options
         :return: a list of all available tiles in direction_idx
         """
-        if self.direction != None and not self.move_track:
+        if self.direction != None and not self.move_track and not self.vibe_track:
             target_tile = grid.adj_tiles(self.pos)[self.direction]
             if self.speed > 0:
                 if target_tile in grid.revealed_tiles.keys() and ((self.type != "signal" and target_tile not in grid.occupado_tiles.values()) or self.type == "signal"):
