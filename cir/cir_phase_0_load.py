@@ -10,7 +10,7 @@ import cir_utils as cu
 
 from cir_item import Item
 from cir_item_body import BodyItem
-from cir_item_body_observer import Observer
+from cir_item_body_scout import Scout
 from cir_item_timer import TimerItem
 from cir_item_button import ButtonItem
 
@@ -67,8 +67,8 @@ class DataLoader(object):
                 dummy.timer_tile_radius = self.grid.tile_radius
             elif klas == "item":
                 dummy = Item()
-            elif klas == "observer":
-                dummy = Observer()
+            elif klas == "scout":
+                dummy = Scout()
         except Exception as e:
             self.grid.msg("ERROR - {0}, could not create item of klas: {1}".format(e, klas))
 

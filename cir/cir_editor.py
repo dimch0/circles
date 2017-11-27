@@ -80,7 +80,7 @@ class Editor(object):
         elif clicked_item.name == "edit_pentagram":
             for rev_tile in self.grid.revealed_tiles.keys():
                 if rev_tile not in self.grid.occupado_tiles.values():
-                    self.grid.event_effects.produce("observer", rev_tile)
+                    self.grid.event_effects.produce("scout", rev_tile)
 
         elif clicked_item.name == "edit_pi":
             # my_body.range += 0.5

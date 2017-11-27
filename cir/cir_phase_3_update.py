@@ -72,7 +72,7 @@ class VarUpdater(object):
         if not item.move_track:
             item.gen_vibe_track(self.grid)
 
-            if item.type in ['observer'] and not item.in_action:
+            if item.type in ['scout'] and not item.in_action:
                 item.action(self.grid)
 
             item.vfreq.restart()
