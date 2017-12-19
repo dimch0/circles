@@ -39,10 +39,10 @@ class Scout(BodyItem):
     def action(self, grid):
 
         # FUN
-        self.speed = 5
-        self.vfreq.duration = 0.1
-        self.vspeed = 3
-        self.lifespan.duration = 5
+        # self.speed = 5
+        # self.vfreq.duration = 0.1
+        # self.vspeed = 3
+        # self.lifespan.duration = 5
 
         # Check for legal tiles to move
         legal_moves = []
