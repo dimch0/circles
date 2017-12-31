@@ -3,13 +3,16 @@
 #                                                   UPDATE                                                            #
 #                                                                                                                     #
 # ------------------------------------------------------------------------------------------------------------------- #
-from cir_utils import get_mirror_point, intersecting, get_short_name, in_circle, dist_between
+from cir_utils import get_mirror_point, intersecting, get_short_name, in_circle
+from cir_gen import ItemGenerator
+
 
 class VarUpdater(object):
 
-    def __init__(self, grid=None):
+    def __init__(self, grid=None, my_body=None):
         self.grid = grid
-
+        self.my_body = my_body
+        self.igen = ItemGenerator(grid, my_body)
 
     # --------------------------------------------------------------- #
     #                                                                 #
@@ -142,8 +145,6 @@ class VarUpdater(object):
             # ITEMS
             for item in self.grid.items:
 
-
-
                 # OCCUPADO
                 # self.update_occupado(item)
 
@@ -212,6 +213,7 @@ class VarUpdater(object):
                                 if "#rev" in item.effects:
                                     if not rtile in self.grid.revealed_tiles.keys():
                                         self.grid.revealed_tiles[rtile] = range(1, self.grid.tile_radius + 1)
+                                        self.igen.generate_item(rtile)
                                         # REVEAL ADJ DOORS
                                         for adj_rtile in self.grid.adj_tiles(rtile):
                                             for ditem in self.grid.items:

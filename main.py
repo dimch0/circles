@@ -17,6 +17,7 @@ def game_loop(game_over, scenario="scenario_01", msg=list()):
     grid        = Grid(pygame, scenario)
     grid.loader = DataLoader(grid)
     my_body     = grid.loader.load_game()
+    grid.updater.my_body = my_body
 
     if game_over:
         grid.messages = [msg[-1]]
