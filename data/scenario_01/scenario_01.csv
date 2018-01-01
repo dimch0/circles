@@ -178,23 +178,23 @@ scenario_01,11_7,block_23,item,,grey04,,15_13,,,,,TRUE,TRUE,,,,,,,,,
 scenario_01,11_7,block_24,item,,grey05,,15_15,,,,,TRUE,TRUE,,,,,,,,,
 ,,,,,,,,,,,,,,,,,,,,,,
 "ROOM_11_11 (FOOD, START)",,,,,,,,,,,,,,,,,,,,,,
-scenario_01,11_11,filiq,item,food,grey14,filiq,7_7,,,,,TRUE,TRUE,,,,,,,,,LP_30 
-scenario_01,11_11,carrot,item,food,grey14,carrot,7_9,,,,,TRUE,TRUE,,,,,,,,,LP_30 LS_10
-scenario_01,11_11,apple,item,food,grey14,apple,7_11,,,,,TRUE,TRUE,,,,,,,,,LP_30 LS_10
-scenario_01,11_11,banana,item,food,grey14,banana,7_13,,,,,TRUE,TRUE,,,,,,,,,LP_60 LS_10
-scenario_01,11_11,chilli,item,food,grey14,chilli,7_15,,,,,TRUE,TRUE,,,,,,,,,LS_60 ILL_-1
-scenario_01,11_11,lemon,item,food,grey14,lemon,8_6,,,,,TRUE,TRUE,,,,,,,,,LS_60 ILL_-1
-scenario_01,11_11,pineapple,item,food,grey14,pinapple,8_8,,,,,TRUE,TRUE,,,,,,,,,LP_30 LIB_1
-scenario_01,11_11,can,item,food,grey14,can,8_10,,,,,TRUE,TRUE,,,,,,,,,LP_90
-scenario_01,11_11,egg,item,food,grey14,egg,8_12,,,,,TRUE,TRUE,,,,,,,,,LP_90
-scenario_01,11_11,kibabchi,item,food,grey14,kibabchi,8_14,,,,,TRUE,TRUE,,,,,,,,,LP_2 LS_-1 kef_1
-scenario_01,11_11,icecream,item,food,grey14,icecream,8_16,,,,,TRUE,TRUE,,,,,,,,,LP_60 LS_-20 kef_1
-scenario_01,11_11,fresh,item,food,grey14,fresh,9_5,,,,,TRUE,TRUE,,,,,,,,,LP_30 LS_10 SP_1
-scenario_01,11_11,spoget,item,food,grey14,spoget,9_7,,,,,TRUE,TRUE,,,,,,,,,LP_120 LS_-20 kef_1
-scenario_01,11_11,hotdog,item,food,grey14,hotdog,9_9,,,,,TRUE,TRUE,,,,,,,,,LP_120 LS_-20 kef_1
-scenario_01,11_11,pizza,item,food,grey14,pizza,9_11,,,,,TRUE,TRUE,,,,,,,,,LP_120 LS_-20 kef_1
-,11_11,doner,item,food,grey14,,9_13,,,,,TRUE,TRUE,,,,,,,,,
-,11_11,meat,item,food,grey14,,9_15,,,,,TRUE,TRUE,,,,,,,,,
+scenario_01,,filiq,item,food,grey14,filiq,7_7,,,,,TRUE,TRUE,,,,,,,,,LP_30 
+scenario_01,,carrot,item,food,grey14,carrot,7_9,,,,,TRUE,TRUE,,,,,,,,,LP_30 LS_10
+scenario_01,,apple,item,food,grey14,apple,7_11,,,,,TRUE,TRUE,,,,,,,,,LP_30 LS_10
+scenario_01,,banana,item,food,grey14,banana,7_13,,,,,TRUE,TRUE,,,,,,,,,LP_60 LS_10
+scenario_01,,chilli,item,food,grey14,chilli,7_15,,,,,TRUE,TRUE,,,,,,,,,LS_60 ILL_-1
+scenario_01,,lemon,item,food,grey14,lemon,8_6,,,,,TRUE,TRUE,,,,,,,,,LS_60 ILL_-1
+scenario_01,,pineapple,item,food,grey14,pinapple,8_8,,,,,TRUE,TRUE,,,,,,,,,LP_30 LIB_1
+scenario_01,,can,item,food,grey14,can,8_10,,,,,TRUE,TRUE,,,,,,,,,LP_90
+scenario_01,,egg,item,food,grey14,egg,8_12,,,,,TRUE,TRUE,,,,,,,,,LP_90
+scenario_01,,kibabchi,item,food,grey14,kibabchi,8_14,,,,,TRUE,TRUE,,,,,,,,,LP_2 LS_-1 kef_1
+scenario_01,,icecream,item,food,grey14,icecream,8_16,,,,,TRUE,TRUE,,,,,,,,,LP_60 LS_-20 kef_1
+scenario_01,,fresh,item,food,grey14,fresh,9_5,,,,,TRUE,TRUE,,,,,,,,,LP_30 LS_10 SP_1
+scenario_01,,spoget,item,food,grey14,spoget,9_7,,,,,TRUE,TRUE,,,,,,,,,LP_120 LS_-20 kef_1
+scenario_01,,hotdog,item,food,grey14,hotdog,9_9,,,,,TRUE,TRUE,,,,,,,,,LP_120 LS_-20 kef_1
+scenario_01,,pizza,item,food,grey14,pizza,9_11,,,,,TRUE,TRUE,,,,,,,,,LP_120 LS_-20 kef_1
+,,doner,item,food,grey14,,9_13,,,,,TRUE,TRUE,,,,,,,,,
+,,meat,item,food,grey14,,9_15,,,,,TRUE,TRUE,,,,,,,,,
 ,,,,,,,,,,,,,,,,,,,,,,
 "ROOM_10_10 (HOTEL, MUSIC)",,,,,,,,,,,,,,,,,,,,,,
 scenario_01,10_10,music_box,body,vibrator,grey14,radio,11_11,,,,,TRUE,,,,3,,,3,1.5,,LP_3

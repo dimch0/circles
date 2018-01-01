@@ -31,11 +31,12 @@ class ItemGenerator(object):
     def __init__(self, grid, my_body):
         self.grid = grid
         self.base_1_gen = 0
-        self.base_1 = 8
+        self.base_1 = 12
         self.my_body = my_body
 
     def should_generate(self):
-        # curroom = self.grid.rooms(self.grid.current_room)
+        """ Checks bases for generation
+         returns boolean """
         result = False
         revealed_tiles = 0
         for room in self.grid.rooms.values():
@@ -50,20 +51,11 @@ class ItemGenerator(object):
         return result
 
     def get_gen_pos(self, last_revealed):
+        """ Checks if last revealed tile is empty
+        and returns the pos of that tile or None"""
         result = None
-
-        # available_tiles = set(self.grid.revealed_tiles.keys()) - set(self.grid.occupado_tiles.values())
-
-        # available_tiles = self.grid.revealed_tiles.keys()
-        # for occ in self.grid.occupado_tiles.values():
-        #     if occ in available_tiles:
-        #         available_tiles.remove(occ)
-        # if available_tiles:
-        #     result = list(available_tiles)[-1]
-
         if last_revealed not in self.grid.occupado_tiles.values():
             result = last_revealed
-
         return result
 
     def generate_item(self, last_revealed):
