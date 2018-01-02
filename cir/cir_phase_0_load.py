@@ -12,7 +12,6 @@ from cir_item import Item
 from cir_item_body import BodyItem
 from cir_item_body_scout import Scout
 from cir_item_timer import TimerItem
-from cir_item_button import ButtonItem
 
 from cir_cosmetic import Images, Fonts, Colors
 from cir_phase_1_events import GameEvents
@@ -201,6 +200,16 @@ class DataLoader(object):
             vibefr = TimerItem()
             vibefr.duration = item.vfreq
             item.vfreq = vibefr
+
+    def set_boost_timer(self, duration, effect, boosted_item, boost_item):
+
+        boost_timer = TimerItem()
+        boost_timer.duration = duration
+        boost_timer.effects = effect
+        setattr(boost_timer, 'boost_item', boost_item)
+        if not hasattr(boosted_item, 'boost'):
+            setattr(boosted_item, 'boost', list())
+        boosted_item.boost.append(boost_timer)
 
 
     def load_item(self, item_name):

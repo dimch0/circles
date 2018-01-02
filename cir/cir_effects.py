@@ -7,6 +7,7 @@
 #                                                                                                                     #
 # ------------------------------------------------------------------------------------------------------------------- #
 import time
+from cir_item_timer import TimerItem
 from cir_editor import Editor
 import cir_utils
 
@@ -294,7 +295,6 @@ class GameEffects(object):
         :param consumator: item obj, that will consume the consumable effects
         :param consumable: item obj, that has consumable effects or the effects as a string
         """
-
         consumed = False
         effects = None
         protected_types = ['trigger']
@@ -331,24 +331,17 @@ class GameEffects(object):
 
                             elif eff_att == 'sp' and hasattr(consumator, 'speed'):
                                 consumator.change_speed(amount)
-                                # TODO: add boost items in all rooms with boosted consumator
+
+                                # BOOST
                                 if len(effect) > 2:
-
                                     negative_effect = "%s:-%s" % (eff_att, str(amount))
-                                    boost_timer = self.produce(product_name="boost_timer",
-                                                               pos=self.grid.names_to_pos('1_1'),
-                                                               lifespan=int(effect[2]) * self.food_unit,
-                                                               effects=negative_effect)
+                                    boost_duration = int(effect[2]) * self.food_unit
 
-                                    boost_timer.color = self.grid.black
-                                    boost_timer.time_color = self.grid.white
-
-                                    setattr(boost_timer, 'boosted_item', consumator)
-                                    setattr(boost_timer, 'boost_item', cir_utils.get_short_name(consumable.name))
-
-                                    self.grid.loader.set_timers(boost_timer)
-                                    boost_timer.vfreq = None
-                                    boost_timer.birth_track = []
+                                    self.grid.loader.set_boost_timer(
+                                        duration = boost_duration,
+                                        effect = negative_effect,
+                                        boosted_item = consumator,
+                                        boost_item = cir_utils.get_short_name(consumable.name))
 
                                 attr_str = 'speed'
 
@@ -363,7 +356,7 @@ class GameEffects(object):
                     # else:
 
                     if consumator.type == 'my_body':
-                        if consumable.type in ['boost']:
+                        if consumable.type in [None]:
                             self.grid.msg('SCREEN - %s boost over' % consumable.boost_item)
                             effect_color = self.grid.red01
                         else:

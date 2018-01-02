@@ -80,19 +80,13 @@ class VarUpdater(object):
 
             item.vfreq.restart()
 
-
     def timer_effect(self, item):
         """ Timer effects  """
+
         # LIFESPAN
         if item.lifespan and not isinstance(item.lifespan, float):
             item.lifespan.tick()
             if item.lifespan.is_over:
-                # BOOST OVER EFFECTS
-                if item.type == 'boost':
-                    if hasattr(item, 'boosted_item'):
-                        self.grid.event_effects.consume(item.boosted_item, item)
-
-
                 item.destroy(self.grid)
 
         # VIBE TIMER
@@ -104,7 +98,15 @@ class VarUpdater(object):
                         self.vfreq_over_effect(item)
                         # item.vfreq.restart()
 
-        # MOVE TIMER
+        # BOOST TIMER
+        if hasattr(item, "boost"):
+            for boost_timer in item.boost:
+                if boost_timer and not isinstance(boost_timer, float):
+                    if boost_timer.duration:
+                        boost_timer.tick()
+                        if boost_timer.is_over:
+                            self.grid.event_effects.consume(item, boost_timer)
+                            item.boost.remove(boost_timer)
 
 
     # --------------------------------------------------------------- #
