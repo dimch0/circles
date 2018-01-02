@@ -178,24 +178,29 @@ scenario_01,11_7,block_23,item,,grey04,,15_13,,,,,TRUE,TRUE,,,,,,,,,
 scenario_01,11_7,block_24,item,,grey05,,15_15,,,,,TRUE,TRUE,,,,,,,,,
 ,,,,,,,,,,,,,,,,,,,,,,
 "ROOM_11_11 (FOOD, START)",,,,,,,,,,,,,,,,,,,,,,
-scenario_01,,bread,item,food,grey14,filiq,7_7,,,,,TRUE,TRUE,,,,,,,,,t:+1
-scenario_01,,carrot,item,food,grey14,carrot,7_9,,,,,TRUE,TRUE,,,,,,,,,t:+1 max:+1
-scenario_01,,apple,item,food,grey14,apple,7_11,,,,,TRUE,TRUE,,,,,,,,,t:+1 max:+1
-scenario_01,,banana,item,food,grey14,banana,7_13,,,,,TRUE,TRUE,,,,,,,,,t:+1 max:+1
-scenario_01,,chili,item,food,grey14,chilli,7_15,,,,,TRUE,TRUE,,,,,,,,,max:+2 ill:-1
-scenario_01,,lemon,item,food,grey14,lemon,8_6,,,,,TRUE,TRUE,,,,,,,,,max:+2 ill:-1
-scenario_01,,pineapple,item,food,grey14,pinapple,8_8,,,,,TRUE,TRUE,,,,,,,,,max:+1 libido:+1
-scenario_01,,can,item,food,grey14,can,8_10,,,,,TRUE,TRUE,,,,,,,,,t:+2
-scenario_01,,egg,item,food,grey14,egg,8_12,,,,,TRUE,TRUE,,,,,,,,,t:+2
-scenario_01,,kibabchi,item,food,grey14,kibabchi,8_14,,,,,TRUE,TRUE,,,,,,,,,t:+3 max:-1 kef:+1
-scenario_01,,icecream,item,food,grey14,icecream,8_16,,,,,TRUE,TRUE,,,,,,,,,t:+3 max:-1 kef:+1
-scenario_01,,fresh,item,food,grey14,fresh,9_5,,,,,TRUE,TRUE,,,,,,,,,t:+1 max:+1 sp:+1:1
-scenario_01,,spoget,item,food,grey14,spoget,9_7,,,,,TRUE,TRUE,,,,,,,,,t:+5 max:-2 kef:+1
-scenario_01,,hotdog,item,food,grey14,hotdog,9_9,,,,,TRUE,TRUE,,,,,,,,,t:+6 max:-3 kef:+1
-scenario_01,,pizza,item,food,grey14,pizza,9_11,,,,,TRUE,TRUE,,,,,,,,,t:+6 max:-3 kef:+1
-,,doner,item,food,grey14,,9_13,,,,,TRUE,TRUE,,,,,,,,,
-,,meat,item,food,grey14,,9_15,,,,,TRUE,TRUE,,,,,,,,,
-,,,,,,,,,,,,,,,,,,,,,,
+scenario_01,,bread,item,food,grey14,bread,,,,,,TRUE,TRUE,,,,,,,,,t:+1
+scenario_01,,peanut,item,food,grey14,peanut,,,,,,TRUE,TRUE,,,,,,,,,t:+1
+scenario_01,,pretzel,item,food,grey14,pretzel,,,,,,TRUE,TRUE,,,,,,,,,t:+1
+scenario_01,,carrot,item,food,grey14,carrot,,,,,,TRUE,TRUE,,,,,,,,,max:+1
+scenario_01,,apple,item,food,grey14,apple,,,,,,TRUE,TRUE,,,,,,,,,max:+1
+scenario_01,,banana,item,food,grey14,banana,,,,,,TRUE,TRUE,,,,,,,,,t:+1 max:+1
+scenario_01,,pinapple,item,food,grey14,pinapple,,,,,,TRUE,TRUE,,,,,,,,,max:+1 libido:+1
+scenario_01,,can,item,food,grey14,can,,,,,,TRUE,TRUE,,,,,,,,,t:+2
+scenario_01,,egg,item,food,grey14,egg,,,,,,TRUE,TRUE,,,,,,,,,t:+2
+scenario_01,,tomato,item,food,grey14,tomato,,,,,,TRUE,TRUE,,,,,,,,,t:+2
+scenario_01,,chilli,item,food,grey14,chilli,,,,,,TRUE,TRUE,,,,,,,,,max:+2 ill:-1
+scenario_01,,lemon,item,food,grey14,lemon,,,,,,TRUE,TRUE,,,,,,,,,max:+2 ill:-1
+scenario_01,,kibabchi,item,food,grey14,kibabchi,,,,,,TRUE,TRUE,,,,,,,,,t:+3 max:-1 kef:+1
+scenario_01,,icecream,item,food,grey14,icecream,,,,,,TRUE,TRUE,,,,,,,,,t:+3 max:-1 kef:+1
+scenario_01,,cheese,item,food,grey14,cheese,,,,,,TRUE,TRUE,,,,,,,,,t:+3
+scenario_01,,donut,item,food,grey14,donut,,,,,,TRUE,TRUE,,,,,,,,,t:+3 max:-1 kef:+1
+scenario_01,,spoget,item,food,grey14,spoget,,,,,,TRUE,TRUE,,,,,,,,,t:+5 max:-2 kef:+1
+scenario_01,,hotdog,item,food,grey14,hotdog,,,,,,TRUE,TRUE,,,,,,,,,t:+6 max:-3 kef:+1
+scenario_01,,pizza,item,food,grey14,pizza,,,,,,TRUE,TRUE,,,,,,,,,t:+6 max:-3 kef:+1
+scenario_01,,miso,item,food,grey14,meat,,,,,,TRUE,TRUE,,,,,,,,,t:+4
+scenario_01,,miso_02,item,food,grey14,steak,,,,,,TRUE,TRUE,,,,,,,,,t:+4
+,,,item,food,grey14,,,,,,,TRUE,TRUE,,,,,,,,,
+scenario_01,,fresh,item,food,grey14,fresh,,,,,,TRUE,TRUE,,,,,,,,,t:+1 max:+1 sp:+1:1
 "ROOM_10_10 (HOTEL, MUSIC)",,,,,,,,,,,,,,,,,,,,,,
 scenario_01,10_10,music_box,body,vibrator,grey14,radio,11_11,,,,,TRUE,,,,3,,,3,1.5,,t:3
 scenario_01,10_10,toilette,body,,grey14,toilette,8_8,,,,,,,,,,,,,,,
