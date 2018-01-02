@@ -187,7 +187,7 @@ class DataLoader(object):
 
     def set_timers(self, item):
         """ Set timers """
-        if item.lifespan:
+        if item.lifespan and isinstance(item.lifespan, (int, float)):
             lifespan = TimerItem()
             lifespan.radius = item.radius
             lifespan.default_radius = item.radius

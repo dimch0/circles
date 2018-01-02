@@ -84,14 +84,14 @@ class VarUpdater(object):
         """ Timer effects  """
 
         # LIFESPAN
-        if item.lifespan and not isinstance(item.lifespan, float):
+        if item.lifespan and not isinstance(item.lifespan, (float, int)):
             item.lifespan.tick()
             if item.lifespan.is_over:
                 item.destroy(self.grid)
 
         # VIBE TIMER
         if hasattr(item, "vfreq"):
-            if item.vfreq and not isinstance(item.vfreq, float):
+            if item.vfreq and not isinstance(item.vfreq, (float, int)):
                 if item.vfreq.duration:
                     item.vfreq.tick()
                     if item.vfreq.is_over:
@@ -101,7 +101,7 @@ class VarUpdater(object):
         # BOOST TIMER
         if hasattr(item, "boost"):
             for boost_timer in item.boost:
-                if boost_timer and not isinstance(boost_timer, float):
+                if boost_timer and not isinstance(boost_timer, (float, int)):
                     if boost_timer.duration:
                         boost_timer.tick()
                         if boost_timer.is_over:
@@ -146,7 +146,6 @@ class VarUpdater(object):
         """
 
         if not self.grid.game_menu:
-
 
             # ITEMS
             for item in self.grid.items:
