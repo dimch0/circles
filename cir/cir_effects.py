@@ -350,8 +350,6 @@ class GameEffects(object):
                                     boost_timer.vfreq = None
                                     boost_timer.birth_track = []
 
-
-
                                 attr_str = 'speed'
 
                         if attr_str:
