@@ -188,7 +188,7 @@ scenario_01,,pinapple,item,food,grey14,pinapple,,,,,,TRUE,TRUE,,,,,,,,,max:+1 li
 scenario_01,,can,item,food,grey14,can,,,,,,TRUE,TRUE,,,,,,,,,t:+2
 scenario_01,,egg,item,food,grey14,egg,,,,,,TRUE,TRUE,,,,,,,,,t:+2
 scenario_01,,tomato,item,food,grey14,tomato,,,,,,TRUE,TRUE,,,,,,,,,t:+2
-scenario_01,,chilli,item,food,grey14,chilli,,,,,,TRUE,TRUE,,,,,,,,,max:+2 ill:-1
+scenario_01,,chili,item,food,grey14,chili,,,,,,TRUE,TRUE,,,,,,,,,max:+2 ill:-1
 scenario_01,,lemon,item,food,grey14,lemon,,,,,,TRUE,TRUE,,,,,,,,,max:+2 ill:-1
 scenario_01,,kibabchi,item,food,grey14,kibabchi,,,,,,TRUE,TRUE,,,,,,,,,t:+3 max:-1 kef:+1
 scenario_01,,icecream,item,food,grey14,icecream,,,,,,TRUE,TRUE,,,,,,,,,t:+3 max:-1 kef:+1
