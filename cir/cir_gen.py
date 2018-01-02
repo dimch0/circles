@@ -9,21 +9,21 @@ import random
 
 
 FOOD_ITEMS = [
-    'filiq',
-    'carrot',
-    'apple',
-    'banana',
-    'chilli',
-    'lemon',
-    'pineapple',
-    'can',
-    'egg',
-    'kibabchi',
-    'icecream',
+    # 'bread',
+    # 'carrot',
+    # 'apple',
+    # 'banana',
+    # 'chili',
+    # 'lemon',
+    # 'pineapple',
+    # 'can',
+    # 'egg',
+    # 'kibabchi',
+    # 'icecream',
     'fresh',
-    'spoget',
-    'hotdog',
-    'pizza'
+    # 'spoget',
+    # 'hotdog',
+    # 'pizza'
 ]
 
 class ItemGenerator(object):

@@ -6,20 +6,21 @@
 #                                                                                                                     #
 #                                                                                                                     #
 # ------------------------------------------------------------------------------------------------------------------- #
-import os
 import time
 from cir_editor import Editor
 import cir_utils
+
 
 class GameEffects(object):
 
     def __init__(self, grid=None):
         self.grid = grid
-
+        self.food_unit = 10
         if self.grid.show_editor:
             self.editor = Editor(grid=self.grid)
         else:
             self.editor = None
+
 
     # --------------------------------------------------------------- #
     #                                                                 #
@@ -32,7 +33,8 @@ class GameEffects(object):
                 radius=None,
                 vfreq=None,
                 lifespan=None,
-                add_to_items=True):
+                add_to_items=True,
+                effects=None):
         """
         Produces an item from the everything dict
         :param product_name: name of the item from the everything dict
@@ -54,6 +56,8 @@ class GameEffects(object):
                 new_item.default_radius = radius
             if vfreq:
                 new_item.vfreq.duration = vfreq
+            if effects:
+                new_item.effects = effects
             if lifespan:
                 new_item.lifespan = lifespan
             else:
@@ -279,8 +283,6 @@ class GameEffects(object):
             inventory_item.uses = 0
             inventory_item.lifespan = None
 
-
-
     # --------------------------------------------------------------- #
     #                                                                 #
     #                          CONSUMABLES                            #
@@ -305,11 +307,12 @@ class GameEffects(object):
         if effects:
             try:
                 eff_msg = []
+                effect_color = self.grid.gelb04
                 for effect in effects:
 
                     # Exclude # (non-consumable) effects
                     if not '#' in effect:
-                        effect = effect.split('_')
+                        effect = effect.split(':')
                         eff_att = effect[0]
                         amount = float(effect[1])
                         if amount >= 0:
@@ -318,16 +321,37 @@ class GameEffects(object):
                             modifier_str = '-{0}'.format(abs(int(amount)))
                         attr_str = ''
                         if not consumator.type in protected_types:
-                            if eff_att == 'LS' and consumator.lifespan:
-                                consumator.lifespan.limit += amount
-                                attr_str = 'max life'
+                            if eff_att == 'max' and consumator.lifespan:
+                                consumator.lifespan.limit += amount * self.food_unit
+                                attr_str = 'max'
 
-                            elif eff_att == 'LP' and consumator.lifespan:
-                                consumator.lifespan.update(amount)
+                            elif eff_att == 't' and consumator.lifespan:
+                                consumator.lifespan.update(amount * self.food_unit)
                                 attr_str = 'life'
 
-                            elif eff_att == 'SP' and hasattr(consumator, 'speed'):
+                            elif eff_att == 'sp' and hasattr(consumator, 'speed'):
                                 consumator.change_speed(amount)
+                                # TODO: add boost items in all rooms with boosted consumator
+                                if len(effect) > 2:
+
+                                    negative_effect = "%s:-%s" % (eff_att, str(amount))
+                                    boost_timer = self.produce(product_name="boost_timer",
+                                                               pos=self.grid.names_to_pos('1_1'),
+                                                               lifespan=int(effect[2]) * self.food_unit,
+                                                               effects=negative_effect)
+
+                                    boost_timer.color = self.grid.black
+                                    boost_timer.time_color = self.grid.white
+
+                                    setattr(boost_timer, 'boosted_item', consumator)
+                                    setattr(boost_timer, 'boost_item', cir_utils.get_short_name(consumable.name))
+
+                                    self.grid.loader.set_timers(boost_timer)
+                                    boost_timer.vfreq = None
+                                    boost_timer.birth_track = []
+
+
+
                                 attr_str = 'speed'
 
                         if attr_str:
@@ -339,11 +363,17 @@ class GameEffects(object):
                     # if 0:
                     # #     consumator.gen_effect_track(consumable.color)
                     # else:
-                    consumator.gen_effect_track(self.grid.gelb04)
+
                     if consumator.type == 'my_body':
-                        self.grid.msg('SCREEN - you eat {0}'.format(cir_utils.get_short_name(consumable.name)))
+                        if consumable.type in ['boost']:
+                            self.grid.msg('SCREEN - %s boost over' % consumable.boost_item)
+                            effect_color = self.grid.red01
+                        else:
+                            self.grid.msg('SCREEN - you eat %s' % cir_utils.get_short_name(consumable.name))
                         for effm in eff_msg:
                             self.grid.msg('SCREEN - {0}'.format(effm))
+
+                    consumator.gen_effect_track(effect_color)
 
             except Exception as e:
                 self.grid.msg("ERROR - invalid effects '{0}' \n {1}".format(effects, e))
@@ -378,7 +408,7 @@ class GameEffects(object):
                 # if clicked.pos in self.grid.adj_tiles(my_body.pos) or clicked.type == "my_body":
                 if clicked.type == "my_body":
                     for bag_item in my_body.inventory.options.values():
-                        print "self.grid.mouse_mode", self.grid.mouse_mode
+
                         if self.grid.mouse_mode in bag_item.name and bag_item.uses >= 1:
                             if bag_item.consumable and not clicked in my_body.inventory.options.values():
                                 if self.consume(clicked, bag_item):

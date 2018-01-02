@@ -1,6 +1,7 @@
 scenario,room,name,klas,type,color,img,pos,category,has_opts,available,modable,collectible,consumable,uses,speed,range,time_color,lifespan,vspeed,vfreq,layer,effects
-ALL,,placeholder,item,,,,,,,TRUE,,,,,,,,,,,1,
+ALL,,placeholder,item,,black,,,,,TRUE,,,,,,,white,,,,1,
 ALL,,trigger,body,trigger,,,,,,TRUE,,,,,,,,,,,1,
+ALL,,boost_timer,body,boost,,,,,,TRUE,,,,,,,,,,,1,
 EDITOR,,,,,,,,,,,,,,,,,,,,,,
 ALL,,edit_phone,item,editor,grey03,phone,21_1,,,TRUE,,,,,,,,,,,1,
 ALL,,edit_poop,item,editor,grey03,poop,21_3,,,TRUE,TRUE,,,,,,,,,,1,

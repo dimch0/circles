@@ -7,11 +7,13 @@ import cir_utils
 from cir_editor import Editor
 from cir_effects import GameEffects
 
+
 class GameEvents(GameEffects):
 
     def __init__(self, grid):
         super(GameEffects, self).__init__()
         self.grid = grid
+        self.food_unit = 10
         if self.grid.show_editor:
             self.editor = Editor(grid=self.grid)
         else:
@@ -122,6 +124,7 @@ class GameEvents(GameEffects):
         #                   CLICK ON ITEMS NO MOUSE MODE                  #
         # --------------------------------------------------------------- #
         for CLICKED_ITEM in self.grid.items:
+            clicked_item_name = cir_utils.get_short_name(CLICKED_ITEM.name)
             if CLICKED_ITEM.clickable and CLICKED_ITEM.available and CLICKED_ITEM.type not in ["trigger"]:
                 if current_tile == CLICKED_ITEM.pos:
                     self.grid.msg("INFO - clicked item: {0} {1} {2}".format(
@@ -189,6 +192,7 @@ class GameEvents(GameEffects):
                     # --------------------------------------------------------------- #
                     # EAT
                     if mouse_mode in ["eat"] or event.button == 3:
+
                         if CLICKED_ITEM.consumable and not CLICKED_ITEM.birth_track:
                             if (CLICKED_ITEM.pos in self.grid.adj_tiles(my_body.pos)) or (CLICKED_ITEM in my_body.inventory.options.values()):
                                 if self.consume(my_body, CLICKED_ITEM):
@@ -197,11 +201,11 @@ class GameEvents(GameEffects):
                                     else:
                                         CLICKED_ITEM.destroy(self.grid)
                                 else:
-                                    self.grid.msg("SCREEN - no eat %s" % CLICKED_ITEM.name)
+                                    self.grid.msg("SCREEN - no eat %s" % clicked_item_name)
                             else:
-                                self.grid.msg("SCREEN - {0} is far".format(CLICKED_ITEM.name))
+                                self.grid.msg("SCREEN - %s is far" % clicked_item_name)
                         else:
-                            self.grid.msg("SCREEN - no eat %s" % CLICKED_ITEM.name)
+                            self.grid.msg("SCREEN - no eat %s" % clicked_item_name)
 
                     # DROP
                     elif mouse_mode and any(mouse_mode in inventory_item.name for inventory_item in my_body.inventory.options.values()):
@@ -217,7 +221,7 @@ class GameEvents(GameEffects):
                             if (CLICKED_ITEM.pos in self.grid.adj_tiles(my_body.pos)):
                                 self.collect(my_body, CLICKED_ITEM)
                             else:
-                                self.grid.msg("SCREEN - {0} is far".format(CLICKED_ITEM.name))
+                                self.grid.msg("SCREEN - {0} is far".format(clicked_item_name))
 
                 # CLOSE MENU IF OUTSIDE ADJ ITEMS
                 elif current_tile not in self.grid.adj_tiles(CLICKED_ITEM.pos):
