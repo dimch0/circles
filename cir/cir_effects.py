@@ -332,6 +332,7 @@ class GameEffects(object):
                             elif eff_att == 'sp' and hasattr(consumator, 'speed'):
                                 consumator.change_speed(amount)
 
+
                                 # BOOST
                                 if len(effect) > 2:
                                     negative_effect = "%s:-%s" % (eff_att, str(amount))
@@ -342,6 +343,9 @@ class GameEffects(object):
                                         effect = negative_effect,
                                         boosted_item = consumator,
                                         boost_item = cir_utils.get_short_name(consumable.name))
+
+                                    consumator.default_color = self.grid.red01
+
 
                                 attr_str = 'speed'
 

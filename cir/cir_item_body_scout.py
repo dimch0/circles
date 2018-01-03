@@ -3,7 +3,6 @@
 #                                                    SCOUT                                                            #
 #                                                                                                                     #
 # ------------------------------------------------------------------------------------------------------------------- #
-import random
 from cir_item_body import BodyItem
 import cir_utils as cu
 
@@ -13,8 +12,6 @@ class Scout(BodyItem):
     def __init__(self):
         super(Scout, self).__init__()
         self.nearest_untile = None
-        self.in_action = False
-
 
     def nearest_unrevealed(self, grid):
         result = None
@@ -27,7 +24,6 @@ class Scout(BodyItem):
                         result = playing_tile
         return result
 
-
     def chase_pos(self, grid, search_item):
         result = None
         for item in grid.items:
@@ -35,9 +31,7 @@ class Scout(BodyItem):
                 result = item.pos
         return result
 
-
     def action(self, grid):
-
         # FUN
         # self.speed = 5
         # self.vfreq.duration = 0.1
@@ -45,28 +39,25 @@ class Scout(BodyItem):
         # self.lifespan.duration = 5
 
         # Check for legal tiles to move
-        legal_moves = []
-        for self_adj in grid.adj_tiles(self.pos):
-            if self_adj in grid.playing_tiles and self_adj not in grid.occupado_tiles.values():
-                legal_moves.append(self_adj)
+        legal_moves= {}
+        for idx, adj_tile in enumerate(grid.adj_tiles(self.pos)):
+            if adj_tile in grid.playing_tiles and adj_tile not in grid.occupado_tiles.values():
+                legal_moves[adj_tile] = idx
 
         # Move
         if legal_moves:
 
-            # Get new nearest unrevealed tile
-            target = self.nearest_unrevealed(grid)
-
-            # Get position of my body
-            # target = self.chase_pos(grid, "my_body")
+            # Get target
+            # target = self.nearest_unrevealed(grid)
+            target = self.chase_pos(grid, "my_body")
 
             # Choose nearest legal
             if target and target not in grid.adj_tiles(self.pos):
                 best_legal = None
-                for move_tile in legal_moves:
+                for move_tile, move_idx in legal_moves.items():
                     if not best_legal:
                         best_legal = move_tile
-                    else:
-                        if cu.dist_between(best_legal, target) > cu.dist_between(move_tile, target):
-                            best_legal = move_tile
+                    elif cu.dist_between(best_legal, target) > cu.dist_between(move_tile, target):
+                        best_legal = move_tile
 
-                self.move_track = self.move_to_tile(grid, best_legal)
+                self.direction = legal_moves[best_legal]

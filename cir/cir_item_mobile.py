@@ -33,7 +33,6 @@ class MobileItem(Item):
         :return: a list of steps from point A to point B
         number of steps depends on the speed and the distance
         """
-
         result = []
         if self.speed > 0:
             distance = 2 * grid.tile_radius
@@ -50,6 +49,7 @@ class MobileItem(Item):
                 new_step = (step_x, step_y)
                 result.append(new_step)
             result.append(target_tile)
+
         return result
 
     def gen_move_track(self, grid):

@@ -70,16 +70,6 @@ class VarUpdater(object):
     #                             TIMERS                              #
     #                                                                 #
     # --------------------------------------------------------------- #
-    def vfreq_over_effect(self, item):
-        """ Vibe frequency timer over effect """
-        if not item.move_track:
-            item.gen_vibe_track(self.grid)
-
-            if item.type in ['scout'] and not item.in_action:
-                item.action(self.grid)
-
-            item.vfreq.restart()
-
     def timer_effect(self, item):
         """ Timer effects  """
 
@@ -95,8 +85,12 @@ class VarUpdater(object):
                 if item.vfreq.duration:
                     item.vfreq.tick()
                     if item.vfreq.is_over:
-                        self.vfreq_over_effect(item)
-                        # item.vfreq.restart()
+                        if hasattr(item, 'action'):
+                            item.action(self.grid)
+
+                        if not item.move_track:
+                            item.gen_vibe_track(self.grid)
+                            item.vfreq.restart()
 
         # BOOST TIMER
         if hasattr(item, "boost"):
@@ -106,6 +100,7 @@ class VarUpdater(object):
                         boost_timer.tick()
                         if boost_timer.is_over:
                             self.grid.event_effects.consume(item, boost_timer)
+                            item.default_color = boost_timer.store_color
                             item.boost.remove(boost_timer)
 
 

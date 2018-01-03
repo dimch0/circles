@@ -16,7 +16,9 @@ gen_schema = {
             'peanut',
             'pretzel',
             'carrot',
-            'apple',],
+            'apple',
+            'fresh',
+       ],
        "base": 15
     },
     "2": {
@@ -25,7 +27,8 @@ gen_schema = {
             'pinapple',
             'can',
             'egg',
-            'tomato',],
+            'tomato',
+        ],
         "base": 40
     },
     "3": {
@@ -35,7 +38,8 @@ gen_schema = {
             'kibabchi',
             'icecream',
             'cheese',
-            'donut',],
+            'donut',
+        ],
         "base": 70
     },
     "4": {
@@ -44,7 +48,8 @@ gen_schema = {
             'hotdog',
             'pizza',
             'miso',
-            'miso_02',],
+            'miso_02',
+        ],
         "base": 110
     }
 }

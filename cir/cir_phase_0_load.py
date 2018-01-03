@@ -207,6 +207,7 @@ class DataLoader(object):
         boost_timer.duration = duration
         boost_timer.effects = effect
         setattr(boost_timer, 'boost_item', boost_item)
+        setattr(boost_timer, 'store_color', boosted_item.default_color)
         if not hasattr(boosted_item, 'boost'):
             setattr(boosted_item, 'boost', list())
         boosted_item.boost.append(boost_timer)
