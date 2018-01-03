@@ -17,7 +17,6 @@ gen_schema = {
             'pretzel',
             'carrot',
             'apple',
-            'fresh',
        ],
        "base": 15
     },
@@ -39,6 +38,7 @@ gen_schema = {
             'icecream',
             'cheese',
             'donut',
+            'fresh',
         ],
         "base": 70
     },

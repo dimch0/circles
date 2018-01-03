@@ -314,10 +314,8 @@ class DataLoader(object):
             self.set_timers(item)
             self.set_opts(item)
 
-
         if not my_body in self.grid.items:
             self.grid.items.append(my_body)
-
         self.set_buttons()
         self.grid.load_current_room()
 

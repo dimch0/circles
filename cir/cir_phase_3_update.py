@@ -13,6 +13,7 @@ class VarUpdater(object):
         self.grid = grid
         self.my_body = my_body
         self.igen = ItemGenerator(grid, my_body)
+        self.radius_buffer = 2.5
 
     # --------------------------------------------------------------- #
     #                                                                 #
@@ -41,7 +42,6 @@ class VarUpdater(object):
             for item in self.grid.items:
                 if item.pos == my_body.pos and 'door' in  item.type:
                     item.available = True
-
 
     # --------------------------------------------------------------- #
     #                                                                 #
@@ -206,21 +206,22 @@ class VarUpdater(object):
 
 
                         # REVEAL TILE
-                        for rtile in self.grid.playing_tiles:
-                            if in_circle(item.pos, item.vibe_track[0][0], rtile):
-                                if not rtile in item.hit_tiles:
-                                    item.hit_tiles.append(rtile)
-                                if "#rev" in item.effects:
-                                    if not rtile in self.grid.revealed_tiles.keys():
-                                        self.grid.revealed_tiles[rtile] = range(1, self.grid.tile_radius + 1)
-                                        self.igen.generate_item(rtile)
-                                        # REVEAL ADJ DOORS
-                                        for adj_rtile in self.grid.adj_tiles(rtile):
-                                            for ditem in self.grid.items:
-                                                if "door" in ditem.type and ditem.pos == adj_rtile:
-                                                    if not ditem.available:
-                                                        ditem.available = True
-                                                        ditem.gen_birth_track()
+                        if item in self.grid.items:
+                            for rtile in self.grid.playing_tiles:
+                                if in_circle(item.pos, item.vibe_track[0][0], rtile):
+                                    if not rtile in item.hit_tiles:
+                                        item.hit_tiles.append(rtile)
+                                    if "#rev" in item.effects:
+                                        if not rtile in self.grid.revealed_tiles.keys():
+                                            self.grid.revealed_tiles[rtile] = range(1, self.grid.tile_radius + 1)
+                                            self.igen.generate_item(rtile)
+                                            # REVEAL ADJ DOORS
+                                            for adj_rtile in self.grid.adj_tiles(rtile):
+                                                for ditem in self.grid.items:
+                                                    if "door" in ditem.type and ditem.pos == adj_rtile:
+                                                        if not ditem.available:
+                                                            ditem.available = True
+                                                            ditem.gen_birth_track()
 
                         for hit_item in self.grid.items:
                             # REVEALED / AVAILABLE
@@ -233,7 +234,7 @@ class VarUpdater(object):
                             # CONSUME VIBE
                             if item.effects:
                                 if hit_item.available and not get_short_name(hit_item.name) == get_short_name(item.name):
-                                    cir1 = (hit_item.pos, hit_item.radius - (hit_item.radius / 2.5))
+                                    cir1 = (hit_item.pos, hit_item.radius - (hit_item.radius / self.radius_buffer))
                                     if intersecting(cir1, vibe_area):
                                         if not hit_item in item.hit_items:
                                             self.grid.event_effects.consume(hit_item, item)

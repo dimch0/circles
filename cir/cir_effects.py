@@ -130,11 +130,14 @@ class GameEffects(object):
     def show_map(self, my_body):
         """ Shows the map room 999 """
 
+        inventory_in_menu = my_body.inventory.in_menu
+
         if not self.grid.current_room == "map":
             self.grid.previous_room = self.grid.current_room
             self.grid.change_room("map")
             self.grid.gen_map_dots()
             self.grid.draw_map = True
+
         else:
             self.grid.change_room(self.grid.previous_room)
             self.grid.draw_map = False
@@ -400,8 +403,8 @@ class GameEffects(object):
         # Drop item from inventory to body and consume
         else:
             if clicked:
-                # if clicked.pos in self.grid.adj_tiles(my_body.pos) or clicked.type == "my_body":
-                if clicked.type == "my_body":
+                if clicked.pos in self.grid.adj_tiles(my_body.pos) or clicked.type == "my_body":
+                # if clicked.type == "my_body":
                     for bag_item in my_body.inventory.options.values():
 
                         if self.grid.mouse_mode in bag_item.name and bag_item.uses >= 1:
