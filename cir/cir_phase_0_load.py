@@ -117,8 +117,7 @@ class DataLoader(object):
             col_idx = self.set_col_idx(header)
             for row in data:
                 if not row == header:
-                    scenario_col = row[col_idx["scenario"]].lower()
-                    if str(self.grid.scenario) in scenario_col or "all" in scenario_col:
+                    if len([field for field in row if field not in [None, '']]) > 1:
                         klas = row[col_idx["klas"]]
                         # --------------------------------------------------------------- #
                         #                        ATTRIBUTES DICT                          #
