@@ -241,7 +241,6 @@ class DataLoader(object):
         self.set_room(door)
         self.set_timers(door)
 
-
     def set_buttons(self):
         """ Assign all items to the grid object """
         center = self.grid.find_center_tile()
@@ -265,15 +264,29 @@ class DataLoader(object):
 
             self.grid.buttons.append(butt)
 
-
+    def set_rooms(self):
+        for room in self.grid.room_items:
+            for room_n, room_i in room.items():
+                if room_n not in self.grid.rooms.keys():
+                    self.grid.rooms[room_n] = {
+                        "items": [],
+                        "revealed_tiles": {}
+                    }
+                for candidate_item in room_i:
+                    item_name = candidate_item["item_name"]
+                    for pos in candidate_item["item_positions"]:
+                        item = self.load_item(item_name)
+                        item.pos = self.grid.tile_dict[pos]
+                        self.grid.rooms[room_n]["items"].append(item)
 
     def set_room(self, item):
+
         if item.room not in [None, ""]:
             if item.room not in self.grid.rooms.keys():
                 self.grid.rooms[item.room] = {
-                        "items"          : [],
-                        "revealed_tiles" : {}
-                                             }
+                    "items"          : [],
+                    "revealed_tiles" : {}
+                }
             self.grid.rooms[item.room]["items"].append(item)
 
     def load_game(self):
@@ -315,6 +328,8 @@ class DataLoader(object):
 
         if not my_body in self.grid.items:
             self.grid.items.append(my_body)
+
+        self.set_rooms()
         self.set_buttons()
         self.grid.load_current_room()
 
