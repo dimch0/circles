@@ -1,0 +1,218 @@
+    "room_items" : [
+    {"9_5" : [
+      {"item_name": "Enter_10_4",
+      "item_positions": ["16_6"]}
+    ]},
+    {"10_4" : [
+      {"item_name": "Enter_10_6",
+      "item_positions": ["11_21"]}
+    ]},
+    {"10_4" : [
+      {"item_name": "Enter_11_3",
+      "item_positions": ["16_6"]}
+    ]},
+    {"11_3" : [
+      {"item_name": "Enter_12_4",
+      "item_positions": ["16_16"]}
+    ]},
+    {"12_4" : [
+      {"item_name": "Enter_12_6",
+      "item_positions": ["11_21"]}
+    ]},
+    {"12_4" : [
+      {"item_name": "Enter_13_5",
+      "item_positions": ["16_16"]}
+    ]},
+    {"12_6" : [
+      {"item_name": "Enter_11_5",
+      "item_positions": ["6_6"]}
+    ]},
+    {"13_5" : [
+      {"item_name": "Enter_13_7",
+      "item_positions": ["11_21"]}
+    ]},
+    {"13_7" : [
+      {"item_name": "Enter_12_8",
+      "item_positions": ["6_16"]}
+    ]},
+    {"13_7" : [
+      {"item_name": "Enter_13_9",
+      "item_positions": ["11_21"]}
+    ]},
+    {"13_7" : [
+      {"item_name": "Enter_14_8",
+      "item_positions": ["16_16"]}
+    ]},
+    {"12_8" : [
+      {"item_name": "Enter_12_10",
+      "item_positions": ["11_21"]}
+    ]},
+    {"14_8" : [
+      {"item_name": "Enter_14_6",
+      "item_positions": ["11_1"]}
+    ]},
+    {"14_8" : [
+      {"item_name": "Enter_15_7",
+      "item_positions": ["16_6"]}
+    ]},
+    {"14_8" : [
+      {"item_name": "Enter_14_10",
+      "item_positions": ["11_21"]}
+    ]},
+    {"14_10" : [
+      {"item_name": "Enter_13_11",
+      "item_positions": ["6_16"]}
+    ]},
+    {"13_11" : [
+      {"item_name": "Enter_14_12",
+      "item_positions": ["16_16"]}
+    ]},
+    {"14_12" : [
+      {"item_name": "Enter_15_11",
+      "item_positions": ["16_6"]}
+    ]},
+    {"14_12" : [
+      {"item_name": "Enter_13_13",
+      "item_positions": ["6_16"]}
+    ]},
+    {"15_11" : [
+      {"item_name": "Enter_15_9",
+      "item_positions": ["11_1"]}
+    ]},
+    {"13_13" : [
+      {"item_name": "Enter_12_12",
+      "item_positions": ["6_6"]}
+    ]},
+    {"8_8" : [
+      {"item_name": "Enter_8_6",
+      "item_positions": ["11_1"]}
+    ]},
+    {"8_6" : [
+      {"item_name": "Enter_7_7",
+      "item_positions": ["6_16"]}
+    ]},
+    {"7_7" : [
+      {"item_name": "Enter_7_9",
+      "item_positions": ["11_21"}]
+    ]},
+    {"7_9" : [
+      {"item_name": "Enter_8_10",
+      "item_positions": ["16_16"]}
+    ]},
+    {"8_10" : [
+      {"item_name": "Enter_8_12",
+      "item_positions": ["11_21"]}
+    ]},
+    {"8_10" : [
+      {"item_name": "Enter_9_9",
+      "item_positions": ["16_6"]}
+    ]},
+    {"8_12" : [
+      {"item_name": "Enter_7_13",
+      "item_positions": ["6_16"]}
+    ]},
+    {"8_12" : [
+      {"item_name": "Enter_9_13",
+      "item_positions": ["16_16"]}
+    ]},
+    {"7_13" : [
+      {"item_name": "Enter_7_11",
+      "item_positions": ["11_1"]}
+    ]},
+    {"7_13" : [
+      {"item_name": "Enter_7_15",
+      "item_positions": ["11_21"]}
+    ]},
+    {"7_13" : [
+      {"item_name": "Enter_8_14",
+      "item_positions": ["16_16"]}
+    ]},
+    {"8_14" : [
+      {"item_name": "Enter_8_16",
+      "item_positions": ["11_21"]}
+    ]},
+    {"8_14" : [
+      {"item_name": "Enter_9_15",
+      "item_positions": ["16_16"]}
+    ]},
+    {"9_13" : [
+      {"item_name": "Enter_9_15",
+      "item_positions": ["11_21"]}
+    ]},
+    {"9_13" : [
+      {"item_name": "Enter_9_11",
+      "item_positions": ["11_1"]}
+    ]},
+    {"11_13" : [
+      {"item_name": "Enter_10_12",
+      "item_positions": ["6_6"]}
+    ]},
+    {"11_13" : [
+      {"item_name": "Enter_10_14",
+      "item_positions": ["6_16"]}
+    ]},
+    {"11_13" : [
+      {"item_name": "Enter_11_15",
+      "item_positions": ["11_21"]}
+    ]},
+    {"11_13" : [
+      {"item_name": "Enter_12_14",
+      "item_positions": ["16_16"]}
+    ]},
+    {"11_15" : [
+      {"item_name": "Enter_10_16",
+      "item_positions": ["6_16"]}
+    ]},
+    {"12_14" : [
+      {"item_name": "Enter_13_15",
+      "item_positions": ["16_16"]}
+    ]},
+    {"13_15" : [
+      {"item_name": "Enter_14_16",
+      "item_positions": ["16_16"]}
+    ]},
+    {"13_15" : [
+      {"item_name": "Enter_12_16",
+      "item_positions": ["6_16"]}
+    ]},
+    {"14_16" : [
+      {"item_name": "Enter_15_15",
+      "item_positions": ["16_6"]}
+    ]},
+    {"14_16" : [
+      {"item_name": "Enter_13_17",
+      "item_positions": ["6_16"]}
+    ]},
+    {"15_15" : [
+      {"item_name": "Enter_15_13",
+      "item_positions": ["11_1"]}
+    ]},
+    {"15_15" : [
+      {"item_name": "Enter_14_14",
+      "item_positions": ["6_6"]}
+    ]},
+    {"12_16" : [
+      {"item_name": "Enter_11_17",
+      "item_positions": ["6_16"]}
+    ]},
+    {"14_16" : [
+      {"item_name": "Enter_13_17",
+      "item_positions": ["6_16"]}
+    ]},
+    {"13_17" : [
+      {"item_name": "Enter_12_18",
+      "item_positions": ["6_16"]}
+    ]},
+    {"12_18" : [
+      {"item_name": "Enter_11_19",
+      "item_positions": ["6_16"]}
+    ]},
+    {"11_19" : [
+      {"item_name": "Enter_10_18",
+      "item_positions": ["6_6"]}
+    ]},
+    {"10_18" : [
+      {"item_name": "Enter_9_17",
+      "item_positions": ["6_6"]}
+    ]}
+]

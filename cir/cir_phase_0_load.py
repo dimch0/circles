@@ -119,6 +119,7 @@ class DataLoader(object):
                 if not row == header:
                     if len([field for field in row if field not in [None, '']]) > 1:
                         klas = row[col_idx["klas"]]
+                        # import pdb; pdb.set_trace()
                         # --------------------------------------------------------------- #
                         #                        ATTRIBUTES DICT                          #
                         # --------------------------------------------------------------- #
@@ -139,7 +140,6 @@ class DataLoader(object):
                                 "collectible" : bool(row[col_idx["collectible"]]),
                                 "consumable"  : bool(row[col_idx["consumable"]]),
                                 "uses"        : int(float(row[col_idx["uses"]])) if len(row[col_idx["uses"]]) > 0 else 1,
-                                "room"        : str(row[col_idx["room"]]),
                                 "lifespan"    : float(row[col_idx["lifespan"]]) if len(row[col_idx["lifespan"]]) > 0 else None,
                                 "vfreq"       : float(row[col_idx["vfreq"]]) if len(row[col_idx["vfreq"]]) > 0 else None,
                                 "vspeed"      : int(float(row[col_idx["vspeed"]])) if len(row[col_idx["vspeed"]]) > 0 else 1,
@@ -221,11 +221,11 @@ class DataLoader(object):
                 break
         return new_item
 
-    def set_door(self, item):
+    def set_door(self, item, room):
         door = Item()
         door.type = item.type
-        door.name = "Enter_" + item.room
-        door.room = item.name.replace("Enter_", "")
+        door.name = "Enter_" + room
+        door_room = item.name.replace("Enter_", "")
         door.pos = cu.get_mirror_point(item.pos, self.grid.center_tile)
         door.color = item.color
         if "door_enter" in item.type:
@@ -238,8 +238,8 @@ class DataLoader(object):
         door.default_radius = item.radius
         door.available = False
 
-        self.set_room(door)
         self.set_timers(door)
+        return door, door_room
 
     def set_buttons(self):
         """ Assign all items to the grid object """
@@ -279,16 +279,18 @@ class DataLoader(object):
                             item = self.load_item(item_name)
                             item.pos = self.grid.tile_dict[pos]
                             self.grid.rooms[room_n]["items"].append(item)
+                            if 'door' in item.type:
+                                opposite_door, door_room_n = self.set_door(item, room_n)
+                                if door_room_n not in self.grid.rooms.keys():
+                                    self.grid.rooms[door_room_n] = {
+                                        "items": [],
+                                        "revealed_tiles": {}
+                                    }
+                                self.grid.rooms[door_room_n]["items"].append(opposite_door)
 
-    def set_room(self, item):
+                        # if 'item_img'
 
-        if item.room not in [None, ""]:
-            if item.room not in self.grid.rooms.keys():
-                self.grid.rooms[item.room] = {
-                    "items"          : [],
-                    "revealed_tiles" : {}
-                }
-            self.grid.rooms[item.room]["items"].append(item)
+
 
     def load_game(self):
         """
@@ -313,17 +315,17 @@ class DataLoader(object):
         self.grid.msg("INFO - Loading {0}".format(self.grid.scenario))
         for item, klas in self.load_data():
 
-            if item.type == "editor" and self.grid.show_editor:
-                item.room = "ALL"
-            elif "door" in item.type:
-                self.set_door(item)
-            elif item.type == "my_body":
+            # if item.type == "editor" and self.grid.show_editor:
+            #     item.room = "ALL"
+            # if "door" in item.type:
+            #     self.set_door(item)
+            if item.type == "my_body":
                 my_body = item
                 my_body.gen_birth_track()
             elif item.type == "inventory":
                 my_body_inventory = item
 
-            self.set_room(item)
+            # self.set_room(item)
             self.set_timers(item)
             self.set_opts(item)
 
@@ -333,6 +335,9 @@ class DataLoader(object):
         self.set_rooms()
         self.set_buttons()
         self.grid.load_current_room()
+        self.grid.items.append(my_body)
 
         my_body.inventory = my_body_inventory
+        self.grid.items.append(my_body_inventory)
+
         return my_body
