@@ -13,9 +13,7 @@ from math import sqrt
 
 from cir_utils import in_circle, inside_polygon, bcolors, get_short_name, intersecting
 
-
 CONFIG_JSON_FILE = "config.json"
-
 
 
 class Grid(object):
@@ -243,15 +241,14 @@ class Grid(object):
         """
         self_x = center[0]
         self_y = center[1]
-
         adj_tiles = [
-                (self_x, self_y - 2 * self.tile_radius),
-                (self_x + self.cathetus, self_y - self.tile_radius),
-                (self_x + self.cathetus, self_y + self.tile_radius),
-                (self_x, self_y + 2 * self.tile_radius),
-                (self_x - self.cathetus, self_y + self.tile_radius),
-                (self_x - self.cathetus, self_y - self.tile_radius)
-               ]
+            (self_x, self_y - 2 * self.tile_radius),
+            (self_x + self.cathetus, self_y - self.tile_radius),
+            (self_x + self.cathetus, self_y + self.tile_radius),
+            (self_x, self_y + 2 * self.tile_radius),
+            (self_x - self.cathetus, self_y + self.tile_radius),
+            (self_x - self.cathetus, self_y - self.tile_radius)]
+
         if empty:
             for adj_tile in adj_tiles:
                 if adj_tile in self.revealed_tiles.keys():

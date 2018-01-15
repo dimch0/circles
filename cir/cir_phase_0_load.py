@@ -130,7 +130,6 @@ class DataLoader(object):
                                 "category"    : str(row[col_idx["category"]]),
                                 "available"   : bool(row[col_idx["available"]]),
                                 "name"        : str(row[col_idx["name"]]),
-                                "pos"         : self.grid.tile_dict[row[col_idx["pos"]]] if len(row[col_idx["pos"]]) > 0 else None,
                                 "color"       : getattr(self.grid, row[col_idx["color"]]) if len(row[col_idx["color"]]) > 0 else None,
                                 "img"         : getattr(self.grid.images, row[col_idx["img"]]) if len(row[col_idx["img"]]) > 0 else None,
                                 "speed"       : int(float(row[col_idx["speed"]])) if len(row[col_idx["speed"]]) > 0 else None,
@@ -323,7 +322,12 @@ class DataLoader(object):
                 my_body = item
                 my_body.gen_birth_track()
             elif item.type == "inventory":
+                pos_x = self.grid.rows - 1
+                pos_y = self.grid.cols - 3
+                i_pos = str(pos_x) + "_" + str(pos_y)
+                item.pos = self.grid.names_to_pos(i_pos)
                 my_body_inventory = item
+
 
             # self.set_room(item)
             self.set_timers(item)
@@ -338,6 +342,8 @@ class DataLoader(object):
         self.grid.items.append(my_body)
 
         my_body.inventory = my_body_inventory
+
         self.grid.items.append(my_body_inventory)
+        my_body.pos = self.grid.names_to_pos("center")
 
         return my_body

@@ -14,9 +14,9 @@ def game_loop(game_over, scenario="scenario_01", msg=list()):
     # --------------------------------------------------------------- #
     #                        PHASE 0: LOADING                         #
     # --------------------------------------------------------------- #
-    grid        = Grid(pygame, scenario)
+    grid = Grid(pygame, scenario)
     grid.loader = DataLoader(grid)
-    my_body     = grid.loader.load_game()
+    my_body = grid.loader.load_game()
     grid.updater.my_body = my_body
 
     if game_over:
