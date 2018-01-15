@@ -265,19 +265,20 @@ class DataLoader(object):
             self.grid.buttons.append(butt)
 
     def set_rooms(self):
-        for room in self.grid.room_items:
-            for room_n, room_i in room.items():
-                if room_n not in self.grid.rooms.keys():
-                    self.grid.rooms[room_n] = {
-                        "items": [],
-                        "revealed_tiles": {}
-                    }
-                for candidate_item in room_i:
-                    item_name = candidate_item["item_name"]
-                    for pos in candidate_item["item_positions"]:
-                        item = self.load_item(item_name)
-                        item.pos = self.grid.tile_dict[pos]
-                        self.grid.rooms[room_n]["items"].append(item)
+        if hasattr(self.grid, 'room_items'):
+            for room in self.grid.room_items:
+                for room_n, room_i in room.items():
+                    if room_n not in self.grid.rooms.keys():
+                        self.grid.rooms[room_n] = {
+                            "items": [],
+                            "revealed_tiles": {}
+                        }
+                    for candidate_item in room_i:
+                        item_name = candidate_item["item_name"]
+                        for pos in candidate_item["item_positions"]:
+                            item = self.load_item(item_name)
+                            item.pos = self.grid.tile_dict[pos]
+                            self.grid.rooms[room_n]["items"].append(item)
 
     def set_room(self, item):
 
