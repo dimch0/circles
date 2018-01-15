@@ -7,7 +7,6 @@
 #                                                                                                                     #
 # ------------------------------------------------------------------------------------------------------------------- #
 import time
-from cir_item_timer import TimerItem
 from cir_editor import Editor
 import cir_utils
 
@@ -208,7 +207,7 @@ class GameEffects(object):
             "editor",
             "option",
             "trigger",
-            "placeholder"
+            "placeholder",
         ]
 
         if not any(non_terminate in item.type for non_terminate in non_terminates):

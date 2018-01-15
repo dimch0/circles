@@ -13,6 +13,13 @@ inventory_placeholder3,item,option,grey03,,bag,,TRUE,,,,,,,,,,,1,
 inventory_placeholder4,item,option,grey03,,bag,,TRUE,,,,,,,,,,,1,
 inventory_placeholder5,item,option,grey03,,bag,,TRUE,,,,,,,,,,,1,
 inventory_placeholder6,item,option,grey03,,bag,,TRUE,,,,,,,,,,,1,
+slab,item,slab,grey03,slab,,TRUE,TRUE,,,,,,,,,,,,
+map_app,item,option,grey03,location,slab,,TRUE,,,,,,,,,,,,
+sat_app,item,option,grey03,radar,slab,,TRUE,,,,,,,,,,,,
+info_app,item,option,grey03,book,slab,,TRUE,,,,,,,,,,,,
+stats_app,item,option,grey03,freq,slab,,TRUE,,,,,,,,,,,,
+edit_phone,item,option,grey03,phone,slab,,TRUE,,,,,,,,,,,,
+,,option,,,,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,,,,,,
 signal,body,signal,,,,,TRUE,,,,,10,1,,,,,3,t:-15
 shit,body,,grey14,laino,,,,,TRUE,TRUE,,,1,fog_color,5,,2,1,t:-15

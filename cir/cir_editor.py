@@ -26,7 +26,7 @@ class Editor(object):
             my_body.gen_effect_track(self.grid.white)
             self.grid.msg('SCREEN - +{0} speed'.format(modifier))
 
-        elif clicked_item.name == "edit_map":
+        elif clicked_item.name in ["edit_map", "map_app"]:
             self.grid.event_effects.show_map(my_body)
 
         elif clicked_item.name == "edit_slow":

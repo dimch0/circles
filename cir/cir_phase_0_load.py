@@ -322,12 +322,17 @@ class DataLoader(object):
                 my_body = item
                 my_body.gen_birth_track()
             elif item.type == "inventory":
-                pos_x = self.grid.rows - 1
-                pos_y = self.grid.cols - 3
-                i_pos = str(pos_x) + "_" + str(pos_y)
+                i_pos_x = self.grid.rows - 1
+                i_pos_y = self.grid.cols - 3
+                i_pos = str(i_pos_x) + "_" + str(i_pos_y)
                 item.pos = self.grid.names_to_pos(i_pos)
                 my_body_inventory = item
-
+            elif item.type == 'slab':
+                s_pos_x = self.grid.cols - 1
+                s_pos_y = 3
+                s_pos = str(s_pos_x) + "_" + str(s_pos_y)
+                item.pos = self.grid.names_to_pos(s_pos)
+                setattr(self.grid, 'slab', item)
 
             # self.set_room(item)
             self.set_timers(item)
@@ -344,6 +349,8 @@ class DataLoader(object):
         my_body.inventory = my_body_inventory
 
         self.grid.items.append(my_body_inventory)
+        if hasattr(self.grid, 'slab'):
+            self.grid.items.append(self.grid.slab)
         my_body.pos = self.grid.names_to_pos("center")
 
         return my_body

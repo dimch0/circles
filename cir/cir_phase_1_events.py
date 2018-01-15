@@ -136,8 +136,18 @@ class GameEvents(GameEffects):
                     if CLICKED_ITEM.type == "option":
                         ober_item = CLICKED_ITEM.get_ober_item(self.grid)
                         if ober_item:
+
+                            # SLAB
+                            if CLICKED_ITEM.name in ["map_app"]:
+                                self.grid.event_effects.show_map(my_body)
+                            elif CLICKED_ITEM.name in ["sat_app"]:
+                                self.grid.event_effects.satellite()
+                            elif CLICKED_ITEM.name in ["edit_phone"]:
+                                self.grid.show_debug = not self.grid.show_debug
+                                self.grid.show_grid = not self.grid.show_grid
+
                             # CLOSE MENU
-                            if ober_item.in_menu and not ober_item.type in ["inventory"]:
+                            elif ober_item.in_menu and not ober_item.type in ["inventory", "slab"]:
                                 ober_item.close_menu(self.grid)
 
                             # SUICIDE
@@ -228,7 +238,7 @@ class GameEvents(GameEffects):
                     if event.button == 3:
                         self.grid.clean_mouse()
                     if CLICKED_ITEM.in_menu:
-                        if not CLICKED_ITEM.type == "inventory":
+                        if CLICKED_ITEM.type not in ["inventory", "slab"]:
                             CLICKED_ITEM.close_menu(self.grid)
 
         # DEBUG
