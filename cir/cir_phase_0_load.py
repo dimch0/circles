@@ -176,9 +176,6 @@ class DataLoader(object):
         if item.has_opts:
             for opt, klas in self.load_data():
                 self.find_opts(opt, item)
-                if opt.has_opts:
-                    for sub_opt, klas in self.load_data():
-                        self.find_opts(sub_opt, opt)
             if self.grid.show_debug:
                 self.grid.msg("DEBUG - {0} options are: {1}".format(item.name, item.options))
 
