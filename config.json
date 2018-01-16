@@ -8,7 +8,7 @@
     "show_debug"   : 0,
     "show_grid"    : 0,
     "show_seconds" : 0,
-    "show_editor"  : 1,
+    "show_editor"  : 0,
     "show_verbose" : 1
   },
 

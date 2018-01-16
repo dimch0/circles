@@ -34,15 +34,15 @@ class DataLoader(object):
         # self.csv_all = csv_from_excel(self.grid.all)
         # self.csv_data = csv_from_excel(self.grid.data_file)
 
-        self.csv_all = self.grid.all
+        # self.csv_all = self.grid.all
         self.csv_data = self.grid.data_file
 
-        with open(self.csv_all, 'rb') as all:
-            data_all = csv.reader(all, delimiter=',')
-            header_all = next(data_all)
-            for line in data_all:
-                if line and not line == header_all:
-                    lines_to_write.append(line)
+        # with open(self.csv_all, 'rb') as all:
+        #     data_all = csv.reader(all, delimiter=',')
+        #     header_all = next(data_all)
+        #     for line in data_all:
+        #         if line and not line == header_all:
+        #             lines_to_write.append(line)
 
         with open(self.csv_data, 'ab') as data_file:
             writer = csv.writer(data_file)
@@ -273,7 +273,10 @@ class DataLoader(object):
                         item_name = candidate_item["item_name"]
                         for pos in candidate_item["item_positions"]:
                             item = self.load_item(item_name)
-                            item.pos = self.grid.tile_dict[pos]
+                            try:
+                                item.pos = self.grid.tile_dict[pos]
+                            except:
+                                import pdb; pdb.set_trace()
                             self.grid.rooms[room_n]["items"].append(item)
                             if 'door' in item.type:
                                 opposite_door, door_room_n = self.set_door(item, room_n)
