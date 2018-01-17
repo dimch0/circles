@@ -4,12 +4,13 @@ filename = '../data/scenario_01/scenario_01.csv'
 key = '1X6q2XiXfTcm81bSpwo9Y4WgBPsaVaSBOBcd94qBmpnM'
 gids = {
     "gid_consumable" : "571804146",
-    "gid_bodies" : "1847185351",
-    "gid_doors" : "533409778",
-    "gid_vendors" : "1710936085",
-    "gid_quellen" : "1032854683",
-    "gid_wear" : "628076905",
-    "gid_crafts" : "1972945153",
+    "gid_bodies"     : "1847185351",
+    "gid_doors"      : "533409778",
+    "gid_vendors"    : "1710936085",
+    "gid_quellen"    : "1032854683",
+    "gid_wear"       : "628076905",
+    "gid_crafts"     : "1972945153",
+    "control"        : "2023181623"
 }
 
 result = ''
