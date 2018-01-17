@@ -119,8 +119,7 @@ class Grid(object):
 
     def set_data_file(self):
         """
-        Setting attributes from the config.json file
-        and calculating the display metrics
+        Setting data file
         """
         try:
             for root, dirs, files in os.walk(self.data_dir, topdown=False):
@@ -129,16 +128,9 @@ class Grid(object):
                         data_file = os.path.join(root, file)
                         file_name = os.path.splitext(file)[0]
                         setattr(self, file_name, data_file)
+                        self.data_file = getattr(self, self.scenario)
         except Exception as e:
             self.msg("ERROR - Could not set data file as attribute: {0}".format(e))
-
-        if hasattr(self, self.scenario):
-            scenario_data_file = getattr(self, self.scenario)
-            new_data_file = os.path.join(self.tmp_dir, "data_file.csv")
-            if os.path.exists(new_data_file):
-                os.remove(new_data_file)
-            shutil.copy(scenario_data_file, new_data_file)
-            self.data_file = new_data_file
 
     def set_display(self):
         self.cathetus = int(sqrt(((2 * self.tile_radius) ** 2) - (self.tile_radius ** 2)))
@@ -422,14 +414,14 @@ class Grid(object):
     # --------------------------------------------------------------- #
     #                            GAME EXIT                            #
     # --------------------------------------------------------------- #
-    def clean_tmp_dir(self):
-        for file in os.listdir(self.tmp_dir):
-            file = os.path.join(self.tmp_dir, file)
-            os.remove(file)
-            self.msg("INFO - Removed: {0}".format(file))
+    # def clean_tmp_dir(self):
+    #     for file in os.listdir(self.tmp_dir):
+    #         file = os.path.join(self.tmp_dir, file)
+    #         os.remove(file)
+    #         self.msg("INFO - Removed: {0}".format(file))
 
     def game_exit(self):
-        self.clean_tmp_dir()
+        # self.clean_tmp_dir()
         self.pygame.quit()
         self.msg("SCREEN - game finish")
         quit()
