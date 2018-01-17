@@ -55,7 +55,7 @@ pingpong,item,,sport,grey14,pingpong,,,,,,,TRUE,,,,,,,,
 soccer,item,,sport,grey14,soccer,,,,,,,,,,,,,,,
 book2,item,,knw,grey14,book2,,,,,,,TRUE,,,,,,,,
 battery,item,,elec,grey14,battery,,,,,,TRUE,,,,,,,,,
-gas_tube,item,,gas,grey14,gas_tube,consumed_by:car,,,,,,,,,,,,,,
+gascan,item,,gas,grey14,gascan,consumed_by:car,,,,,,,,,,,,,,
 name,klas,lvl,type,color,img,effects,category,has_opts,available,modable,collectible,consumable,uses,speed,range,time_color,lifespan,vspeed,vfreq,layer
 my_body,body,,my_body,gelb05,galab,t:-15 #rev,,TRUE,TRUE,,,,,2,1,fog_color,30,,,2
 option,item,,option,,,,my_body,,TRUE,,,,,,,,,,,
@@ -89,7 +89,6 @@ name,klas,lvl,type,color,img,effects,category,has_opts,available,modable,collect
 placeholder,item,,,black,,,,,TRUE,,,,,,,white,,,,1
 trigger,body,,trigger,,,,,,TRUE,,,,,,,,,,,1
 boost_timer,body,,boost,,,,,,TRUE,,,,,,,,,,,1
-,,,,,,,,,,,,,,,,,,,,
 edit_phone,item,,editor,grey03,phone,,,,TRUE,,,,,,,,,,,1
 edit_poop,item,,editor,grey03,poop,,,,TRUE,TRUE,,,,,,,,,,1
 edit_spiral,item,,editor,grey03,spiral,,,,TRUE,,,,,,,,,,,1
@@ -115,9 +114,7 @@ gas_col,item,,vendor,grey14,gas,#consume:any gen:gas,,,,,,,,,,,,,,
 phone,item,5,vendor,grey14,phone,#consume:any gen:save,,,,,,,,,,,,,,
 bus,item,,vendor,grey14,bus,#consume:any ride,,,,,,,,,,,,,,
 cage,item,,vendor,grey14,cage,,,,,,,,,,,,,,,
-pipe,item,,vendor,grey14,pipe,,,,,,,,,,,,,,,
 cheshma,item,,vendor,grey14,cheshma,water,,,,,,,,,,,,,,
-lamp,item,,vendor,grey14,lamp,#consume:electricity light,,,,,,,,,,,,,,
 bar,item,,vendor,grey14,,#consume:any gen:drink,,,,,,,,,,,,,,
 sex,item,,vendor,grey14,,libido,,,,,,,,,,,,,,
 casino,item,,vendor,grey14,gamble,#consume:any gen:random,,,,,,,,,,,,,,
@@ -150,6 +147,8 @@ sewer,item,,quelle,grey14,,,,,,,,,,,,,,,,
 bin_kofa,item,,quelle,grey14,,random 1-2-3 level item / smel bad,,,,,,,,,,,,,,
 smel bad,item,,quelle,grey14,,,,,,,,,,,,,,,,
 dirt,item,,quelle,grey14,,,,,,,,,,,,,,,,
+pipe,item,,vendor,grey14,,,,,,,,,,,,,,,,
+lamp,item,,vendor,grey14,,#consume:electricity light,,,,,,,,,,,,,,
 name,klas,lvl,type,color,img,effects,category,has_opts,available,modable,collectible,consumable,uses,speed,range,time_color,lifespan,vspeed,vfreq,layer
 bag,item,,inventory,grey03,bago,,bag,TRUE,TRUE,,,,,,,,,,,1
 inventory_placeholder,item,,option,grey03,,,bag,,TRUE,,,,,,,,,,,1

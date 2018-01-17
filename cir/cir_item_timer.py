@@ -31,7 +31,6 @@ class TimerItem(Item):
 
     @property
     def number_of_steps(self):
-        # self._number_of_steps = int(self.duration / self.time_step)
         self._number_of_steps = self.duration * self.steps_per_sec
         return self._number_of_steps
 

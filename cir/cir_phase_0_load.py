@@ -23,27 +23,14 @@ class DataLoader(object):
 
     def __init__(self, grid=None):
         self.grid = grid
-        self.csv_all = None
-        self.csv_data = None
+        self.csv_data = self.grid.data_file
         self.data_file = None
+        self.my_body = None
+        self.inventory = None
 
     def set_data_file(self):
         """ Extends the current scenario data file with the all data file """
         lines_to_write = []
-
-        # self.csv_all = csv_from_excel(self.grid.all)
-        # self.csv_data = csv_from_excel(self.grid.data_file)
-
-        # self.csv_all = self.grid.all
-        self.csv_data = self.grid.data_file
-
-        # with open(self.csv_all, 'rb') as all:
-        #     data_all = csv.reader(all, delimiter=',')
-        #     header_all = next(data_all)
-        #     for line in data_all:
-        #         if line and not line == header_all:
-        #             lines_to_write.append(line)
-
         with open(self.csv_data, 'ab') as data_file:
             writer = csv.writer(data_file)
             for line in lines_to_write:
@@ -125,7 +112,6 @@ class DataLoader(object):
                 if not row == header:
                     if len([field for field in row if field not in [None, '']]) > 1:
                         klas = row[col_idx["klas"]]
-                        # import pdb; pdb.set_trace()
                         # --------------------------------------------------------------- #
                         #                        ATTRIBUTES DICT                          #
                         # --------------------------------------------------------------- #
@@ -284,13 +270,17 @@ class DataLoader(object):
                         item_name = candidate_item["item_name"]
                         for pos in candidate_item["item_positions"]:
                             item = self.load_item(item_name)
+
                             try:
                                 item.pos = self.grid.tile_dict[pos]
+                                self.set_opts(item)
                             except Exception as e:
                                 self.grid.msg(
                                     "ERROR - Set item: {0} \nin room: {1} \n{2} \n candidate: {3}".format(
                                         item, room_n, e, candidate_item))
                             self.grid.rooms[room_n]["items"].append(item)
+
+                            # DOORS
                             if 'door' in item.type:
                                 opposite_door, door_room_n = self.set_door(item, room_n)
                                 if door_room_n not in self.grid.rooms.keys():
@@ -300,16 +290,33 @@ class DataLoader(object):
                                     }
                                 self.grid.rooms[door_room_n]["items"].append(opposite_door)
 
-                        # if 'item_img'
+                            # MY BODY
+                            elif item_name == "my_body":
+                                item.gen_birth_track()
+                                self.my_body = item
 
+                            # INVENTORY
+                            elif item.name == "bag":
+                                i_pos_x = self.grid.rows - 1
+                                i_pos_y = self.grid.cols - 3
+                                i_pos = str(i_pos_x) + "_" + str(i_pos_y)
+                                item.pos = self.grid.names_to_pos(i_pos)
+                                self.grid.items.append(item)
+                                self.inventory = item
 
+                            elif item.type == 'slab':
+                                s_pos_x = self.grid.cols - 1
+                                s_pos_y = 3
+                                s_pos = str(s_pos_x) + "_" + str(s_pos_y)
+                                item.pos = self.grid.names_to_pos(s_pos)
+                                setattr(self.grid, 'slab', item)
+                                self.grid.items.append(item)
 
     def load_game(self):
         """
         Main loading execution of all items, res and preconditions
         :return: my_body
         """
-
         Colors.set_colors(self.grid)
         self.grid.images        = Images(self.grid)
         self.grid.fonts         = Fonts(self.grid)
@@ -321,50 +328,13 @@ class DataLoader(object):
         self.grid.fog_color = getattr(self.grid, self.grid.fog_color)
         self.grid.room_color = getattr(self.grid, self.grid.room_color)
 
-        my_body = None
-        my_body_inventory = None
-
         self.grid.msg("INFO - Loading {0}".format(self.grid.scenario))
-        for item, klas in self.load_data():
-
-            # if item.type == "editor" and self.grid.show_editor:
-            #     item.room = "ALL"
-            # if "door" in item.type:
-            #     self.set_door(item)
-            if item.type == "my_body":
-                my_body = item
-                my_body.gen_birth_track()
-            elif item.type == "inventory":
-                i_pos_x = self.grid.rows - 1
-                i_pos_y = self.grid.cols - 3
-                i_pos = str(i_pos_x) + "_" + str(i_pos_y)
-                item.pos = self.grid.names_to_pos(i_pos)
-                my_body_inventory = item
-            elif item.type == 'slab':
-                s_pos_x = self.grid.cols - 1
-                s_pos_y = 3
-                s_pos = str(s_pos_x) + "_" + str(s_pos_y)
-                item.pos = self.grid.names_to_pos(s_pos)
-                setattr(self.grid, 'slab', item)
-
-            # self.set_room(item)
-            self.set_timers(item)
-            self.set_opts(item)
-
-        if not my_body in self.grid.items:
-            self.grid.items.append(my_body)
-
         self.set_rooms()
         self.set_buttons()
+
+        self.my_body.inventory = self.inventory
+        self.grid.items.append(self.my_body)
+
         self.grid.load_current_room()
-        self.grid.items.append(my_body)
 
-        my_body.inventory = my_body_inventory
-        self.grid.items.append(my_body_inventory)
-        if hasattr(self.grid, 'slab'):
-            self.grid.items.append(self.grid.slab)
-        my_body.pos = self.grid.names_to_pos("center")
-
-
-
-        return my_body
+        return self.my_body
