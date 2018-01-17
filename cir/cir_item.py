@@ -137,7 +137,6 @@ class Item(object):
         if not self.vibe_track:
             grid.msg("INFO - Open menu {0}".format(self.name))
             grid.clean_mouse()
-            # self.mode = None
             self.in_menu = True
             olap_pos = []
 

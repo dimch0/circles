@@ -258,6 +258,10 @@ class DataLoader(object):
             self.grid.buttons.append(butt)
 
     def set_rooms(self):
+        """
+        Sets room items from hardcoded scenario conf
+        :return:
+        """
         if hasattr(self.grid, 'room_items'):
             for room in self.grid.room_items:
                 for room_n, room_i in room.items():
@@ -303,7 +307,9 @@ class DataLoader(object):
                                 item.pos = self.grid.names_to_pos(i_pos)
                                 self.grid.items.append(item)
                                 self.inventory = item
+                                self.grid.panel_items['bag'] = item
 
+                            # SLAB
                             elif item.type == 'slab':
                                 s_pos_x = self.grid.cols - 1
                                 s_pos_y = 3
@@ -311,6 +317,7 @@ class DataLoader(object):
                                 item.pos = self.grid.names_to_pos(s_pos)
                                 setattr(self.grid, 'slab', item)
                                 self.grid.items.append(item)
+                                self.grid.panel_items['slab'] = item
 
     def load_game(self):
         """

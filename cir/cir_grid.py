@@ -80,6 +80,7 @@ class Grid(object):
         self.overlap = []
         self.buttons = []
         self.editor_buttons = []
+        self.panel_items = {}
         # -------------------------------------------------- #
         #                        MOUSE                       #
         # -------------------------------------------------- #
@@ -370,10 +371,25 @@ class Grid(object):
             "items"          : [],
             "revealed_tiles": {},
             }
-
         self.items = self.rooms[self.current_room]["items"]
-        if "ALL" in self.rooms.keys():
-            self.items.extend(self.rooms["ALL"]["items"])
+
+        for pitem in self.panel_items.values():
+            if not pitem in self.items:
+                self.items.append(pitem)
+
+
+                if pitem.options:
+                    for opt_pitem in pitem.options.values():
+                        if not opt_pitem in self.items:
+                            self.items.append(opt_pitem)
+                            print opt_pitem.name
+                            print opt_pitem.pos
+
+                if pitem.in_menu:
+                    pitem.open_menu(self)
+                else:
+                    pitem.close_menu(self)
+
         self.items = list(set(self.items))
         self.revealed_tiles = self.rooms[self.current_room]["revealed_tiles"]
 

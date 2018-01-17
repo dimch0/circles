@@ -128,9 +128,6 @@ class GameEffects(object):
     # --------------------------------------------------------------- #
     def show_map(self, my_body):
         """ Shows the map room 999 """
-
-        inventory_in_menu = my_body.inventory.in_menu
-
         if not self.grid.current_room == "map":
             self.grid.previous_room = self.grid.current_room
             self.grid.change_room("map")

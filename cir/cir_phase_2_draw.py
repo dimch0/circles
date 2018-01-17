@@ -48,7 +48,7 @@ class GameDrawer(object):
 
 
     def draw_map(self):
-
+        "draws map dots"
         for map_dot in self.grid.map_dots.values():
             self.grid.pygame.draw.circle(self.grid.game_display,
                                          map_dot['color'],
@@ -127,7 +127,7 @@ class GameDrawer(object):
     def draw_body(self, current_tile, item):
         """ Draws each body and it's image if available """
 
-        if item.available and not (not item.birth_track and item.marked_for_destruction):
+        if item.available and not (not item.birth_track and item.marked_for_destruction) and item.pos:
 
             if item.birth_track and item.color:
                 item.radius = item.birth_track[0]
@@ -323,6 +323,8 @@ class GameDrawer(object):
 
                 # ITEMS
                 self.draw_body(current_tile, item)
+
+
 
                 # SHOW MOVEMENT
                 if self.grid.show_debug and len(item.move_track) > 1:
