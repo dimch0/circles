@@ -5,11 +5,17 @@
     "cols": 32,
     "fog_color": "grey01",
     "room_color": "grey03",
-    "playing_tiles": [
-      "1_1",
-      "31_1",
-      "31_31",
-      "1_31"
+    "playing_tiles": ["1_1", "31_1", "31_31", "1_31"],
+    "room_items" : [
+      {"11_11" : [
+        {"item_name": "my_body",
+          "item_positions": ["center"]},
+        {"item_name": "bag",
+          "item_positions": ["center"]},
+        {"item_name": "slab",
+          "item_positions": ["center"]}
+      ]}
     ]
+
   }
 }

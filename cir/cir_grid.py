@@ -8,7 +8,6 @@
 import os
 import time
 import json
-import shutil
 from math import sqrt
 
 from cir_utils import in_circle, inside_polygon, bcolors, get_short_name, intersecting
@@ -42,7 +41,10 @@ class Grid(object):
         self.room_color = None
         self.door_slots = []
         self.set_config()
-        self.set_data_file()
+        self.data_file = os.path.join(
+            self.data_dir,
+            self.scenario,
+            self.scenario + ".csv")
         self.game_menu = True
         self.game_over = False
         self.start_time = None
@@ -117,21 +119,6 @@ class Grid(object):
             self.read_config(conf_scenario)
         except Exception as e:
             self.msg("ERROR - Could not set config: {0}".format(e))
-
-    def set_data_file(self):
-        """
-        Setting data file
-        """
-        try:
-            for root, dirs, files in os.walk(self.data_dir, topdown=False):
-                for file in files:
-                    if file.endswith('.csv'):
-                        data_file = os.path.join(root, file)
-                        file_name = os.path.splitext(file)[0]
-                        setattr(self, file_name, data_file)
-                        self.data_file = getattr(self, self.scenario)
-        except Exception as e:
-            self.msg("ERROR - Could not set data file as attribute: {0}".format(e))
 
     def set_display(self):
         self.cathetus = int(sqrt(((2 * self.tile_radius) ** 2) - (self.tile_radius ** 2)))

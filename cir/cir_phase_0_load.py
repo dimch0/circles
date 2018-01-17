@@ -26,7 +26,6 @@ class DataLoader(object):
         self.csv_data = self.grid.data_file
         self.data_file = None
         self.my_body = None
-        self.inventory = None
 
     def set_data_file(self):
         """ Extends the current scenario data file with the all data file """
@@ -306,7 +305,6 @@ class DataLoader(object):
                                 i_pos = str(i_pos_x) + "_" + str(i_pos_y)
                                 item.pos = self.grid.names_to_pos(i_pos)
                                 self.grid.items.append(item)
-                                self.inventory = item
                                 self.grid.panel_items['bag'] = item
 
                             # SLAB
@@ -339,7 +337,7 @@ class DataLoader(object):
         self.set_rooms()
         self.set_buttons()
 
-        self.my_body.inventory = self.inventory
+        self.my_body.inventory = self.grid.panel_items['bag']
         self.grid.items.append(self.my_body)
 
         self.grid.load_current_room()
