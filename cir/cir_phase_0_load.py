@@ -88,8 +88,14 @@ class DataLoader(object):
         except Exception as e:
             self.grid.msg("ERROR - Could not set attribute: {0}".format(e))
 
-        dummy.radius = self.grid.tile_radius
-        dummy.default_radius = dummy.radius
+        try:
+            dummy.radius = self.grid.tile_radius
+            dummy.default_radius = dummy.radius
+        except Exception as e:
+            self.grid.msg("ERROR - Could not set radius: %s" % e)
+            self.grid.msg("ERROR - dummy: %s" % dummy)
+            self.grid.msg("ERROR - klas: %s" % klas)
+            self.grid.msg("ERROR - attributes: %s" % attributes_dict)
 
         # DEBUG
         if self.grid.show_debug:
@@ -153,10 +159,15 @@ class DataLoader(object):
                                     str(row[col_idx["name"]])))
                         # CREATE ITEM
                         if item_name:
-                            if item_name in attributes_dict["name"]:
-                                item = self.create_new_item(klas, attributes_dict)
-                            else:
-                                continue
+                            try:
+                                if item_name in attributes_dict["name"]:
+                                    item = self.create_new_item(klas, attributes_dict)
+                                else:
+                                    continue
+                            except Exception as e:
+                                self.grid.msg("ERROR - Could not load item: %s" % e)
+                                self.grid.msg("ERROR - item_name: %s" % item_name)
+                                self.grid.msg("ERROR - attributes: %s" % attributes_dict)
                         else:
                             item = self.create_new_item(klas, attributes_dict)
 
@@ -275,8 +286,10 @@ class DataLoader(object):
                             item = self.load_item(item_name)
                             try:
                                 item.pos = self.grid.tile_dict[pos]
-                            except:
-                                import pdb; pdb.set_trace()
+                            except Exception as e:
+                                self.grid.msg(
+                                    "ERROR - Set item: {0} \nin room: {1} \n{2} \n candidate: {3}".format(
+                                        item, room_n, e, candidate_item))
                             self.grid.rooms[room_n]["items"].append(item)
                             if 'door' in item.type:
                                 opposite_door, door_room_n = self.set_door(item, room_n)
@@ -347,10 +360,11 @@ class DataLoader(object):
         self.grid.items.append(my_body)
 
         my_body.inventory = my_body_inventory
-
         self.grid.items.append(my_body_inventory)
         if hasattr(self.grid, 'slab'):
             self.grid.items.append(self.grid.slab)
         my_body.pos = self.grid.names_to_pos("center")
+
+
 
         return my_body

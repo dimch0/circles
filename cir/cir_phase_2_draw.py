@@ -314,7 +314,6 @@ class GameDrawer(object):
     def draw_animations(self, current_tile):
         """ Main drawing function """
 
-        # print self.grid.center_tile
         for item in self.grid.items:
             if item.available:
 
