@@ -20,6 +20,7 @@ data_sheets = [
 ]
 
 for dats in data_sheets:
+    print "Downloading..."
     data = ""
     filename = dats["filename"]
     key = dats["key"]
@@ -39,3 +40,4 @@ for dats in data_sheets:
     with open(filename, "wb") as f:
         for line in data:
             f.write(line)
+print "Done"

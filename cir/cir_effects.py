@@ -319,6 +319,20 @@ class GameEffects(object):
                         else:
                             modifier_str = '-{0}'.format(abs(int(amount)))
                         attr_str = ''
+
+                        # BOOST
+                        if len(effect) > 2:
+                            negative_effect = "%s:-%s" % (eff_att, str(amount))
+                            boost_duration = float(effect[2]) * self.food_unit
+
+                            self.grid.loader.set_boost_timer(
+                                duration = boost_duration,
+                                effect = negative_effect,
+                                boosted_item = consumator,
+                                boost_item = cir_utils.get_short_name(consumable.name))
+
+                            consumator.default_color = self.grid.red01
+
                         if not consumator.type in protected_types:
                             if eff_att == 'max' and consumator.lifespan:
                                 consumator.lifespan.limit += amount * self.food_unit
@@ -330,23 +344,25 @@ class GameEffects(object):
 
                             elif eff_att == 'sp' and hasattr(consumator, 'speed'):
                                 consumator.change_speed(amount)
-
-
-                                # BOOST
-                                if len(effect) > 2:
-                                    negative_effect = "%s:-%s" % (eff_att, str(amount))
-                                    boost_duration = int(effect[2]) * self.food_unit
-
-                                    self.grid.loader.set_boost_timer(
-                                        duration = boost_duration,
-                                        effect = negative_effect,
-                                        boosted_item = consumator,
-                                        boost_item = cir_utils.get_short_name(consumable.name))
-
-                                    consumator.default_color = self.grid.red01
-
-
                                 attr_str = 'speed'
+
+                            elif eff_att == 'r' and hasattr(consumator, 'range'):
+                                consumator.range += amount
+                                attr_str = 'range'
+
+                                # # BOOST
+                                # if len(effect) > 2:
+                                #     negative_effect = "%s:-%s" % (eff_att, str(amount))
+                                #     boost_duration = int(effect[2]) * self.food_unit
+                                #
+                                #     self.grid.loader.set_boost_timer(
+                                #         duration = boost_duration,
+                                #         effect = negative_effect,
+                                #         boosted_item = consumator,
+                                #         boost_item = cir_utils.get_short_name(consumable.name))
+                                #
+                                #     consumator.default_color = self.grid.red01
+
 
                         if attr_str:
                             eff_msg.append(modifier_str + ' ' + attr_str)

@@ -10,11 +10,20 @@ import random
 gen_schema = {
     "1": {
        "items": [
-            'bread',
-            'peanut',
-            'pretzel',
-            'carrot',
-            'apple',
+           'toilet_paper',
+           'carrot',
+           'fresh'
+           # 'peanut',
+           # 'pretzel',
+           # 'apple',
+           # "cheshma",
+           # "dog house",
+           # "casino",
+           # "cage",
+           # "gas_col",
+           # "battery",
+           # "lipstick",
+           # "gascan"
        ],
        "base": 15
     },
@@ -25,6 +34,7 @@ gen_schema = {
             'can',
             'egg',
             'tomato',
+            'carrot'
         ],
         "base": 40
     },
