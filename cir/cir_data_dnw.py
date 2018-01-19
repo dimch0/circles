@@ -20,13 +20,14 @@ data_sheets = [
 ]
 
 for dats in data_sheets:
-    print "Downloading..."
+    print "Downloading"
     data = ""
     filename = dats["filename"]
     key = dats["key"]
     gids = dats["gids"]
 
     for sheet, gid in gids.items():
+        print "..."
         link = "{base}key={key}&gid={gid}&output=csv".format(
             base=GLINK,
             key=key,

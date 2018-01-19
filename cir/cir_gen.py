@@ -10,9 +10,10 @@ import random
 gen_schema = {
     "1": {
        "items": [
-           'toilet_paper',
-           'carrot',
-           'fresh'
+           'coffee',
+           'beer',
+           'fresh',
+           'cigara',
            # 'peanut',
            # 'pretzel',
            # 'apple',

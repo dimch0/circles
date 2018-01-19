@@ -350,18 +350,9 @@ class GameEffects(object):
                                 consumator.range += amount
                                 attr_str = 'range'
 
-                                # # BOOST
-                                # if len(effect) > 2:
-                                #     negative_effect = "%s:-%s" % (eff_att, str(amount))
-                                #     boost_duration = int(effect[2]) * self.food_unit
-                                #
-                                #     self.grid.loader.set_boost_timer(
-                                #         duration = boost_duration,
-                                #         effect = negative_effect,
-                                #         boosted_item = consumator,
-                                #         boost_item = cir_utils.get_short_name(consumable.name))
-                                #
-                                #     consumator.default_color = self.grid.red01
+                            elif eff_att == 'vsp' and hasattr(consumator, 'vspeed'):
+                                consumator.vspeed += amount
+                                attr_str = 'vibe speed'
 
 
                         if attr_str:
