@@ -11,7 +11,6 @@ class Scout(BodyItem):
 
     def __init__(self):
         super(Scout, self).__init__()
-        self.nearest_untile = None
 
     def nearest_unrevealed(self, grid):
         result = None
@@ -22,6 +21,17 @@ class Scout(BodyItem):
                 else:
                     if cu.dist_between(result, self.pos) > cu.dist_between(playing_tile, self.pos):
                         result = playing_tile
+        return result
+
+    def nearest_item(self, grid, itype):
+        result = None
+        for item in grid.items:
+            if item.type == itype:
+                if not result:
+                    result = item.pos
+                else:
+                    if cu.dist_between(result, self.pos) > cu.dist_between(item.pos, self.pos):
+                        result = item.pos
         return result
 
     def chase_pos(self, grid, search_item):
@@ -49,8 +59,8 @@ class Scout(BodyItem):
 
             # Get target
             # target = self.nearest_unrevealed(grid)
-            target = self.chase_pos(grid, "my_body")
-
+            # target = self.chase_pos(grid, "my_body")
+            target = self.nearest_item(grid, itype='food')
             # Choose nearest legal
             if target and target not in grid.adj_tiles(self.pos):
                 best_legal = None
