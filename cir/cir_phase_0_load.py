@@ -70,9 +70,13 @@ class DataLoader(object):
                         if hasattr(dummy, "default_img"):
                             setattr(dummy, "default_img", value)
 
-                    if attribute == "color":
+                    elif attribute == "color":
                         if hasattr(dummy, "default_color"):
                             setattr(dummy, "default_color", value)
+
+                    elif attribute == "effects":
+                        if "#hunger" in value:
+                            dummy.hungry = True
 
         except Exception as e:
             self.grid.msg("ERROR - Could not set attribute: {0}".format(e))
@@ -194,7 +198,13 @@ class DataLoader(object):
         if hasattr(item, "vfreq"):
             vibefr = TimerItem()
             vibefr.duration = item.vfreq
+            vibefr.radius = item.radius
+            vibefr.default_radius = item.radius
+            if not hasattr(item, 'lifespan') or (hasattr(item, 'lifespan') and not item.lifespan):
+                vibefr.color = item.time_color
             item.vfreq = vibefr
+            if item.type in ['spawn']:
+                item.vfreq.reversed = True
 
     def set_boost_timer(self, duration, effect, boosted_item, boost_item):
 
@@ -260,6 +270,7 @@ class DataLoader(object):
                 butt.pos = self.grid.adj_tiles(center)[3]
                 butt.img = self.grid.images.power
 
+
             self.grid.buttons.append(butt)
 
     def set_rooms(self):
@@ -304,6 +315,9 @@ class DataLoader(object):
                                 item.available = True
                                 item.gen_birth_track()
                                 self.my_body = item
+
+                            elif item.type in ['trigger']:
+                                item.available = True
 
                             # INVENTORY
                             elif item.name == "bag":

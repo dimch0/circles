@@ -154,19 +154,42 @@ class GameDrawer(object):
 
     def draw_timers(self, item):
         """ Draws current state of a timer """
-        if item.lifespan:
+        timer = None
+
+        if hasattr(item, 'lifespan'):
+            if item.lifespan not in ['', None]:
+                timer = item.lifespan
+
+        if not timer and hasattr(item, 'vfreq'):
+            if item.vfreq:
+                timer = item.vfreq
+
+        if timer:
             timer_fat = item.radius / 5
 
-            if item.lifespan.available and item.time_color:
+            if timer.available and item.time_color:
                 if item.radius >= timer_fat:
-                    item.lifespan.pos = item.pos
-                    item.lifespan.radius = item.radius
+                    timer.pos = item.pos
+                    timer.radius = item.radius
                     self.grid.pygame.draw.arc(self.grid.game_display,
-                                    item.time_color,
-                                    item.lifespan.rect,
-                                    math.radians(item.lifespan.filled_degrees),
-                                    math.radians(item.lifespan.start_degrees),
-                                    timer_fat)
+                                              item.time_color,
+                                              timer.rect,
+                                              math.radians(timer.filled_degrees),
+                                              math.radians(timer.start_degrees),
+                                              timer_fat)
+        # if item.lifespan:
+        #     timer_fat = item.radius / 5
+        #
+        #     if item.lifespan.available and item.time_color:
+        #         if item.radius >= timer_fat:
+        #             item.lifespan.pos = item.pos
+        #             item.lifespan.radius = item.radius
+        #             self.grid.pygame.draw.arc(self.grid.game_display,
+        #                             item.time_color,
+        #                             item.lifespan.rect,
+        #                             math.radians(item.lifespan.filled_degrees),
+        #                             math.radians(item.lifespan.start_degrees),
+        #                             timer_fat)
 
     def draw_aim(self, current_tile, item):
         """ Aim """

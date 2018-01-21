@@ -1,11 +1,35 @@
 {
-  "scenario_03": {
-    "tile_radius": 110,
-    "rows": 8,
-    "cols": 8,
+  "scenario_01": {
+    "tile_radius": 31,
+    "rows": 22,
+    "cols": 22,
     "fog_color": "grey01",
     "room_color": "grey03",
-    "playing_tiles": ["1_1", "7_1", "7_7", "1_7"],
-    "show_editor": 1
+    "playing_tiles": ["11_3", "12_4", "13_5", "14_6", "15_7", "15_9", "15_11", "15_13", "15_15", "14_16", "13_17", "12_18", "11_19", "10_18", "9_17", "8_16", "7_15", "7_13", "7_11", "7_9", "7_7", "8_6", "9_5", "10_4"],
+    "door_slots" : [],
+    "room_items" : [
+      {"11_11" : [
+        {"item_name": "my_body",
+         "item_positions": ["center"]},
+        {"item_name": "bag",
+         "item_positions": ["center"]},
+        {"item_name": "dog_house",
+          "item_positions": ["10_4"]},
+        {"item_name": "meat",
+          "item_positions": ["13_17"]},
+        {"item_name": "barrel",
+          "item_positions": ["11_7"]},
+        {"item_name": "book3",
+          "item_positions": ["11_19"]},
+        {"item_name": "kofa1",
+          "item_positions": ["11_17"]},
+        {"item_name": "fence",
+          "item_positions": ["15_13"]},
+        {"item_name": "sat_vibe",
+          "item_positions": ["center"]}
+
+      ]}
+    ],
+    "gen_schema" : {}
   }
 }

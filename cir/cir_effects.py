@@ -380,7 +380,7 @@ class GameEffects(object):
             except Exception as e:
                 self.grid.msg("ERROR - invalid effects '{0}' \n {1}".format(effects, e))
 
-        if consumed and not consumable.type in ['option']:
+        if consumed and not consumable.type in ['option'] and not consumable.lifespan:
             consumable.destroy(self.grid)
         return consumed
 

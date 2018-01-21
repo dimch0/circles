@@ -71,6 +71,9 @@ class VarUpdater(object):
         if item.lifespan and not isinstance(item.lifespan, (float, int)):
             item.lifespan.tick()
             if item.lifespan.is_over:
+                if hasattr(item, 'home'):
+                    item.home.vfreq = item.home_vfreq
+                    item.home.vfreq.restart()
                 item.destroy(self.grid)
 
         # VIBE TIMER

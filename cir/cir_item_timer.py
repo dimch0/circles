@@ -12,7 +12,7 @@ class TimerItem(Item):
 
     def __init__(self):
         super(TimerItem, self).__init__()
-        self.available = True
+
         # CONSTANTS
         self.time_step = 0.0157
         self.steps_per_sec = 63
@@ -28,6 +28,7 @@ class TimerItem(Item):
         self._filled_degrees = self.start_degrees
         self._is_over = False
         self.reversed = False
+        self.available = True
 
     @property
     def number_of_steps(self):

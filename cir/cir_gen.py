@@ -70,6 +70,7 @@ class ItemGenerator(object):
         self.grid = grid
         self.generated = {}
         self.my_body = my_body
+        self.gen_schema = grid.gen_schema
 
     def should_generate(self):
         """ Checks bases for generation
@@ -79,8 +80,8 @@ class ItemGenerator(object):
         for room in self.grid.rooms.values():
             revealed_tiles += len(room['revealed_tiles'])
 
-        for level in sorted(gen_schema.keys()):
-            base = int(gen_schema[level]['base'])
+        for level in sorted(self.gen_schema.keys()):
+            base = int(self.gen_schema[level]['base'])
             count_level = len([n for n in range(base,
                                                 revealed_tiles,
                                                 base)])
@@ -104,7 +105,7 @@ class ItemGenerator(object):
 
         if gen_pos and self.should_generate():
             level = self.should_generate()
-            items = gen_schema[level]['items']
+            items = self.gen_schema[level]['items']
             random_item = random.choice(items)
             self.grid.event_effects.produce(random_item, gen_pos)
             self.generated[level] += 1
