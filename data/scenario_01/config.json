@@ -29,8 +29,6 @@
          "item_positions": ["center"]},
         {"item_name": "slab",
          "item_positions": ["center"]},
-        {"item_name": "dog",
-          "item_positions": ["12_4"]},
         {"item_name": "dog_house",
           "item_positions": ["10_4"]}
       ]},

@@ -28,10 +28,10 @@ class Scout(BodyItem):
         for item in grid.items:
             if item.type == itype:
                 if not result:
-                    result = item.pos
+                    result = item
                 else:
                     if cu.dist_between(result, self.pos) > cu.dist_between(item.pos, self.pos):
-                        result = item.pos
+                        result = item
         return result
 
     def chase_pos(self, grid, search_item):
@@ -42,7 +42,7 @@ class Scout(BodyItem):
         return result
 
     def action(self, grid):
-        # FUN
+
         # self.speed = 5
         # self.vfreq.duration = 0.1
         # self.vspeed = 3
@@ -60,7 +60,18 @@ class Scout(BodyItem):
             # Get target
             # target = self.nearest_unrevealed(grid)
             # target = self.chase_pos(grid, "my_body")
-            target = self.nearest_item(grid, itype='food')
+            target = None
+
+            if self.hungry:
+                target = self.nearest_item(grid, itype='food')
+                if target:
+                    if target.pos in grid.adj_tiles(self.pos):
+                        grid.event_effects.consume(consumable=target,
+                                                   consumator=self)
+                    target = target.pos
+
+                else:
+                    target = self.chase_pos(grid, "my_body")
             # Choose nearest legal
             if target and target not in grid.adj_tiles(self.pos):
                 best_legal = None

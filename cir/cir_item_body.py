@@ -13,6 +13,8 @@ class BodyItem(MobileItem):
     """
     def __init__(self):
         super(BodyItem, self).__init__()
+        self.hungry = False
+
         self.range = 1
         # VIBE SPEED CAN NOT BE < 1!
         self.vspeed = 1

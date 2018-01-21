@@ -33,7 +33,7 @@ class Item(object):
         self.has_opts = False
         self.in_menu = False
         self.modable = False
-        self.available = True
+        self.available = False
         self.clickable = True
         self.collectible = False
         self.consumable = False

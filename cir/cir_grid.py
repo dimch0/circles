@@ -230,6 +230,7 @@ class Grid(object):
             (self_x - self.cathetus, self_y - self.tile_radius)]
 
         if empty:
+            # empty_tiles = [tile for tile in adj_tiles if tile in self.revealed_tiles.keys()]
             for adj_tile in adj_tiles:
                 if adj_tile in self.revealed_tiles.keys():
                     return adj_tile
@@ -364,14 +365,10 @@ class Grid(object):
             if not pitem in self.items:
                 self.items.append(pitem)
 
-
                 if pitem.options:
                     for opt_pitem in pitem.options.values():
                         if not opt_pitem in self.items:
                             self.items.append(opt_pitem)
-                            print opt_pitem.name
-                            print opt_pitem.pos
-
                 if pitem.in_menu:
                     pitem.open_menu(self)
                 else:

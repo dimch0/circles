@@ -12,7 +12,7 @@ class ButtonItem(Item):
     """
     def __init__(self):
         super(ButtonItem, self).__init__()
-
+        self.available = True
         self.font = None
         self.text_color = None
         self._text = self.name

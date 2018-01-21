@@ -11,6 +11,7 @@ import cir_utils as cu
 from cir_item import Item
 from cir_item_body import BodyItem
 from cir_item_body_scout import Scout
+from cir_item_body_spawn import Spawn
 from cir_item_timer import TimerItem
 
 from cir_cosmetic import Images, Fonts, Colors
@@ -54,6 +55,8 @@ class DataLoader(object):
                 dummy = Item()
             elif klas == "scout":
                 dummy = Scout()
+            elif klas == "spawn":
+                dummy = Spawn()
         except Exception as e:
             self.grid.msg("ERROR - {0}, could not create item of klas: {1}".format(e, klas))
 
@@ -119,7 +122,7 @@ class DataLoader(object):
                                 "type"        : str(row[col_idx["type"]]),
                                 "has_opts"    : str(row[col_idx["has_opts"]]),
                                 "category"    : str(row[col_idx["category"]]),
-                                "available"   : bool(row[col_idx["available"]]),
+                                # "available"   : bool(row[col_idx["available"]]),
                                 "name"        : str(row[col_idx["name"]]),
                                 "color"       : getattr(self.grid, row[col_idx["color"]]) if len(row[col_idx["color"]]) > 0 else None,
                                 "img"         : getattr(self.grid.images, row[col_idx["img"]]) if len(row[col_idx["img"]]) > 0 else None,
@@ -161,6 +164,7 @@ class DataLoader(object):
     def find_opts(self, opt, item):
         if opt.type == "option":
             if opt.category and opt.category in item.name:
+                opt.available = True
                 if not opt.color:
                     opt.color = item.color
                 opt.default_color = item.color
@@ -248,9 +252,11 @@ class DataLoader(object):
             # butt.color = self.grid.room_color
 
             if name == "play":
+                butt.available = True
                 butt.pos = self.grid.adj_tiles(center)[0]
                 butt.img = self.grid.images.play
             elif name == "quit":
+                butt.available = True
                 butt.pos = self.grid.adj_tiles(center)[3]
                 butt.img = self.grid.images.power
 
@@ -295,6 +301,7 @@ class DataLoader(object):
 
                             # MY BODY
                             elif item_name == "my_body":
+                                item.available = True
                                 item.gen_birth_track()
                                 self.my_body = item
 
@@ -304,6 +311,7 @@ class DataLoader(object):
                                 i_pos_y = self.grid.cols - 3
                                 i_pos = str(i_pos_x) + "_" + str(i_pos_y)
                                 item.pos = self.grid.names_to_pos(i_pos)
+                                item.available = True
                                 self.grid.items.append(item)
                                 self.grid.panel_items['bag'] = item
 
@@ -313,9 +321,11 @@ class DataLoader(object):
                                 s_pos_y = 3
                                 s_pos = str(s_pos_x) + "_" + str(s_pos_y)
                                 item.pos = self.grid.names_to_pos(s_pos)
+                                item.available = True
                                 setattr(self.grid, 'slab', item)
                                 self.grid.items.append(item)
                                 self.grid.panel_items['slab'] = item
+
 
     def load_game(self):
         """

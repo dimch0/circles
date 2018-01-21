@@ -264,6 +264,7 @@ class GameEffects(object):
             else:
                 self.grid.msg("SCREEN - No space in bag")
 
+
             if reopen_inventory:
                 inventory.open_menu(self.grid)
                 self.grid.mouse_mode = backup_mouse_mode
@@ -379,6 +380,8 @@ class GameEffects(object):
             except Exception as e:
                 self.grid.msg("ERROR - invalid effects '{0}' \n {1}".format(effects, e))
 
+        if consumed and not consumable.type in ['option']:
+            consumable.destroy(self.grid)
         return consumed
 
     def drop(self, clicked, my_body, item=None):

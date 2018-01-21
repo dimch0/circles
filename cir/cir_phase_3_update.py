@@ -82,9 +82,10 @@ class VarUpdater(object):
                         if hasattr(item, 'action'):
                             item.action(self.grid)
 
-                        if not item.move_track:
-                            item.gen_vibe_track(self.grid)
-                            item.vfreq.restart()
+                        if hasattr(item, 'range'):
+                            if item.range and not item.move_track:
+                                item.gen_vibe_track(self.grid)
+                                item.vfreq.restart()
 
         # BOOST TIMER
         if hasattr(item, "boost"):
@@ -96,6 +97,7 @@ class VarUpdater(object):
                             self.grid.event_effects.consume(item, boost_timer)
                             item.default_color = boost_timer.store_color
                             item.boost.remove(boost_timer)
+                            boost_timer.destroy(self.grid)
 
 
     # --------------------------------------------------------------- #
