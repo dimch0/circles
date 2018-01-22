@@ -186,7 +186,6 @@ class GameEffects(object):
     # --------------------------------------------------------------- #
     def echo_mode_click(self, current_tile, my_body):
         """ Signal effect """
-        self.grid.msg("SCREEN - Echo!")
         if not cir_utils.in_circle(my_body.pos, my_body.radius, current_tile) and not my_body.move_track:
             signal = self.produce("signal",
                                   my_body.pos,

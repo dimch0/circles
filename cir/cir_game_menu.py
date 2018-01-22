@@ -31,10 +31,12 @@ def game_menu(grid, my_body, end_msg=''):
                         if current_tile == button.pos and button.clickable:
                             if button.name in ["play", "replay"]:
                                 grid.game_menu = False
+                                if grid.seconds_in_game == 0:
+                                    grid.messages = ["SCREEN - start"]
                                 if grid.game_over:
                                     grid.game_over = False
                                 if button.name == "replay":
-                                    grid.messages = ["SCREEN - game started"]
+                                    grid.messages = ["SCREEN - start"]
                             elif button.name == "quit":
                                 grid.game_exit()
         if grid.game_menu:

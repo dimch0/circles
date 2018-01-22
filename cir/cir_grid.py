@@ -442,6 +442,7 @@ class Grid(object):
         """ Display messages in terminal """
         will_show_msg = True
         msg_color = bcolors.INFO
+        msg = msg.replace('my_body', 'you')
 
         if not self.show_debug and "DEBUG - " in msg:
             will_show_msg = False

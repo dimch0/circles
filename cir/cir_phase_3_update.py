@@ -15,6 +15,62 @@ class VarUpdater(object):
         self.igen = ItemGenerator(grid, my_body)
         self.radius_buffer = 2.5
 
+    def check_conditions(self):
+        """ Check win / loose conditions """
+        LOSE_GAME = False
+        WIN_GAME = False
+
+        win_count = 0
+
+        for lcond in self.grid.loose_cond:
+            lname = lcond['item_name']
+
+            if 'places' in lcond.keys():
+                lplaces = lcond['places']
+            if 'cond' in lcond.keys():
+                lcondition = lcond['cond']
+                if lcondition == "not in items":
+                    if lname not in [it.name for it in self.grid.items]:
+                        LOSE_GAME = True
+
+
+        for cond in self.grid.win_cond:
+            if 'places' in cond.keys():
+                wname = cond['item_name']
+                places = [str(place) for place in cond['places']]
+                witems = [self.grid.pos_to_name(wit.pos) for wit in self.grid.items if wname in wit.name]
+                if sorted(places) == sorted(witems):
+                    win_count += 1
+            elif 'cond' in cond.keys():
+                wname = cond['item_name']
+                wcond = cond['cond']
+                if 'not in items' in wcond:
+                    if wname not in [it.name for it in self.grid.items]:
+                        win_count += 1
+
+            if win_count == len(self.grid.win_cond):
+                WIN_GAME = True
+
+
+
+        if LOSE_GAME:
+            self.grid.msg("SCREEN - no meat")
+            self.grid.msg("SCREEN - you loose")
+            self.grid.game_over = True
+
+        elif WIN_GAME:
+            self.grid.msg("SCREEN - dog in fence")
+            self.grid.msg("SCREEN - you win")
+            for report in self.grid.report:
+                if hasattr(self.grid, report):
+                    self.grid.msg("SCREEN - score %s" % getattr(self.grid, report))
+            self.grid.game_over = True
+
+
+
+
+
+
     # --------------------------------------------------------------- #
     #                                                                 #
     #                        ENTER ROOM EFFECTS                       #
@@ -43,10 +99,10 @@ class VarUpdater(object):
     #                                                                 #
     # --------------------------------------------------------------- #
     def destruction(self, item):
-        you_dead_msg = "SCREEN - you dead"
+
+        self.grid.messages = self.grid.messages
         if item.name in ['my_body']:
-            if not you_dead_msg in self.grid.messages:
-                self.grid.msg(you_dead_msg)
+            self.grid.msg("SCREEN - you dead")
 
         if not item.birth_track:
 
@@ -118,15 +174,19 @@ class VarUpdater(object):
                     hit = True
         return hit
 
-
     def signal_hit_effect(self, signal):
-        self.grid.msg("INFO - Hit!")
+
         for hit_item in self.grid.items:
             if hit_item.available and not hit_item.name == signal.name:
                 cir1 = (hit_item.pos, hit_item.radius)
                 cir2 = (signal.pos, signal.radius)
                 if intersecting(cir1, cir2):
-                    self.grid.event_effects.consume(hit_item, signal)
+                    if self.grid.event_effects.consume(hit_item, signal):
+                        self.grid.msg("SCREEN - %s eat %s" % (get_short_name(hit_item.name),
+                                                              get_short_name(signal.name)))
+                    else:
+                        self.grid.msg("SCREEN - %s no eat %s" % (get_short_name(hit_item.name),
+                                                              get_short_name(signal.name)))
 
     # --------------------------------------------------------------- #
     #                                                                 #
@@ -264,3 +324,5 @@ class VarUpdater(object):
         self.grid.set_occupado()
 
         self.grid.clock.tick(self.grid.fps)
+
+        self.check_conditions()

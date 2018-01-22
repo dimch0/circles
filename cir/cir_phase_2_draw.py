@@ -280,7 +280,10 @@ class GameDrawer(object):
                 if "+" in msg or "-" in msg:
                     color = self.grid.grey05
                 else:
-                    color = self.grid.white
+                    if self.grid.game_menu:
+                        color = self.grid.gelb05
+                    else:
+                        color = self.grid.white
 
 
                 # if idx == 0:

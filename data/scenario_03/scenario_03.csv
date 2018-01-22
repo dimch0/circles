@@ -56,7 +56,7 @@ book2,item,,knw,grey14,book2,,,,TRUE,TRUE,,,,,,,,
 battery,item,,elec,grey14,battery,,,,TRUE,TRUE,,,,,,,,
 gascan,item,,gas,grey14,gascan,consumed_by:car,,,TRUE,TRUE,,,,,,,,
 name,klas,lvl,type,color,img,effects,options,modable,collectible,consumable,uses,speed,range,time_color,lifespan,vspeed,vfreq,layer
-my_body,body,,my_body,gelb05,galab,t:-15 #rev,suicide echo,,,,,2,1,fog_color,180,,,2
+my_body,body,,my_body,gelb05,galab,t:-15 #rev,suicide echo,,,,,2,1,fog_color,60,,,2
 option,item,,option,,,,,,,,,,,,,,,
 option2,item,,option,,,,,,,,,,,,,,,
 option3,item,,option,,,,,,,,,,,,,,,

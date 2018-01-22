@@ -1,3 +1,4 @@
+#!/usr/bin/python
 # ------------------------------------------------------------------------------------------------------------------- #
 #                                                                                                                     #
 #                                                       MAIN                                                          #
@@ -20,7 +21,8 @@ def game_loop(game_over, scenario="scenario_03", msg=list()):
     grid.updater.my_body = my_body
 
     if game_over:
-        grid.messages = [msg[-1]]
+        # grid.messages = [msg[-1]]
+        grid.messages = msg
     else:
         grid.messages = ["SCREEN - start"]
 

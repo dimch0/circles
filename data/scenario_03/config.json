@@ -21,9 +21,19 @@
           "item_positions": ["15_13", "11_17", "11_19", "11_7"]},
         {"item_name": "sat_vibe",
           "item_positions": ["center"]}
-
       ]}
     ],
-    "gen_schema" : {}
+    "gen_schema" : {},
+    "win_cond" : [
+      {"item_name": "fence",
+        "places": ["11_3", "11_5", "10_6", "9_5"]},
+      {"item_name": "dog",
+       "cond": "not in items"}
+    ],
+    "loose_cond": [
+      {"item_name": "meat",
+        "cond": "not in items"}
+    ],
+    "report": ["seconds_in_game"]
   }
 }
