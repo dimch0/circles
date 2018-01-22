@@ -17,14 +17,8 @@
           "item_positions": ["10_4"]},
         {"item_name": "meat",
           "item_positions": ["13_17"]},
-        {"item_name": "barrel",
-          "item_positions": ["11_7"]},
-        {"item_name": "book3",
-          "item_positions": ["11_19"]},
-        {"item_name": "kofa1",
-          "item_positions": ["11_17"]},
         {"item_name": "fence",
-          "item_positions": ["15_13"]},
+          "item_positions": ["15_13", "11_17", "11_19", "11_7"]},
         {"item_name": "sat_vibe",
           "item_positions": ["center"]}
 

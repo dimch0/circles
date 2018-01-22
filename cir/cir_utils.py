@@ -37,10 +37,10 @@ def intersecting(circle_1, circle_2):
     """
     x1 = circle_1[0][0]
     y1 = circle_1[0][1]
-    r1 = circle_1[1] - 1
+    r1 = circle_1[1] - 3
     x2 = circle_2[0][0]
     y2 = circle_2[0][1]
-    r2 = circle_2[1] - 1
+    r2 = circle_2[1] - 3
     return math.pow(abs(x1 - x2),2) + math.pow(abs(y1 - y2),2) < math.pow((r1 + r2),2)
 
 

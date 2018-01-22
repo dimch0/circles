@@ -298,6 +298,9 @@ class DataLoader(object):
                                 self.grid.msg(
                                     "ERROR - Set item: {0} \nin room: {1} \n{2} \n candidate: {3}".format(
                                         item, room_n, e, candidate_item))
+                            if item.name in [xitem.name for xitem in self.grid.rooms[room_n]["items"]]:
+                                item.name = item.name + '-' + str(time.time())
+                                time.sleep(0.01)
                             self.grid.rooms[room_n]["items"].append(item)
 
                             # DOORS

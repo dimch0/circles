@@ -413,7 +413,7 @@ class GameEffects(object):
                 # if clicked.type == "my_body":
                     for bag_item in my_body.inventory.options.values():
 
-                        if self.grid.mouse_mode in bag_item.name and bag_item.uses >= 1:
+                        if self.grid.mouse_mode and self.grid.mouse_mode in bag_item.name and bag_item.uses >= 1:
                             if bag_item.consumable and not clicked in my_body.inventory.options.values():
                                 if self.consume(clicked, bag_item):
                                     self.empty_inventory(bag_item)

@@ -10,7 +10,7 @@ from cir.cir_phase_0_load import DataLoader
 pygame.init()
 
 
-def game_loop(game_over, scenario="scenario_03", msg=list()):
+def game_loop(game_over, scenario="scenario_01", msg=list()):
     # --------------------------------------------------------------- #
     #                        PHASE 0: LOADING                         #
     # --------------------------------------------------------------- #
