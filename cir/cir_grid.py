@@ -297,22 +297,22 @@ class Grid(object):
 
         for room_name, room  in self.rooms.items():
             if room_name not in ['map', 'ALL']:
+                if self.names_to_pos([room_name]):
+                    room_pos = self.names_to_pos([room_name])[0]
 
-                room_pos = self.names_to_pos([room_name])[0]
+                    for tile in room['revealed_tiles']:
+                        map_dots.update(self.get_map_dot(tile, room_pos, self.room_color, self.tile_radius))
 
-                for tile in room['revealed_tiles']:
-                    map_dots.update(self.get_map_dot(tile, room_pos, self.room_color, self.tile_radius))
+                    for item in room['items']:
+                        if item.color and item.available:
+                            if item.type not in ['editor', 'my_body', 'option', 'signal', 'inventory', 'slab']:
+                                map_dots.update(self.get_map_dot(item.pos, room_pos, item.color, item.radius))
 
-                for item in room['items']:
-                    if item.color and item.available:
-                        if item.type not in ['editor', 'my_body', 'option', 'signal', 'inventory', 'slab']:
-                            map_dots.update(self.get_map_dot(item.pos, room_pos, item.color, item.radius))
+                            elif item.type in ['my_body'] and room_name == self.previous_room:
+                                map_dots.update(self.get_map_dot(item.pos, room_pos, item.color, item.radius))
 
-                        elif item.type in ['my_body'] and room_name == self.previous_room:
-                            map_dots.update(self.get_map_dot(item.pos, room_pos, item.color, item.radius))
-
-                        if item.type in ['door_enter']:
-                            map_dots.update(self.get_map_dot(item.pos, room_pos, self.red01, item.radius))
+                            if item.type in ['door_enter']:
+                                map_dots.update(self.get_map_dot(item.pos, room_pos, self.red01, item.radius))
 
         self.map_dots = map_dots
 
