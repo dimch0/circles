@@ -265,7 +265,7 @@ class GameDrawer(object):
                 font = getattr(self.grid.fonts, 'small')
                 if "+" in msg or "-" in msg:
                     color = self.grid.grey05
-                elif msg in ['you loose', 'you dead']:
+                elif msg in ['you lose', 'you dead']:
                     color = self.grid.red01
                 elif msg in ['you win']:
                     color = self.grid.gelb05

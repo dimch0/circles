@@ -16,13 +16,13 @@ class VarUpdater(object):
         self.radius_buffer = 2.5
 
     def check_conditions(self):
-        """ Check win / loose conditions """
+        """ Check win / lose conditions """
         LOSE_GAME = False
         WIN_GAME = False
 
         win_count = 0
 
-        for lcond in self.grid.loose_cond:
+        for lcond in self.grid.lose_cond:
             lname = lcond['item_name']
 
             if 'places' in lcond.keys():
@@ -55,7 +55,7 @@ class VarUpdater(object):
 
         if LOSE_GAME:
             self.grid.msg("SCREEN - no meat")
-            self.grid.msg("SCREEN - you loose")
+            self.grid.msg("SCREEN - you lose")
             self.grid.game_over = True
 
         elif WIN_GAME:

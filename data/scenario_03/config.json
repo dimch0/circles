@@ -30,7 +30,7 @@
       {"item_name": "dog",
        "cond": "not in items"}
     ],
-    "loose_cond": [
+    "lose_cond": [
       {"item_name": "meat",
         "cond": "not in items"}
     ],
