@@ -126,7 +126,6 @@ class DataLoader(object):
                                 "type"        : str(row[col_idx["type"]]),
                                 "has_opts"    : str(row[col_idx["has_opts"]]),
                                 "category"    : str(row[col_idx["category"]]),
-                                # "available"   : bool(row[col_idx["available"]]),
                                 "name"        : str(row[col_idx["name"]]),
                                 "color"       : getattr(self.grid, row[col_idx["color"]]) if len(row[col_idx["color"]]) > 0 else None,
                                 "img"         : getattr(self.grid.images, row[col_idx["img"]]) if len(row[col_idx["img"]]) > 0 else None,
