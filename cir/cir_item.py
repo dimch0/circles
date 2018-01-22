@@ -114,13 +114,11 @@ class Item(object):
     # --------------------------------------------------------------- #
     def get_ober_item(self, grid):
         ober_item = None
-        if self.type == "option":
-            for item in grid.items:
-                if not ober_item:
-                    if self.category in item.name:
-                        ober_item = item
-                    # elif item.mode and (self.category in item.mode):
-                    #     ober_item = item
+
+        if self.type in ['option']:
+            if hasattr(self, 'ober_item'):
+                ober_item = getattr(self, 'ober_item')
+
         if ober_item:
             grid.msg("INFO - Option belongs to {0}".format(ober_item.name))
         else:

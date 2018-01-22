@@ -244,7 +244,7 @@ class Grid(object):
 
     def clean_placeholders(self, item):
         """ Cleans the placeholders (eg for mitosis) """
-        if "placeholder" in item.name and not item.category in ['bag']:
+        if "placeholder" in item.name and item.type not in ['option']:
             for other_item in self.items:
                 if other_item.pos == item.pos:
                     try:

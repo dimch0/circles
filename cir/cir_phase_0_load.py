@@ -124,8 +124,7 @@ class DataLoader(object):
                         try:
                             attributes_dict = {
                                 "type"        : str(row[col_idx["type"]]),
-                                "has_opts"    : str(row[col_idx["has_opts"]]),
-                                "category"    : str(row[col_idx["category"]]),
+                                "options"    : str(row[col_idx["options"]]),
                                 "name"        : str(row[col_idx["name"]]),
                                 "color"       : getattr(self.grid, row[col_idx["color"]]) if len(row[col_idx["color"]]) > 0 else None,
                                 "img"         : getattr(self.grid.images, row[col_idx["img"]]) if len(row[col_idx["img"]]) > 0 else None,
@@ -149,10 +148,11 @@ class DataLoader(object):
                                     klas,
                                     str(row[col_idx["name"]])))
                         # CREATE ITEM
+                        result = None
                         if item_name:
                             try:
                                 if item_name in attributes_dict["name"]:
-                                    item = self.create_new_item(klas, attributes_dict)
+                                    result = attributes_dict
                                 else:
                                     continue
                             except Exception as e:
@@ -160,28 +160,27 @@ class DataLoader(object):
                                 self.grid.msg("ERROR - item_name: %s" % item_name)
                                 self.grid.msg("ERROR - attributes: %s" % attributes_dict)
                         else:
-                            item = self.create_new_item(klas, attributes_dict)
+                            result = attributes_dict
 
-                        yield item, klas
-
-    def find_opts(self, opt, item):
-        if opt.type == "option":
-            if opt.category and opt.category in item.name:
-                opt.available = True
-                if not opt.color:
-                    opt.color = item.color
-                opt.default_color = item.color
-                # item.options.append(opt)
-                item.options[opt.name] = opt
-                # item.default_options[opt.name] = opt
+                        yield result, klas
 
     def set_opts(self, item):
-        if item.has_opts:
-            for opt, klas in self.load_data():
-                self.find_opts(opt, item)
-            if self.grid.show_debug:
-                self.grid.msg("DEBUG - {0} options are: {1}".format(item.name, item.options))
+        options = item.options.split()
+        item.options = {}
+        for opt in options:
+            for data, klas in self.load_data():
+                if opt == data['name']:
+                    opt_item = self.create_new_item(klas=klas,
+                                                    attributes_dict=data)
+                    item.options[opt_item.name] = opt_item
+                    opt_item.available = True
+                    if not opt_item.color:
+                        opt_item.color = item.color
+                    opt_item.default_color = item.color
+                    setattr(opt_item, 'ober_item', item)
 
+        if self.grid.show_debug:
+            self.grid.msg("DEBUG - {0} options are: {1}".format(item.name, item.options))
 
     def set_timers(self, item):
         """ Set timers """
@@ -219,11 +218,17 @@ class DataLoader(object):
 
     def load_item(self, item_name):
         new_item = None
-        for item, klas in self.load_data(item_name):
+        for data, klas in self.load_data(item_name):
+            item = self.create_new_item(klas=klas,
+                                        attributes_dict=data)
             if item.name == item_name:
                 new_item = item
                 self.set_timers(new_item)
                 break
+        if new_item:
+            if new_item.options:
+                self.set_opts(new_item)
+
         return new_item
 
     def set_door(self, item, room):
@@ -292,7 +297,6 @@ class DataLoader(object):
 
                             try:
                                 item.pos = self.grid.tile_dict[pos]
-                                self.set_opts(item)
                             except Exception as e:
                                 self.grid.msg(
                                     "ERROR - Set item: {0} \nin room: {1} \n{2} \n candidate: {3}".format(

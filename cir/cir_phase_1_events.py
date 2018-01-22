@@ -190,10 +190,10 @@ class GameEvents(GameEffects):
 
                     # SET MENU
                     if CLICKED_ITEM.in_menu and not mouse_mode:
-                        if not (CLICKED_ITEM.has_opts and CLICKED_ITEM.type == "option"):
+                        if not (CLICKED_ITEM.options and CLICKED_ITEM.type == "option"):
                             CLICKED_ITEM.close_menu(self.grid)
 
-                    elif CLICKED_ITEM.has_opts and not CLICKED_ITEM.in_menu:
+                    elif CLICKED_ITEM.options and not CLICKED_ITEM.in_menu:
                         if (mouse_mode in CLICKED_ITEM.options.keys() or not mouse_mode):
                             CLICKED_ITEM.open_menu(self.grid)
 
