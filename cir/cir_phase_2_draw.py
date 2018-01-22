@@ -165,7 +165,7 @@ class GameDrawer(object):
                 timer = item.vfreq
 
         if timer:
-            timer_fat = item.radius / 5
+            timer_fat = 4
 
             if timer.available and item.time_color:
                 if item.radius >= timer_fat:
@@ -177,19 +177,6 @@ class GameDrawer(object):
                                               math.radians(timer.filled_degrees),
                                               math.radians(timer.start_degrees),
                                               timer_fat)
-        # if item.lifespan:
-        #     timer_fat = item.radius / 5
-        #
-        #     if item.lifespan.available and item.time_color:
-        #         if item.radius >= timer_fat:
-        #             item.lifespan.pos = item.pos
-        #             item.lifespan.radius = item.radius
-        #             self.grid.pygame.draw.arc(self.grid.game_display,
-        #                             item.time_color,
-        #                             item.lifespan.rect,
-        #                             math.radians(item.lifespan.filled_degrees),
-        #                             math.radians(item.lifespan.start_degrees),
-        #                             timer_fat)
 
     def draw_aim(self, current_tile, item):
         """ Aim """
@@ -271,7 +258,6 @@ class GameDrawer(object):
                                2,
                                1)
 
-
     def draw_msg(self):
         if self.grid.messages:
             for idx, msg in enumerate(self.grid.messages[-self.grid.max_msg:]):
@@ -279,12 +265,12 @@ class GameDrawer(object):
                 font = getattr(self.grid.fonts, 'small')
                 if "+" in msg or "-" in msg:
                     color = self.grid.grey05
+                elif msg in ['you loose', 'you dead']:
+                    color = self.grid.red01
+                elif msg in ['you win']:
+                    color = self.grid.gelb05
                 else:
-                    if self.grid.game_menu:
-                        color = self.grid.gelb05
-                    else:
-                        color = self.grid.white
-
+                    color = self.grid.white
 
                 # if idx == 0:
                 #     color = self.grid.white
