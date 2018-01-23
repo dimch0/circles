@@ -23,7 +23,7 @@ class BodyItem(MobileItem):
 
         self.muscle = 1
         self.ego = 0
-        self.hygiene = 100
+        self.hyg = 100
         self.stress = 0
 
         self.knw_limit = 3
@@ -32,16 +32,6 @@ class BodyItem(MobileItem):
                     "bio"    : 0,
                     "spirit" : 0,
                     "geo"    : 0}
-
-        # self.vision = 1
-        # self.audio = 0
-        # self.smell = 0
-        # self.touch = 0
-        # self.eat = 0
-
-        # self.spirit_pool = 100
-        # self.status = []
-
 
     # --------------------------------------------------------------- #
     #                                                                 #

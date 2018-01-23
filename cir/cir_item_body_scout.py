@@ -30,7 +30,7 @@ class Scout(BodyItem):
                 if not result:
                     result = item
                 else:
-                    if cu.dist_between(result, self.pos) > cu.dist_between(item.pos, self.pos):
+                    if cu.dist_between(result.pos, self.pos) > cu.dist_between(item.pos, self.pos):
                         result = item
         return result
 

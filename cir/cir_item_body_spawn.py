@@ -3,26 +3,19 @@
 #                                                    SCOUT                                                            #
 #                                                                                                                     #
 # ------------------------------------------------------------------------------------------------------------------- #
-from cir_item_body_scout import Scout
+from cir_item_body import BodyItem
 
 
-class Spawn(Scout):
+class Spawn(BodyItem):
 
     def __init__(self):
         super(Spawn, self).__init__()
-        # self.summon = None
 
     def action(self, grid):
         """
         Action of the spawning quelle
         :param grid: grid instance
         """
-        # if self.summon:
-        #     if not self.summon in grid.items:
-        #         self.summon = None
-        #
-        # if not self.summon:
-
         effects = self.effects.split()
         for eff in effects:
             if "home" in eff or "spawn" in eff:
