@@ -44,7 +44,7 @@ class Grid(object):
         self.data_file = os.path.join(
             self.data_dir,
             self.scenario,
-            self.scenario + ".csv")
+            "data.csv")
         self.game_menu = True
         self.game_over = False
         self.start_time = None
@@ -97,13 +97,17 @@ class Grid(object):
         self.game_display = self.pygame.display.set_mode((self.display_width, self.display_height))
 
 
-    def read_config(self, conf_file):
+    def read_config(self, conf_file, reccur=True):
         if os.path.exists(conf_file):
             with open(conf_file) as jsonfile:
                 conf = json.load(jsonfile)
-            for section in conf.keys():
-                for metric, value in conf[section].items():
-                    setattr(self, metric, value)
+                if reccur:
+                    for section in conf.keys():
+                        for metric, value in conf[section].items():
+                            setattr(self, metric, value)
+                else:
+                    for metric, value in conf.items():
+                        setattr(self, metric, value)
 
         else:
             self.msg('ERROR - No such file: {0}'.format(conf_file))
@@ -116,7 +120,7 @@ class Grid(object):
         try:
             self.read_config(CONFIG_JSON_FILE)
             conf_scenario = os.path.join(self.data_dir, self.scenario, 'config.json')
-            self.read_config(conf_scenario)
+            self.read_config(conf_scenario, reccur=False)
         except Exception as e:
             self.msg("ERROR - Could not set config: {0}".format(e))
 
