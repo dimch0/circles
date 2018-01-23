@@ -54,13 +54,13 @@ class VarUpdater(object):
 
 
         if LOSE_GAME:
-            self.grid.msg("SCREEN - no meat")
-            self.grid.msg("SCREEN - you lose")
+            for lmsg in self.grid.lose_msg:
+                self.grid.msg("SCREEN - %s" % lmsg)
             self.grid.game_over = True
 
         elif WIN_GAME:
-            self.grid.msg("SCREEN - dog in fence")
-            self.grid.msg("SCREEN - you win")
+            for wmsg in self.grid.win_msg:
+                self.grid.msg("SCREEN - %s" % wmsg)
             for report in self.grid.report:
                 if hasattr(self.grid, report):
                     self.grid.msg("SCREEN - score %s" % getattr(self.grid, report))

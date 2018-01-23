@@ -10,6 +10,8 @@
     "win_cond" : [],
     "lose_cond": [],
     "report": ["seconds_in_game"],
+    "win_msg" : [],
+    "lose_msg": [],
     "gen_schema" : {
       "1": {
         "items": [

@@ -34,6 +34,8 @@
       {"item_name": "meat",
         "cond": "not in items"}
     ],
+    "win_msg" : ["dog put in fence", "you win"],
+    "lose_msg": ["no meat", "you lose"],
     "report": ["seconds_in_game"]
   }
 }
