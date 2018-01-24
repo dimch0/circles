@@ -8,7 +8,7 @@ from cir_item import Item
 
 
 class TimerItem(Item):
-    """ This is the base class for all timer items """
+    """ This is the base class for all timers """
 
     def __init__(self):
         super(TimerItem, self).__init__()

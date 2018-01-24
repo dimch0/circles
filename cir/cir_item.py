@@ -140,9 +140,9 @@ class Item(object):
 
             for idx, option in enumerate(self.options.values()):
                 option.pos = grid.adj_tiles(self.pos)[idx]
-                olap_pos.append(option.pos)
-                if option not in grid.items:
-                    grid.items.append(option)
+                olap_pos.append(option)
+                if option not in grid.panel_items.values():
+                    grid.panel_items[option.name] = option
 
             # OVERLAP
             if olap_pos:
@@ -160,8 +160,10 @@ class Item(object):
 
         # REMOVE OPTIONS
         for option in self.options.values():
-            if option in grid.items:
-                grid.items.remove(option)
+            if option in grid.panel_items.values():
+                option.pos = ()
+                if option.name in grid.panel_items.keys():
+                    del grid.panel_items[option.name]
         # OVERLAP
         while grid.overlap:
             for olap_item in grid.overlap:
@@ -188,8 +190,8 @@ class Item(object):
     def destroy(self, grid):
 
         self.marked_for_destruction = True
-
-        if self in grid.items and not self.birth_track:
+        all_items = grid.items + grid.panel_items.values()
+        if self in all_items and not self.birth_track:
             if self.in_menu:
                 self.close_menu(grid)
             if hasattr(self, "lifespan"):

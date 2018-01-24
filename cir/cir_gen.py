@@ -7,62 +7,6 @@
 # ------------------------------------------------------------------------------------------------------------------- #
 import random
 
-gen_schema = {
-    "1": {
-       "items": [
-           'coffee',
-           'beer',
-           'fresh',
-           'cigara',
-           # 'peanut',
-           # 'pretzel',
-           # 'apple',
-           # "cheshma",
-           # "dog house",
-           # "casino",
-           # "cage",
-           # "gas_col",
-           # "battery",
-           # "lipstick",
-           # "gascan"
-       ],
-       "base": 15
-    },
-    "2": {
-        "items": [
-            'banana',
-            'pinapple',
-            'can',
-            'egg',
-            'tomato',
-            'carrot'
-        ],
-        "base": 40
-    },
-    "3": {
-        "items": [
-            'chili',
-            'lemon',
-            'kibabchi',
-            'icecream',
-            'cheese',
-            'donut',
-            'fresh',
-        ],
-        "base": 70
-    },
-    "4": {
-        "items": [
-            'spoget',
-            'hotdog',
-            'pizza',
-            'miso',
-            'miso_02',
-        ],
-        "base": 110
-    }
-}
-
 
 class ItemGenerator(object):
     """ Generating items on each level """

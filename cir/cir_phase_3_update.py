@@ -110,6 +110,8 @@ class VarUpdater(object):
             self.grid.msg("INFO - Destroying: {0}".format(item.name))
             if item in self.grid.items:
                 self.grid.items.remove(item)
+            # if item in self.grid.panel_items.values():
+            #     del self.grid.panel_items[item.name]
             if item.name in self.grid.occupado_tiles:
                 del self.grid.occupado_tiles[item.name]
             if item.name == "my_body":
@@ -198,11 +200,11 @@ class VarUpdater(object):
         U[darting all variables before next iteration of the main loop
         :param my_body: my_body instance
         """
-
+        all_items = self.grid.items + self.grid.panel_items.values()
         if not self.grid.game_menu:
 
             # ITEMS
-            for item in self.grid.items:
+            for item in all_items:
 
                 # OCCUPADO
                 # self.update_occupado(item)

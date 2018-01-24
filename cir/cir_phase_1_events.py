@@ -33,7 +33,6 @@ class GameEvents(GameEffects):
             # --------------------------------------------------------------- #
             if event.key == self.grid.pygame.K_ESCAPE:
                 if not self.grid.game_menu:
-                    self.grid.rename_button("replay", "play")
                     self.grid.game_menu = True
 
                     if self.grid.current_room in ["map"]:
@@ -99,7 +98,7 @@ class GameEvents(GameEffects):
     def execute_click_events(self, event, my_body, current_tile):
 
         mouse_mode = self.grid.mouse_mode
-
+        all_items = self.grid.items + self.grid.panel_items.values()
         # --------------------------------------------------------------- #
         #                    MOUSE MODE CLICK NO ITEM                     #
         # --------------------------------------------------------------- #
@@ -123,7 +122,7 @@ class GameEvents(GameEffects):
         # --------------------------------------------------------------- #
         #                   CLICK ON ITEMS NO MOUSE MODE                  #
         # --------------------------------------------------------------- #
-        for CLICKED_ITEM in self.grid.items:
+        for CLICKED_ITEM in all_items:
             clicked_item_name = cir_utils.get_short_name(CLICKED_ITEM.name)
             if CLICKED_ITEM.clickable and CLICKED_ITEM.available and CLICKED_ITEM.type not in ["trigger"]:
                 if current_tile == CLICKED_ITEM.pos:
@@ -140,14 +139,15 @@ class GameEvents(GameEffects):
                             # SLAB
                             if CLICKED_ITEM.name in ["map_app"]:
                                 self.grid.event_effects.show_map(my_body)
-                            elif CLICKED_ITEM.name in ["sat_app"]:
+                            elif CLICKED_ITEM.name in ["sat_app"] and not self.grid.current_room in ["map"]:
                                 self.grid.event_effects.satellite()
                             elif CLICKED_ITEM.name in ["edit_phone"]:
                                 self.grid.show_debug = not self.grid.show_debug
                                 self.grid.show_grid = not self.grid.show_grid
 
                             # CLOSE MENU
-                            elif ober_item.in_menu and not ober_item.type in ["inventory", "slab"]:
+                            elif ober_item.in_menu and not ober_item in self.grid.panel_items.values():
+                                print "ober", ober_item.name
                                 ober_item.close_menu(self.grid)
 
                             # SUICIDE
@@ -166,33 +166,22 @@ class GameEvents(GameEffects):
                             elif CLICKED_ITEM.name == "medi":
                                 self.satellite()
                                 self.grid.msg("SCREEN - Ommmm")
-                                # ober_item.range += 3
-                                # ober_item.vibe_speed += 3
-                                # my_body.gen_radar_track(self.grid)
-                                # ober_item.vibe_speed -= 3
-                                # ober_item.range -= 3
-
-                            # SPEED
-                            elif CLICKED_ITEM.name == "move":
-                                ober_item.change_speed(0.1)
 
                     # EDITOR
                     elif CLICKED_ITEM.type == "editor" and self.editor:
                         self.editor.execute_editor_clicks(CLICKED_ITEM, my_body)
 
-                    # ENTER
-                    # elif "door" in CLICKED_ITEM.type:
-                    #     self.enter_room(my_body, CLICKED_ITEM)
 
                     # SET MOUSE MODE
-                    if CLICKED_ITEM.modable and not (mouse_mode in ['eat'] and CLICKED_ITEM.consumable):
+                    if CLICKED_ITEM.modable:
                         self.grid.set_mouse_mode(CLICKED_ITEM)
 
-                    # SET MENU
+                    # CLOSE MENU
                     if CLICKED_ITEM.in_menu and not mouse_mode:
-                        if not (CLICKED_ITEM.options and CLICKED_ITEM.type == "option"):
+                        if not CLICKED_ITEM.type == "option":
                             CLICKED_ITEM.close_menu(self.grid)
 
+                    # OPEN MENU
                     elif CLICKED_ITEM.options and not CLICKED_ITEM.in_menu:
                         if (mouse_mode in CLICKED_ITEM.options.keys() or not mouse_mode):
                             CLICKED_ITEM.open_menu(self.grid)
@@ -234,11 +223,11 @@ class GameEvents(GameEffects):
                                 self.grid.msg("SCREEN - {0} is far".format(clicked_item_name))
 
                 # CLOSE MENU IF OUTSIDE ADJ ITEMS
-                elif current_tile not in self.grid.adj_tiles(CLICKED_ITEM.pos):
+                elif CLICKED_ITEM.pos and current_tile not in self.grid.adj_tiles(CLICKED_ITEM.pos):
                     if event.button == 3:
                         self.grid.clean_mouse()
                     if CLICKED_ITEM.in_menu:
-                        if CLICKED_ITEM.type not in ["inventory", "slab"]:
+                        if CLICKED_ITEM not in self.grid.panel_items.values():
                             CLICKED_ITEM.close_menu(self.grid)
 
         # DEBUG

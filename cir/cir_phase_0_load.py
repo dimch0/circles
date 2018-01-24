@@ -304,8 +304,29 @@ class DataLoader(object):
                             if item.name in [xitem.name for xitem in self.grid.rooms[room_n]["items"]]:
                                 item.name = item.name + '-' + str(time.time())
                                 time.sleep(0.01)
-                            self.grid.rooms[room_n]["items"].append(item)
 
+                            if item.type in ["panel"]:
+                                # INVENTORY
+                                if item.name == "bag":
+                                    i_pos_x = self.grid.rows - 1
+                                    i_pos_y = self.grid.cols - 3
+                                    i_pos = str(i_pos_x) + "_" + str(i_pos_y)
+                                    item.pos = self.grid.names_to_pos(i_pos)
+                                    item.available = True
+                                    self.grid.panel_items['bag'] = item
+
+                                # SLAB
+                                elif item.name == 'slab':
+                                    s_pos_x = self.grid.cols - 1
+                                    s_pos_y = 3
+                                    s_pos = str(s_pos_x) + "_" + str(s_pos_y)
+                                    item.pos = self.grid.names_to_pos(s_pos)
+                                    item.available = True
+                                    setattr(self.grid, 'slab', item)
+                                    self.grid.panel_items['slab'] = item
+
+                            else:
+                                self.grid.rooms[room_n]["items"].append(item)
                             # DOORS
                             if 'door' in item.type:
                                 opposite_door, door_room_n = self.set_door(item, room_n)
@@ -324,27 +345,6 @@ class DataLoader(object):
 
                             elif item.type in ['trigger']:
                                 item.available = True
-
-                            # INVENTORY
-                            elif item.name == "bag":
-                                i_pos_x = self.grid.rows - 1
-                                i_pos_y = self.grid.cols - 3
-                                i_pos = str(i_pos_x) + "_" + str(i_pos_y)
-                                item.pos = self.grid.names_to_pos(i_pos)
-                                item.available = True
-                                self.grid.items.append(item)
-                                self.grid.panel_items['bag'] = item
-
-                            # SLAB
-                            elif item.type == 'slab':
-                                s_pos_x = self.grid.cols - 1
-                                s_pos_y = 3
-                                s_pos = str(s_pos_x) + "_" + str(s_pos_y)
-                                item.pos = self.grid.names_to_pos(s_pos)
-                                item.available = True
-                                setattr(self.grid, 'slab', item)
-                                self.grid.items.append(item)
-                                self.grid.panel_items['slab'] = item
 
 
     def load_game(self):

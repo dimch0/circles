@@ -56,7 +56,7 @@ book2,item,,knw,grey14,book2,,,,TRUE,TRUE,,,,,,,,
 battery,item,,elec,grey14,battery,,,,TRUE,TRUE,,,,,,,,
 gascan,item,,gas,grey14,gascan,consumed_by:car,,,TRUE,TRUE,,,,,,,,
 name,klas,lvl,type,color,img,effects,options,modable,collectible,consumable,uses,speed,range,time_color,lifespan,vspeed,vfreq,layer
-my_body,body,,my_body,gelb05,galab,t:-15 #rev,suicide echo,,,,,2,1,fog_color,60,,,2
+my_body,body,,my_body,gelb05,galab,t:-15 #rev,suicide echo,,,,,2,1,fog_color,180,,,2
 option,item,,option,,,,,,,,,,,,,,,
 option2,item,,option,,,,,,,,,,,,,,,
 option3,item,,option,,,,,,,,,,,,,,,
@@ -151,14 +151,8 @@ lamp,item,,vendor,grey14,,#consume:electricity light,,,,,,,,,,,,
 cheshma,item,,vendor,grey14,cheshma,water,,,,,,,,,,,,
 kofa1,item,,,grey14,kofa1,,,,TRUE,,,,,,,,,
 name,klas,lvl,type,color,img,effects,options,modable,collectible,consumable,uses,speed,range,time_color,lifespan,vspeed,vfreq,layer
-bag,item,,inventory,grey03,bago,,inventory_placeholder inventory_placeholder2 inventory_placeholder3 inventory_placeholder4 inventory_placeholder5 inventory_placeholder6,,,,,,,,,,,1
-inventory_placeholder,item,,option,grey03,,,,,,,,,,,,,,1
-inventory_placeholder2,item,,option,grey03,,,,,,,,,,,,,,1
-inventory_placeholder3,item,,option,grey03,,,,,,,,,,,,,,1
-inventory_placeholder4,item,,option,grey03,,,,,,,,,,,,,,1
-inventory_placeholder5,item,,option,grey03,,,,,,,,,,,,,,1
-inventory_placeholder6,item,,option,grey03,,,,,,,,,,,,,,1
-slab,item,,slab,grey03,slab,,map_app sat_app edit_phone,,,,,,,,,,,
+bag,item,,panel,grey03,bago,,inventory_placeholder inventory_placeholder2 inventory_placeholder3 inventory_placeholder4 inventory_placeholder5 inventory_placeholder6,,,,,,,,,,,1
+slab,item,,panel,grey03,slab,,map_app sat_app edit_phone,,,,,,,,,,,
 map_app,item,,option,grey03,location,,,,,,,,,,,,,
 sat_app,item,,option,grey03,radar,,,,,,,,,,,,,
 info_app,item,,option,grey03,book,,,,,,,,,,,,,

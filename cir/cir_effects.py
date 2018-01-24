@@ -34,7 +34,8 @@ class GameEffects(object):
                 vfreq=None,
                 lifespan=None,
                 add_to_items=True,
-                effects=None):
+                effects=None,
+                panel=False):
         """
         Produces an item from the everything dict
         :param product_name: name of the item from the everything dict
@@ -68,10 +69,16 @@ class GameEffects(object):
             new_item.default_img = new_item.img
             new_item.available = True
             new_item.gen_birth_track()
+
             if add_to_items:
-                if new_item.name in self.grid.occupado_tiles.keys():
+                # if new_item.name in self.grid.occupado_tiles.keys():
+                if new_item.name in [gitem.name for gitem in self.grid.items]:
                     new_item.name = new_item.name + '-' + str(time.time())
                 self.grid.items.append(new_item)
+            if panel:
+                if new_item.name in self.grid.panel_items.keys():
+                    new_item.name = new_item.name + '-' + str(time.time())
+                self.grid.panel_items[new_item.name] = new_item
 
         else:
             self.grid.msg('ERROR - Could not produce item {0}'.format(
@@ -137,8 +144,8 @@ class GameEffects(object):
         else:
             self.grid.change_room(self.grid.previous_room)
             self.grid.draw_map = False
-            if my_body not in self.grid.items:
-                self.grid.items.append(my_body)
+            # if my_body not in self.grid.items:
+            #     self.grid.items.append(my_body)
 
 
     # --------------------------------------------------------------- #
@@ -218,50 +225,38 @@ class GameEffects(object):
     def collect(self, my_body, clicked_item):
         """ Collect item: add it to inventory options """
         if not any([clicked_item.birth_track, clicked_item.move_track]):
-
-            # CHECK FOR EMPTY SLOT IN BAG
-            inventory_placeholder = None
-
             inventory = my_body.inventory
             reopen_inventory = False
+            if len(inventory.options) < 6:
 
-            if inventory.in_menu:
-                inventory.close_menu(self.grid)
-                reopen_inventory = True
-                backup_mouse_mode = self.grid.mouse_mode
-                backup_mouse_img = self.grid.mouse_img
+                if inventory.in_menu:
+                    # inventory.close_menu(self.grid)
+                    reopen_inventory = True
+                    backup_mouse_mode = self.grid.mouse_mode
+                    backup_mouse_img = self.grid.mouse_img
 
-            for empty_item in inventory.options.values():
-                if "inventory_placeholder" in empty_item.name:
-                    inventory_placeholder = empty_item
-                    break
 
-            # PRODUCE MODABLE ITEM AS OPTION
-            if inventory_placeholder:
-                item_name = cir_utils.get_short_name(inventory_placeholder.name)
-
-                item_as_option = self.produce(product_name=item_name,
-                                              pos=inventory_placeholder.pos,
+                # PRODUCE MODABLE ITEM AS OPTION
+                item_as_option = self.produce(product_name='placeholder',
+                                              pos=(),
                                               add_to_items=False)
-                if item_as_option:
-                    item_as_option.name = clicked_item.name + '-' + str(time.time())
-                    item_as_option.type = "option"
-                    item_as_option.modable = True
-                    item_as_option.consumable = clicked_item.consumable
-                    item_as_option.effects = clicked_item.effects
-                    item_as_option.color = my_body.inventory.color
-                    item_as_option.img = clicked_item.img
-                    item_as_option.uses = clicked_item.uses
-                    if hasattr(clicked_item, "lifespan"):
-                        item_as_option.lifespan = clicked_item.lifespan
-                    # ADD IN BAG AND REMOVE FROM FIELD
-                    if inventory_placeholder in my_body.inventory.options.values():
-                        my_body.inventory.options = {k: v for k, v in my_body.inventory.options.items() if
-                                                     not v == inventory_placeholder}
-                    inventory.options[item_as_option.name] = item_as_option
-                    clicked_item.destroy(self.grid)
+                item_as_option.name = clicked_item.name # + '-' + str(time.time())
+                item_as_option.type = "option"
+                item_as_option.modable = True
+                item_as_option.consumable = clicked_item.consumable
+                item_as_option.effects = clicked_item.effects
+                item_as_option.color = my_body.inventory.color
+                item_as_option.img = clicked_item.img
+                setattr(item_as_option, "ober_item", my_body.inventory)
+                if hasattr(clicked_item, "lifespan"):
+                    item_as_option.lifespan = clicked_item.lifespan
+
+                # ADD IN BAG AND REMOVE FROM FIELD
+                inventory.options[item_as_option.name] = item_as_option
+                clicked_item.destroy(self.grid)
+                print inventory.options
             else:
-                self.grid.msg("SCREEN - No space in bag")
+                self.grid.msg("SCREEN - no space")
 
 
             if reopen_inventory:
@@ -271,17 +266,14 @@ class GameEffects(object):
 
     def empty_inventory(self, inventory_item):
 
-        inventory_item.uses -= 1
-        if inventory_item.uses < 1:
-            if self.grid.mouse_mode:
-                if cir_utils.get_short_name(self.grid.mouse_mode) in inventory_item.name:
-                    self.grid.clean_mouse()
-            inventory_item.name = "inventory_placeholder" + '-' + str(time.time())
-            inventory_item.modable = False
-            inventory_item.img = None
-            inventory_item.effects = ''
-            inventory_item.uses = 0
-            inventory_item.lifespan = None
+        if self.grid.mouse_mode:
+            if cir_utils.get_short_name(self.grid.mouse_mode) in inventory_item.name:
+                self.grid.clean_mouse()
+
+        if inventory_item.name in self.grid.panel_items.keys():
+            del self.grid.panel_items[inventory_item.name]
+        del inventory_item.ober_item.options[inventory_item.name]
+        # inventory_item.destroy(self.grid)
 
     # --------------------------------------------------------------- #
     #                                                                 #
@@ -392,7 +384,7 @@ class GameEffects(object):
             if clicked not in self.grid.occupado_tiles.values() and clicked in self.grid.revealed_tiles.keys():
                 if clicked in self.grid.adj_tiles(my_body.pos):
                     for bag_item in my_body.inventory.options.values():
-                        if self.grid.mouse_mode in bag_item.name and bag_item.uses >= 1:
+                        if self.grid.mouse_mode in bag_item.name:
                             item_name = cir_utils.get_short_name(self.grid.mouse_mode)
                             dropped_item = self.produce(item_name, clicked)
                             if dropped_item:
@@ -412,7 +404,7 @@ class GameEffects(object):
                 # if clicked.type == "my_body":
                     for bag_item in my_body.inventory.options.values():
 
-                        if self.grid.mouse_mode and self.grid.mouse_mode in bag_item.name and bag_item.uses >= 1:
+                        if self.grid.mouse_mode and self.grid.mouse_mode in bag_item.name:
                             if bag_item.consumable and not clicked in my_body.inventory.options.values():
                                 if self.consume(clicked, bag_item):
                                     self.empty_inventory(bag_item)

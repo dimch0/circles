@@ -9,7 +9,7 @@ import cir_utils
 
 class MobileItem(Item):
     """
-    This is the base class for all CIR items
+    This is the base class for all mobile cirlces
     """
     def __init__(self):
         super(MobileItem, self).__init__()

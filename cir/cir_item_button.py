@@ -8,7 +8,7 @@ from cir_item import Item
 
 class ButtonItem(Item):
     """
-    This is the base class for all CIR items
+    This is the base class for all Buttons
     """
     def __init__(self):
         super(ButtonItem, self).__init__()

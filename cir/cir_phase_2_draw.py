@@ -326,7 +326,9 @@ class GameDrawer(object):
     def draw_animations(self, current_tile):
         """ Main drawing function """
 
-        for item in self.grid.items:
+        all_items =  self.grid.items + self.grid.panel_items.values()
+
+        for item in all_items:
             if item.available:
 
                 # VIBE
@@ -335,7 +337,6 @@ class GameDrawer(object):
 
                 # ITEMS
                 self.draw_body(current_tile, item)
-
 
 
                 # SHOW MOVEMENT
