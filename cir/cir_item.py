@@ -45,7 +45,6 @@ class Item(object):
         self.lifespan = None
         self.time_color = None
         self.room = None
-        self.uses = 1
         self.marked_for_destruction = False
         # --------------------------------------------------------------- #
         #                            ANIMATION                            #
@@ -188,7 +187,8 @@ class Item(object):
     #                                                                 #
     # --------------------------------------------------------------- #
     def destroy(self, grid):
-
+        if self.name in ['my_body']:
+            grid.msg("SCREEN - you dead")
         self.marked_for_destruction = True
         all_items = grid.items + grid.panel_items.values()
         if self in all_items and not self.birth_track:

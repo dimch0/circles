@@ -101,8 +101,8 @@ class VarUpdater(object):
     def destruction(self, item):
 
         self.grid.messages = self.grid.messages
-        if item.name in ['my_body']:
-            self.grid.msg("SCREEN - you dead")
+        # if item.name in ['my_body']:
+        #     self.grid.msg("SCREEN - you dead")
 
         if not item.birth_track:
 

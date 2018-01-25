@@ -147,7 +147,6 @@ class GameEvents(GameEffects):
 
                             # CLOSE MENU
                             elif ober_item.in_menu and not ober_item in self.grid.panel_items.values():
-                                print "ober", ober_item.name
                                 ober_item.close_menu(self.grid)
 
                             # SUICIDE

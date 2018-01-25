@@ -134,7 +134,6 @@ class DataLoader(object):
                                 "modable"     : bool(row[col_idx["modable"]]),
                                 "collectible" : bool(row[col_idx["collectible"]]),
                                 "consumable"  : bool(row[col_idx["consumable"]]),
-                                "uses"        : int(float(row[col_idx["uses"]])) if len(row[col_idx["uses"]]) > 0 else 1,
                                 "lifespan"    : float(row[col_idx["lifespan"]]) if len(row[col_idx["lifespan"]]) > 0 else None,
                                 "vfreq"       : float(row[col_idx["vfreq"]]) if len(row[col_idx["vfreq"]]) > 0 else None,
                                 "vspeed"      : int(float(row[col_idx["vspeed"]])) if len(row[col_idx["vspeed"]]) > 0 else 1,
@@ -159,8 +158,12 @@ class DataLoader(object):
                                 self.grid.msg("ERROR - Could not load item: %s" % e)
                                 self.grid.msg("ERROR - item_name: %s" % item_name)
                                 self.grid.msg("ERROR - attributes: %s" % attributes_dict)
+                            if not result:
+                                self.grid.msg("ERROR - Could not find: %s" % (item_name))
                         else:
                             result = attributes_dict
+
+
 
                         yield result, klas
 
@@ -217,18 +220,22 @@ class DataLoader(object):
 
 
     def load_item(self, item_name):
+
         new_item = None
         for data, klas in self.load_data(item_name):
+            print data, klas
             item = self.create_new_item(klas=klas,
                                         attributes_dict=data)
             if item.name == item_name:
                 new_item = item
                 self.set_timers(new_item)
                 break
+
         if new_item:
             if new_item.options:
                 self.set_opts(new_item)
-
+        else:
+            self.grid.msg('ERROR - Failed to load item: %s' % item_name)
         return new_item
 
     def set_door(self, item, room):

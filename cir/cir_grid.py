@@ -43,7 +43,8 @@ class Grid(object):
         self.set_config()
         self.data_file = os.path.join(
             self.data_dir,
-            self.scenario,
+            # self.scenario,
+            "scenario_01",
             "data.csv")
         self.game_menu = True
         self.game_over = False

@@ -46,44 +46,45 @@ class GameEffects(object):
         :param lifespan: set new lifespan (optional)
         :return: the new item object
         """
-        product_name = cir_utils.get_short_name(product_name)
-        new_item = self.grid.loader.load_item(product_name)
-        if new_item:
+        new_item = None
+        try:
+            product_name = cir_utils.get_short_name(product_name)
+            new_item = self.grid.loader.load_item(product_name)
+            new_item.name = new_item.name + '-' + str(time.time())
+            if new_item:
 
-            if pos:
-                new_item.pos = pos
-            if radius:
-                new_item.radius = radius
-                new_item.default_radius = radius
-            if vfreq:
-                new_item.vfreq.duration = vfreq
-            if effects:
-                new_item.effects = effects
-            if lifespan:
-                new_item.lifespan = lifespan
+                if pos:
+                    new_item.pos = pos
+                if radius:
+                    new_item.radius = radius
+                    new_item.default_radius = radius
+                if vfreq:
+                    new_item.vfreq.duration = vfreq
+                if effects:
+                    new_item.effects = effects
+                if lifespan:
+                    new_item.lifespan = lifespan
+                else:
+                    if hasattr(new_item, 'lifespan'):
+                        if new_item.lifespan:
+                            new_item.lifespan.restart()
+
+                new_item.default_img = new_item.img
+                new_item.available = True
+                new_item.gen_birth_track()
+
+
+                if add_to_items:
+                    self.grid.items.append(new_item)
+                if panel:
+                    self.grid.panel_items[new_item.name] = new_item
+
             else:
-                if hasattr(new_item, 'lifespan'):
-                    if new_item.lifespan:
-                        new_item.lifespan.restart()
-
-            new_item.default_img = new_item.img
-            new_item.available = True
-            new_item.gen_birth_track()
-
-            if add_to_items:
-                # if new_item.name in self.grid.occupado_tiles.keys():
-                if new_item.name in [gitem.name for gitem in self.grid.items]:
-                    new_item.name = new_item.name + '-' + str(time.time())
-                self.grid.items.append(new_item)
-            if panel:
-                if new_item.name in self.grid.panel_items.keys():
-                    new_item.name = new_item.name + '-' + str(time.time())
-                self.grid.panel_items[new_item.name] = new_item
-
-        else:
-            self.grid.msg('ERROR - Could not produce item {0}'.format(
-                cir_utils.get_short_name(product_name)))
-
+                self.grid.msg('ERROR - Could not produce item {0}'.format(
+                    cir_utils.get_short_name(product_name)))
+        except Exception as e:
+            self.grid.msg('ERROR - Failed to produce item %s' % product_name)
+            self.grid.msg('ERROR - %s' % e)
         return new_item
 
     # --------------------------------------------------------------- #
