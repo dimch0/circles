@@ -187,6 +187,9 @@ class Item(object):
     #                                                                 #
     # --------------------------------------------------------------- #
     def destroy(self, grid):
+        if hasattr(self, 'home'):
+            self.home.vfreq = self.home_vfreq
+            self.home.vfreq.restart()
         if self.name in ['my_body']:
             grid.msg("SCREEN - you dead")
         self.marked_for_destruction = True

@@ -255,7 +255,6 @@ class GameEffects(object):
                 # ADD IN BAG AND REMOVE FROM FIELD
                 inventory.options[item_as_option.name] = item_as_option
                 clicked_item.destroy(self.grid)
-                print inventory.options
             else:
                 self.grid.msg("SCREEN - no space")
 
@@ -288,6 +287,7 @@ class GameEffects(object):
         :param consumable: item obj, that has consumable effects or the effects as a string
         """
         consumed = False
+        exhaust = False
         effects = None
         protected_types = ['trigger']
 
@@ -295,6 +295,8 @@ class GameEffects(object):
             effects = consumable.split()
         elif hasattr(consumator, "effects"):
             effects = consumable.effects.split()
+            if consumable.consumable:
+                exhaust = True
 
         if effects:
             try:
@@ -324,9 +326,9 @@ class GameEffects(object):
                                 boosted_item = consumator,
                                 boost_item = cir_utils.get_short_name(consumable.name))
 
-                            consumator.default_color = self.grid.red01
+                            consumator.color = self.grid.red01
 
-                        if not consumator.type in protected_types:
+                        if consumator.type not in protected_types:
                             if eff_att == 'max' and consumator.lifespan:
                                 consumator.lifespan.limit += amount * self.food_unit
                                 attr_str = 'max'
@@ -347,6 +349,25 @@ class GameEffects(object):
                                 consumator.vspeed += amount
                                 attr_str = 'vibe speed'
 
+                            elif eff_att == 'hyg' and hasattr(consumator, 'hyg'):
+                                consumator.hyg += amount
+                                attr_str = 'hygiene'
+
+                            elif eff_att == 'mus' and hasattr(consumator, 'muscle'):
+                                consumator.muscle += amount
+                                attr_str = 'muscle'
+
+                            elif eff_att == 'ego' and hasattr(consumator, 'ego'):
+                                consumator.ego += amount
+                                attr_str = 'ego'
+
+                            elif eff_att == 'stress' and hasattr(consumator, 'stress'):
+                                consumator.stress += amount
+                                attr_str = 'stress'
+
+                            elif eff_att == 'joy' and hasattr(consumator, 'joy'):
+                                consumator.joy += amount
+                                attr_str = 'joy'
 
                         if attr_str:
                             eff_msg.append(modifier_str + ' ' + attr_str)
@@ -372,7 +393,8 @@ class GameEffects(object):
             except Exception as e:
                 self.grid.msg("ERROR - invalid effects '{0}' \n {1}".format(effects, e))
 
-        if consumed and not consumable.type in ['option'] and not consumable.lifespan:
+        # if consumed and not consumable.type in ['option', 'quelle', 'spawn'] and not consumable.lifespan:
+        if exhaust:
             consumable.destroy(self.grid)
         return consumed
 

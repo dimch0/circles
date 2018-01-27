@@ -25,6 +25,7 @@ class BodyItem(MobileItem):
         self.ego = 0
         self.hyg = 100
         self.stress = 0
+        self.joy = 0
 
         self.knw_limit = 3
         self.knw = {"maths"  : 1,

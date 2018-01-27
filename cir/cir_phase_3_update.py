@@ -129,9 +129,6 @@ class VarUpdater(object):
         if item.lifespan and not isinstance(item.lifespan, (float, int)):
             item.lifespan.tick()
             if item.lifespan.is_over:
-                if hasattr(item, 'home'):
-                    item.home.vfreq = item.home_vfreq
-                    item.home.vfreq.restart()
                 item.destroy(self.grid)
 
         # VIBE TIMER
@@ -140,13 +137,12 @@ class VarUpdater(object):
                 if item.vfreq.duration:
                     item.vfreq.tick()
                     if item.vfreq.is_over:
-                        if hasattr(item, 'action'):
-                            item.action(self.grid)
-
                         if hasattr(item, 'range'):
-                            if item.range and not item.move_track:
+                            if item.range and not item.move_track and item.vfreq:
                                 item.gen_vibe_track(self.grid)
                                 item.vfreq.restart()
+                        if hasattr(item, 'action'):
+                            item.action(self.grid)
 
         # BOOST TIMER
         if hasattr(item, "boost"):

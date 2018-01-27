@@ -4,6 +4,7 @@
 #                                                                                                                     #
 # ------------------------------------------------------------------------------------------------------------------- #
 from cir_item_body import BodyItem
+import random
 
 
 class Spawn(BodyItem):
@@ -18,8 +19,11 @@ class Spawn(BodyItem):
         """
         effects = self.effects.split()
         for eff in effects:
-            if "home" in eff or "spawn" in eff:
+            if "#home" in eff or "#spawn" in eff:
                 product = eff.split(':')[1]
+                product = product.split('_')
+                if isinstance(product, list):
+                    product = random.choice(product)
                 for adj_tile in grid.adj_tiles(self.pos):
                     if not adj_tile in grid.occupado_tiles.values() \
                             and adj_tile in grid.playing_tiles \
@@ -27,7 +31,7 @@ class Spawn(BodyItem):
                         pos = adj_tile
                         summon = grid.event_effects.produce(product_name=product,
                                                             pos=pos)
-                        if "home" in eff:
+                        if "#home" in eff:
                             setattr(summon, 'home_vfreq', self.vfreq)
                             setattr(summon, 'home', self)
                             self.vfreq = None

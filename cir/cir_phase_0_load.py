@@ -204,7 +204,7 @@ class DataLoader(object):
             if not hasattr(item, 'lifespan') or (hasattr(item, 'lifespan') and not item.lifespan):
                 vibefr.color = item.time_color
             item.vfreq = vibefr
-            if item.type in ['spawn']:
+            if item.type in ['spawn', 'quelle']:
                 item.vfreq.reversed = True
 
     def set_boost_timer(self, duration, effect, boosted_item, boost_item):
@@ -223,7 +223,6 @@ class DataLoader(object):
 
         new_item = None
         for data, klas in self.load_data(item_name):
-            print data, klas
             item = self.create_new_item(klas=klas,
                                         attributes_dict=data)
             if item.name == item_name:

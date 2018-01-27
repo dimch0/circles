@@ -11,6 +11,7 @@ class Scout(BodyItem):
 
     def __init__(self):
         super(Scout, self).__init__()
+        self.target = None
 
     def nearest_unrevealed(self, grid):
         result = None
@@ -32,6 +33,16 @@ class Scout(BodyItem):
                 else:
                     if cu.dist_between(result.pos, self.pos) > cu.dist_between(item.pos, self.pos):
                         result = item
+        return result
+
+    def most_far_exit(self, grid):
+        result = None
+        for tile in grid.door_slots:
+            if not result:
+                result = tile
+            else:
+                if cu.dist_between(result, self.pos) < cu.dist_between(tile, self.pos):
+                    result = tile
         return result
 
     def chase_pos(self, grid, search_item):
@@ -60,18 +71,26 @@ class Scout(BodyItem):
             # Get target
             # target = self.nearest_unrevealed(grid)
             # target = self.chase_pos(grid, "my_body")
-            target = None
+            if self.target:
+                target = self.target
+                if self.target in grid.adj_tiles(self.pos):
+                    self.destroy(grid)
+            else:
+                target = None
 
-            if self.hungry:
-                target = self.nearest_item(grid, itype='food')
-                if target:
-                    if target.pos in grid.adj_tiles(self.pos):
-                        grid.event_effects.consume(consumable=target,
-                                                   consumator=self)
-                    target = target.pos
+                if self.hungry:
+                    target = self.nearest_item(grid, itype='food')
+                    if target:
+                        if target.pos in grid.adj_tiles(self.pos):
+                            grid.event_effects.consume(consumable=target,
+                                                       consumator=self)
+                        target = target.pos
+                    else:
+                        target = self.chase_pos(grid, "my_body")
+                elif "#traffic" in self.effects:
+                    if not self.target:
+                        self.target = self.most_far_exit(grid)
 
-                else:
-                    target = self.chase_pos(grid, "my_body")
             # Choose nearest legal
             if target and target not in grid.adj_tiles(self.pos):
                 best_legal = None

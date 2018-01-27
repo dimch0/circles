@@ -22,8 +22,6 @@
         "pretzel",
         "apple",
         "cheshma",
-        "dog_house",
-        "casino",
         "cage",
         "battery",
         "lipstick"
@@ -37,7 +35,10 @@
         "can",
         "egg",
         "tomato",
-        "carrot"
+        "carrot",
+        "dog_house",
+        "bin",
+        "music_box"
       ],
       "base": 40
     },
@@ -88,7 +89,7 @@
        "item_positions": ["center"]},
       {"item_name": "slab",
        "item_positions": ["center"]},
-      {"item_name": "dog_house",
+      {"item_name": "traffic_light",
         "item_positions": ["10_4"]}
     ]},
     {"10_8" : [
