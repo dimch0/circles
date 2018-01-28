@@ -99,5 +99,5 @@ class Scout(BodyItem):
                         best_legal = move_tile
                     elif cu.dist_between(best_legal, target) > cu.dist_between(move_tile, target):
                         best_legal = move_tile
-
-                self.direction = legal_moves[best_legal]
+                if cu.dist_between(self.pos, target) > cu.dist_between(best_legal, target):
+                    self.direction = legal_moves[best_legal]
