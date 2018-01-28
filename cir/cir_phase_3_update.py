@@ -90,7 +90,7 @@ class VarUpdater(object):
             self.grid.revealed_tiles[my_body.pos] = []
             my_body.gen_birth_track()
             for item in self.grid.items:
-                if item.pos == my_body.pos and 'door' in  item.type:
+                if item.pos == my_body.pos and 'door' in item.type:
                     item.available = True
 
     # --------------------------------------------------------------- #
@@ -137,12 +137,20 @@ class VarUpdater(object):
                 if item.vfreq.duration:
                     item.vfreq.tick()
                     if item.vfreq.is_over:
-                        if hasattr(item, 'range'):
-                            if item.range and not item.move_track and item.vfreq:
-                                item.gen_vibe_track(self.grid)
-                                item.vfreq.restart()
-                        if hasattr(item, 'action'):
-                            item.action(self.grid)
+                        do_action = False
+                        if not hasattr(item, 'tok'):
+                            do_action = True
+                        elif item.tok > 0:
+                            do_action = True
+
+                        if do_action:
+
+                            if hasattr(item, 'range'):
+                                if item.range and not item.move_track and item.vfreq:
+                                    item.gen_vibe_track(self.grid)
+                                    item.vfreq.restart()
+                            if hasattr(item, 'action'):
+                                item.action(self.grid)
 
         # BOOST TIMER
         if hasattr(item, "boost"):
@@ -164,7 +172,7 @@ class VarUpdater(object):
     # --------------------------------------------------------------- #
     def signal_hit(self, signal, sender):
         hit = False
-        if signal.type == "signal":
+        if "signal" in signal.type:
             if not signal.marked_for_destruction:
                 if (signal.pos in self.grid.occupado_tiles.values() and not signal.intersects(
                         sender)) or signal.direction == None:
@@ -206,7 +214,8 @@ class VarUpdater(object):
                 # self.update_occupado(item)
 
                 # MY_BODY OVERLAP
-                if item.type not in ["my_body", "option", "map_tile"]:
+                #, "map_tile"]:
+                if not any (otype in item.type for otype in ["my_body", "option"]):
                     if item.pos == my_body.pos and not item.birth_track:
                         item.clickable = False
                         item.radius = item.default_radius

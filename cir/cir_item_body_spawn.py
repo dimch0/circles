@@ -11,6 +11,7 @@ class Spawn(BodyItem):
 
     def __init__(self):
         super(Spawn, self).__init__()
+        self.reversed_timer = True
 
     def action(self, grid):
         """

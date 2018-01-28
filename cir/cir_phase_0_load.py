@@ -77,6 +77,9 @@ class DataLoader(object):
                     elif attribute == "effects":
                         if "#hunger" in value:
                             dummy.hungry = True
+                        if "#tok" in value:
+                            setattr(dummy, 'tok', 0)
+                            print dummy.name
 
         except Exception as e:
             self.grid.msg("ERROR - Could not set attribute: {0}".format(e))
@@ -123,8 +126,8 @@ class DataLoader(object):
                         # --------------------------------------------------------------- #
                         try:
                             attributes_dict = {
-                                "type"        : str(row[col_idx["type"]]),
-                                "options"    : str(row[col_idx["options"]]),
+                                "type"        : str(row[col_idx["type"]]) if len(row[col_idx["type"]]) > 0 else 'notype',
+                                "options"     : str(row[col_idx["options"]]),
                                 "name"        : str(row[col_idx["name"]]),
                                 "color"       : getattr(self.grid, row[col_idx["color"]]) if len(row[col_idx["color"]]) > 0 else None,
                                 "img"         : getattr(self.grid.images, row[col_idx["img"]]) if len(row[col_idx["img"]]) > 0 else None,
@@ -204,15 +207,18 @@ class DataLoader(object):
             if not hasattr(item, 'lifespan') or (hasattr(item, 'lifespan') and not item.lifespan):
                 vibefr.color = item.time_color
             item.vfreq = vibefr
-            if item.type in ['spawn', 'quelle']:
-                item.vfreq.reversed = True
+            if hasattr(item, 'reversed_timer'):
+                if item.reversed_timer:
+                    item.vfreq.reversed = True
 
     def set_boost_timer(self, duration, effect, boosted_item, boost_item):
 
         boost_timer = TimerItem()
+        boost_timer.name = boost_item.name + ' boost'
+        boost_timer.type = boost_item.type + ' boost'
         boost_timer.duration = duration
         boost_timer.effects = effect
-        setattr(boost_timer, 'boost_item', boost_item)
+        setattr(boost_timer, 'boost_item', cu.get_short_name(boost_item.name))
         setattr(boost_timer, 'store_color', boosted_item.default_color)
         if not hasattr(boosted_item, 'boost'):
             setattr(boosted_item, 'boost', list())
@@ -269,6 +275,7 @@ class DataLoader(object):
 
             butt = Item()
             butt.name = name
+            butt.type = 'button'
             # butt.color = self.grid.room_color
 
             if name == "play":
@@ -311,7 +318,7 @@ class DataLoader(object):
                                 item.name = item.name + '-' + str(time.time())
                                 time.sleep(0.01)
 
-                            if item.type in ["panel"]:
+                            if 'panel' in item.type:
                                 # INVENTORY
                                 if item.name == "bag":
                                     i_pos_x = self.grid.rows - 1
@@ -348,9 +355,6 @@ class DataLoader(object):
                                 item.available = True
                                 item.gen_birth_track()
                                 self.my_body = item
-
-                            elif item.type in ['trigger']:
-                                item.available = True
 
 
     def load_game(self):

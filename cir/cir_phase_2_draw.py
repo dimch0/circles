@@ -59,7 +59,8 @@ class GameDrawer(object):
 
     def draw_hover(self, current_tile, item):
         """ Highlights the hovered tile """
-        if current_tile and not item.type in ["door", "door_enter"]:
+        nohover = ["door", "door_enter"]
+        if current_tile and not any(nohover in item.type for nohover in nohover):
             if cir_utils.in_circle(item.pos, self.grid.tile_radius, current_tile):
                 radius = self.grid.tile_radius
                 self.grid.pygame.draw.circle(self.grid.game_display,
@@ -71,15 +72,19 @@ class GameDrawer(object):
 
     def draw_img(self, item):
         """ Blit image on display """
+        try:
+            if item.img and item.available and not item.birth_track:
 
-        if item.img and item.available and not item.birth_track:
-
-            if item.img.get_width() == self.grid.tile_radius:
-                self.grid.game_display.blit(item.img, self.set_emoji_pos(item.pos))
-            elif item.type in ['door_enter']:
-                self.grid.game_display.blit(item.img, self.set_neon_pos(item.pos))
-            else:
-                self.grid.game_display.blit(item.img, self.set_img_pos(item.pos))
+                if item.img.get_width() == self.grid.tile_radius:
+                    self.grid.game_display.blit(item.img, self.set_emoji_pos(item.pos))
+                elif "door_enter" in item.type:
+                    self.grid.game_display.blit(item.img, self.set_neon_pos(item.pos))
+                else:
+                    self.grid.game_display.blit(item.img, self.set_img_pos(item.pos))
+        except Exception as e:
+            print e
+            print item.name
+            print item.type
 
 
     def draw_vibe(self, item):
@@ -180,7 +185,7 @@ class GameDrawer(object):
 
     def draw_aim(self, current_tile, item):
         """ Aim """
-        if self.grid.mouse_mode in ["echo"] and item.available and item.type in ['my_body']:
+        if self.grid.mouse_mode in ["echo"] and item.available and "my_body" in item.type:
             aim_dir_idx = item.get_aiming_direction(self.grid, current_tile)[1]
             # aim_tile = item.get_aiming_direction(self.grid, current_tile)[0]
 

@@ -72,7 +72,7 @@ class Item(object):
         return self._rect
 
     def gen_birth_track(self):
-        if self.type == "signal":
+        if "signal" in self.type:
             self.birth_track = range(1, self.radius)
         else:
             self.birth_track = range(1, self.radius + 1)
@@ -114,7 +114,7 @@ class Item(object):
     def get_ober_item(self, grid):
         ober_item = None
 
-        if self.type in ['option']:
+        if 'option' in self.type:
             if hasattr(self, 'ober_item'):
                 ober_item = getattr(self, 'ober_item')
 
@@ -146,7 +146,7 @@ class Item(object):
             # OVERLAP
             if olap_pos:
                 for olap_item in grid.items:
-                    if not olap_item.type in ["option"]:
+                    if 'option' not in olap_item.type:
                         if olap_item.pos in olap_pos:
                             olap_item.clickable = False
                             if not olap_item in grid.overlap:
@@ -203,6 +203,6 @@ class Item(object):
                 self.vfreq = None
             if hasattr(self, "move_track"):
                 self.move_track = []
-            if self.type not in ["trigger"]:
+            if self.color:
                 self.gen_birth_track()
                 self.birth_track.reverse()

@@ -21,10 +21,8 @@
         "peanut",
         "pretzel",
         "apple",
-        "cheshma",
-        "cage",
         "battery",
-        "lipstick"
+        "traffic_light"
       ],
       "base": 15
     },
@@ -38,7 +36,8 @@
         "carrot",
         "dog_house",
         "bin",
-        "music_box"
+        "music_box",
+        "traffic_light"
       ],
       "base": 40
     },
@@ -51,7 +50,9 @@
         "cheese",
         "donut",
         "fresh",
-        "gascan"
+        "gascan",
+        "traffic_light",
+        "traffic_light"
       ],
       "base": 70
     },
@@ -89,8 +90,10 @@
        "item_positions": ["center"]},
       {"item_name": "slab",
        "item_positions": ["center"]},
-      {"item_name": "traffic_light",
-        "item_positions": ["10_4"]}
+      {"item_name": "music_box",
+        "item_positions": ["10_4"]},
+      {"item_name": "battery",
+        "item_positions": ["10_6"]}
     ]},
     {"10_8" : [
       {"item_name": "Enter_9_7",

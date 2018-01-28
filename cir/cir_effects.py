@@ -184,7 +184,7 @@ class GameEffects(object):
                 my_body.close_menu(self.grid)
             self.grid.needs_to_change_room = True
         else:
-            self.grid.msg("SCREEN - no enter".format(item.type))
+            self.grid.msg("SCREEN - no enter")
             item.in_menu = False
 
     # --------------------------------------------------------------- #
@@ -242,7 +242,7 @@ class GameEffects(object):
                                               pos=(),
                                               add_to_items=False)
                 item_as_option.name = clicked_item.name # + '-' + str(time.time())
-                item_as_option.type = "option"
+                item_as_option.type = clicked_item.type + ' option'
                 item_as_option.modable = True
                 item_as_option.consumable = clicked_item.consumable
                 item_as_option.effects = clicked_item.effects
@@ -273,7 +273,6 @@ class GameEffects(object):
         if inventory_item.name in self.grid.panel_items.keys():
             del self.grid.panel_items[inventory_item.name]
         del inventory_item.ober_item.options[inventory_item.name]
-        # inventory_item.destroy(self.grid)
 
     # --------------------------------------------------------------- #
     #                                                                 #
@@ -299,142 +298,155 @@ class GameEffects(object):
                 exhaust = True
 
         if effects:
-            try:
-                eff_msg = []
-                effect_color = self.grid.gelb04
-                for effect in effects:
+            # try:
+            eff_msg = []
+            effect_color = self.grid.white
+            for effect in effects:
 
-                    # Exclude # (non-consumable) effects
-                    if not '#' in effect:
-                        effect = effect.split(':')
-                        eff_att = effect[0]
-                        amount = float(effect[1])
-                        if amount >= 0:
-                            modifier_str = '+{0}'.format(abs(int(amount)))
-                        else:
-                            modifier_str = '-{0}'.format(abs(int(amount)))
-                        attr_str = ''
+                # Exclude # (non-consumable) effects
+                if not '#' in effect:
+                    effect = effect.split(':')
+                    eff_att = effect[0]
+                    amount = float(effect[1])
+                    if amount >= 0:
+                        modifier_str = '+{0}'.format(abs(int(amount)))
+                    else:
+                        modifier_str = '-{0}'.format(abs(int(amount)))
+                    attr_str = ''
 
+
+                    if consumator.type not in protected_types:
+                        if eff_att == 'max' and consumator.lifespan:
+                            consumator.lifespan.limit += amount * self.food_unit
+                            attr_str = 'max'
+
+                        elif eff_att == 't' and consumator.lifespan:
+                            consumator.lifespan.update(amount * self.food_unit)
+                            attr_str = 'life'
+
+                        elif eff_att == 'sp' and hasattr(consumator, 'speed'):
+                            consumator.change_speed(amount)
+                            attr_str = 'speed'
+
+                        elif eff_att == 'r' and hasattr(consumator, 'range'):
+                            consumator.range += amount
+                            attr_str = 'range'
+
+                        elif eff_att == 'vsp' and hasattr(consumator, 'vspeed'):
+                            consumator.vspeed += amount
+                            attr_str = 'vibe speed'
+
+                        elif eff_att == 'hyg' and hasattr(consumator, 'hyg'):
+                            consumator.hyg += amount
+                            attr_str = 'hygiene'
+
+                        elif eff_att == 'mus' and hasattr(consumator, 'muscle'):
+                            consumator.muscle += amount
+                            attr_str = 'muscle'
+
+                        elif eff_att == 'ego' and hasattr(consumator, 'ego'):
+                            consumator.ego += amount
+                            attr_str = 'ego'
+
+                        elif eff_att == 'stress' and hasattr(consumator, 'stress'):
+                            consumator.stress += amount
+                            attr_str = 'stress'
+
+                        elif eff_att == 'joy' and hasattr(consumator, 'joy'):
+                            consumator.joy += amount
+                            attr_str = 'joy'
+
+                        elif eff_att == 'vfreq' and hasattr(consumator, 'vfreq'):
+                            consumator.vfreq.duration += amount
+                            attr_str = 'frequency'
+
+                        elif eff_att == 'tok' and hasattr(consumator, 'tok'):
+                            consumator.tok += amount
+                            attr_str = 'electricity'
+
+                    if attr_str:
+                        eff_msg.append(modifier_str + ' ' + attr_str)
                         # BOOST
                         if len(effect) > 2:
                             negative_effect = "%s:-%s" % (eff_att, str(amount))
                             boost_duration = float(effect[2]) * self.food_unit
-
                             self.grid.loader.set_boost_timer(
                                 duration = boost_duration,
                                 effect = negative_effect,
                                 boosted_item = consumator,
-                                boost_item = cir_utils.get_short_name(consumable.name))
+                                boost_item = consumable)
+                            # consumator.color = self.grid.red01
 
-                            consumator.color = self.grid.red01
+            if eff_msg:
+                consumed = True
+                # # if consumable.color:
+                # if 0:
+                # #     consumator.gen_effect_track(consumable.color)
+                # else:
 
-                        if consumator.type not in protected_types:
-                            if eff_att == 'max' and consumator.lifespan:
-                                consumator.lifespan.limit += amount * self.food_unit
-                                attr_str = 'max'
+                if 'my_body' in consumator.type:
+                    if 'boost' in consumable.type:
+                        self.grid.msg('SCREEN - %s boost over' %
+                                      cir_utils.get_short_name(consumable.boost_item).replace('_', ' '))
+                        effect_color = self.grid.white
+                    else:
+                        self.grid.msg('SCREEN - you eat %s' %
+                                      cir_utils.get_short_name(consumable.name).replace('_', ' '))
+                    for effm in eff_msg:
+                        self.grid.msg('SCREEN - {0}'.format(effm))
 
-                            elif eff_att == 't' and consumator.lifespan:
-                                consumator.lifespan.update(amount * self.food_unit)
-                                attr_str = 'life'
+                consumator.gen_effect_track(effect_color)
 
-                            elif eff_att == 'sp' and hasattr(consumator, 'speed'):
-                                consumator.change_speed(amount)
-                                attr_str = 'speed'
+            # except Exception as e:
+            #     self.grid.msg("ERROR - invalid effects '{0}' \n {1}".format(effects, e))
 
-                            elif eff_att == 'r' and hasattr(consumator, 'range'):
-                                consumator.range += amount
-                                attr_str = 'range'
-
-                            elif eff_att == 'vsp' and hasattr(consumator, 'vspeed'):
-                                consumator.vspeed += amount
-                                attr_str = 'vibe speed'
-
-                            elif eff_att == 'hyg' and hasattr(consumator, 'hyg'):
-                                consumator.hyg += amount
-                                attr_str = 'hygiene'
-
-                            elif eff_att == 'mus' and hasattr(consumator, 'muscle'):
-                                consumator.muscle += amount
-                                attr_str = 'muscle'
-
-                            elif eff_att == 'ego' and hasattr(consumator, 'ego'):
-                                consumator.ego += amount
-                                attr_str = 'ego'
-
-                            elif eff_att == 'stress' and hasattr(consumator, 'stress'):
-                                consumator.stress += amount
-                                attr_str = 'stress'
-
-                            elif eff_att == 'joy' and hasattr(consumator, 'joy'):
-                                consumator.joy += amount
-                                attr_str = 'joy'
-
-                        if attr_str:
-                            eff_msg.append(modifier_str + ' ' + attr_str)
-
-                if eff_msg:
-                    consumed = True
-                    # # if consumable.color:
-                    # if 0:
-                    # #     consumator.gen_effect_track(consumable.color)
-                    # else:
-
-                    if consumator.type == 'my_body':
-                        if consumable.type in [None]:
-                            self.grid.msg('SCREEN - %s boost over' % consumable.boost_item)
-                            effect_color = self.grid.red01
-                        else:
-                            self.grid.msg('SCREEN - you eat %s' % cir_utils.get_short_name(consumable.name))
-                        for effm in eff_msg:
-                            self.grid.msg('SCREEN - {0}'.format(effm))
-
-                    consumator.gen_effect_track(effect_color)
-
-            except Exception as e:
-                self.grid.msg("ERROR - invalid effects '{0}' \n {1}".format(effects, e))
-
-        # if consumed and not consumable.type in ['option', 'quelle', 'spawn'] and not consumable.lifespan:
-        if exhaust:
+        if exhaust and consumed:
             consumable.destroy(self.grid)
+            print consumable.name
         return consumed
 
-    def drop(self, clicked, my_body, item=None):
+    def drop(self, clicked, my_body, force=False):
         """
         Drops item
         """
+        will_drop = force
         # Drop item on an empty tile
         if isinstance(clicked, tuple):
             if clicked not in self.grid.occupado_tiles.values() and clicked in self.grid.revealed_tiles.keys():
                 if clicked in self.grid.adj_tiles(my_body.pos):
-                    for bag_item in my_body.inventory.options.values():
-                        if self.grid.mouse_mode in bag_item.name:
-                            item_name = cir_utils.get_short_name(self.grid.mouse_mode)
-                            dropped_item = self.produce(item_name, clicked)
-                            if dropped_item:
-                                if hasattr(bag_item, "lifespan"):
-                                    dropped_item.lifespan = bag_item.lifespan
-                                self.empty_inventory(bag_item)
-                                break
+                    will_drop = True
                 else:
                     self.grid.msg("SCREEN - no reach")
             else:
-                self.grid.msg("SCREEN - no place here")
+                self.grid.msg("SCREEN - no place here1")
 
+            if will_drop:
+                for bag_item in my_body.inventory.options.values():
+                    if self.grid.mouse_mode in bag_item.name:
+                        item_name = cir_utils.get_short_name(self.grid.mouse_mode)
+                        dropped_item = self.produce(item_name, clicked)
+                        if dropped_item:
+                            if hasattr(bag_item, "lifespan"):
+                                dropped_item.lifespan = bag_item.lifespan
+                            self.empty_inventory(bag_item)
+                            break
         # Drop item from inventory to body and consume
         else:
             if clicked:
-                if clicked.pos in self.grid.adj_tiles(my_body.pos) or clicked.type == "my_body":
-                # if clicked.type == "my_body":
-                    for bag_item in my_body.inventory.options.values():
-
-                        if self.grid.mouse_mode and self.grid.mouse_mode in bag_item.name:
-                            if bag_item.consumable and not clicked in my_body.inventory.options.values():
-                                if self.consume(clicked, bag_item):
-                                    self.empty_inventory(bag_item)
-                                    break
+                # Drop to adj only or to self (telekinesis)
+                if clicked.pos in self.grid.adj_tiles(my_body.pos) or 'my_body' in clicked.type:
+                    will_drop = True
                 else:
                     self.grid.msg("SCREEN - no reach")
             else:
-                self.grid.msg("SCREEN - No place here")
+                self.grid.msg("SCREEN - No place here1")
+
+            if will_drop:
+                for bag_item in my_body.inventory.options.values():
+                    if self.grid.mouse_mode and self.grid.mouse_mode in bag_item.name:
+                        if bag_item.consumable and not clicked in my_body.inventory.options.values():
+                            if self.consume(clicked, bag_item):
+                                self.empty_inventory(bag_item)
+                                break
 
 

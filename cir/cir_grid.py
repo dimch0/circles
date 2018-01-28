@@ -249,7 +249,7 @@ class Grid(object):
 
     def clean_placeholders(self, item):
         """ Cleans the placeholders (eg for mitosis) """
-        if "placeholder" in item.name and item.type not in ['option']:
+        if "placeholder" in item.name and 'option' not in item.type:
             for other_item in self.items:
                 if other_item.pos == item.pos:
                     try:
@@ -259,10 +259,12 @@ class Grid(object):
                         self.msg("ERROR - ERROR Could not remove placeholder: {0}".format(e))
 
     def set_occupado(self):
+        nonoccupado = ["signal",
+                       "trigger",
+                       "option"]
         tiles_to_check = set(self.playing_tiles + self.door_slots)
         for item in self.items:
-            if not item.type in ["signal", "trigger", "option"]:
-
+            if not any(nonocc in item.type for nonocc in nonoccupado):
                 for tile in tiles_to_check:
                     circle_1 = (tile, self.tile_radius)
                     circle_2 = (item.pos, self.tile_radius)
@@ -300,6 +302,13 @@ class Grid(object):
     def gen_map_dots(self):
         map_dots = {}
 
+        reddots = ['door_enter']
+        whitedots = []
+        gelbdots = ['my_body']
+        ignoredots = ['editor', 'my_body', 'option', 'signal', 'inventory', 'slab']
+        ignoredots += whitedots
+        ignoredots += reddots
+
         for room_name, room  in self.rooms.items():
             if room_name not in ['map', 'ALL']:
                 if self.names_to_pos([room_name]):
@@ -310,14 +319,17 @@ class Grid(object):
 
                     for item in room['items']:
                         if item.color and item.available:
-                            if item.type not in ['editor', 'my_body', 'option', 'signal', 'inventory', 'slab']:
+                            if not any (ign in item.type for ign in ignoredots):
                                 map_dots.update(self.get_map_dot(item.pos, room_pos, item.color, item.radius))
 
-                            elif item.type in ['my_body'] and room_name == self.previous_room:
-                                map_dots.update(self.get_map_dot(item.pos, room_pos, item.color, item.radius))
-
-                            if item.type in ['door_enter']:
+                            if any(reddot in item.type for reddot in reddots):
                                 map_dots.update(self.get_map_dot(item.pos, room_pos, self.red01, item.radius))
+
+                            if any(whitedot in item.type for whitedot in whitedots) and room_name == self.previous_room:
+                                map_dots.update(self.get_map_dot(item.pos, room_pos, self.white, item.radius))
+
+                            if any(gelbdot in item.type for gelbdot in gelbdots) and room_name == self.previous_room:
+                                map_dots.update(self.get_map_dot(item.pos, room_pos, self.gelb05, item.radius))
 
         self.map_dots = map_dots
 

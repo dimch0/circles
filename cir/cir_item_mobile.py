@@ -55,13 +55,11 @@ class MobileItem(Item):
     def gen_move_track(self, grid):
         """
         Generates a legal move track in the current direction
-        :param options: options
-        :return: a list of all available tiles in direction_idx
         """
         if self.direction != None and not self.move_track and not self.vibe_track:
             target_tile = grid.adj_tiles(self.pos)[self.direction]
             if self.speed > 0:
-                if target_tile in grid.revealed_tiles.keys() and ((self.type != "signal" and target_tile not in grid.occupado_tiles.values()) or self.type == "signal"):
+                if target_tile in grid.revealed_tiles.keys() and (("signal" not in self.type and target_tile not in grid.occupado_tiles.values()) or 'signal' in self.type):
                         self.move_track = self.move_to_tile(grid, target_tile)
                 else:
                     self.direction = None

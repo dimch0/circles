@@ -27,7 +27,7 @@ class Scout(BodyItem):
     def nearest_item(self, grid, itype):
         result = None
         for item in grid.items:
-            if item.type == itype:
+            if itype in item.type:
                 if not result:
                     result = item
                 else:
