@@ -89,7 +89,7 @@ pawprint,item,,,grey14,pawprint,,,,,,,,,,,,
 name,klas,lvl,type,color,img,effects,options,modable,collectible,consumable,speed,range,time_color,lifespan,vspeed,vfreq,layer
 placeholder,item,,,black,,,,,,,,,white,,,,1
 trigger,body,,trigger,,,,,,,,,,,,,,1
-sat_vibe,body,,trigger,,,#rev,,,,,,6,,1,5,0.3,1
+sat_vibe,body,,trigger,,,#rev,,,,,,4.5,,1,5,0.3,1
 boost_timer,body,,boost,,,,,,,,,,,,,,1
 edit_phone,item,,editor,grey03,phone,,,,,,,,,,,,1
 edit_poop,item,,editor,grey03,poop,,,TRUE,,,,,,,,,1

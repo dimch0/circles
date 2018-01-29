@@ -231,6 +231,8 @@ class DataLoader(object):
         for data, klas in self.load_data(item_name):
             item = self.create_new_item(klas=klas,
                                         attributes_dict=data)
+            if item.name == 'sat_vibe':
+                item.available = True
             if item.name == item_name:
                 new_item = item
                 self.set_timers(new_item)
@@ -381,5 +383,7 @@ class DataLoader(object):
         self.grid.items.append(self.my_body)
 
         self.grid.load_current_room()
+        for panel in self.grid.panel_items.values():
+            panel.open_menu(self.grid)
 
         return self.my_body
