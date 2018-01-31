@@ -14,30 +14,42 @@
   "gen_schema" : {
     "1": {
       "items": [
-        "coffee",
-        "beer",
-        "fresh",
-        "cigara",
+        "bread",
         "peanut",
         "pretzel",
         "apple",
-        "battery",
-        "traffic_light"
+        "coffee",
+        "wassa",
+        "cigara",
+        "poop",
+        "bandage",
+        "shave",
+        "brush",
+        "tampon",
+        "pingpong",
+        "soccer"
       ],
       "base": 15
     },
     "2": {
       "items": [
+        "carrot",
         "banana",
         "pinapple",
         "can",
         "egg",
         "tomato",
-        "carrot",
-        "dog_house",
-        "bin",
-        "music_box",
-        "traffic_light"
+        "popcorn",
+        "beer",
+        "vodka",
+        "mastique",
+        "menta",
+        "jonka",
+        "pill",
+        "toilet_paper",
+        "book2",
+        "battery",
+        "lipstick"
       ],
       "base": 40
     },
@@ -49,10 +61,16 @@
         "icecream",
         "cheese",
         "donut",
+        "shrimp",
+        "honey",
+        "doner",
         "fresh",
-        "gascan",
-        "traffic_light",
-        "traffic_light"
+        "justin",
+        "spritz",
+        "socks",
+        "undies",
+        "broom",
+        "gascan"
       ],
       "base": 70
     },
@@ -63,7 +81,11 @@
         "pizza",
         "meat",
         "steak",
-        "gas_col"
+        "wiski",
+        "shroom",
+        "oblak",
+        "perfume",
+        "shroom"
       ],
       "base": 110
 }
