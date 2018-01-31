@@ -153,22 +153,22 @@ class Item(object):
                                 grid.overlap.append(olap_item)
 
     def close_menu(self, grid):
+        if 'panel' not in self.type:
+            grid.msg("INFO - Close menu {0}".format(self.name))
+            self.in_menu = False
 
-        grid.msg("INFO - Close menu {0}".format(self.name))
-        self.in_menu = False
-
-        # REMOVE OPTIONS
-        for option in self.options.values():
-            if option in grid.panel_items.values():
-                option.pos = ()
-                if option.name in grid.panel_items.keys():
-                    del grid.panel_items[option.name]
-        # OVERLAP
-        while grid.overlap:
-            for olap_item in grid.overlap:
-                olap_item.clickable = True
-                if olap_item in grid.overlap:
-                    grid.overlap.remove(olap_item)
+            # REMOVE OPTIONS
+            for option in self.options.values():
+                if option in grid.panel_items.values():
+                    option.pos = ()
+                    if option.name in grid.panel_items.keys():
+                        del grid.panel_items[option.name]
+            # OVERLAP
+            while grid.overlap:
+                for olap_item in grid.overlap:
+                    olap_item.clickable = True
+                    if olap_item in grid.overlap:
+                        grid.overlap.remove(olap_item)
 
     # --------------------------------------------------------------- #
     #                                                                 #

@@ -325,6 +325,7 @@ class DataLoader(object):
                                     i_pos = str(i_pos_x) + "_" + str(i_pos_y)
                                     item.pos = self.grid.names_to_pos(i_pos)
                                     item.available = True
+                                    item.open_menu(self.grid)
                                     self.grid.panel_items['bag'] = item
 
                                 # SLAB
@@ -334,6 +335,7 @@ class DataLoader(object):
                                     s_pos = str(s_pos_x) + "_" + str(s_pos_y)
                                     item.pos = self.grid.names_to_pos(s_pos)
                                     item.available = True
+                                    item.open_menu(self.grid)
                                     setattr(self.grid, 'slab', item)
                                     self.grid.panel_items['slab'] = item
 

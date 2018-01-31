@@ -134,7 +134,7 @@ class VarUpdater(object):
         # VIBE TIMER
         if hasattr(item, "vfreq"):
             if item.vfreq and not isinstance(item.vfreq, (float, int)):
-                if item.vfreq.duration:
+                if item.vfreq.duration and not item.move_track:
                     item.vfreq.tick()
                     if item.vfreq.is_over:
                         do_action = False
