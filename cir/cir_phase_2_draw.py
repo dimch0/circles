@@ -72,19 +72,15 @@ class GameDrawer(object):
 
     def draw_img(self, item):
         """ Blit image on display """
-        try:
-            if item.img and item.available and not item.birth_track:
+        if item.img and item.available and not item.birth_track:
 
-                if item.img.get_width() == self.grid.tile_radius:
-                    self.grid.game_display.blit(item.img, self.set_emoji_pos(item.pos))
-                elif "door_enter" in item.type:
-                    self.grid.game_display.blit(item.img, self.set_neon_pos(item.pos))
-                else:
-                    self.grid.game_display.blit(item.img, self.set_img_pos(item.pos))
-        except Exception as e:
-            print e
-            print item.name
-            print item.type
+            if item.img.get_width() == self.grid.tile_radius:
+                self.grid.game_display.blit(item.img, self.set_emoji_pos(item.pos))
+            elif "door_enter" in item.type:
+                self.grid.game_display.blit(item.img, self.set_neon_pos(item.pos))
+            else:
+                self.grid.game_display.blit(item.img, self.set_img_pos(item.pos))
+
 
 
     def draw_vibe(self, item):

@@ -79,7 +79,6 @@ class DataLoader(object):
                             dummy.hungry = True
                         if "#tok" in value:
                             setattr(dummy, 'tok', 0)
-                            print dummy.name
 
         except Exception as e:
             self.grid.msg("ERROR - Could not set attribute: {0}".format(e))

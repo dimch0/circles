@@ -43,15 +43,12 @@ class TimerItem(Item):
 
     @property
     def filled_degrees(self):
-        try:
-            if not self.reversed:
-                self._filled_degrees = self.start_degrees + (self.step_degrees * self.step)
-                return self._filled_degrees
-            else:
-                self._filled_degrees = self.start_degrees + (self.step_degrees * (self.number_of_steps - self.step))
-                return self._filled_degrees
-        except Exception as e:
-            print "ERROR filled_degrees", e
+        if not self.reversed:
+            self._filled_degrees = self.start_degrees + (self.step_degrees * self.step)
+            return self._filled_degrees
+        else:
+            self._filled_degrees = self.start_degrees + (self.step_degrees * (self.number_of_steps - self.step))
+            return self._filled_degrees
 
     @property
     def is_over(self):

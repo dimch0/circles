@@ -402,7 +402,6 @@ class GameEffects(object):
 
         if exhaust and consumed:
             consumable.destroy(self.grid)
-            print consumable.name
         return consumed
 
     def drop(self, clicked, my_body, force=False):
