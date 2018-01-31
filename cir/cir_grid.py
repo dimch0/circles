@@ -90,6 +90,15 @@ class Grid(object):
         self.mouse_mode = None
         self.mouse_img = None
         self.mode_img = None
+        # -------------------------------------------------- #
+        #                        KEYS                        #
+        # -------------------------------------------------- #
+        self.arrows = [self.pygame.K_w,
+                       self.pygame.K_e,
+                       self.pygame.K_d,
+                       self.pygame.K_s,
+                       self.pygame.K_a,
+                       self.pygame.K_q]
 
     # --------------------------------------------------------------- #
     #                            SETTINGS                             #

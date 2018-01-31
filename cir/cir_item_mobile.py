@@ -66,21 +66,13 @@ class MobileItem(Item):
             else:
                 self.direction = None
 
-    def gen_direction(self, pygame, grid, event):
+    def gen_direction(self, grid, event):
         """ Generates item direction from 0-6 on pressed key """
         if self.direction == None and not self.birth_track:
-            arrows = [
-                pygame.K_w,
-                pygame.K_e,
-                pygame.K_d,
-                pygame.K_s,
-                pygame.K_a,
-                pygame.K_q
-            ]
-            for idx, arrow in enumerate(arrows):
+            for idx, arrow in enumerate(grid.arrows):
                 if event.key == arrow:
-                    if not self.vibe_track:
-                        self.direction = idx
+                    # if not self.vibe_track:
+                    self.direction = idx
 
 
     # --------------------------------------------------------------- #

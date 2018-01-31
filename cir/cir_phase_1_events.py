@@ -73,7 +73,7 @@ class GameEvents(GameEffects):
             elif not my_body.in_menu:
 
                 # GEN DIRECTION
-                my_body.gen_direction(self.grid.pygame, self.grid, event)
+                my_body.gen_direction(self.grid, event)
 
                 # CHECK FOR DOOR
                 doors = {door.pos : door  for door in self.grid.items if "door" in door.type}
