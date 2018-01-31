@@ -47,7 +47,7 @@ class BodyItem(MobileItem):
         (31, 10), (32, 10), (33, 10)
         """
 
-        if not self.move_track and not self.vibe_track and not self.birth_track and not self.in_menu:
+        if self.direction is None and not self.vibe_track and not self.birth_track and not self.in_menu:
             vibe_thickness = range(1, (grid.tile_radius / 3) + 1)
             vibe_thickness.reverse()
             vibe_limit = (grid.tile_radius * 2 * self.range) + grid.tile_radius + 1

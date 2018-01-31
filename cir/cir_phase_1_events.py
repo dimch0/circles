@@ -48,9 +48,9 @@ class GameEvents(GameEffects):
             # --------------------------------------------------------------- #
             #                             SPACE                               #
             # --------------------------------------------------------------- #
-            elif event.key == self.grid.pygame.K_SPACE:
-                # GEN VIBE
-                my_body.gen_vibe_track(self.grid)
+            # elif event.key == self.grid.pygame.K_SPACE:
+            #     # GEN VIBE
+            #     my_body.gen_vibe_track(self.grid)
             # --------------------------------------------------------------- #
             #                             NUMBERS                             #
             # --------------------------------------------------------------- #
