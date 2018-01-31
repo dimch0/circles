@@ -384,7 +384,5 @@ class DataLoader(object):
         self.grid.items.append(self.my_body)
 
         self.grid.load_current_room()
-        for panel in self.grid.panel_items.values():
-            panel.open_menu(self.grid)
 
         return self.my_body
