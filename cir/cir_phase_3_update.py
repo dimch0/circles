@@ -82,7 +82,7 @@ class VarUpdater(object):
             self.grid.msg("INFO - Leaving room: {0}".format(self.grid.current_room))
             self.grid.change_room(room_number)
             self.grid.needs_to_change_room = False
-
+            my_body.move_track = {'center':'', 'track':[]}
             if not my_body in self.grid.items:
                 self.grid.items.append(my_body)
 
@@ -225,6 +225,7 @@ class VarUpdater(object):
 
                 # ENTER
                 if self.grid.needs_to_change_room:
+                    my_body.vibe_track = {'center': '', 'track': []}
                     self.enter_room(my_body, item)
 
                 # DESTRUCTION
@@ -266,15 +267,12 @@ class VarUpdater(object):
                             item.color = item.default_color
 
                     # ANIMATE VIBE
-                    if item.vibe_track:
-
-                        vibe_area = ((item.pos), item.vibe_track[0][0])
-
-
+                    if item.vibe_track['track']:
+                        vibe_area = ((item.vibe_track['center']), item.vibe_track['track'][0][0])
                         # REVEAL TILE
                         if item in self.grid.items:
                             for rtile in self.grid.playing_tiles:
-                                if in_circle(item.pos, item.vibe_track[0][0], rtile):
+                                if in_circle(item.vibe_track['center'], item.vibe_track['track'][0][0], rtile):
                                     if not rtile in item.hit_tiles:
                                         item.hit_tiles.append(rtile)
                                     if "#rev" in item.effects:
@@ -306,8 +304,8 @@ class VarUpdater(object):
                                             self.grid.event_effects.consume(hit_item, item)
                                             item.hit_items.append(hit_item)
 
-                        item.vibe_track.pop(0)
-                        if not item.vibe_track:
+                        item.vibe_track['track'].pop(0)
+                        if not item.vibe_track['track']:
                             item.hit_items = []
                             item.hit_tiles = []
 

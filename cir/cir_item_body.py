@@ -47,7 +47,7 @@ class BodyItem(MobileItem):
         (31, 10), (32, 10), (33, 10)
         """
 
-        if self.direction is None and not self.vibe_track and not self.birth_track and not self.in_menu:
+        if self.direction is None and not self.vibe_track['track'] and not self.birth_track and not self.in_menu:
             vibe_thickness = range(1, (grid.tile_radius / 3) + 1)
             vibe_thickness.reverse()
             vibe_limit = (grid.tile_radius * 2 * self.range) + grid.tile_radius + 1
@@ -59,8 +59,10 @@ class BodyItem(MobileItem):
             for thick in vibe_thickness:
                 for rad_delim in rad_delimiter_list:
                     result.append(thick)
-            self.vibe_track = zip(vibe_radius, result)
-            self.vibe_track.append((vibe_limit, 1))
+            track = zip(vibe_radius, result)
+            track.append((vibe_limit, 1))
+            self.vibe_track = {'center': self.pos,
+                               'track': track}
             self.gen_fat()
 
         return self.vibe_track

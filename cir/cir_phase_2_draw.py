@@ -85,7 +85,8 @@ class GameDrawer(object):
 
     def draw_vibe(self, item):
         """ Vibe animation """
-        vibe_radius, thick = item.vibe_track[0]
+        vibe_center = item.vibe_track['center']
+        vibe_radius, thick = item.vibe_track['track'][0]
         if item.color:
             vibe_color = item.color
         else:
@@ -94,7 +95,7 @@ class GameDrawer(object):
         # if vibe_radius and thick:
         self.grid.pygame.draw.circle(self.grid.game_display,
                            vibe_color,
-                           item.pos,
+                           vibe_center,
                            int(vibe_radius),
                            int(thick))
 
@@ -333,7 +334,7 @@ class GameDrawer(object):
             if item.available:
 
                 # VIBE
-                if item.vibe_track:
+                if item.vibe_track['track']:
                     self.draw_vibe(item)
 
                 # ITEMS

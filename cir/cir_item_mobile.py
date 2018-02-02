@@ -56,7 +56,7 @@ class MobileItem(Item):
         """
         Generates a legal move track in the current direction
         """
-        if self.direction != None and not self.move_track and not self.vibe_track:
+        if self.direction != None and not self.move_track: # and not self.vibe_track['track']:
             target_tile = grid.adj_tiles(self.pos)[self.direction]
             if self.speed > 0:
                 if target_tile in grid.revealed_tiles.keys() and (("signal" not in self.type and target_tile not in grid.occupado_tiles.values()) or 'signal' in self.type):

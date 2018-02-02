@@ -1,5 +1,5 @@
 {
-  "tile_radius": 18,
+  "tile_radius": 32,
   "rows": 22,
   "cols": 22,
   "fog_color": "grey01",
@@ -115,7 +115,9 @@
       {"item_name": "music_box",
         "item_positions": ["10_4"]},
       {"item_name": "battery",
-        "item_positions": ["10_6"]}
+        "item_positions": ["10_6"]},
+      {"item_name": "broom",
+        "item_positions": ["10_8"]}
     ]},
     {"10_8" : [
       {"item_name": "Enter_9_7",

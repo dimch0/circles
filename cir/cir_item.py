@@ -51,7 +51,7 @@ class Item(object):
         # --------------------------------------------------------------- #
         self.direction = None
         self.move_track = []
-        self.vibe_track = []
+        self.vibe_track = {'center': '', 'track':[]}
         self.birth_track = []
         self.fat_track = []
         self.effect_track = []
@@ -131,7 +131,7 @@ class Item(object):
     #                                                                 #
     # --------------------------------------------------------------- #
     def open_menu(self, grid):
-        if not self.vibe_track:
+        if not self.vibe_track['track']:
             grid.msg("INFO - Open menu {0}".format(self.name))
             grid.clean_mouse()
             self.in_menu = True
