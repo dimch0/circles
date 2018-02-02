@@ -112,12 +112,10 @@ class Images(object):
                     name = os.path.splitext(file)[0]
                     image = grid.pygame.image.load(img_file)
 
-                    if 'emoji' in img_file:
-                        img_side = grid.tile_radius
-                    elif 'neon' in img_file:
+                    if 'neon' in img_file:
                         img_side = int(grid.tile_radius * 2.5)
                     else:
-                        img_side = grid.tile_radius * 2
+                        img_side = grid.tile_radius
 
                     image = grid.pygame.transform.scale(image, (img_side, img_side))
 

@@ -23,7 +23,6 @@
         "cigara",
         "poop",
         "bandage",
-        "shave",
         "brush",
         "tampon",
         "pingpong",
@@ -63,7 +62,6 @@
         "donut",
         "shrimp",
         "honey",
-        "doner",
         "fresh",
         "justin",
         "spritz",
@@ -116,7 +114,7 @@
         "item_positions": ["10_4"]},
       {"item_name": "battery",
         "item_positions": ["10_6"]},
-      {"item_name": "broom",
+      {"item_name": "bandage",
         "item_positions": ["10_8"]}
     ]},
     {"10_8" : [

@@ -160,7 +160,7 @@ class GameEvents(GameEffects):
 
                             # SUICIDE
                             if CLICKED_ITEM.name == "suicide":
-                                ober_item.destroy(self.grid)
+                                my_body.destroy(self.grid)
 
                             # MITOSIS
                             elif CLICKED_ITEM.name == "mitosis":

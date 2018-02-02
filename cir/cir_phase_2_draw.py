@@ -15,37 +15,16 @@ class GameDrawer(object):
         # self.grid.pygame = pygame
 
 
-
-    def set_img_pos(self, item_pos):
+    def set_img_pos(self, center, image):
         """
         Centers the image posotion
         :param grid:  grid object
         :return: coordinates of the centered image
         """
-        img_x = item_pos[0] - self.grid.tile_radius
-        img_y = item_pos[1] - self.grid.tile_radius
+        half_side = image.get_width() / 2
+        img_x = center[0] - half_side
+        img_y = center[1] - half_side
         return (img_x, img_y)
-
-    def set_emoji_pos(self, item_pos):
-        """
-        Centers the emoji image posotion
-        :param grid:  grid object
-        :return: coordinates of the centered image
-        """
-        img_x = item_pos[0] - self.grid.tile_radius / 2
-        img_y = item_pos[1] - self.grid.tile_radius / 2
-        return (img_x, img_y)
-
-    def set_neon_pos(self, item_pos):
-        """
-        Centers the emoji image posotion
-        :param grid:  grid object
-        :return: coordinates of the centered image
-        """
-        img_x = item_pos[0] - self.grid.tile_radius * 1.25
-        img_y = item_pos[1] - self.grid.tile_radius * 1.25
-        return (img_x, img_y)
-
 
     def draw_map(self):
         "draws map dots"
@@ -55,7 +34,6 @@ class GameDrawer(object):
                                          map_dot['pos'],
                                          map_dot['radius'],
                                          0)
-
 
     def draw_hover(self, current_tile, item):
         """ Highlights the hovered tile """
@@ -69,19 +47,10 @@ class GameDrawer(object):
                                              radius,
                                              1)
 
-
     def draw_img(self, item):
         """ Blit image on display """
         if item.img and item.available and not item.birth_track:
-
-            if item.img.get_width() == self.grid.tile_radius:
-                self.grid.game_display.blit(item.img, self.set_emoji_pos(item.pos))
-            elif "door_enter" in item.type:
-                self.grid.game_display.blit(item.img, self.set_neon_pos(item.pos))
-            else:
-                self.grid.game_display.blit(item.img, self.set_img_pos(item.pos))
-
-
+            self.grid.game_display.blit(item.img, self.set_img_pos(item.pos, item.img))
 
     def draw_vibe(self, item):
         """ Vibe animation """
@@ -98,7 +67,6 @@ class GameDrawer(object):
                            vibe_center,
                            int(vibe_radius),
                            int(thick))
-
 
     def draw_menu_buttons(self, current_tile):
         """ Drawing the buttons in the game menu """
@@ -246,10 +214,8 @@ class GameDrawer(object):
                                self.grid.tile_radius,
                                1)
             if self.grid.mouse_img.get_width() == self.grid.tile_radius:
-                self.grid.game_display.blit(self.grid.mouse_img, self.set_emoji_pos(current_tile))
-            else:
-                self.grid.game_display.blit(self.grid.mouse_img, self.set_img_pos(current_tile))
-
+                self.grid.game_display.blit(self.grid.mouse_img, self.set_img_pos(current_tile,
+                                                                                  self.grid.mouse_img))
 
     def draw_movement(self, item):
         """ DEBUG: Shows the movement in cyan and the correct track in red """
