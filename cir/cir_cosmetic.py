@@ -113,14 +113,13 @@ class Images(object):
                     image = grid.pygame.image.load(img_file)
 
                     if 'neon' in img_file:
-                        img_side = int(grid.tile_radius * 2.5)
+                        scale = 2.5
                     else:
-                        img_side = grid.tile_radius
+                        scale = 1.2
 
+                    img_side = int(grid.tile_radius * scale)
                     image = grid.pygame.transform.scale(image, (img_side, img_side))
-
-                    if not 'insta' in img_file:
-                        setattr(self, name, image)
+                    setattr(self, name, image)
 
         except Exception as e:
             grid.msg("ERROR - could not set image as attribute: {0}".format(e))

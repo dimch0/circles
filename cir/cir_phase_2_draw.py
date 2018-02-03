@@ -213,9 +213,10 @@ class GameDrawer(object):
                                current_tile,
                                self.grid.tile_radius,
                                1)
-            if self.grid.mouse_img.get_width() == self.grid.tile_radius:
-                self.grid.game_display.blit(self.grid.mouse_img, self.set_img_pos(current_tile,
-                                                                                  self.grid.mouse_img))
+            self.grid.game_display.blit(
+                self.grid.mouse_img, self.set_img_pos(
+                    current_tile,
+                    self.grid.mouse_img))
 
     def draw_movement(self, item):
         """ DEBUG: Shows the movement in cyan and the correct track in red """
