@@ -44,7 +44,7 @@ class Item(object):
         # --------------------------------------------------------------- #
         self.lifespan = None
         self.time_color = None
-        self.room = None
+        self.lvl = None
         self.marked_for_destruction = False
         # --------------------------------------------------------------- #
         #                            ANIMATION                            #

@@ -243,6 +243,7 @@ class GameEffects(object):
                                               add_to_items=False)
                 item_as_option.name = clicked_item.name # + '-' + str(time.time())
                 item_as_option.type = clicked_item.type + ' option'
+                item_as_option.lvl = clicked_item.lvl
                 item_as_option.modable = True
                 item_as_option.consumable = clicked_item.consumable
                 item_as_option.effects = clicked_item.effects
@@ -415,7 +416,7 @@ class GameEffects(object):
                 if clicked in self.grid.adj_tiles(my_body.pos):
                     will_drop = True
                 else:
-                    self.grid.msg("SCREEN - no reach")
+                    self.grid.msg("SCREEN - no reach1")
             else:
                 self.grid.msg("SCREEN - no place here1")
 
@@ -438,14 +439,15 @@ class GameEffects(object):
                 else:
                     self.grid.msg("SCREEN - no reach")
             else:
-                self.grid.msg("SCREEN - No place here1")
+                self.grid.msg("SCREEN - No place here")
 
             if will_drop:
                 for bag_item in my_body.inventory.options.values():
                     if self.grid.mouse_mode and self.grid.mouse_mode in bag_item.name:
-                        if bag_item.consumable and not clicked in my_body.inventory.options.values():
+                        if 'vendor' in clicked.type:
+                            if clicked.trade(bag_item, self.grid):
+                                self.empty_inventory(bag_item)
+                        elif bag_item.consumable and not clicked in my_body.inventory.options.values():
                             if self.consume(clicked, bag_item):
                                 self.empty_inventory(bag_item)
                                 break
-
-

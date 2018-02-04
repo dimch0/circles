@@ -33,7 +33,6 @@ class VarUpdater(object):
                     if lname not in [it.name for it in self.grid.items]:
                         LOSE_GAME = True
 
-
         for cond in self.grid.win_cond:
             if 'places' in cond.keys():
                 wname = cond['item_name']
@@ -51,8 +50,6 @@ class VarUpdater(object):
             if win_count == len(self.grid.win_cond):
                 WIN_GAME = True
 
-
-
         if LOSE_GAME:
             for lmsg in self.grid.lose_msg:
                 self.grid.msg("SCREEN - %s" % lmsg)
@@ -61,9 +58,6 @@ class VarUpdater(object):
         elif WIN_GAME:
             for wmsg in self.grid.win_msg:
                 self.grid.msg("SCREEN - %s" % wmsg)
-            for report in self.grid.report:
-                if hasattr(self.grid, report):
-                    self.grid.msg("SCREEN - score %s" % getattr(self.grid, report))
             self.grid.game_over = True
 
 

@@ -50,6 +50,8 @@ class ItemGenerator(object):
         if gen_pos and self.should_generate():
             level = self.should_generate()
             items = self.gen_schema[level]['items']
-            random_item = random.choice(items)
-            self.grid.event_effects.produce(random_item, gen_pos)
-            self.generated[level] += 1
+            if self.gen_schema[level]['items']:
+                random_item = random.choice(items)
+                if random_item:
+                    self.grid.event_effects.produce(random_item, gen_pos)
+                    self.generated[level] += 1

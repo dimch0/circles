@@ -59,6 +59,9 @@ def game_loop(game_over, scenario="scenario_01", msg=list()):
 
     # GAME OVER
     if grid.game_over:
+        for report in grid.report:
+            if hasattr(grid, report):
+                grid.msg("SCREEN - score %s" % getattr(grid, report))
         game_loop(grid.game_over, grid.scenario, grid.messages)
 
     # GAME EXIT

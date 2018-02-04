@@ -95,6 +95,7 @@ class DataLoader(object):
         # DEBUG
         if self.grid.show_debug:
            self.grid.msg("DEBUG - Loaded {0}".format(dummy.name))
+           self.grid.msg("DEBUG - attributes_dict {0}".format(attributes_dict))
 
         return dummy
 
@@ -128,6 +129,7 @@ class DataLoader(object):
                                 "type"        : str(row[col_idx["type"]]) if len(row[col_idx["type"]]) > 0 else 'notype',
                                 "options"     : str(row[col_idx["options"]]),
                                 "name"        : str(row[col_idx["name"]]),
+                                "lvl"         : str(row[col_idx["lvl"]]),
                                 "color"       : getattr(self.grid, row[col_idx["color"]]) if len(row[col_idx["color"]]) > 0 else None,
                                 "img"         : getattr(self.grid.images, row[col_idx["img"]]) if len(row[col_idx["img"]]) > 0 else None,
                                 "speed"       : int(float(row[col_idx["speed"]])) if len(row[col_idx["speed"]]) > 0 else None,

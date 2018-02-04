@@ -12,80 +12,26 @@
   "win_msg" : [],
   "lose_msg": [],
   "gen_schema" : {
-    "1": {
-      "items": [
-        "bread",
-        "peanut",
-        "pretzel",
-        "apple",
-        "coffee",
-        "wassa",
-        "cigara",
-        "poop",
-        "bandage",
-        "brush",
-        "tampon",
-        "pingpong",
-        "soccer"
-      ],
-      "base": 15
-    },
-    "2": {
-      "items": [
-        "carrot",
-        "banana",
-        "pinapple",
-        "can",
-        "egg",
-        "tomato",
-        "beer",
-        "vodka",
-        "mastique",
-        "menta",
-        "jonka",
-        "pill",
-        "toilet_paper",
-        "book2",
-        "battery",
-        "lipstick"
-      ],
-      "base": 40
-    },
-    "3": {
-      "items": [
-        "chili",
-        "lemon",
-        "kibabchi",
-        "icecream",
-        "cheese",
-        "donut",
-        "shrimp",
-        "honey",
-        "fresh",
-        "justin",
-        "spritz",
-        "socks",
-        "undies",
-        "broom",
-        "gascan"
-      ],
-      "base": 70
-    },
-    "4": {
-      "items": [
-        "spoget",
-        "hotdog",
-        "pizza",
-        "meat",
-        "steak",
-        "wiski",
-        "shroom",
-        "oblak",
-        "perfume",
-        "shroom"
-      ],
-      "base": 110
-}
+    "hyg1": {"items": ["cigara", "poop", "bandage", "brush", "tampon", "pingpong", "soccer"],
+             "base": 20},
+    "hyg2": {"items": ["pill", "toilet_paper", "book2", "battery", "lipstick"],
+             "base": 40},
+    "hyg3": {"items": ["spritz", "socks", "undies", "broom", "gascan", "jonka"],
+             "base": 70},
+    "food1": {"items": [ "bread", "peanut", "pretzel", "apple", "coffee", "wassa"],
+             "base": 15},
+    "food2": {"items": ["carrot", "banana", "pinapple", "can", "egg", "tomato", "beer"],
+              "base": 40},
+    "food3": {"items": ["chili", "lemon", "kibabchi", "icecream", "cheese", "donut", "shrimp", "honey", "fresh"],
+              "base": 70},
+    "food4": {"items": ["spoget", "hotdog", "pizza", "meat", "steak", "shroom"],
+              "base": 110},
+    "quellen1": {"items": ["dog_house", "traffic_light", "bin"],
+                 "base": 50},
+    "vendors1": {"items": ["fruits"],
+                 "base": 50},
+    "lovers": {"items": [],
+               "base": 160}
 },
   "room_items" : [
     {"11_9" : [
