@@ -55,7 +55,7 @@ lipstick,item,2,ego,grey14,lipstick,ego:+1,,,TRUE,TRUE,,,,,,,
 book2,item,,knwholder,grey14,book2,knw:+2,,,TRUE,TRUE,,,,,,,
 book3,item,,knwholder,grey14,book3,knw:+3,,,TRUE,TRUE,,,,,,,
 name,klas,lvl,type,color,img,effects,options,modable,collectible,consumable,speed,range,time_color,lifespan,vspeed,vfreq,layer
-my_body,body,,my_body,gelb05,galab,t:-2 #rev,suicide echo,,,,2,1,fog_color,180,1,1,2
+my_body,body,,my_body,gelb05,galab,t:-2 #rev,,,,,2,1,fog_color,180,1,1,2
 option,item,,option,,,,,,,,,,,,,,
 option2,item,,option,,,,,,,,,,,,,,
 option3,item,,option,,,,,,,,,,,,,,
