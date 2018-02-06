@@ -20,14 +20,14 @@ class ItemGenerator(object):
         """ Checks bases for generation
          returns boolean """
         result = 0
-        revealed_tiles = 0
-        for room in self.grid.rooms.values():
-            revealed_tiles += len(room['revealed_tiles'])
+        # revealed_tiles = 0
+        # for room in self.grid.rooms.values():
+        #     revealed_tiles += len(room['revealed_tiles'])
 
         for level in sorted(self.gen_schema.keys()):
             base = int(self.gen_schema[level]['base'])
             count_level = len([n for n in range(base,
-                                                revealed_tiles,
+                                                self.grid.total_revealed,
                                                 base)])
             if not level in self.generated:
                 self.generated[level] = 0

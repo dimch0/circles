@@ -3,7 +3,7 @@
   "rows": 32,
   "cols": 32,
   "fog_color": "grey01",
-  "room_color": "grey03",
+  "color1": "grey03",
   "playing_tiles": ["1_1", "31_1", "31_31", "1_31"],
   "room_items" : [
     {"11_11" : [

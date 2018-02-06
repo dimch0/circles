@@ -38,7 +38,7 @@ class Grid(object):
         self.display_height = 0
         self.game_display = None
         self.fog_color = None
-        self.room_color = None
+        self.color1 = None
         self.door_slots = []
         self.set_config()
         self.data_file = os.path.join(
@@ -67,8 +67,10 @@ class Grid(object):
         self.set_playing_tiles()
         self.occupado_tiles = {}
         self.revealed_tiles = {}
+        self.total_revealed = 0
         self.draw_map = False
         self.map_dots = {}
+        self.tile_border = self.tile_radius / 15
         # -------------------------------------------------- #
         #                        ROOMS                       #
         # -------------------------------------------------- #
@@ -324,7 +326,7 @@ class Grid(object):
                     room_pos = self.names_to_pos([room_name])[0]
 
                     for tile in room['revealed_tiles']:
-                        map_dots.update(self.get_map_dot(tile, room_pos, self.room_color, self.tile_radius))
+                        map_dots.update(self.get_map_dot(tile, room_pos, self.color1, self.tile_radius))
 
                     for item in room['items']:
                         if item.color and item.available:

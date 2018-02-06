@@ -102,12 +102,18 @@ class GameDrawer(object):
             if item.birth_track and item.color:
                 item.radius = item.birth_track[0]
 
+            border = 0
+            if 'door' in item.type:
+                border = self.grid.tile_border
+
+            if item.radius < border:
+                item.radius = border
             if item.color:
                 self.grid.pygame.draw.circle(self.grid.game_display,
                                    item.color,
                                    item.pos,
                                    item.radius,
-                                   0)
+                                   border)
 
             # DRAW EFFECT ACTIVATION
             if item.effect_track:
@@ -192,7 +198,7 @@ class GameDrawer(object):
         for tile_name, tile_centre in self.grid.tile_dict.items():
 
             self.grid.pygame.draw.circle(self.grid.game_display,
-                                         self.grid.room_color,
+                                         self.grid.color1,
                                          tile_centre,
                                          self.grid.tile_radius,
                                          1)
@@ -228,13 +234,17 @@ class GameDrawer(object):
                                1)
 
     def draw_msg(self):
+        red_msg = [rep_msg.replace("_", ' ') for rep_msg in self.grid.reporting]
+        red_msg.extend(['you dead'])
+        red_msg.extend(self.grid.lose_msg)
+        print red_msg
         if self.grid.messages:
             for idx, msg in enumerate(self.grid.messages[-self.grid.max_msg:]):
                 msg = msg.replace("SCREEN - ", "")
                 font = getattr(self.grid.fonts, 'small')
                 if "+" in msg or "-" in msg:
                     color = self.grid.grey05
-                elif msg in ['you dead'] or msg in self.grid.lose_msg or 'score' in msg:
+                elif any(rmsg in msg for rmsg in red_msg):
                     color = self.grid.red01
                 elif msg in self.grid.win_msg:
                     color = self.grid.gelb05
@@ -244,7 +254,7 @@ class GameDrawer(object):
                 # if idx == 0:
                 #     color = self.grid.white
                 # else:
-                #     color = self.grid.room_color
+                #     color = self.grid.color1
 
                 msg = msg.lower()
                 # msg = u"黒澤 明 €"
@@ -274,11 +284,13 @@ class GameDrawer(object):
             else:
                 rradius = self.grid.tile_radius
 
+            if rradius < self.grid.tile_border:
+                rradius = self.grid.tile_border
             self.grid.pygame.draw.circle(self.grid.game_display,
-                                         self.grid.room_color,
+                                         self.grid.color1,
                                          rev_tile,
                                          rradius,
-                                         0)
+                                         self.grid.tile_border)
             if rev_radius:
                 rev_radius.pop(0)
 

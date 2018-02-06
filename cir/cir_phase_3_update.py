@@ -272,6 +272,7 @@ class VarUpdater(object):
                                     if "#rev" in item.effects:
                                         if not rtile in self.grid.revealed_tiles.keys():
                                             self.grid.revealed_tiles[rtile] = range(1, self.grid.tile_radius + 1)
+                                            self.grid.total_revealed += 1
                                             self.igen.generate_item(rtile)
                                             # REVEAL ADJ DOORS
                                             for adj_rtile in self.grid.adj_tiles(rtile):

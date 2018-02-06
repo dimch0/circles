@@ -272,14 +272,14 @@ class DataLoader(object):
         for name in ["play", "quit"]:
             # butt = ButtonItem()
             # butt.name = name
-            # # butt.color = self.grid.room_color
+            # # butt.color = self.grid.color1
             # butt.font = getattr(self.grid.fonts, 'small')
             # butt.text_color = self.grid.white
 
             butt = Item()
             butt.name = name
             butt.type = 'button'
-            # butt.color = self.grid.room_color
+            # butt.color = self.grid.color1
 
             if name == "play":
                 butt.available = True
@@ -376,7 +376,7 @@ class DataLoader(object):
         self.grid.updater       = VarUpdater(self.grid)
         self.grid.start_time    = time.time()
         self.grid.fog_color = getattr(self.grid, self.grid.fog_color)
-        self.grid.room_color = getattr(self.grid, self.grid.room_color)
+        self.grid.color1 = getattr(self.grid, self.grid.color1)
 
         self.grid.msg("INFO - Loading {0}".format(self.grid.scenario))
         self.set_rooms()
