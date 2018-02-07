@@ -237,7 +237,7 @@ class GameDrawer(object):
         red_msg = [rep_msg.replace("_", ' ') for rep_msg in self.grid.reporting]
         red_msg.extend(['you dead'])
         red_msg.extend(self.grid.lose_msg)
-        print red_msg
+
         if self.grid.messages:
             for idx, msg in enumerate(self.grid.messages[-self.grid.max_msg:]):
                 msg = msg.replace("SCREEN - ", "")

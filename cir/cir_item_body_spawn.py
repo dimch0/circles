@@ -51,8 +51,6 @@ class Spawn(BodyItem):
         payment_lvl = take_item.lvl
         spawn = None
         if payment_lvl:
-            print take_item.name
-            print payment_lvl
             # TODO: Pricing, profit
             # payment_type = take_item.type
             # take_item.destroy(grid)
