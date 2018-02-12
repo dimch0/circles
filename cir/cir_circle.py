@@ -55,7 +55,7 @@ class Circle(object):
         self.birth_track = []
         self.fat_track = []
         self.effect_track = []
-        self.hit_items = []
+        self.hit_circles = []
         self.hit_tiles = []
 
 
@@ -140,12 +140,12 @@ class Circle(object):
             for idx, option in enumerate(self.options.values()):
                 option.pos = grid.adj_tiles(self.pos)[idx]
                 olap_pos.append(option)
-                if option not in grid.panel_items.values():
-                    grid.panel_items[option.name] = option
+                if option not in grid.panel_circles.values():
+                    grid.panel_circles[option.name] = option
 
             # OVERLAP
             if olap_pos:
-                for olap_item in grid.items:
+                for olap_item in grid.circles:
                     if 'option' not in olap_item.type:
                         if olap_item.pos in olap_pos:
                             olap_item.clickable = False
@@ -159,10 +159,10 @@ class Circle(object):
 
             # REMOVE OPTIONS
             for option in self.options.values():
-                if option in grid.panel_items.values():
+                if option in grid.panel_circles.values():
                     option.pos = ()
-                    if option.name in grid.panel_items.keys():
-                        del grid.panel_items[option.name]
+                    if option.name in grid.panel_circles.keys():
+                        del grid.panel_circles[option.name]
             # OVERLAP
             while grid.overlap:
                 for olap_item in grid.overlap:
@@ -193,8 +193,8 @@ class Circle(object):
         if self.name in ['my_body']:
             grid.msg("SCREEN - you dead")
         self.marked_for_destruction = True
-        all_items = grid.items + grid.panel_items.values()
-        if self in all_items and not self.birth_track:
+        all_circles = grid.circles + grid.panel_circles.values()
+        if self in all_circles and not self.birth_track:
             if self.in_menu:
                 self.close_menu(grid)
             if hasattr(self, "lifespan"):

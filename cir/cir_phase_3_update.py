@@ -30,21 +30,21 @@ class VarUpdater(object):
             if 'cond' in lcond.keys():
                 lcondition = lcond['cond']
                 if lcondition == "not in items":
-                    if lname not in [it.name for it in self.grid.items]:
+                    if lname not in [it.name for it in self.grid.circles]:
                         LOSE_GAME = True
 
         for cond in self.grid.win_cond:
             if 'places' in cond.keys():
                 wname = cond['item_name']
                 places = [str(place) for place in cond['places']]
-                witems = [self.grid.pos_to_name(wit.pos) for wit in self.grid.items if wname in wit.name]
+                witems = [self.grid.pos_to_name(wit.pos) for wit in self.grid.circles if wname in wit.name]
                 if sorted(places) == sorted(witems):
                     win_count += 1
             elif 'cond' in cond.keys():
                 wname = cond['item_name']
                 wcond = cond['cond']
                 if 'not in items' in wcond:
-                    if wname not in [it.name for it in self.grid.items]:
+                    if wname not in [it.name for it in self.grid.circles]:
                         win_count += 1
 
             if win_count == len(self.grid.win_cond):
@@ -77,15 +77,15 @@ class VarUpdater(object):
             self.grid.change_room(room_number)
             self.grid.needs_to_change_room = False
             my_body.move_track = {'center':'', 'track':[]}
-            if not my_body in self.grid.items:
-                self.grid.items.append(my_body)
+            if not my_body in self.grid.circles:
+                self.grid.circles.append(my_body)
 
             my_body.pos = get_mirror_point(item.pos, self.grid.center_tile)
             self.grid.revealed_tiles[my_body.pos] = []
             my_body.gen_birth_track()
-            for item in self.grid.items:
-                if item.pos == my_body.pos and 'door' in item.type:
-                    item.available = True
+            for circle in self.grid.circles:
+                if circle.pos == my_body.pos and 'door' in circle.type:
+                    circle.available = True
 
     # --------------------------------------------------------------- #
     #                                                                 #
@@ -102,10 +102,10 @@ class VarUpdater(object):
 
             item.available = False
             self.grid.msg("INFO - Destroying: {0}".format(item.name))
-            if item in self.grid.items:
-                self.grid.items.remove(item)
-            # if item in self.grid.panel_items.values():
-            #     del self.grid.panel_items[item.name]
+            if item in self.grid.circles:
+                self.grid.circles.remove(item)
+            # if item in self.grid.panel_circles.values():
+            #     del self.grid.panel_circles[item.name]
             if item.name in self.grid.occupado_tiles:
                 del self.grid.occupado_tiles[item.name]
             if item.name == "my_body":
@@ -176,7 +176,7 @@ class VarUpdater(object):
 
     def signal_hit_effect(self, signal):
 
-        for hit_item in self.grid.items:
+        for hit_item in self.grid.circles:
             if hit_item.available and not hit_item.name == signal.name:
                 cir1 = (hit_item.pos, hit_item.radius)
                 cir2 = (signal.pos, signal.radius)
@@ -198,118 +198,117 @@ class VarUpdater(object):
         U[darting all variables before next iteration of the main loop
         :param my_body: my_body instance
         """
-        all_items = self.grid.items + self.grid.panel_items.values()
+        all_circles = self.grid.circles + self.grid.panel_circles.values()
         if not self.grid.game_menu:
 
             # ITEMS
-            for item in all_items:
+            for circle in all_circles:
 
                 # OCCUPADO
                 # self.update_occupado(item)
 
                 # MY_BODY OVERLAP
-                #, "map_tile"]:
-                if not any (otype in item.type for otype in ["my_body", "option"]):
-                    if item.pos == my_body.pos and not item.birth_track:
-                        item.clickable = False
-                        item.radius = item.default_radius
+                if not any (otype in circle.type for otype in ["my_body", "option"]):
+                    if circle.pos == my_body.pos and not circle.birth_track:
+                        circle.clickable = False
+                        circle.radius = circle.default_radius
 
-                    elif item.pos != my_body.pos and item not in self.grid.overlap:
-                        item.clickable = True
+                    elif circle.pos != my_body.pos and circle not in self.grid.overlap:
+                        circle.clickable = True
 
                 # ENTER
                 if self.grid.needs_to_change_room:
                     my_body.vibe_track = {'center': '', 'track': []}
-                    self.enter_room(my_body, item)
+                    self.enter_room(my_body, circle)
 
                 # DESTRUCTION
-                if item.marked_for_destruction:
-                    self.destruction(item)
+                if circle.marked_for_destruction:
+                    self.destruction(circle)
 
-                if item.available:
+                if circle.available:
 
                     # TIMERS
-                    self.timer_effect(item)
+                    self.timer_effect(circle)
 
                     # KISSING CIRCLES
-                    # if item.type == 'body':
-                    #     for adj_item in self.grid.items:
-                    #         if adj_item.type == 'body' and adj_item.pos in self.grid.adj_tiles(item.pos):
-                    #             item.gen_fat()
+                    # if circle.type == 'body':
+                    #     for adj_circle in self.grid.circles:
+                    #         if adj_circle.type == 'body' and adj_circle.pos in self.grid.adj_tiles(circle.pos):
+                    #             circle.gen_fat()
 
                     # ANIMATE MOVEMENT
-                    if item.direction != None:
-                        item.gen_move_track(self.grid)
-                    if item.move_track and not item.birth_track:
-                        item.pos = item.move_track[0]
-                        item.move_track.pop(0)
+                    if circle.direction != None:
+                        circle.gen_move_track(self.grid)
+                    if circle.move_track and not circle.birth_track:
+                        circle.pos = circle.move_track[0]
+                        circle.move_track.pop(0)
 
                     # ANIMATE BIRTH
-                    if item.birth_track:
-                        item.radius = item.birth_track[0]
-                        item.birth_track.pop(0)
+                    if circle.birth_track:
+                        circle.radius = circle.birth_track[0]
+                        circle.birth_track.pop(0)
 
                     # ANIMATE FAT
-                    elif not item.birth_track and item.fat_track:
-                        item.radius = item.fat_track[0]
-                        item.fat_track.pop(0)
+                    elif not circle.birth_track and circle.fat_track:
+                        circle.radius = circle.fat_track[0]
+                        circle.fat_track.pop(0)
 
                     # ANIMATE EFFECT
-                    if item.effect_track:
-                        item.effect_track.pop(0)
-                        if not item.effect_track:
-                            item.color = item.default_color
+                    if circle.effect_track:
+                        circle.effect_track.pop(0)
+                        if not circle.effect_track:
+                            circle.color = circle.default_color
 
                     # ANIMATE VIBE
-                    if item.vibe_track['track']:
-                        vibe_area = ((item.vibe_track['center']), item.vibe_track['track'][0][0])
+                    if circle.vibe_track['track']:
+                        vibe_area = ((circle.vibe_track['center']), circle.vibe_track['track'][0][0])
                         # REVEAL TILE
-                        if item in self.grid.items:
+                        if circle in self.grid.circles:
                             for rtile in self.grid.playing_tiles:
-                                if in_circle(item.vibe_track['center'], item.vibe_track['track'][0][0], rtile):
-                                    if not rtile in item.hit_tiles:
-                                        item.hit_tiles.append(rtile)
-                                    if "#rev" in item.effects:
+                                if in_circle(circle.vibe_track['center'], circle.vibe_track['track'][0][0], rtile):
+                                    if not rtile in circle.hit_tiles:
+                                        circle.hit_tiles.append(rtile)
+                                    if "#rev" in circle.effects:
                                         if not rtile in self.grid.revealed_tiles.keys():
                                             self.grid.revealed_tiles[rtile] = range(1, self.grid.tile_radius + 1)
                                             self.grid.total_revealed += 1
                                             self.igen.generate_item(rtile)
                                             # REVEAL ADJ DOORS
                                             for adj_rtile in self.grid.adj_tiles(rtile):
-                                                for ditem in self.grid.items:
+                                                for ditem in self.grid.circles:
                                                     if "door" in ditem.type and ditem.pos == adj_rtile:
                                                         if not ditem.available:
                                                             ditem.available = True
                                                             ditem.gen_birth_track()
 
-                        for hit_item in self.grid.items:
+                        for hit_item in self.grid.circles:
                             # REVEALED / AVAILABLE
-                            if "#rev" in item.effects:
+                            if "#rev" in circle.effects:
                                 if hit_item.pos in self.grid.revealed_tiles.keys():
                                     if not hit_item.available and not hit_item in self.grid.overlap:
                                         hit_item.available = True
                                         hit_item.gen_birth_track()
 
                             # CONSUME VIBE
-                            if item.effects:
-                                if hit_item.available and not get_short_name(hit_item.name) == get_short_name(item.name):
+                            if circle.effects:
+                                if hit_item.available and not get_short_name(hit_item.name) == get_short_name(circle.name):
                                     cir1 = (hit_item.pos, hit_item.radius - (hit_item.radius / self.radius_buffer))
                                     if intersecting(cir1, vibe_area):
-                                        if not hit_item in item.hit_items:
-                                            self.grid.event_effects.consume(hit_item, item)
-                                            item.hit_items.append(hit_item)
+                                        if not hit_item in circle.hit_circles:
+                                            self.grid.event_effects.consume(hit_item, circle)
+                                            circle.hit_circles.append(hit_item)
 
-                        item.vibe_track['track'].pop(0)
-                        if not item.vibe_track['track']:
-                            item.hit_items = []
-                            item.hit_tiles = []
+                        circle.vibe_track['track'].pop(0)
+                        if not circle.vibe_track['track']:
+                            circle.hit_circles = []
+                            circle.hit_tiles = []
 
                     # CONSUME SIGNAL
-                    if self.signal_hit(item, my_body):
-                        self.signal_hit_effect(item)
+                    if self.signal_hit(circle, my_body):
+                        self.signal_hit_effect(circle)
 
                     # CLEAN PLACEHOLDERS
-                    self.grid.clean_placeholders(item)
+                    self.grid.clean_placeholders(circle)
 
             # for
 
@@ -319,7 +318,7 @@ class VarUpdater(object):
                 my_body.move_track = my_body.move_to_tile(self.grid, arrival_point)
                 my_body.direction = None
 
-        self.grid.sort_items_by_layer()
+        self.grid.sort_circles_by_layer()
 
         self.grid.set_occupado()
 

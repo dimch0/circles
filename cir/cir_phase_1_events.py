@@ -76,7 +76,7 @@ class GameEvents(GameEffects):
                 my_body.gen_direction(self.grid, event)
 
                 # CHECK FOR DOOR
-                doors = {door.pos : door  for door in self.grid.items if "door" in door.type}
+                doors = {door.pos : door  for door in self.grid.circles if "door" in door.type}
 
                 for doorpos, door in doors.items():
                     for adj_idx, adj_to_mybod  in enumerate(self.grid.adj_tiles(my_body.pos)):
@@ -99,7 +99,7 @@ class GameEvents(GameEffects):
     def execute_click_events(self, event, my_body, current_tile):
 
         mouse_mode = self.grid.mouse_mode
-        all_items = self.grid.items + self.grid.panel_items.values()
+        all_circles = self.grid.circles + self.grid.panel_circles.values()
         # --------------------------------------------------------------- #
         #                    MOUSE MODE CLICK NO ITEM                     #
         # --------------------------------------------------------------- #
@@ -125,7 +125,7 @@ class GameEvents(GameEffects):
         # --------------------------------------------------------------- #
         #                   CLICK ON ITEMS NO MOUSE MODE                  #
         # --------------------------------------------------------------- #
-        for CLICKED_ITEM in all_items:
+        for CLICKED_ITEM in all_circles:
             clicked_screen_name = cir_utils.get_short_name(CLICKED_ITEM.name).replace('_', ' ')
             if CLICKED_ITEM.clickable and CLICKED_ITEM.available and CLICKED_ITEM.type not in ["trigger"]:
                 if current_tile == CLICKED_ITEM.pos:
@@ -155,7 +155,7 @@ class GameEvents(GameEffects):
                                 self.grid.show_grid = not self.grid.show_grid
 
                             # CLOSE MENU
-                            elif ober_item.in_menu and not ober_item in self.grid.panel_items.values():
+                            elif ober_item.in_menu and not ober_item in self.grid.panel_circles.values():
                                 ober_item.close_menu(self.grid)
 
                             # SUICIDE
@@ -229,7 +229,7 @@ class GameEvents(GameEffects):
                     if event.button == 3:
                         self.grid.clean_mouse()
                     if CLICKED_ITEM.in_menu:
-                        if CLICKED_ITEM not in self.grid.panel_items.values():
+                        if CLICKED_ITEM not in self.grid.panel_circles.values():
                             CLICKED_ITEM.close_menu(self.grid)
 
         # DEBUG

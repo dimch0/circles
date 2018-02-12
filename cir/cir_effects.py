@@ -33,7 +33,7 @@ class GameEffects(object):
                 radius=None,
                 vfreq=None,
                 lifespan=None,
-                add_to_items=True,
+                add_circle=True,
                 effects=None,
                 panel=False):
         """
@@ -74,10 +74,10 @@ class GameEffects(object):
                 new_item.gen_birth_track()
 
 
-                if add_to_items:
-                    self.grid.items.append(new_item)
+                if add_circle:
+                    self.grid.circles.append(new_item)
                 if panel:
-                    self.grid.panel_items[new_item.name] = new_item
+                    self.grid.panel_circles[new_item.name] = new_item
 
             else:
                 self.grid.msg('ERROR - Could not produce item {0}'.format(
@@ -119,7 +119,7 @@ class GameEffects(object):
         """
         :param item: item to copy
         """
-        for other_item in self.grid.items:
+        for other_item in self.grid.circles:
             if "new copy" in other_item.name:
                 other_item.name = str(item.name + " - copy-" + str(time.time()))
 
@@ -145,8 +145,8 @@ class GameEffects(object):
         else:
             self.grid.change_room(self.grid.previous_room)
             self.grid.draw_map = False
-            # if my_body not in self.grid.items:
-            #     self.grid.items.append(my_body)
+            # if my_body not in self.grid.circles:
+            #     self.grid.circles.append(my_body)
 
 
     # --------------------------------------------------------------- #
@@ -240,7 +240,7 @@ class GameEffects(object):
                 # PRODUCE MODABLE ITEM AS OPTION
                 item_as_option = self.produce(product_name='placeholder',
                                               pos=(),
-                                              add_to_items=False)
+                                              add_circle=False)
                 item_as_option.name = clicked_item.name # + '-' + str(time.time())
                 item_as_option.type = clicked_item.type + ' option'
                 item_as_option.lvl = clicked_item.lvl
@@ -271,8 +271,8 @@ class GameEffects(object):
             if cir_utils.get_short_name(self.grid.mouse_mode) in inventory_item.name:
                 self.grid.clean_mouse()
 
-        if inventory_item.name in self.grid.panel_items.keys():
-            del self.grid.panel_items[inventory_item.name]
+        if inventory_item.name in self.grid.panel_circles.keys():
+            del self.grid.panel_circles[inventory_item.name]
         del inventory_item.ober_item.options[inventory_item.name]
 
     # --------------------------------------------------------------- #

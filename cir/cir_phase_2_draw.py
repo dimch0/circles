@@ -35,29 +35,29 @@ class GameDrawer(object):
                                          map_dot['radius'],
                                          0)
 
-    def draw_hover(self, current_tile, item):
+    def draw_hover(self, current_tile, circle):
         """ Highlights the hovered tile """
         nohover = ["door", "door_enter"]
-        if current_tile and not any(nohover in item.type for nohover in nohover):
-            if cir_utils.in_circle(item.pos, self.grid.tile_radius, current_tile):
+        if current_tile and not any(nohover in circle.type for nohover in nohover):
+            if cir_utils.in_circle(circle.pos, self.grid.tile_radius, current_tile):
                 radius = self.grid.tile_radius
                 self.grid.pygame.draw.circle(self.grid.game_display,
                                              self.grid.white,
-                                             item.pos,
+                                             circle.pos,
                                              radius,
                                              1)
 
-    def draw_img(self, item):
+    def draw_img(self, circle):
         """ Blit image on display """
-        if item.img and item.available and not item.birth_track:
-            self.grid.game_display.blit(item.img, self.set_img_pos(item.pos, item.img))
+        if circle.img and circle.available and not circle.birth_track:
+            self.grid.game_display.blit(circle.img, self.set_img_pos(circle.pos, circle.img))
 
-    def draw_vibe(self, item):
+    def draw_vibe(self, circle):
         """ Vibe animation """
-        vibe_center = item.vibe_track['center']
-        vibe_radius, thick = item.vibe_track['track'][0]
-        if item.color:
-            vibe_color = item.color
+        vibe_center = circle.vibe_track['center']
+        vibe_radius, thick = circle.vibe_track['track'][0]
+        if circle.color:
+            vibe_color = circle.color
         else:
             vibe_color = self.grid.white
 
@@ -94,80 +94,80 @@ class GameDrawer(object):
 
 
 
-    def draw_body(self, current_tile, item):
+    def draw_body(self, current_tile, circle):
         """ Draws each body and it's image if available """
 
-        if item.available and not (not item.birth_track and item.marked_for_destruction) and item.pos:
+        if circle.available and not (not circle.birth_track and circle.marked_for_destruction) and circle.pos:
 
-            if item.birth_track and item.color:
-                item.radius = item.birth_track[0]
+            if circle.birth_track and circle.color:
+                circle.radius = circle.birth_track[0]
 
             border = 0
-            if 'door' in item.type:
+            if 'door' in circle.type:
                 border = self.grid.tile_border
 
-            if item.radius < border:
-                item.radius = border
-            if item.color:
+            if circle.radius < border:
+                circle.radius = border
+            if circle.color:
                 self.grid.pygame.draw.circle(self.grid.game_display,
-                                   item.color,
-                                   item.pos,
-                                   item.radius,
+                                   circle.color,
+                                   circle.pos,
+                                   circle.radius,
                                    border)
 
             # DRAW EFFECT ACTIVATION
-            if item.effect_track:
-                if item.default_color:
-                    eff_cir = item.effect_track[0]
-                    item.color = eff_cir["color"]
+            if circle.effect_track:
+                if circle.default_color:
+                    eff_cir = circle.effect_track[0]
+                    circle.color = eff_cir["color"]
                     self.grid.pygame.draw.circle(self.grid.game_display,
-                                                 item.default_color,
-                                                 item.pos,
+                                                 circle.default_color,
+                                                 circle.pos,
                                                  eff_cir["radius"])
-            self.draw_img(item)
-            self.draw_aim(current_tile, item)
-            self.draw_hover(current_tile, item)
+            self.draw_img(circle)
+            self.draw_aim(current_tile, circle)
+            self.draw_hover(current_tile, circle)
 
-    def draw_timers(self, item):
+    def draw_timers(self, circle):
         """ Draws current state of a timer """
         timer = None
 
-        if hasattr(item, 'lifespan'):
-            if item.lifespan not in ['', None]:
-                timer = item.lifespan
+        if hasattr(circle, 'lifespan'):
+            if circle.lifespan not in ['', None]:
+                timer = circle.lifespan
 
-        if not timer and hasattr(item, 'vfreq'):
-            if item.vfreq:
-                timer = item.vfreq
+        if not timer and hasattr(circle, 'vfreq'):
+            if circle.vfreq:
+                timer = circle.vfreq
 
         if timer:
             timer_fat = 4
 
-            if timer.available and item.time_color:
-                if item.radius >= timer_fat:
-                    timer.pos = item.pos
-                    timer.radius = item.radius
+            if timer.available and circle.time_color:
+                if circle.radius >= timer_fat:
+                    timer.pos = circle.pos
+                    timer.radius = circle.radius
                     self.grid.pygame.draw.arc(self.grid.game_display,
-                                              item.time_color,
+                                              circle.time_color,
                                               timer.rect,
                                               math.radians(timer.filled_degrees),
                                               math.radians(timer.start_degrees),
                                               timer_fat)
 
-    def draw_aim(self, current_tile, item):
+    def draw_aim(self, current_tile, circle):
         """ Aim """
-        if self.grid.mouse_mode in ["echo"] and item.available and "my_body" in item.type:
-            aim_dir_idx = item.get_aiming_direction(self.grid, current_tile)[1]
-            # aim_tile = item.get_aiming_direction(self.grid, current_tile)[0]
+        if self.grid.mouse_mode in ["echo"] and circle.available and "my_body" in circle.type:
+            aim_dir_idx = circle.get_aiming_direction(self.grid, current_tile)[1]
+            # aim_tile = circle.get_aiming_direction(self.grid, current_tile)[0]
 
             aim_fat  = 2
             aim_dist = aim_fat * 3
-            aim_rect = [item.rect[0] - aim_dist,
-                        item.rect[1] - aim_dist,
-                        item.rect[2] + aim_dist * 2,
-                        item.rect[3] + aim_dist * 2]
-            if item.color:
-                aim_color = item.color
+            aim_rect = [circle.rect[0] - aim_dist,
+                        circle.rect[1] - aim_dist,
+                        circle.rect[2] + aim_dist * 2,
+                        circle.rect[3] + aim_dist * 2]
+            if circle.color:
+                aim_color = circle.color
             else:
                 aim_color = self.grid.white
 
@@ -185,7 +185,7 @@ class GameDrawer(object):
             elif aim_dir_idx == 5:
                 angle1, angle2 = 120, 180
 
-            if angle1 and angle2 and item.radius >= aim_fat:
+            if angle1 and angle2 and circle.radius >= aim_fat:
                 self.grid.pygame.draw.arc(self.grid.game_display,
                                 aim_color,
                                 aim_rect,
@@ -195,7 +195,7 @@ class GameDrawer(object):
 
     def draw_grid(self):
         """ Shows the grid tiles in white """
-        for tile_name, tile_centre in self.grid.tile_dict.items():
+        for tile_name, tile_centre in self.grid.tile_dict.circles():
 
             self.grid.pygame.draw.circle(self.grid.game_display,
                                          self.grid.color1,
@@ -224,9 +224,9 @@ class GameDrawer(object):
                     current_tile,
                     self.grid.mouse_img))
 
-    def draw_movement(self, item):
+    def draw_movement(self, circle):
         """ DEBUG: Shows the movement in cyan and the correct track in red """
-        for move_step in item.move_track:
+        for move_step in circle.move_track:
             self.grid.pygame.draw.circle(self.grid.game_display,
                                self.grid.cyan01,
                                move_step,
@@ -307,25 +307,25 @@ class GameDrawer(object):
     def draw_animations(self, current_tile):
         """ Main drawing function """
 
-        all_items =  self.grid.items + self.grid.panel_items.values()
+        all_circles =  self.grid.circles + self.grid.panel_circles.values()
 
-        for item in all_items:
-            if item.available:
+        for circle in all_circles:
+            if circle.available:
 
                 # VIBE
-                if item.vibe_track['track']:
-                    self.draw_vibe(item)
+                if circle.vibe_track['track']:
+                    self.draw_vibe(circle)
 
-                # ITEMS
-                self.draw_body(current_tile, item)
+                # CIRCLES
+                self.draw_body(current_tile, circle)
 
 
                 # SHOW MOVEMENT
-                if self.grid.show_debug and len(item.move_track) > 1:
-                    self.draw_movement(item)
+                if self.grid.show_debug and len(circle.move_track) > 1:
+                    self.draw_movement(circle)
 
                 # TIMERS
-                self.draw_timers(item)
+                self.draw_timers(circle)
 
 
         # MOUSE

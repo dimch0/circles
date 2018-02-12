@@ -26,13 +26,13 @@ class Scout(Body):
 
     def nearest_item(self, grid, itype):
         result = None
-        for item in grid.items:
-            if itype in item.type:
+        for circle in grid.circles:
+            if itype in circle.type:
                 if not result:
-                    result = item
+                    result = circle
                 else:
-                    if cu.dist_between(result.pos, self.pos) > cu.dist_between(item.pos, self.pos):
-                        result = item
+                    if cu.dist_between(result.pos, self.pos) > cu.dist_between(circle.pos, self.pos):
+                        result = circle
         return result
 
     def most_far_exit(self, grid):
@@ -45,11 +45,11 @@ class Scout(Body):
                     result = tile
         return result
 
-    def chase_pos(self, grid, search_item):
+    def chase_pos(self, grid, search_circle):
         result = None
-        for item in grid.items:
-            if search_item in item.name:
-                result = item.pos
+        for circle in grid.circles:
+            if search_circle in circle.name:
+                result = circle.pos
         return result
 
     def action(self, grid):

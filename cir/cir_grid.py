@@ -81,11 +81,11 @@ class Grid(object):
         # -------------------------------------------------- #
         #                        ITEMS                       #
         # -------------------------------------------------- #
-        self.items = []
+        self.circles = []
         self.overlap = []
         self.buttons = []
         self.editor_buttons = []
-        self.panel_items = {}
+        self.panel_circles = {}
         # -------------------------------------------------- #
         #                        MOUSE                       #
         # -------------------------------------------------- #
@@ -261,11 +261,11 @@ class Grid(object):
     def clean_placeholders(self, item):
         """ Cleans the placeholders (eg for mitosis) """
         if "placeholder" in item.name and 'option' not in item.type:
-            for other_item in self.items:
+            for other_item in self.circles:
                 if other_item.pos == item.pos:
                     try:
                         item.available = False
-                        self.items.remove(item)
+                        self.circles.remove(item)
                     except Exception as e:
                         self.msg("ERROR - ERROR Could not remove placeholder: {0}".format(e))
 
@@ -274,13 +274,13 @@ class Grid(object):
                        "trigger",
                        "option"]
         tiles_to_check = set(self.playing_tiles + self.door_slots)
-        for item in self.items:
-            if not any(nonocc in item.type for nonocc in nonoccupado):
+        for circle in self.circles:
+            if not any(nonocc in circle.type for nonocc in nonoccupado):
                 for tile in tiles_to_check:
                     circle_1 = (tile, self.tile_radius)
-                    circle_2 = (item.pos, self.tile_radius)
+                    circle_2 = (circle.pos, self.tile_radius)
                     if intersecting(circle_1, circle_2):
-                        self.occupado_tiles[item.name] = tile
+                        self.occupado_tiles[circle.name] = tile
 
 
     # --------------------------------------------------------------- #
@@ -328,19 +328,19 @@ class Grid(object):
                     for tile in room['revealed_tiles']:
                         map_dots.update(self.get_map_dot(tile, room_pos, self.color1, self.tile_radius))
 
-                    for item in room['items']:
-                        if item.color and item.available:
-                            if not any (ign in item.type for ign in ignoredots):
-                                map_dots.update(self.get_map_dot(item.pos, room_pos, item.color, item.radius))
+                    for circle in room['circles']:
+                        if circle.color and circle.available:
+                            if not any (ign in circle.type for ign in ignoredots):
+                                map_dots.update(self.get_map_dot(circle.pos, room_pos, circle.color, circle.radius))
 
-                            if any(reddot in item.type for reddot in reddots):
-                                map_dots.update(self.get_map_dot(item.pos, room_pos, self.red01, item.radius))
+                            if any(reddot in circle.type for reddot in reddots):
+                                map_dots.update(self.get_map_dot(circle.pos, room_pos, self.red01, circle.radius))
 
-                            if any(whitedot in item.type for whitedot in whitedots) and room_name == self.previous_room:
-                                map_dots.update(self.get_map_dot(item.pos, room_pos, self.white, item.radius))
+                            if any(whitedot in circle.type for whitedot in whitedots) and room_name == self.previous_room:
+                                map_dots.update(self.get_map_dot(circle.pos, room_pos, self.white, circle.radius))
 
-                            if any(gelbdot in item.type for gelbdot in gelbdots) and room_name == self.previous_room:
-                                map_dots.update(self.get_map_dot(item.pos, room_pos, self.gelb05, item.radius))
+                            if any(gelbdot in circle.type for gelbdot in gelbdots) and room_name == self.previous_room:
+                                map_dots.update(self.get_map_dot(circle.pos, room_pos, self.gelb05, circle.radius))
 
         self.map_dots = map_dots
 
@@ -371,7 +371,7 @@ class Grid(object):
     def save_current_room(self):
         """ Saves the current room to self.rooms """
         self.rooms[self.current_room] = {
-            "items": self.items,
+            "circles": self.circles,
             "revealed_tiles": self.revealed_tiles
         }
 
@@ -384,11 +384,11 @@ class Grid(object):
         # NEW ROOM
         if not self.current_room in self.rooms.keys():
             self.rooms[self.current_room] = {
-            "items"          : [],
+            "circles"       : [],
             "revealed_tiles": {},
             }
-        self.items = self.rooms[self.current_room]["items"]
-        self.items = list(set(self.items))
+        self.circles = self.rooms[self.current_room]["circles"]
+        self.circles = list(set(self.circles))
         self.revealed_tiles = self.rooms[self.current_room]["revealed_tiles"]
 
     def change_room(self, room):
@@ -422,8 +422,8 @@ class Grid(object):
             if button.name == old_name:
                 button.name = new_name
 
-    def sort_items_by_layer(self):
-        self.items.sort(key=lambda x: x.layer, reverse=False)
+    def sort_circles_by_layer(self):
+        self.circles.sort(key=lambda x: x.layer, reverse=False)
 
     # --------------------------------------------------------------- #
     #                            GAME EXIT                            #

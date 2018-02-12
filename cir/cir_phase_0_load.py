@@ -303,7 +303,7 @@ class DataLoader(object):
                 for room_n, room_i in room.items():
                     if room_n not in self.grid.rooms.keys():
                         self.grid.rooms[room_n] = {
-                            "items": [],
+                            "circles": [],
                             "revealed_tiles": {}
                         }
                     for candidate_item in room_i:
@@ -317,7 +317,7 @@ class DataLoader(object):
                                 self.grid.msg(
                                     "ERROR - Set item: {0} \nin room: {1} \n{2} \n candidate: {3}".format(
                                         item, room_n, e, candidate_item))
-                            if item.name in [xitem.name for xitem in self.grid.rooms[room_n]["items"]]:
+                            if item.name in [xitem.name for xitem in self.grid.rooms[room_n]["circles"]]:
                                 item.name = item.name + '-' + str(time.time())
                                 time.sleep(0.01)
 
@@ -330,7 +330,7 @@ class DataLoader(object):
                                     item.pos = self.grid.names_to_pos(i_pos)
                                     item.available = True
                                     item.open_menu(self.grid)
-                                    self.grid.panel_items['bag'] = item
+                                    self.grid.panel_circles['bag'] = item
 
                                 # SLAB
                                 elif item.name == 'slab':
@@ -341,19 +341,19 @@ class DataLoader(object):
                                     item.available = True
                                     item.open_menu(self.grid)
                                     setattr(self.grid, 'slab', item)
-                                    self.grid.panel_items['slab'] = item
+                                    self.grid.panel_circles['slab'] = item
 
                             else:
-                                self.grid.rooms[room_n]["items"].append(item)
+                                self.grid.rooms[room_n]["circles"].append(item)
                             # DOORS
                             if 'door' in item.type:
                                 opposite_door, door_room_n = self.set_door(item, room_n)
                                 if door_room_n not in self.grid.rooms.keys():
                                     self.grid.rooms[door_room_n] = {
-                                        "items": [],
+                                        "circles": [],
                                         "revealed_tiles": {}
                                     }
-                                self.grid.rooms[door_room_n]["items"].append(opposite_door)
+                                self.grid.rooms[door_room_n]["circles"].append(opposite_door)
 
                             # MY BODY
                             elif item_name == "my_body":
@@ -382,8 +382,8 @@ class DataLoader(object):
         self.set_rooms()
         self.set_buttons()
 
-        self.my_body.inventory = self.grid.panel_items['bag']
-        self.grid.items.append(self.my_body)
+        self.my_body.inventory = self.grid.panel_circles['bag']
+        self.grid.circles.append(self.my_body)
 
         self.grid.load_current_room()
 
