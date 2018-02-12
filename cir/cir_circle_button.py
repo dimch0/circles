@@ -3,15 +3,15 @@
 #                                                   BUTTON                                                            #
 #                                                                                                                     #
 # ------------------------------------------------------------------------------------------------------------------- #
-from cir_item import Item
+from cir_circle import Circle
 
 
-class ButtonItem(Item):
+class Button(Circle):
     """
     This is the base class for all Buttons
     """
     def __init__(self):
-        super(ButtonItem, self).__init__()
+        super(Button, self).__init__()
         self.available = True
         self.font = None
         self.text_color = None

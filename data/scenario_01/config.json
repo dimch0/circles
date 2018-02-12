@@ -20,7 +20,7 @@
              "base": 70},
     "food1": {"items": [ "bread", "peanut", "pretzel", "apple", "coffee", "wassa"],
              "base": 15},
-    "food2": {"items": ["carrot", "banana", "pinapple", "can", "egg", "tomato", "beer"],
+    "food2": {"items": ["carrot", "banana", "pineapple", "can", "egg", "tomato", "beer"],
               "base": 40},
     "food3": {"items": ["chili", "lemon", "kibabchi", "icecream", "cheese", "donut", "shrimp", "honey", "fresh"],
               "base": 70},

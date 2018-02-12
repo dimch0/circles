@@ -3,11 +3,11 @@
 #                                                    SCOUT                                                            #
 #                                                                                                                     #
 # ------------------------------------------------------------------------------------------------------------------- #
-from cir_item_body import BodyItem
+from cir_circle_body import Body
 import cir_utils as cu
 
 
-class Scout(BodyItem):
+class Scout(Body):
 
     def __init__(self):
         super(Scout, self).__init__()

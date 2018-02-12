@@ -3,16 +3,16 @@
 #                                                     BODY                                                            #
 #                                                                                                                     #
 # ------------------------------------------------------------------------------------------------------------------- #
-from cir_item_mobile import MobileItem
+from cir_circle_mobile import Mobile
 from cir_utils import get_list_drange
 
 
-class BodyItem(MobileItem):
+class Body(Mobile):
     """
     This class holds all attributes and metrics of your body
     """
     def __init__(self):
-        super(BodyItem, self).__init__()
+        super(Body, self).__init__()
         self.hungry = False
 
         self.range = 1

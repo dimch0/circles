@@ -8,11 +8,11 @@ import time
 
 import cir_utils as cu
 
-from cir_item import Item
-from cir_item_body import BodyItem
-from cir_item_body_scout import Scout
-from cir_item_body_spawn import Spawn
-from cir_item_timer import TimerItem
+from cir_circle import Circle
+from cir_circle_body import Body
+from cir_circle_scout import Scout
+from cir_circle_spawn import Spawn
+from cir_circle_timer import Timer
 
 from cir_cosmetic import Images, Fonts, Colors
 from cir_phase_1_events import GameEvents
@@ -47,12 +47,12 @@ class DataLoader(object):
         dummy = None
         try:
             if klas == "body":
-                dummy = BodyItem()
+                dummy = Body()
             elif klas == "timer":
-                dummy = TimerItem()
+                dummy = Timer()
                 dummy.timer_tile_radius = self.grid.tile_radius
             elif klas == "item":
-                dummy = Item()
+                dummy = Circle()
             elif klas == "scout":
                 dummy = Scout()
             elif klas == "spawn":
@@ -192,7 +192,7 @@ class DataLoader(object):
     def set_timers(self, item):
         """ Set timers """
         if item.lifespan and isinstance(item.lifespan, (int, float)):
-            lifespan = TimerItem()
+            lifespan = Timer()
             lifespan.radius = item.radius
             lifespan.default_radius = item.radius
             lifespan.duration = item.lifespan
@@ -201,7 +201,7 @@ class DataLoader(object):
             item.lifespan = lifespan
 
         if hasattr(item, "vfreq"):
-            vibefr = TimerItem()
+            vibefr = Timer()
             vibefr.duration = item.vfreq
             vibefr.radius = item.radius
             vibefr.default_radius = item.radius
@@ -214,7 +214,7 @@ class DataLoader(object):
 
     def set_boost_timer(self, duration, effect, boosted_item, boost_item):
 
-        boost_timer = TimerItem()
+        boost_timer = Timer()
         boost_timer.name = boost_item.name + ' boost'
         boost_timer.type = boost_item.type + ' boost'
         boost_timer.duration = duration
@@ -247,7 +247,7 @@ class DataLoader(object):
         return new_item
 
     def set_door(self, item, room):
-        door = Item()
+        door = Circle()
         door.type = item.type
         door.name = "Enter_" + room
         door_room = item.name.replace("Enter_", "")
@@ -276,7 +276,7 @@ class DataLoader(object):
             # butt.font = getattr(self.grid.fonts, 'small')
             # butt.text_color = self.grid.white
 
-            butt = Item()
+            butt = Circle()
             butt.name = name
             butt.type = 'button'
             # butt.color = self.grid.color1

@@ -5,10 +5,10 @@
 # ------------------------------------------------------------------------------------------------------------------- #
 import random
 from cir_utils import get_short_name
-from cir_item_body import BodyItem
+from cir_circle_body import Body
 
 
-class Spawn(BodyItem):
+class Spawn(Body):
 
     def __init__(self):
         super(Spawn, self).__init__()

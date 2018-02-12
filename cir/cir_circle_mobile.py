@@ -3,16 +3,16 @@
 #                                                   MOBILE                                                            #
 #                                                                                                                     #
 # ------------------------------------------------------------------------------------------------------------------- #
-from cir_item import Item
+from cir_circle import Circle
 import cir_utils
 
 
-class MobileItem(Item):
+class Mobile(Circle):
     """
     This is the base class for all mobile cirlces
     """
     def __init__(self):
-        super(MobileItem, self).__init__()
+        super(Mobile, self).__init__()
         self.speed = 1
 
     def change_speed(self, modifier):

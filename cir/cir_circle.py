@@ -6,7 +6,7 @@
 import cir_utils
 
 
-class Item(object):
+class Circle(object):
 
     def __init__(self):
         # --------------------------------------------------------------- #

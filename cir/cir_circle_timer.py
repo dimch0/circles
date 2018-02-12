@@ -4,14 +4,14 @@
 #                                                                                                                     #
 # ------------------------------------------------------------------------------------------------------------------- #
 import time
-from cir_item import Item
+from cir_circle import Circle
 
 
-class TimerItem(Item):
+class Timer(Circle):
     """ This is the base class for all timers """
 
     def __init__(self):
-        super(TimerItem, self).__init__()
+        super(Timer, self).__init__()
 
         # CONSTANTS
         self.time_step = 0.0157
