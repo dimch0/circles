@@ -113,7 +113,6 @@ def show_debug_on_click(grid, current_circle, my_body):
         grid.msg("CLICK")
         grid.msg("DEBUG - click tile  : {0}, {1}".format( grid.pos_to_name(current_circle), current_circle ))
         grid.msg("DEBUG - mouse mode  : {0}".format( grid.mouse_mode ))
-        # grid.msg("DEBUG - menu        : {0}".format( my_body.in_menu ))
         grid.msg("DEBUG - grid circles  : {0}".format( len(grid.circles) ))
         grid.msg("DEBUG - grid circles  : {0}".format( [(cir.name, cir.pos) for cir in grid.circles if not "EDITOR" in cir.name] ))
         grid.msg("DEBUG - panel circles  : {0}".format( len(grid.panel_circles) ))

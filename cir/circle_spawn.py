@@ -4,8 +4,8 @@
 #                                                                                                                     #
 # ------------------------------------------------------------------------------------------------------------------- #
 import random
-from cir_utils import get_short_name
-from cir_circle_body import Body
+from grid_util import get_short_name
+from circle_body import Body
 
 
 class Spawn(Body):

@@ -3,9 +3,9 @@
 #                                                    EVENTS                                                           #
 #                                                                                                                     #
 # ------------------------------------------------------------------------------------------------------------------- #
-import cir_utils
+import grid_util
 from cir_editor import Editor
-from cir_effects import GameEffects
+from grid_effects import GameEffects
 
 
 class GameEvents(GameEffects):
@@ -70,7 +70,7 @@ class GameEvents(GameEffects):
             # --------------------------------------------------------------- #
             #                            QWEADS                               #
             # --------------------------------------------------------------- #
-            elif not my_body.in_menu:
+            else:
 
                 # GEN DIRECTION
                 my_body.gen_direction(self.grid, event)
@@ -126,7 +126,7 @@ class GameEvents(GameEffects):
         #                   CLICK ON ITEMS NO MOUSE MODE                  #
         # --------------------------------------------------------------- #
         for CLICKED_ITEM in all_circles:
-            clicked_screen_name = cir_utils.get_short_name(CLICKED_ITEM.name).replace('_', ' ')
+            clicked_screen_name = grid_util.get_short_name(CLICKED_ITEM.name).replace('_', ' ')
             if CLICKED_ITEM.clickable and CLICKED_ITEM.available and CLICKED_ITEM.type not in ["trigger"]:
                 if current_tile == CLICKED_ITEM.pos:
                     self.grid.msg("INFO - clicked item: {0} {1} {2}".format(
@@ -154,10 +154,6 @@ class GameEvents(GameEffects):
                                 self.grid.show_debug = not self.grid.show_debug
                                 self.grid.show_grid = not self.grid.show_grid
 
-                            # CLOSE MENU
-                            elif ober_item.in_menu and not ober_item in self.grid.panel_circles.values():
-                                ober_item.close_menu(self.grid)
-
                             # SUICIDE
                             if CLICKED_ITEM.name == "suicide":
                                 my_body.destroy(self.grid)
@@ -178,16 +174,6 @@ class GameEvents(GameEffects):
                     # SET MOUSE MODE
                     if CLICKED_ITEM.modable:
                         self.grid.set_mouse_mode(CLICKED_ITEM)
-
-                    # CLOSE MENU
-                    if CLICKED_ITEM.in_menu and not mouse_mode:
-                        if not CLICKED_ITEM.type == "option":
-                            CLICKED_ITEM.close_menu(self.grid)
-
-                    # OPEN MENU
-                    elif CLICKED_ITEM.options and not CLICKED_ITEM.in_menu:
-                        if (mouse_mode in CLICKED_ITEM.options.keys() or not mouse_mode):
-                            CLICKED_ITEM.open_menu(self.grid)
 
                     # --------------------------------------------------------------- #
                     #                   MOUSE MODE CLICK ON ITEM                      #
@@ -224,13 +210,10 @@ class GameEvents(GameEffects):
                             else:
                                 self.grid.msg("SCREEN - {0} is far".format(clicked_screen_name))
 
-                # CLOSE MENU IF OUTSIDE ADJ ITEMS
+                # CLEAN MOUSE IF OUTSIDE ADJ ITEMS
                 elif CLICKED_ITEM.pos and current_tile not in self.grid.adj_tiles(CLICKED_ITEM.pos):
                     if event.button == 3:
                         self.grid.clean_mouse()
-                    if CLICKED_ITEM.in_menu:
-                        if CLICKED_ITEM not in self.grid.panel_circles.values():
-                            CLICKED_ITEM.close_menu(self.grid)
 
         # DEBUG
-        cir_utils.show_debug_on_click(self.grid, current_tile, my_body)
+        grid_util.show_debug_on_click(self.grid, current_tile, my_body)

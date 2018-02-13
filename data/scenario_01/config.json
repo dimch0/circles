@@ -1,5 +1,5 @@
 {
-  "tile_radius": 30,
+  "tile_radius": 15,
   "rows": 22,
   "cols": 22,
   "fog_color": "grey01",

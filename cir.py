@@ -7,8 +7,8 @@
 # ------------------------------------------------------------------------------------------------------------------- #
 import pygame
 from cir.cir_grid import Grid
-from cir.cir_game_menu import game_menu
-from cir.cir_phase_0_load import DataLoader
+from cir.grid_game_menu import game_menu
+from cir.phase_0_load import DataLoader
 pygame.init()
 
 

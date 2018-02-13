@@ -3,8 +3,8 @@
 #                                                     BODY                                                            #
 #                                                                                                                     #
 # ------------------------------------------------------------------------------------------------------------------- #
-from cir_circle_mobile import Mobile
-from cir_utils import get_list_drange
+from circle_mobile import Mobile
+from grid_util import get_list_drange
 
 
 class Body(Mobile):
@@ -47,7 +47,7 @@ class Body(Mobile):
         (31, 10), (32, 10), (33, 10)
         """
 
-        if self.direction is None and not self.vibe_track['track'] and not self.birth_track and not self.in_menu:
+        if self.direction is None and not self.vibe_track['track'] and not self.birth_track:
             vibe_thickness = range(1, (grid.tile_radius / 3) + 1)
             vibe_thickness.reverse()
             vibe_limit = (grid.tile_radius * 2 * self.range) + grid.tile_radius + 1

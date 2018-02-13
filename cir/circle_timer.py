@@ -4,7 +4,7 @@
 #                                                                                                                     #
 # ------------------------------------------------------------------------------------------------------------------- #
 import time
-from cir_circle import Circle
+from circle import Circle
 
 
 class Timer(Circle):

@@ -6,18 +6,21 @@
 import csv
 import time
 
-import cir_utils as cu
+import grid_util as cu
 
-from cir_circle import Circle
-from cir_circle_body import Body
-from cir_circle_scout import Scout
-from cir_circle_spawn import Spawn
-from cir_circle_timer import Timer
+from circle import Circle
+from circle_body import Body
+from circle_panel import Panel
+from circle_scout import Scout
+from circle_spawn import Spawn
+from circle_timer import Timer
 
-from cir_cosmetic import Images, Fonts, Colors
-from cir_phase_1_events import GameEvents
-from cir_phase_2_draw import GameDrawer
-from cir_phase_3_update import VarUpdater
+
+
+from grid_cosmetic import Images, Fonts, Colors
+from phase_1_events import GameEvents
+from phase_2_draw import GameDrawer
+from phase_3_update import VarUpdater
 
 
 class DataLoader(object):
@@ -57,12 +60,14 @@ class DataLoader(object):
                 dummy = Scout()
             elif klas == "spawn":
                 dummy = Spawn()
+            elif klas == "panel":
+                dummy = Panel()
         except Exception as e:
             self.grid.msg("ERROR - {0}, could not create item of klas: {1}".format(e, klas))
 
         try:
             for attribute, value in attributes_dict.items():
-                if dummy:
+                if dummy and attribute:
                     if hasattr(dummy, attribute):
                         setattr(dummy, attribute, value)
 
@@ -107,6 +112,18 @@ class DataLoader(object):
             result[name] = idx
         return result
 
+    def set_color(self, color):
+        result = None
+        if hasattr(self.grid, color):
+            result = getattr(self.grid, color)
+        return result
+
+    def set_img(self, image):
+        result = None
+        if hasattr(self.grid.images, image):
+            result = getattr(self.grid.images, image)
+        return result
+
     def load_data(self, item_name=None):
         """
         This function loads all items and menu options from external data file.
@@ -130,11 +147,11 @@ class DataLoader(object):
                                 "options"     : str(row[col_idx["options"]]),
                                 "name"        : str(row[col_idx["name"]]),
                                 "lvl"         : str(row[col_idx["lvl"]]),
-                                "color"       : getattr(self.grid, row[col_idx["color"]]) if len(row[col_idx["color"]]) > 0 else None,
-                                "img"         : getattr(self.grid.images, row[col_idx["img"]]) if len(row[col_idx["img"]]) > 0 else None,
+                                "color"       : self.set_color(row[col_idx["color"]]),
+                                "img"         : self.set_img(row[col_idx["img"]]),
                                 "speed"       : int(float(row[col_idx["speed"]])) if len(row[col_idx["speed"]]) > 0 else None,
                                 "range"       : int(float(row[col_idx["range"]])) if len(row[col_idx["range"]]) > 0 else None,
-                                "time_color"  : getattr(self.grid, row[col_idx["time_color"]]) if len(row[col_idx["time_color"]]) > 0 else None,
+                                "time_color"  : self.set_color(row[col_idx["time_color"]]),
                                 "modable"     : bool(row[col_idx["modable"]]),
                                 "collectible" : bool(row[col_idx["collectible"]]),
                                 "consumable"  : bool(row[col_idx["consumable"]]),
@@ -240,7 +257,7 @@ class DataLoader(object):
                 break
 
         if new_item:
-            if new_item.options:
+            if hasattr(new_item, 'options'):
                 self.set_opts(new_item)
         else:
             self.grid.msg('ERROR - Failed to load item: %s' % item_name)
@@ -322,26 +339,30 @@ class DataLoader(object):
                                 time.sleep(0.01)
 
                             if 'panel' in item.type:
+
+                                item.available = True
+
                                 # INVENTORY
                                 if item.name == "bag":
-                                    i_pos_x = self.grid.rows - 1
-                                    i_pos_y = self.grid.cols - 3
-                                    i_pos = str(i_pos_x) + "_" + str(i_pos_y)
-                                    item.pos = self.grid.names_to_pos(i_pos)
-                                    item.available = True
-                                    item.open_menu(self.grid)
+                                    pos_x = self.grid.cols - 1
+                                    pos_y = 1
+                                    pos = str(pos_x) + "_" + str(pos_y)
+                                    item.pos = self.grid.names_to_pos(pos)
+
                                     self.grid.panel_circles['bag'] = item
 
                                 # SLAB
                                 elif item.name == 'slab':
-                                    s_pos_x = self.grid.cols - 1
-                                    s_pos_y = 3
-                                    s_pos = str(s_pos_x) + "_" + str(s_pos_y)
-                                    item.pos = self.grid.names_to_pos(s_pos)
-                                    item.available = True
-                                    item.open_menu(self.grid)
+                                    pos_x = self.grid.cols
+                                    pos_y = 2
+                                    pos = str(pos_x) + "_" + str(pos_y)
+                                    item.pos = self.grid.names_to_pos(pos)
+
                                     setattr(self.grid, 'slab', item)
                                     self.grid.panel_circles['slab'] = item
+
+                                if hasattr(item, 'options'):
+                                    item.open_menu(self.grid)
 
                             else:
                                 self.grid.rooms[room_n]["circles"].append(item)

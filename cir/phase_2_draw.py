@@ -4,7 +4,7 @@
 #                                                     DRAW                                                            #
 #                                                                                                                     #
 # ------------------------------------------------------------------------------------------------------------------- #
-import cir_utils
+import grid_util
 import math
 
 
@@ -39,7 +39,7 @@ class GameDrawer(object):
         """ Highlights the hovered tile """
         nohover = ["door", "door_enter"]
         if current_tile and not any(nohover in circle.type for nohover in nohover):
-            if cir_utils.in_circle(circle.pos, self.grid.tile_radius, current_tile):
+            if grid_util.in_circle(circle.pos, self.grid.tile_radius, current_tile):
                 radius = self.grid.tile_radius
                 self.grid.pygame.draw.circle(self.grid.game_display,
                                              self.grid.white,
@@ -195,7 +195,7 @@ class GameDrawer(object):
 
     def draw_grid(self):
         """ Shows the grid tiles in white """
-        for tile_name, tile_centre in self.grid.tile_dict.circles():
+        for tile_name, tile_centre in self.grid.tile_dict.items():
 
             self.grid.pygame.draw.circle(self.grid.game_display,
                                          self.grid.color1,

@@ -3,8 +3,8 @@
 #                                                   MOBILE                                                            #
 #                                                                                                                     #
 # ------------------------------------------------------------------------------------------------------------------- #
-from cir_circle import Circle
-import cir_utils
+from circle import Circle
+import grid_util
 
 
 class Mobile(Circle):
@@ -114,7 +114,7 @@ class Mobile(Circle):
                 if not opposite_tile:
                     opposite_tile = adj_tile
                     aim_dir_idx = dir_idx
-                elif cir_utils.dist_between(current_tile, adj_tile) > cir_utils.dist_between(current_tile, opposite_tile):
+                elif grid_util.dist_between(current_tile, adj_tile) > grid_util.dist_between(current_tile, opposite_tile):
                     opposite_tile = adj_tile
                     aim_dir_idx = dir_idx
 

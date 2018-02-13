@@ -3,8 +3,8 @@
 #                                                   UPDATE                                                            #
 #                                                                                                                     #
 # ------------------------------------------------------------------------------------------------------------------- #
-from cir_utils import get_mirror_point, intersecting, get_short_name, in_circle
-from cir_gen import ItemGenerator
+from grid_util import get_mirror_point, intersecting, get_short_name, in_circle
+from grid_gen import ItemGenerator
 
 
 class VarUpdater(object):

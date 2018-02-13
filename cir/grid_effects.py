@@ -8,7 +8,7 @@
 # ------------------------------------------------------------------------------------------------------------------- #
 import time
 from cir_editor import Editor
-import cir_utils
+import grid_util
 
 
 class GameEffects(object):
@@ -48,7 +48,7 @@ class GameEffects(object):
         """
         new_item = None
         try:
-            product_name = cir_utils.get_short_name(product_name)
+            product_name = grid_util.get_short_name(product_name)
             new_item = self.grid.loader.load_item(product_name)
             new_item.name = new_item.name + '-' + str(time.time())
             if new_item:
@@ -81,7 +81,7 @@ class GameEffects(object):
 
             else:
                 self.grid.msg('ERROR - Could not produce item {0}'.format(
-                    cir_utils.get_short_name(product_name)))
+                    grid_util.get_short_name(product_name)))
         except Exception as e:
             self.grid.msg('ERROR - Failed to produce item %s' % product_name)
             self.grid.msg('ERROR - %s' % e)
@@ -180,12 +180,9 @@ class GameEffects(object):
         """
         if my_body.pos in self.grid.adj_tiles(item.pos):
             my_body.move_track = my_body.move_to_tile(self.grid, item.pos)
-            if my_body.in_menu:
-                my_body.close_menu(self.grid)
             self.grid.needs_to_change_room = True
         else:
             self.grid.msg("SCREEN - no enter")
-            item.in_menu = False
 
     # --------------------------------------------------------------- #
     #                                                                 #
@@ -194,7 +191,7 @@ class GameEffects(object):
     # --------------------------------------------------------------- #
     def echo_mode_click(self, current_tile, my_body):
         """ Signal effect """
-        if not cir_utils.in_circle(my_body.pos, my_body.radius, current_tile) and not my_body.move_track:
+        if not grid_util.in_circle(my_body.pos, my_body.radius, current_tile) and not my_body.move_track:
             signal = self.produce("signal",
                                   my_body.pos,
                                   radius=int(self.grid.tile_radius / 3)
@@ -227,14 +224,11 @@ class GameEffects(object):
         """ Collect item: add it to inventory options """
         if not any([clicked_item.birth_track, clicked_item.move_track]):
             inventory = my_body.inventory
-            reopen_inventory = False
+            # reopen_inventory = False
             if len(inventory.options) < 6:
 
-                if inventory.in_menu:
-                    # inventory.close_menu(self.grid)
-                    reopen_inventory = True
-                    backup_mouse_mode = self.grid.mouse_mode
-                    backup_mouse_img = self.grid.mouse_img
+                # backup_mouse_mode = self.grid.mouse_mode
+                # backup_mouse_img = self.grid.mouse_img
 
 
                 # PRODUCE MODABLE ITEM AS OPTION
@@ -259,16 +253,14 @@ class GameEffects(object):
             else:
                 self.grid.msg("SCREEN - no space")
 
-
-            if reopen_inventory:
-                inventory.open_menu(self.grid)
-                self.grid.mouse_mode = backup_mouse_mode
-                self.grid.mouse_img = backup_mouse_img
+            inventory.open_menu(self.grid)
+            # self.grid.mouse_mode = backup_mouse_mode
+            # self.grid.mouse_img = backup_mouse_img
 
     def empty_inventory(self, inventory_item):
 
         if self.grid.mouse_mode:
-            if cir_utils.get_short_name(self.grid.mouse_mode) in inventory_item.name:
+            if grid_util.get_short_name(self.grid.mouse_mode) in inventory_item.name:
                 self.grid.clean_mouse()
 
         if inventory_item.name in self.grid.panel_circles.keys():
@@ -388,11 +380,11 @@ class GameEffects(object):
                 if 'my_body' in consumator.type:
                     if 'boost' in consumable.type:
                         self.grid.msg('SCREEN - %s boost over' %
-                                      cir_utils.get_short_name(consumable.boost_item).replace('_', ' '))
+                                      grid_util.get_short_name(consumable.boost_item).replace('_', ' '))
                         effect_color = self.grid.white
                     else:
                         self.grid.msg('SCREEN - you eat %s' %
-                                      cir_utils.get_short_name(consumable.name).replace('_', ' '))
+                                      grid_util.get_short_name(consumable.name).replace('_', ' '))
                     for effm in eff_msg:
                         self.grid.msg('SCREEN - {0}'.format(effm))
 
@@ -423,7 +415,7 @@ class GameEffects(object):
             if will_drop:
                 for bag_item in my_body.inventory.options.values():
                     if self.grid.mouse_mode in bag_item.name:
-                        item_name = cir_utils.get_short_name(self.grid.mouse_mode)
+                        item_name = grid_util.get_short_name(self.grid.mouse_mode)
                         dropped_item = self.produce(item_name, clicked)
                         if dropped_item:
                             if hasattr(bag_item, "lifespan"):

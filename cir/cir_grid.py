@@ -10,7 +10,7 @@ import time
 import json
 from math import sqrt
 
-from cir_utils import in_circle, inside_polygon, bcolors, get_short_name, intersecting
+from grid_util import in_circle, inside_polygon, bcolors, get_short_name, intersecting
 
 CONFIG_JSON_FILE = "config.json"
 

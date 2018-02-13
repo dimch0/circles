@@ -3,8 +3,8 @@
 #                                                    SCOUT                                                            #
 #                                                                                                                     #
 # ------------------------------------------------------------------------------------------------------------------- #
-from cir_circle_body import Body
-import cir_utils as cu
+from circle_body import Body
+import grid_util as cu
 
 
 class Scout(Body):

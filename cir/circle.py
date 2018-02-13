@@ -3,7 +3,7 @@
 #                                                     ITEM                                                            #
 #                                                                                                                     #
 # ------------------------------------------------------------------------------------------------------------------- #
-import cir_utils
+import grid_util
 
 
 class Circle(object):
@@ -31,14 +31,13 @@ class Circle(object):
         #                            OPTIONS                              #
         # --------------------------------------------------------------- #
         self.has_opts = False
-        self.in_menu = False
         self.modable = False
         self.available = False
         self.clickable = True
         self.collectible = False
         self.consumable = False
-        self.options = {}
         self.effects = None
+
         # --------------------------------------------------------------- #
         #                              STATS                              #
         # --------------------------------------------------------------- #
@@ -127,51 +126,6 @@ class Circle(object):
 
     # --------------------------------------------------------------- #
     #                                                                 #
-    #                           ITEM MENU                             #
-    #                                                                 #
-    # --------------------------------------------------------------- #
-    def open_menu(self, grid):
-        if not self.vibe_track['track']:
-            grid.msg("INFO - Open menu {0}".format(self.name))
-            grid.clean_mouse()
-            self.in_menu = True
-            olap_pos = []
-
-            for idx, option in enumerate(self.options.values()):
-                option.pos = grid.adj_tiles(self.pos)[idx]
-                olap_pos.append(option)
-                if option not in grid.panel_circles.values():
-                    grid.panel_circles[option.name] = option
-
-            # OVERLAP
-            if olap_pos:
-                for olap_item in grid.circles:
-                    if 'option' not in olap_item.type:
-                        if olap_item.pos in olap_pos:
-                            olap_item.clickable = False
-                            if not olap_item in grid.overlap:
-                                grid.overlap.append(olap_item)
-
-    def close_menu(self, grid):
-        if 'panel' not in self.type:
-            grid.msg("INFO - Close menu {0}".format(self.name))
-            self.in_menu = False
-
-            # REMOVE OPTIONS
-            for option in self.options.values():
-                if option in grid.panel_circles.values():
-                    option.pos = ()
-                    if option.name in grid.panel_circles.keys():
-                        del grid.panel_circles[option.name]
-            # OVERLAP
-            while grid.overlap:
-                for olap_item in grid.overlap:
-                    olap_item.clickable = True
-                    if olap_item in grid.overlap:
-                        grid.overlap.remove(olap_item)
-
-    # --------------------------------------------------------------- #
-    #                                                                 #
     #                           INTERSECTS                            #
     #                                                                 #
     # --------------------------------------------------------------- #
@@ -179,7 +133,7 @@ class Circle(object):
         """ Checks and returns a bool if this item is intersecting with intersecting_item """
         cir1 = (self.pos, self.radius)
         cir2 = (intersecting_item.pos, intersecting_item.radius)
-        return cir_utils.intersecting(cir1, cir2)
+        return grid_util.intersecting(cir1, cir2)
 
     # --------------------------------------------------------------- #
     #                                                                 #
@@ -195,8 +149,6 @@ class Circle(object):
         self.marked_for_destruction = True
         all_circles = grid.circles + grid.panel_circles.values()
         if self in all_circles and not self.birth_track:
-            if self.in_menu:
-                self.close_menu(grid)
             if hasattr(self, "lifespan"):
                 self.lifespan = None
             if hasattr(self, "vfreq"):
