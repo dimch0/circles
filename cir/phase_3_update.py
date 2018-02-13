@@ -309,7 +309,6 @@ class VarUpdater(object):
 
                     # CLEAN PLACEHOLDERS
                     self.grid.clean_placeholders(circle)
-
             # for
 
             # FORCE BODY MOVE

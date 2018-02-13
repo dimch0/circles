@@ -5,6 +5,7 @@
   "fog_color": "grey01",
   "color1": "grey03",
   "playing_tiles": ["1_1", "31_1", "31_31", "1_31"],
+  "reporting": ["seconds_in_game", "total_revealed"],
   "room_items" : [
     {"11_11" : [
       {"item_name": "my_body",

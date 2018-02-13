@@ -7,7 +7,6 @@
 #                                                                                                                     #
 # ------------------------------------------------------------------------------------------------------------------- #
 import time
-from cir_editor import Editor
 import grid_util
 
 
@@ -16,10 +15,6 @@ class GameEffects(object):
     def __init__(self, grid=None):
         self.grid = grid
         self.food_unit = 10
-        if self.grid.show_editor:
-            self.editor = Editor(grid=self.grid)
-        else:
-            self.editor = None
 
 
     # --------------------------------------------------------------- #
@@ -205,7 +200,6 @@ class GameEffects(object):
         """ Terminate this shit """
         non_terminates = [
             "my_body",
-            "editor",
             "option",
             "trigger",
             "placeholder",

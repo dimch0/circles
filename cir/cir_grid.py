@@ -84,7 +84,6 @@ class Grid(object):
         self.circles = []
         self.overlap = []
         self.buttons = []
-        self.editor_buttons = []
         self.panel_circles = {}
         # -------------------------------------------------- #
         #                        MOUSE                       #
@@ -316,7 +315,7 @@ class Grid(object):
         reddots = ['door_enter']
         whitedots = []
         gelbdots = ['my_body']
-        ignoredots = ['editor', 'my_body', 'option', 'signal', 'inventory', 'slab']
+        ignoredots = ['my_body', 'option', 'signal', 'inventory', 'slab']
         ignoredots += whitedots
         ignoredots += reddots
 

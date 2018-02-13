@@ -4,7 +4,6 @@
 #                                                                                                                     #
 # ------------------------------------------------------------------------------------------------------------------- #
 import grid_util
-from cir_editor import Editor
 from grid_effects import GameEffects
 
 
@@ -14,11 +13,6 @@ class GameEvents(GameEffects):
         super(GameEffects, self).__init__()
         self.grid = grid
         self.food_unit = 10
-        if self.grid.show_editor:
-            self.editor = Editor(grid=self.grid)
-        else:
-            self.editor = None
-
 
     # --------------------------------------------------------------- #
     #                                                                 #
@@ -105,22 +99,11 @@ class GameEvents(GameEffects):
         # --------------------------------------------------------------- #
         if not event.button == 3:
             if current_tile not in self.grid.occupado_tiles.values() and current_tile in self.grid.revealed_tiles.keys():
-                if mouse_mode in ["edit_scout"]:
-                    self.produce("scout", current_tile)
-
-                elif mouse_mode in ["edit_poop"]:
-                    self.produce("shit", current_tile)
-
-                elif mouse_mode in ["edit_cube"]:
-                    self.produce("block_of_steel", current_tile)
-
-                elif mouse_mode and any(mouse_mode in inventory_item.name for inventory_item in my_body.inventory.options.values()):
+                if mouse_mode and any(mouse_mode in inventory_item.name for inventory_item in my_body.inventory.options.values()):
                     self.drop(current_tile, my_body)
 
             if mouse_mode == "echo":
                 self.echo_mode_click(current_tile, my_body)
-
-
 
         # --------------------------------------------------------------- #
         #                   CLICK ON ITEMS NO MOUSE MODE                  #
@@ -150,7 +133,7 @@ class GameEvents(GameEffects):
                                     CLICKED_ITEM.tok = 0
                                 else:
                                     self.grid.msg("SCREEN - No bat")
-                            elif CLICKED_ITEM.name in ["edit_phone"]:
+                            elif CLICKED_ITEM.name in ["phone"]:
                                 self.grid.show_debug = not self.grid.show_debug
                                 self.grid.show_grid = not self.grid.show_grid
 
@@ -165,10 +148,6 @@ class GameEvents(GameEffects):
                             # SMEL
                             elif CLICKED_ITEM.name == "smel":
                                 self.grid.msg("SCREEN - Sniff hair")
-
-                    # EDITOR
-                    elif 'editor' in CLICKED_ITEM.type and self.editor:
-                        self.editor.execute_editor_clicks(CLICKED_ITEM, my_body)
 
 
                     # SET MOUSE MODE
@@ -197,10 +176,6 @@ class GameEvents(GameEffects):
                     # DROP
                     elif mouse_mode and any(mouse_mode in inventory_item.name for inventory_item in my_body.inventory.options.values()):
                         self.drop(CLICKED_ITEM, my_body)
-
-                    # TERMINATE
-                    elif mouse_mode in ["edit_del"]:
-                        self.terminate_mode_click(CLICKED_ITEM)
 
                     # COLLECT
                     elif mouse_mode in ["collect", None, ""]:
