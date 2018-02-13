@@ -53,14 +53,17 @@ battery,item,2,res,color1,battery,tok:+1:1,,,TRUE,TRUE,,,,,,,
 gascan,item,3,res,color1,gascan,#gas:+1,,,TRUE,TRUE,,,,,,,
 book2,item,2,knw,color1,book2,t:-2 knw:+1,,,TRUE,TRUE,,,,,,,
 book3,item,3,knw,color1,book3,t:-2 knw:+1,,,TRUE,TRUE,,,,,,,
+shit,body,,,color1,laino,t:-15,,,TRUE,TRUE,,1,fog_color,5,,2,1
 name,klas,lvl,type,color,img,effects,options,modable,collectible,consumable,speed,range,time_color,lifespan,vspeed,vfreq,layer
-my_body,body,,my_body,gelb05,galab,t:-2 #rev,,,,,2,1,fog_color,180,1,1,2
+my_body,body,,my_body,color1,galab,t:-2 #rev,,,,,2,1,fog_color,120,1,1,2
 suicide,item,,option,,suicide,,,,,,,,,,,,1
 echo,item,,option,,bow,,,TRUE,,,,,fog_color,,,,1
-scout,scout,,scout,color1,,t:-1 #rev,,,,,4,1,fog_color,30,,0.5,1
-lover,body,,body,color1,bqlgalab,,,,,,1,1,fog_color,180,,,
 signal,body,,signal,color1,,t:-15,,,,,10,1,,,,,3
-shit,body,,,color1,laino,t:-15,,,TRUE,TRUE,,1,fog_color,5,,2,1
+bqlgalab,body,,lover,color1,bqlgalab,,,,,,1,1,fog_color,180,,,
+chickin,body,,lover,color1,chickin,,,,,,1,1,fog_color,180,,,
+ladybug,body,,lover,color1,ladybug,,,,,,1,1,fog_color,180,,,
+gvin,body,,lover,color1,gvin,,,,,,1,1,fog_color,180,,,
+,body,,lover,color1,chickin,,,,,,1,1,fog_color,180,,,
 block,item,,,fog_color,,,,,,,,,,,,,
 fence,item,,,color1,fence,,,,TRUE,,,,,,,,
 dog,scout,,scout,color1,dog,t:-10 #hunger,,,,,2,1,fog_color,30,,0.5,1
@@ -69,15 +72,15 @@ car,body,,car,color1,car,,,,,,,,,,,,
 Basket,body,,,color1,,muscle test / robbers / jobari				,,,,,,,,,,,
 nerd,body,,,color1,,,,,,,,,,,,,
 waiting line,body,,,color1,,,,,,,,,,,,,
-bee,body,,,color1,,,,,,,,,,,,,
+bee,body,,scout,color1,bee,,,,,,,,,,,,
 junkie,body,,,color1,,,,,,,,,,,,,
 fatty,body,,,color1,,,,,,,,,,,,,
 hooligan,body,,,color1,,Soccer / muscle test,,,,,,,,,,,
 crow,body,,,color1,,,,,,,,,,,,,
 dog,scout,,scout,color1,dog,t:-10 #hunger,,,,,2,1,fog_color,30,,0.5,1
-cat (feral),body,,,color1,,,,,,,,,,,,,
-gekko,item,,,color1,gekko,,,,,,,,,,,,
-pawprint,item,,,color1,pawprint,,,,,,,,,,,,
+cat,body,,scout,color1,cat,,,,,,,,,,,,
+rat,body,,scout,color1,rat,,,,,,,,,,,,
+gekko,item,,scout,color1,gekko,,,,,,,,,,,,
 name,klas,lvl,type,color,img,effects,options,modable,collectible,consumable,speed,range,time_color,lifespan,vspeed,vfreq,layer
 placeholder,item,,,black,,,,,,,,,white,,,,1
 trigger,body,,trigger,,,,,,,,,,,,,,1
