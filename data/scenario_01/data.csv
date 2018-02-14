@@ -83,7 +83,6 @@ placeholder,item,,,black,,,,,,,,,white,,,,1
 trigger,body,,trigger,,,,,,,,,,,,,,1
 sat_vibe,body,,trigger,,,#rev,,,,,,6,,1,5,0.3,1
 boost_timer,body,,boost,,,,,,,,,,,,,,1
-,,,,,,,,,,,,,,,,,
 signal,body,,signal,color1,,t:-15,,,,,10,1,,,,,3
 bag,panel,,panel,color1,bago,,,,,,,,,,,,1
 slab,panel,,panel,color1,slab,,map_app sat_app phone suicide echo info_app,,,,,,,,,,
@@ -221,12 +220,12 @@ Enter_11_19,item,,door,color1,,,,,,,,,,,,,
 Enter_10_18,item,,door,color1,,,,,,,,,,,,,
 Enter_9_17,item,,door,color1,,,,,,,,,,,,,
 name,klas,lvl,type,color,img,effects,options,modable,collectible,consumable,speed,range,time_color,lifespan,vspeed,vfreq,layer
-cassette,item,,aesthetic,color1,,,,,TRUE,,,,,,,,
-Painting,item,,art,color1,,,,,TRUE,,,,,,,,
+kassette,item,,aesthetic,color1,kassette,,,,TRUE,,,,,,,,
+photo,item,,art,color1,photo,,,,TRUE,,,,,,,,
 key,item,,craft,color1,key,,,,TRUE,,,,,,,,
 leaef,item,,nature,color1,,fire,,,TRUE,,,,,,,,
 brick,item,,res,color1,,,,,TRUE,,,,,,,,
-lada,item,,vehicle,color1,,,,,TRUE,,,,,,,,
+lada,item,,vehicle,color1,lada,,,,TRUE,,,,,,,,
 tailing machine,item,,,color1,,,,,TRUE,,,,,,,,
 typing machine,item,,,color1,,,,,TRUE,,,,,,,,
 tv,item,,,color1,,,,,TRUE,,,,,,,,

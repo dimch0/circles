@@ -1,5 +1,5 @@
 {
-  "tile_radius": 15,
+  "tile_radius": 30,
   "rows": 22,
   "cols": 22,
   "fog_color": "grey01",
@@ -59,7 +59,7 @@
         "item_positions": ["10_4"]},
       {"item_name": "battery",
         "item_positions": ["10_6"]},
-      {"item_name": "bandage",
+      {"item_name": "lada",
         "item_positions": ["10_8"]}
     ]},
     {"10_8" : [
