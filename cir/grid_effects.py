@@ -251,7 +251,7 @@ class GameEffects(object):
             # self.grid.mouse_mode = backup_mouse_mode
             # self.grid.mouse_img = backup_mouse_img
 
-    def empty_inventory(self, inventory_item):
+    def empty_inventory(self, inventory_item, my_body):
 
         if self.grid.mouse_mode:
             if grid_util.get_short_name(self.grid.mouse_mode) in inventory_item.name:
@@ -261,6 +261,10 @@ class GameEffects(object):
             del self.grid.panel_circles[inventory_item.name]
         del inventory_item.ober_item.options[inventory_item.name]
 
+        # for iitem in my_body.inventory.options.values():
+        #
+
+        my_body.inventory.open_menu(self.grid)
     # --------------------------------------------------------------- #
     #                                                                 #
     #                          CONSUMABLES                            #
@@ -414,7 +418,7 @@ class GameEffects(object):
                         if dropped_item:
                             if hasattr(bag_item, "lifespan"):
                                 dropped_item.lifespan = bag_item.lifespan
-                            self.empty_inventory(bag_item)
+                            self.empty_inventory(bag_item, my_body)
                             break
         # Drop item from inventory to body and consume
         else:
@@ -432,8 +436,8 @@ class GameEffects(object):
                     if self.grid.mouse_mode and self.grid.mouse_mode in bag_item.name:
                         if 'vendor' in clicked.type:
                             if clicked.trade(bag_item, self.grid):
-                                self.empty_inventory(bag_item)
+                                self.empty_inventory(bag_item, my_body)
                         elif bag_item.consumable and not clicked in my_body.inventory.options.values():
                             if self.consume(clicked, bag_item):
-                                self.empty_inventory(bag_item)
+                                self.empty_inventory(bag_item, my_body)
                                 break

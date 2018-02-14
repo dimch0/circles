@@ -163,7 +163,7 @@ class GameEvents(GameEffects):
                             if (CLICKED_ITEM.pos in self.grid.adj_tiles(my_body.pos)) or (CLICKED_ITEM in my_body.inventory.options.values()):
                                 if self.consume(my_body, CLICKED_ITEM):
                                     if CLICKED_ITEM in my_body.inventory.options.values():
-                                        self.empty_inventory(CLICKED_ITEM)
+                                        self.empty_inventory(CLICKED_ITEM, my_body)
                                     else:
                                         CLICKED_ITEM.destroy(self.grid)
                                 else:

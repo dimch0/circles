@@ -15,8 +15,6 @@ from circle_scout import Scout
 from circle_spawn import Spawn
 from circle_timer import Timer
 
-
-
 from grid_cosmetic import Images, Fonts, Colors
 from phase_1_events import GameEvents
 from phase_2_draw import GameDrawer
