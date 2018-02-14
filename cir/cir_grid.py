@@ -460,8 +460,7 @@ class Grid(object):
         if not self.show_debug and "DEBUG - " in msg:
             will_show_msg = False
             msg_color = bcolors.DEBUG
-        if not self.show_verbose and "INFO - " in msg:
-            will_show_msg = False
+        if "INFO - " in msg:
             msg_color = bcolors.INFO
         if "ERROR - " in msg:
             msg_color = bcolors.ERROR

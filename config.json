@@ -5,10 +5,9 @@
     },
 
   "VISIBILITY": {
-    "show_debug"   : 1,
+    "show_debug"   : 0,
     "show_grid"    : 0,
-    "show_seconds" : 0,
-    "show_verbose" : 1
+    "show_seconds" : 0
   },
 
   "PATHS": {
