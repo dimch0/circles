@@ -35,7 +35,7 @@
 },
   "room_items" : [
     {"11_9" : [
-      {"item_name": "block",
+      {"item_name": "fence",
        "item_positions": ["10_16", "9_15", "10_16", "11_15", "12_14", "13_15", "14_16", "14_14", "14_12", "10_12", "9_11", "11_11", "10_10", "9_9", "9_7", "10_6", "9_5", "11_5", "12_8", "13_9", "14_8", "14_6"]},
       {"item_name": "Enter_11_7",
        "item_positions": ["11_1"]},
@@ -55,11 +55,11 @@
        "item_positions": ["center"]},
       {"item_name": "slab",
        "item_positions": ["center"]},
-      {"item_name": "music_box",
+      {"item_name": "photo",
         "item_positions": ["10_4"]},
-      {"item_name": "battery",
+      {"item_name": "kassette",
         "item_positions": ["10_6"]},
-      {"item_name": "lada",
+      {"item_name": "pencil",
         "item_positions": ["10_8"]}
     ]},
     {"10_8" : [
