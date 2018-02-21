@@ -70,7 +70,8 @@ class Grid(object):
         self.total_revealed = 0
         self.draw_map = False
         self.map_dots = {}
-        self.tile_border = self.tile_radius / 15
+        # self.tile_border = self.tile_radius / 15
+        self.tile_border = 1
         # -------------------------------------------------- #
         #                        ROOMS                       #
         # -------------------------------------------------- #
