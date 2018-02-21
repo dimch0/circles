@@ -45,6 +45,18 @@ class Scout(Body):
                     result = tile
         return result
 
+    def most_far_circle(self, grid, fear_name):
+        result = None
+        fear_cir = [circle for circle in grid.circles if circle.name == fear_name][0]
+        for tile in grid.revealed_tiles.keys():
+            if tile in grid.playing_tiles:
+                if not result:
+                    result = tile
+                else:
+                    if cu.dist_between(result, fear_cir.pos) < cu.dist_between(tile, fear_cir.pos):
+                        result = tile
+        return result
+
     def chase_pos(self, grid, search_circle):
         result = None
         for circle in grid.circles:
@@ -68,13 +80,14 @@ class Scout(Body):
         # Move
         if legal_moves:
 
+            if "#fear" in self.effects:
+                self.target = self.most_far_circle(grid, "my_body")
             # Get target
             # target = self.nearest_unrevealed(grid)
             # target = self.chase_pos(grid, "my_body")
             if self.target:
                 target = self.target
-                if self.target in grid.adj_tiles(self.pos):
-                    self.destroy(grid)
+
             else:
                 target = None
 
@@ -90,6 +103,8 @@ class Scout(Body):
                 elif "#traffic" in self.effects:
                     if not self.target:
                         self.target = self.most_far_exit(grid)
+                    if self.target in grid.adj_tiles(self.pos):
+                        self.destroy(grid)
 
             # Choose nearest legal
             if target and target not in grid.adj_tiles(self.pos):

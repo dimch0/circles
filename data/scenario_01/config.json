@@ -30,8 +30,8 @@
                  "base": 50},
     "vendors1": {"items": ["fruits"],
                  "base": 50},
-    "lovers": {"items": [],
-               "base": 160}
+    "lovers": {"items": ["gvin", "chickin", "bqlgalab"],
+               "base": 6}
 },
   "room_items" : [
     {"11_9" : [
