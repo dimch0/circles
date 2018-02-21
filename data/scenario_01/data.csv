@@ -6,7 +6,7 @@ carrot,item,2,food,color1,carrot,max:+1 r:+1:0.5,,,TRUE,TRUE,,,,,,,
 apple,item,1,food,color1,apple,max:+1,,,TRUE,TRUE,,,,,,,
 banana,item,2,food,color1,banana,t:+1 max:+1,,,TRUE,TRUE,,,,,,,
 pineapple,item,2,food,color1,pineapple,max:+1 lib:+1,,,TRUE,TRUE,,,,,,,
-can,item,2,food,color1,can,t:+2.,,,TRUE,TRUE,,,,,,,
+can,item,2,food,color1,can,t:+2,,,TRUE,TRUE,,,,,,,
 egg,item,2,food,color1,egg,t:+2,,,TRUE,TRUE,,,,,,,
 tomato,item,2,food,color1,tomato,t:+2,,,TRUE,TRUE,,,,,,,
 chili,item,3,food,color1,chili,max:+2 ill:-1,,,TRUE,TRUE,,,,,,,
@@ -74,11 +74,11 @@ kassette,item,4,aesthetic,color1,kassette,art:+3,,,TRUE,TRUE,,,,,,,
 photo,item,4,aesthetic,color1,photo,art:+3,,,TRUE,TRUE,,,,,,,
 name,klas,lvl,type,color,img,effects,options,modable,collectible,consumable,speed,range,time_color,lifespan,vspeed,vfreq,layer
 my_body,body,,my_body,gelb05,galab,t:-2 #rev,,,,,2,1,fog_color,120,,1,2
-bqlgalab,scout,,lover,color1,bqlgalab,#fear,,,,,2,1,fog_color,180,,1,2
-chickin,scout,,lover,color1,chickin,#fear,,,,,2,1,fog_color,180,,1,2
-ladybug,scout,,lover,color1,ladybug,#fear,,,,,2,1,fog_color,180,,1,2
-gvin,scout,,lover,color1,gvin,#fear,,,,,2,1,fog_color,180,,1,2
-dog,scout,,scout,color1,dog,t:-10 #hunger,,,,,2,1,fog_color,30,,0.5,1
+bqlgalab,scout,,lover,color1,bqlgalab,#fear,,,,,2,1,fog_color,180,,0.1,2
+chickin,scout,,lover,color1,chickin,#fear,,,,,2,1,fog_color,180,,0.1,2
+ladybug,scout,,lover,color1,ladybug,#fear,,,,,2,1,fog_color,180,,0.1,2
+gvin,scout,,lover,color1,gvin,#fear,,,,,2,1,fog_color,180,,0.1,2
+dog,scout,,scout,color1,dog,t:-10 #hunger,,,,,2,1,fog_color,30,,0.1,1
 car,scout,,scout,color1,car,#traffic,,,,,4,,,,,0.5,
 basketball,body,,,color1,basketball,muscle test / robbers / jobari				,,,,,,,,,,,
 nerd,body,,,color1,,,,,,,,,,,,,

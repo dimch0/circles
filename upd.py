@@ -1,9 +1,10 @@
+import os
 import requests
 
 GLINK = "https://docs.google.com/spreadsheet/ccc?"
 data_sheets = [
     {
-    "filename" : "../data/scenario_01/data.csv",
+    "filename" : os.path.dirname(__file__) + '/data/scenario_01/data.csv',
     "key"      : "1X6q2XiXfTcm81bSpwo9Y4WgBPsaVaSBOBcd94qBmpnM",
     "gids"     :
         {

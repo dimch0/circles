@@ -47,14 +47,18 @@ class Scout(Body):
 
     def most_far_circle(self, grid, fear_name):
         result = None
-        fear_cir = [circle for circle in grid.circles if circle.name == fear_name][0]
-        for tile in grid.revealed_tiles.keys():
-            if tile in grid.playing_tiles:
-                if not result:
-                    result = tile
-                else:
-                    if cu.dist_between(result, fear_cir.pos) < cu.dist_between(tile, fear_cir.pos):
+        try:
+            fear_cir = [circle for circle in grid.circles if circle.name == fear_name][0]
+        except:
+            fear_cir = None
+        if fear_cir:
+            for tile in grid.revealed_tiles.keys():
+                if tile in grid.playing_tiles:
+                    if not result:
                         result = tile
+                    else:
+                        if cu.dist_between(result, fear_cir.pos) < cu.dist_between(tile, fear_cir.pos):
+                            result = tile
         return result
 
     def chase_pos(self, grid, search_circle):
@@ -65,11 +69,6 @@ class Scout(Body):
         return result
 
     def action(self, grid):
-
-        # self.speed = 5
-        # self.vfreq.duration = 0.1
-        # self.vspeed = 3
-        # self.lifespan.duration = 5
 
         # Check for legal tiles to move
         legal_moves= {}
@@ -116,3 +115,5 @@ class Scout(Body):
                         best_legal = move_tile
                 if cu.dist_between(self.pos, target) > cu.dist_between(best_legal, target):
                     self.direction = legal_moves[best_legal]
+                    self.gen_move_track(grid)
+                    self.direction = None
