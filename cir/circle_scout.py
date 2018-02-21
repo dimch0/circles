@@ -100,10 +100,10 @@ class Scout(Body):
                     else:
                         target = self.chase_pos(grid, "my_body")
                 elif "#traffic" in self.effects:
-                    if not self.target:
-                        self.target = self.most_far_exit(grid)
                     if self.target in grid.adj_tiles(self.pos):
                         self.destroy(grid)
+                    if not self.target:
+                        self.target = self.most_far_exit(grid)
 
             # Choose nearest legal
             if target and target not in grid.adj_tiles(self.pos):
