@@ -8,9 +8,9 @@
 import pygame
 
 # Internal imports
-from circles.cir.cir_grid import Grid
-from circles.cir.grid_game_menu import game_menu
-from circles.cir.phase_0_load import DataLoader
+from cir.cir_grid import Grid
+from cir.grid_game_menu import game_menu
+from cir.phase_0_load import DataLoader
 pygame.init()
 
 
