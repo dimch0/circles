@@ -5,32 +5,48 @@
 #                                                                                                                     #
 #                                                                                                                     #
 # ------------------------------------------------------------------------------------------------------------------- #
+import os
+import json
 import random
 
 
 class ItemGenerator(object):
     """ Generating items on each level """
     def __init__(self, grid, my_body):
+        self.gen_file = '%s/../data/%s/gen.json' % (os.path.dirname(__file__), grid.scenario)
+        self.decks = {}
+        self.read_gen_schema()
         self.grid = grid
-        self.generated = {}
         self.my_body = my_body
-        self.gen_schema = grid.gen_schema
+        self.generated = {}
 
-    def should_generate(self):
+    def read_gen_schema(self):
+        """
+        Sets all decks from gen.json as attributes
+        and a progress dict for each deck
+        """
+        with open(self.gen_file) as jsonfile:
+            decks = json.load(jsonfile)
+            self.decks = decks
+            for deck, deck_data in self.decks.items():
+                progress = {}
+                for cir_to_gen in range(len(deck_data["items"])):
+                    progress[str(cir_to_gen)] = 0
+                self.decks[deck]['progress'] = progress
+
+    def deck_togen(self):
         """ Checks bases for generation
-         returns boolean """
+         returns str """
         result = 0
-
-        for level in sorted(self.gen_schema.keys()):
-            base = int(self.gen_schema[level]['base'])
-            count_level = len([n for n in range(base,
-                                                self.grid.total_revealed,
-                                                base)])
-            if not level in self.generated:
-                self.generated[level] = 0
-            if self.generated[level] < count_level:
-                result = level
-
+        for deck, deck_data in self.decks.items():
+            base = deck_data['base']
+            count = len([n for n in range(base,
+                                          self.grid.total_revealed,
+                                          base)])
+            if not deck in self.generated:
+                self.generated[deck] = 0
+            if self.generated[deck] < count:
+                result = deck
         return result
 
     def get_gen_pos(self, last_revealed):
@@ -41,14 +57,33 @@ class ItemGenerator(object):
             result = last_revealed
         return result
 
-    def generate_item(self, last_revealed):
-        gen_pos = self.get_gen_pos(last_revealed)
+    def min_progress(self, deck_name):
+        """ Returns a random element (str) from the indeces of the items in
+        the given deck_name (str) """
+        progress = self.decks[deck_name]['progress']
+        min_val = min(progress.values())
+        min_indeces = [item for item in progress.keys() if progress[item] == min_val]
+        result = random.choice(min_indeces)
+        progress[result] += 1
+        return result
 
-        if gen_pos and self.should_generate():
-            level = self.should_generate()
-            items = self.gen_schema[level]['items']
-            if self.gen_schema[level]['items']:
-                random_item = random.choice(items)
-                if random_item:
-                    self.grid.event_effects.produce(random_item, gen_pos)
-                    self.generated[level] += 1
+    def add2deck(self, deck_name, item_name):
+        """ Add an item to a deck with progress min - 1 """
+        deck = self.decks[deck_name]
+        progress = deck['progress']
+        items = deck['items']
+        items.append(item_name)
+        new_idx = len(items)
+        progress[str(new_idx)] = min(progress.values() - 1)
+
+
+    def generate_item(self, last_revealed):
+        """ Produce a random item from a deck """
+        gen_pos = self.get_gen_pos(last_revealed)
+        deck = self.deck_togen()
+        if gen_pos and deck:
+            items = self.decks[deck]['items']
+            if items:
+                idx = int(self.min_progress(deck))
+                self.grid.event_effects.produce(items[idx], gen_pos)
+                self.generated[deck] += 1
