@@ -101,7 +101,7 @@ class VarUpdater(object):
         if not item.birth_track:
 
             item.available = False
-            self.grid.msg("INFO - Destroying: {0}".format(item.name))
+            self.grid.msg("DEBUG - Destroying: {0}".format(item.name))
             if item in self.grid.circles:
                 self.grid.circles.remove(item)
             # if item in self.grid.panel_circles.values():
