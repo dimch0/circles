@@ -53,7 +53,9 @@ class ItemGenerator(object):
         """ Checks if last revealed tile is empty
         and returns the pos of that tile or None"""
         result = None
-        if last_revealed not in self.grid.occupado_tiles.values():
+
+        illegal = self.grid.occupado_tiles.values() + self.grid.doors_adj
+        if last_revealed not in illegal:
             result = last_revealed
         return result
 

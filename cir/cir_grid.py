@@ -40,6 +40,7 @@ class Grid(object):
         self.fog_color = None
         self.color1 = None
         self.door_slots = []
+        self.doors_adj = []
         self.set_config()
         self.data_file = os.path.join(
             self.data_dir,
@@ -229,6 +230,10 @@ class Grid(object):
 
         if self.door_slots:
             self.door_slots = self.names_to_pos(self.door_slots)
+            for door_slot in self.door_slots:
+                self.doors_adj += self.adj_tiles(door_slot)
+
+
 
     def adj_tiles(self, center, empty=False, playing=False):
         """
