@@ -86,7 +86,9 @@ class Scout(Body):
             # target = self.chase_pos(grid, "my_body")
             if self.target:
                 target = self.target
-
+                if "#traffic" in self.effects:
+                    if self.target in grid.adj_tiles(self.pos):
+                        self.destroy(grid)
             else:
                 target = None
 

@@ -22,7 +22,7 @@
   "base": 110},
 "quellen1": {
   "items": ["dog_house", "traffic_light", "bin"],
-  "base": 50},
+  "base": 10},
 "vendors1": {
   "items": ["fruits"],
   "base": 120},
