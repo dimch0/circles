@@ -184,7 +184,7 @@ class GameEffects(object):
     #                         MOUSE MODES                             #
     #                                                                 #
     # --------------------------------------------------------------- #
-    def echo_mode_click(self, current_tile, my_body):
+    def signal_mode_click(self, current_tile, my_body):
         """ Signal effect """
         if not grid_util.in_circle(my_body.pos, my_body.radius, current_tile) and not my_body.move_track:
             signal = self.produce("signal",

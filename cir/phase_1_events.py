@@ -102,8 +102,8 @@ class GameEvents(GameEffects):
                 if mouse_mode and any(mouse_mode in inventory_item.name for inventory_item in my_body.inventory.options.values()):
                     self.drop(current_tile, my_body)
 
-            if mouse_mode == "echo":
-                self.echo_mode_click(current_tile, my_body)
+            if mouse_mode == "bow":
+                self.signal_mode_click(current_tile, my_body)
 
         # --------------------------------------------------------------- #
         #                   CLICK ON ITEMS NO MOUSE MODE                  #

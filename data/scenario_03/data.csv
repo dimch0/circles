@@ -86,14 +86,14 @@ boost_timer,body,,boost,,,,,,,,,,,,,,1
 ,,,,,,,,,,,,,,,,,
 signal,body,,signal,color1,,t:-15,,,,,10,1,,,,,3
 bag,panel,,panel,color1,bago,,,,,,,,,,,,1
-slab,panel,,panel,color1,slab,,map_app sat_app phone suicide echo info_app,,,,,,,,,,
+slab,panel,,panel,color1,slab,,map_app sat_app phone suicide bow info_app,,,,,,,,,,
 map_app,item,,option,color1,location,,,,TRUE,,,,,,,,
 sat_app,item,,option,color1,radar,#tok,,,TRUE,,,,,,,,
 info_app,item,,option,color1,book,,,,TRUE,,,,,,,,
 stats_app,item,,option,color1,freq,,,,TRUE,,,,,,,,
 phone,item,,option,color1,phone,,,,TRUE,,,,,,,,
 suicide,item,,option,color1,suicide,,,,,,,,,,,,1
-echo,item,,option,color1,bow,,,TRUE,,,,,fog_color,,,,1
+bow,item,,option,color1,bow,,,TRUE,,,,,fog_color,,,,1
 name,klas,lvl,type,color,img,effects,options,modable,collectible,consumable,speed,range,time_color,lifespan,vspeed,vfreq,layer
 kenef,body,1,vendor,color1,toilette,#poop hyg:+1 #spritz:,,,,,,,,,,,
 gas_col,item,1,vendor,color1,gas,#lvl3:gas,,,,,,,,,,,

@@ -174,19 +174,16 @@ class VarUpdater(object):
                     hit = True
         return hit
 
-    def signal_hit_effect(self, signal):
-
-        for hit_item in self.grid.circles:
-            if hit_item.available and not hit_item.name == signal.name:
-                cir1 = (hit_item.pos, hit_item.radius)
-                cir2 = (signal.pos, signal.radius)
-                if intersecting(cir1, cir2):
-                    if self.grid.event_effects.consume(hit_item, signal):
-                        self.grid.msg("SCREEN - %s eat %s" % (get_short_name(hit_item.name),
-                                                              get_short_name(signal.name)))
-                    else:
-                        self.grid.msg("SCREEN - %s no eat %s" % (get_short_name(hit_item.name),
-                                                              get_short_name(signal.name)))
+    def signal_hit_effect(self, signal, sender):
+        for hit_circle in self.grid.circles:
+            if hit_circle.available and not get_short_name(hit_circle.name) == get_short_name(signal.name):
+                if not signal.intersects(sender):
+                    cir1 = (hit_circle.pos, hit_circle.radius)
+                    cir2 = (signal.pos, signal.radius)
+                    if intersecting(cir1, cir2):
+                        if self.grid.event_effects.consume(hit_circle, signal):
+                            self.grid.msg("SCREEN - %s eat %s" % (get_short_name(hit_circle.name),
+                                                                  get_short_name(signal.name)))
 
     # --------------------------------------------------------------- #
     #                                                                 #
@@ -304,8 +301,9 @@ class VarUpdater(object):
                             circle.hit_tiles = []
 
                     # CONSUME SIGNAL
-                    if self.signal_hit(circle, my_body):
-                        self.signal_hit_effect(circle)
+                    if 'signal' in circle.type:
+                        if self.signal_hit(circle, my_body) and circle != my_body:
+                            self.signal_hit_effect(circle, my_body)
 
                     # CLEAN PLACEHOLDERS
                     self.grid.clean_placeholders(circle)
