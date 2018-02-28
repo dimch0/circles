@@ -319,9 +319,9 @@ class Grid(object):
         map_dots = {}
 
         reddots = ['door_enter']
-        whitedots = []
-        gelbdots = ['my_body']
-        ignoredots = ['my_body', 'option', 'signal', 'inventory', 'slab']
+        whitedots = ['bod']
+        gelbdots = ['consume', 'craft', 'wear']
+        ignoredots = ['option', 'signal', 'inventory', 'slab']
         ignoredots += whitedots
         ignoredots += reddots
 
