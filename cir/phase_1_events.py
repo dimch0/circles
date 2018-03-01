@@ -155,10 +155,10 @@ class GameEvents(GameEffects):
                         self.grid.set_mouse_mode(CLICKED_ITEM)
 
                     # --------------------------------------------------------------- #
-                    #                   MOUSE MODE CLICK ON ITEM                      #
+                    #                 MOUSE MODE CLICK CONSUME ON ITEM                #
                     # --------------------------------------------------------------- #
                     # EAT
-                    if mouse_mode in ["eat"] or event.button == 3:
+                    if event.button == 3:
                         if CLICKED_ITEM.consumable and not CLICKED_ITEM.birth_track:
                             if (CLICKED_ITEM.pos in self.grid.adj_tiles(my_body.pos)) or (CLICKED_ITEM in my_body.inventory.options.values()):
                                 if self.consume(my_body, CLICKED_ITEM):
@@ -179,7 +179,7 @@ class GameEvents(GameEffects):
 
                     # COLLECT
                     elif mouse_mode in ["collect", None, ""]:
-                        if CLICKED_ITEM.collectible:
+                        if CLICKED_ITEM.collectible and not 'option' in CLICKED_ITEM.type:
                             if (CLICKED_ITEM.pos in self.grid.adj_tiles(my_body.pos)):
                                 self.collect(my_body, CLICKED_ITEM)
                             else:
