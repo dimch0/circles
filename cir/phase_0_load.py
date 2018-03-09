@@ -149,6 +149,7 @@ class DataLoader(object):
                                 "img"         : self.set_img(row[col_idx["img"]]),
                                 "speed"       : int(float(row[col_idx["speed"]])) if len(row[col_idx["speed"]]) > 0 else None,
                                 "range"       : int(float(row[col_idx["range"]])) if len(row[col_idx["range"]]) > 0 else None,
+                                "muscle"      : int(float(row[col_idx["muscle"]])) if len(row[col_idx["muscle"]]) > 0 else None,
                                 "time_color"  : self.set_color(row[col_idx["time_color"]]),
                                 "modable"     : bool(row[col_idx["modable"]]),
                                 "collectible" : bool(row[col_idx["collectible"]]),
