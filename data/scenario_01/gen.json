@@ -14,6 +14,9 @@
 "food2": {
   "items": ["carrot", "banana", "pineapple", "can", "egg", "tomato", "beer"],
   "base": 40},
+"test": {
+  "items": ["carrot"],
+  "base": 6},
 "food3": {
   "items": ["chili", "lemon", "kibabchi", "icecream", "cheese", "donut", "shrimp", "honey", "fresh"],
   "base": 70},
@@ -23,9 +26,6 @@
 "quellen1": {
   "items": ["dog_house", "traffic_light", "bin"],
   "base": 50},
-"quellen1": {
-  "items": ["dog_house"],
-  "base": 5},
 "vendors1": {
   "items": ["fruits"],
   "base": 120},
