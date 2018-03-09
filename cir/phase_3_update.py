@@ -265,7 +265,7 @@ class VarUpdater(object):
                                 if in_circle(circle.vibe_track['center'], circle.vibe_track['track'][0][0], rtile):
                                     if not rtile in circle.hit_tiles:
                                         circle.hit_tiles.append(rtile)
-                                    if "#rev" in circle.effects:
+                                    if "#scout" in circle.effects:
                                         if not rtile in self.grid.revealed_tiles.keys():
                                             self.grid.revealed_tiles[rtile] = range(1, self.grid.tile_radius + 1)
                                             self.grid.total_revealed += 1
@@ -278,22 +278,22 @@ class VarUpdater(object):
                                                             ditem.available = True
                                                             ditem.gen_birth_track()
 
-                        for hit_item in self.grid.circles:
+                        for hit_circle in self.grid.circles:
                             # REVEALED / AVAILABLE
-                            if "#rev" in circle.effects:
-                                if hit_item.pos in self.grid.revealed_tiles.keys():
-                                    if not hit_item.available and not hit_item in self.grid.overlap:
-                                        hit_item.available = True
-                                        hit_item.gen_birth_track()
+                            if "#scout" in circle.effects:
+                                if hit_circle.pos in self.grid.revealed_tiles.keys():
+                                    if not hit_circle.available and not hit_circle in self.grid.overlap:
+                                        hit_circle.available = True
+                                        hit_circle.gen_birth_track()
 
                             # CONSUME VIBE
                             if circle.effects:
-                                if hit_item.available and not get_short_name(hit_item.name) == get_short_name(circle.name):
-                                    cir1 = (hit_item.pos, hit_item.radius - (hit_item.radius / self.radius_buffer))
+                                if hit_circle.available and not get_short_name(hit_circle.name) == get_short_name(circle.name):
+                                    cir1 = (hit_circle.pos, hit_circle.radius - (hit_circle.radius / self.radius_buffer))
                                     if intersecting(cir1, vibe_area):
-                                        if not hit_item in circle.hit_circles:
-                                            self.grid.event_effects.consume(hit_item, circle)
-                                            circle.hit_circles.append(hit_item)
+                                        if not hit_circle in circle.hit_circles:
+                                            self.grid.event_effects.consume(hit_circle, circle)
+                                            circle.hit_circles.append(hit_circle)
 
                         circle.vibe_track['track'].pop(0)
                         if not circle.vibe_track['track']:

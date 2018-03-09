@@ -23,6 +23,9 @@
 "quellen1": {
   "items": ["dog_house", "traffic_light", "bin"],
   "base": 50},
+"quellen1": {
+  "items": ["dog_house"],
+  "base": 5},
 "vendors1": {
   "items": ["fruits"],
   "base": 120},

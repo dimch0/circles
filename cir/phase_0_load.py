@@ -11,7 +11,7 @@ import grid_util as cu
 from circle import Circle
 from circle_body import Body
 from circle_panel import Panel
-from circle_scout import Scout
+from circle_bot import Bot
 from circle_spawn import Spawn
 from circle_timer import Timer
 
@@ -54,8 +54,8 @@ class DataLoader(object):
                 dummy.timer_tile_radius = self.grid.tile_radius
             elif klas == "item":
                 dummy = Circle()
-            elif klas == "scout":
-                dummy = Scout()
+            elif klas == "bot":
+                dummy = Bot()
             elif klas == "spawn":
                 dummy = Spawn()
             elif klas == "panel":

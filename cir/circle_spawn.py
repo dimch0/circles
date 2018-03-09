@@ -13,6 +13,7 @@ class Spawn(Body):
     def __init__(self):
         super(Spawn, self).__init__()
         self.reversed_timer = True
+        self.muscle = None
 
     def spawn(self, product, grid):
         product = product.split('_')

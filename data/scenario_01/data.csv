@@ -73,26 +73,25 @@ sax,item,3,consume art,color1,sax,art:+2,,,TRUE,TRUE,,,,,,,
 kassette,item,4,consume art,color1,kassette,art:+3,,,TRUE,TRUE,,,,,,,
 photo,item,4,consume art,color1,photo,art:+3,,,TRUE,TRUE,,,,,,,
 name,klas,lvl,type,color,img,effects,options,modable,collectible,consumable,speed,range,time_color,lifespan,vspeed,vfreq,layer
-my_body,body,,my_body,gelb05,galab,t:-2 #rev,,,,,2,1,fog_color,120,,1,2
-bqlgalab,scout,,bod lover,color1,bqlgalab,#fear,,,,,2,1,fog_color,180,,0.1,2
-chickin,scout,,bod lover,color1,chickin,#fear,,,,,2,1,fog_color,180,,0.1,2
-ladybug,scout,,bod lover,color1,ladybug,#fear,,,,,2,1,fog_color,180,,0.1,2
-gvin,scout,,bod lover,color1,gvin,#fear,,,,,2,1,fog_color,180,,0.1,2
-dog,scout,,bod scout,color1,dog,t:-10 #hunger,,,,,2,1,fog_color,30,,0.1,1
-car,scout,,bod scout,color1,car,#traffic,,,,,4,,,,,0.5,
-basketball,body,,bod scout,color1,basketball,muscle test / robbers / jobari				,,,,,,,,,,,
-nerd,body,,bod scout,color1,,,,,,,,,,,,,
-bee,body,,bod scout,color1,bee,,,,,,,,,,,,
-junkie,body,,bod scout,color1,,,,,,,,,,,,,
-hooligan,body,,bod scout,color1,,Soccer / muscle test,,,,,,,,,,,
-dog,scout,,bod scout,color1,dog,t:-10 #hunger,,,,,2,1,fog_color,30,,0.5,1
-cat,body,,bod scout,color1,cat,,,,,,,,,,,,
-rat,body,,bod scout,color1,rat,,,,,,,,,,,,
-gekko,body,,bod scout,color1,gekko,,,,,,,,,,,,
-panda,body,,bod scout,color1,panda,,,,,,,,,,,,
-alien,body,,bod scout,color1,alien,,,,,,,,,,,,
-ant,body,,bod scout,color1,ant,,,,,,,,,,,,
-ape,body,,bod scout,color1,ape,,,,,,,,,,,,
+my_body,body,,my_body,gelb05,galab,#fight #scout,,,,,2,1,fog_color,120,,1,2
+bqlgalab,bot,,bod lover,color1,bqlgalab,#fear,,,,,2,1,fog_color,180,,0.1,2
+chickin,bot,,bod lover,color1,chickin,#fear,,,,,2,1,fog_color,180,,0.1,2
+ladybug,bot,,bod lover,color1,ladybug,#fear,,,,,2,1,fog_color,180,,0.1,2
+gvin,bot,,bod lover,color1,gvin,#fear,,,,,2,1,fog_color,180,,0.1,2
+dog,bot,,bod bot,color1,dog,#fight #hunger,,,,,2,1,fog_color,30,,0.5,1
+car,bot,,bod bot,color1,car,#traffic,,,,,4,,,,,0.5,
+basketball,body,,bod bot,color1,basketball,muscle test / robbers / jobari				,,,,,,,,,,,
+nerd,body,,bod bot,color1,,,,,,,,,,,,,
+bee,body,,bod bot,color1,bee,,,,,,,,,,,,
+junkie,body,,bod bot,color1,,,,,,,,,,,,,
+hooligan,body,,bod bot,color1,,Soccer / muscle test,,,,,,,,,,,
+cat,body,,bod bot,color1,cat,,,,,,,,,,,,
+rat,body,,bod bot,color1,rat,,,,,,,,,,,,
+gekko,body,,bod bot,color1,gekko,,,,,,,,,,,,
+panda,body,,bod bot,color1,panda,,,,,,,,,,,,
+alien,body,,bod bot,color1,alien,,,,,,,,,,,,
+ant,body,,bod bot,color1,ant,,,,,,,,,,,,
+ape,body,,bod bot,color1,ape,,,,,,,,,,,,
 name,klas,lvl,type,color,img,effects,options,modable,collectible,consumable,speed,range,time_color,lifespan,vspeed,vfreq,layer
 placeholder,item,,,black,,,,,,,,,white,,,,1
 trigger,body,,trigger,,,,,,,,,,,,,,1
@@ -101,14 +100,14 @@ boost_timer,body,,boost,,,,,,,,,,,,,,1
 signal,body,,signal,color1,,t:-15,,,,,10,1,,,,,3
 bag,panel,,panel,color1,bago,,,,,,,,,,,,1
 slab,panel,,panel,color1,slab,,map_app sat_app phone suicide echo info_app,,,,,,,,,,
-map_app,item,,option,color1,location,,,,TRUE,,,,,,,,
-sat_app,item,,option,color1,radar,#tok,,,TRUE,,,,,,,,
-info_app,item,,option,color1,book,,,,TRUE,,,,,,,,
-stats_app,item,,option,color1,freq,,,,TRUE,,,,,,,,
-phone,item,,option,color1,phone,,,,TRUE,,,,,,,,
-suicide,item,,option,color1,suicide,,,,,,,,,,,,1
-bow,item,,option,color1,bow,,,TRUE,,,,,fog_color,,,,1
-wifi,item,,,color1,wifi,,,,TRUE,,,,,,,,
+map_app,item,,option app,color1,location,,,,TRUE,,,,,,,,
+sat_app,item,,option app,color1,radar,#tok,,,TRUE,,,,,,,,
+info_app,item,,option app,color1,book,,,,TRUE,,,,,,,,
+stats_app,item,,option app,color1,freq,,,,TRUE,,,,,,,,
+phone,item,,option app,color1,phone,,,,TRUE,,,,,,,,
+suicide,item,,option app,color1,suicide,,,,,,,,,,,,1
+bow,item,,option app,color1,bow,,,TRUE,,,,,fog_color,,,,1
+wifi,item,,option app,color1,wifi,,,,TRUE,,,,,,,,
 name,klas,lvl,type,color,img,effects,options,modable,collectible,consumable,speed,range,time_color,lifespan,vspeed,vfreq,layer
 kenef,body,1,vendor,color1,toilette,#poop hyg:+1 #spritz:,,,,,,,,,,,
 gascol,item,1,vendor,color1,gas,#lvl3:gas,,,,,,,,,,,

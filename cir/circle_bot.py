@@ -7,11 +7,12 @@ from circle_body import Body
 import grid_util as cu
 
 
-class Scout(Body):
+class Bot(Body):
 
     def __init__(self):
-        super(Scout, self).__init__()
+        super(Bot, self).__init__()
         self.target = None
+        self.muscle = 2
 
     def nearest_unrevealed(self, grid):
         result = None
@@ -35,7 +36,7 @@ class Scout(Body):
                         result = circle
         return result
 
-    def most_far_exit(self, grid):
+    def farthest_exit(self, grid):
         result = None
         for tile in grid.door_slots:
             if not result:
@@ -45,7 +46,7 @@ class Scout(Body):
                     result = tile
         return result
 
-    def most_far_circle(self, grid, fear_name):
+    def farthest_circle(self, grid, fear_name):
         result = None
         try:
             fear_cir = [circle for circle in grid.circles if circle.name == fear_name][0]
@@ -80,7 +81,7 @@ class Scout(Body):
         if legal_moves:
 
             if "#fear" in self.effects:
-                self.target = self.most_far_circle(grid, "my_body")
+                self.target = self.farthest_circle(grid, "my_body")
             # Get target
             # target = self.nearest_unrevealed(grid)
             # target = self.chase_pos(grid, "my_body")
@@ -105,7 +106,7 @@ class Scout(Body):
                     if self.target in grid.adj_tiles(self.pos):
                         self.destroy(grid)
                     if not self.target:
-                        self.target = self.most_far_exit(grid)
+                        self.target = self.farthest_exit(grid)
 
             # Choose nearest legal
             if target and target not in grid.adj_tiles(self.pos):

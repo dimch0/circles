@@ -110,19 +110,19 @@ class GameEffects(object):
                 new_copy.lifespan.duration = 10
                 new_copy.lifespan.restart()
 
-    def mitosis(self, item):
+    def mitosis(self, cir):
         """
-        :param item: item to copy
+        :param cir: cir to copy
         """
-        for other_item in self.grid.circles:
-            if "new copy" in other_item.name:
-                other_item.name = str(item.name + " - copy-" + str(time.time()))
+        for other_cir in self.grid.circles:
+            if "new copy" in other_cir.name:
+                other_cir.name = str(cir.name + " - copy-" + str(time.time()))
 
-            if item.name in other_item.name or other_item.name in str(item.name + " - copy"):
-                empty_tile = other_item.check_for_empty_adj_tile(self.grid)
+            if cir.name in other_cir.name or other_cir.name in str(cir.name + " - copy"):
+                empty_tile = other_cir.check_for_empty_adj_tile(self.grid)
                 if empty_tile:
-                    if other_item.speed and not other_item.birth_track and not other_item.move_track:
-                        self.cell_division(other_item)
+                    if other_cir.speed and not other_cir.birth_track and not other_cir.move_track:
+                        self.cell_division(other_cir)
 
     # --------------------------------------------------------------- #
     #                                                                 #
@@ -155,7 +155,7 @@ class GameEffects(object):
                                lifespan=2)
         trigger.range = 4.5
         trigger.vspeed = speed
-        trigger.effects = "#rev"
+        trigger.effects = "#scout"
 
         self.grid.loader.set_timers(trigger)
         trigger.vfreq = None
@@ -296,6 +296,7 @@ class GameEffects(object):
 
                 # Exclude # (non-consumable) effects
                 if not '#' in effect:
+                    attr_str = ''
                     effect = effect.split(':')
                     eff_att = effect[0]
                     amount = float(effect[1])
@@ -303,8 +304,6 @@ class GameEffects(object):
                         modifier_str = '+{0}'.format(abs(int(amount)))
                     else:
                         modifier_str = '-{0}'.format(abs(int(amount)))
-                    attr_str = ''
-
 
                     if consumator.type not in protected_types:
                         if eff_att == 'max' and consumator.lifespan:
@@ -366,23 +365,28 @@ class GameEffects(object):
                                 effect = negative_effect,
                                 boosted_item = consumator,
                                 boost_item = consumable)
-                            # consumator.color = self.grid.red01
+
+                elif "#fight" in effect and hasattr(consumator, 'muscle') and not consumator.muscle in [None, '']:
+                    if 'my_body' in consumable.type:
+                        self.grid.msg('SCREEN - you fight %s' %
+                                      grid_util.get_short_name(consumator.name).replace('_', ' '))
+                    if 'my_body' in consumator.type:
+                        self.grid.msg('SCREEN - you fight %s' %
+                                      grid_util.get_short_name(consumable.name).replace('_', ' '))
+                    consumable.muscle_test(consumator, self.grid)
+
 
             if eff_msg:
                 consumed = True
-                # # if consumable.color:
-                # if 0:
-                # #     consumator.gen_effect_track(consumable.color)
-                # else:
-
                 if 'my_body' in consumator.type:
-                    if 'boost' in consumable.type:
-                        self.grid.msg('SCREEN - %s boost over' %
-                                      grid_util.get_short_name(consumable.boost_item).replace('_', ' '))
-                        effect_color = self.grid.white
-                    else:
-                        self.grid.msg('SCREEN - you eat %s' %
-                                      grid_util.get_short_name(consumable.name).replace('_', ' '))
+                    if not isinstance(consumable, str):
+                        if 'boost' in consumable.type:
+                            self.grid.msg('SCREEN - %s boost over' %
+                                          grid_util.get_short_name(consumable.boost_item).replace('_', ' '))
+                            effect_color = self.grid.white
+                        else:
+                            self.grid.msg('SCREEN - you eat %s' %
+                                          grid_util.get_short_name(consumable.name).replace('_', ' '))
                     for effm in eff_msg:
                         self.grid.msg('SCREEN - {0}'.format(effm))
 
@@ -406,6 +410,7 @@ class GameEffects(object):
                 if clicked in self.grid.adj_tiles(my_body.pos):
                     will_drop = True
                 else:
+
                     self.grid.msg("SCREEN - no reach1")
             else:
                 self.grid.msg("SCREEN - no place here1")

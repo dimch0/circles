@@ -20,7 +20,6 @@ class Body(Mobile):
         self.vspeed = 1
         self.vfreq = None
         self.inventory = None
-
         self.muscle = 1
         self.ego = 0
         self.hyg = 100
@@ -66,3 +65,25 @@ class Body(Mobile):
             self.gen_fat()
 
         return self.vibe_track
+
+    def muscle_test(self, hit_circle, grid):
+        """
+        Compare the muscle attribute
+        :return: muscle diff
+        """
+        if hasattr(hit_circle, 'muscle'):
+            amount = self.muscle - hit_circle.muscle
+            if amount > 0:
+                hit_effects = 't:-%s joy:-1' % amount
+                self_effects = 'joy:+1'
+
+            elif amount < 0:
+                hit_effects = 'joy:+1'
+                self_effects = 't:%s joy:-1' % amount
+
+            else:
+                hit_effects = 'joy:-1'
+                self_effects = 'joy:-1'
+
+            grid.event_effects.consume(hit_circle, hit_effects)
+            grid.event_effects.consume(self, self_effects)

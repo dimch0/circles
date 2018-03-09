@@ -462,6 +462,8 @@ class Grid(object):
         will_show_msg = True
         msg_color = bcolors.INFO
         msg = msg.replace('my_body', 'you')
+        msg = msg.replace('reach1', 'reach')
+        msg = msg.replace('here1', 'here')
 
         if not self.show_debug and "DEBUG - " in msg:
             will_show_msg = False
