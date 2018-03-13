@@ -301,9 +301,9 @@ class GameEffects(object):
                     eff_att = effect[0]
                     amount = float(effect[1])
                     if amount >= 0:
-                        modifier_str = '+{0}'.format(abs(int(amount)))
+                        modifier_str = '+{0}'.format(abs(amount))
                     else:
-                        modifier_str = '-{0}'.format(abs(int(amount)))
+                        modifier_str = '-{0}'.format(abs(amount))
 
                     if consumator.type not in protected_types:
                         if eff_att == 'max' and consumator.lifespan:
