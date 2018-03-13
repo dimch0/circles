@@ -355,7 +355,6 @@ class GameEffects(object):
                             attr_str = 'electricity'
 
                     if attr_str:
-                        eff_msg.append(modifier_str + ' ' + attr_str)
                         # BOOST
                         if len(effect) > 2:
                             negative_effect = "%s:-%s" % (eff_att, str(amount))
@@ -365,6 +364,10 @@ class GameEffects(object):
                                 effect = negative_effect,
                                 boosted_item = consumator,
                                 boost_item = consumable)
+                            modifier_str += ' boost '
+
+                        # add msg
+                        eff_msg.append(modifier_str + ' ' + attr_str)
 
                 elif "#fight" in effect and hasattr(consumator, 'muscle') and not consumator.muscle in [None, '']:
                     if 'my_body' in consumable.type:
