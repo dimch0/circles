@@ -17,6 +17,7 @@
     "sound_dir"    : "./res/sound/",
     "font_file"    : "./res/fonts/HelveticaNeueMed.ttf",
     "tmp_dir"      : "./data/tmp",
-    "log_file"     : "./tmp/log_file.txt"
+    "log_file"     : "./tmp/log_file.txt",
+    "colors_file"  : "./res/colors/colors.txt"
   }
 }

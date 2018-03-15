@@ -1,12 +1,9 @@
 # ------------------------------------------------------------------------------------------------------------------- #
 #                                                                                                                     #
-#                                                                                                                     #
 #                                                  COSMETIC                                                           #
-#                                                                                                                     #
 #                                                                                                                     #
 # ------------------------------------------------------------------------------------------------------------------- #
 import os
-
 
 
 def hex2rgb(hex_str):
@@ -21,64 +18,12 @@ class Colors(object):
     @staticmethod
     def set_colors(grid):
         grid.msg("INFO - Loading colors")
-        colors = {
-            "black": "000000",
-            "grey01": "3b3b3b",
-            "grey02": "565656",
-            "grey03": "707070",
-            "grey04": "a9a9a9",
-            "grey05": "c5c5c5",
-            "grey06": "e1e1e1",
-            "grey07": "e5e3d7",
-            "grey08": "c9c6bd",
-            "grey09": "b9bab4",
-            "grey10": "dce1db",
-            "grey11": "d3d2d0",
-            "grey12": "c9c5c2",
-            "grey13": "b2aeab",
-            "grey14": "9a9a93",
-            "grey15": "676760",
-            "grey16": "65666d",
-            "grey17": "878892",
-            "grey18": "98999f",
-            "grey19": "9b919b",
-            "grey20": "afa5af",
-            "grey21": "c3c3c3",
-            "grey22": "dcd7dc",
-            "white": "ffffff",
-            "gelb01": "ffffdd",
-            "gelb02": "fcffbe",
-            "gelb03": "ffff8c",
-            "gelb04": "ffff00",
-            "gelb05": "fcc21c",
-            "gelb06": "feb371",
-            "gelb07": "8a857f",
-            "gelb08": "ada397",
-            "gelb09": "cba983",
-            "gelb10": "bab7a8",
-            "gelb11": "ccc0b2",
-            "gelb12": "cebea5",
-            "gelb13": "cdc7af",
-            "gelb14": "cdd0bd",
-            "gelb15": "d8d5c4",
-            "gelb16": "d8ceb3",
-            "gelb17": "e5dec4",
-            "gelb18": "ede8d5",
-            "gelb19": "e6e2d7",
-            "red01": "ed6d31",
-            "red02": "f35d73",
-            "red03": "ff6b9b",
-            "red04": "f4c3fd",
-            "red05": "fed7fc",
-            "red06": "ffd1dc",
-            "red07": "f0dedd",
-            "cyan01": "17fbf4",
-            "cyan02": "bcfffe",
-            "cyan03": "3fff00",
-            "cyan04": "d2ffbf"
-                  }
-        for color_name, color_value in colors.items():
-            setattr(grid, color_name, hex2rgb(color_value))
+        setattr(grid, 'black', hex2rgb('000000'))
+        setattr(grid, 'white', hex2rgb('ffffff'))
+        with open(grid.colors_file, 'r') as f:
+            colors = f.read().splitlines()
+            for color in colors:
+                setattr(grid, color, hex2rgb(color))
 
 
 class Fonts(object):

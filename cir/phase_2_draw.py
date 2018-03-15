@@ -243,11 +243,11 @@ class GameDrawer(object):
                 msg = msg.replace("SCREEN - ", "")
                 font = getattr(self.grid.fonts, 'small')
                 if "+" in msg or "-" in msg:
-                    color = self.grid.grey05
+                    color = self.grid.c5c5c5
                 elif any(rmsg in msg for rmsg in red_msg):
-                    color = self.grid.red01
+                    color = self.grid.ed6d31
                 elif msg in self.grid.win_msg:
-                    color = self.grid.gelb05
+                    color = self.grid.fcc21c
                 else:
                     color = self.grid.white
 

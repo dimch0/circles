@@ -339,13 +339,13 @@ class Grid(object):
                                 map_dots.update(self.get_map_dot(circle.pos, room_pos, circle.color, circle.radius))
 
                             if any(reddot in circle.type for reddot in reddots):
-                                map_dots.update(self.get_map_dot(circle.pos, room_pos, self.red01, circle.radius))
+                                map_dots.update(self.get_map_dot(circle.pos, room_pos, self.ed6d31, circle.radius))
 
                             if any(whitedot in circle.type for whitedot in whitedots) and room_name == self.previous_room:
                                 map_dots.update(self.get_map_dot(circle.pos, room_pos, self.white, circle.radius))
 
                             if any(gelbdot in circle.type for gelbdot in gelbdots) and room_name == self.previous_room:
-                                map_dots.update(self.get_map_dot(circle.pos, room_pos, self.gelb05, circle.radius))
+                                map_dots.update(self.get_map_dot(circle.pos, room_pos, self.fcc21c, circle.radius))
 
         self.map_dots = map_dots
 

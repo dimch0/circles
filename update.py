@@ -26,6 +26,14 @@ data_sheets = [
         "deck":"2103241586"
         }
     },
+    {
+        "filename": os.path.dirname(__file__) + '/res/colors/colors.txt',
+        "key": "1Lp_vts7git-I4Z-UadgfUEo537NyBI9FT2sr71GQy8g",
+        "gids":
+            {
+                "deck": "1371863014"
+            }
+    },
 ]
 
 print "Downloading:"
