@@ -9,10 +9,10 @@ from grid_gen import ItemGenerator
 
 class VarUpdater(object):
 
-    def __init__(self, grid=None, my_body=None):
+    def __init__(self, grid=None, mybody=None):
         self.grid = grid
-        self.my_body = my_body
-        self.igen = ItemGenerator(grid, my_body)
+        self.mybody = mybody
+        self.igen = ItemGenerator(grid, mybody)
         self.radius_buffer = 2.5
 
     def check_conditions(self):
@@ -70,21 +70,21 @@ class VarUpdater(object):
     #                        ENTER ROOM EFFECTS                       #
     #                                                                 #
     # --------------------------------------------------------------- #
-    def enter_room(self, my_body, item):
-        if "Enter_" in item.name and my_body.pos == item.pos:
+    def enter_room(self, mybody, item):
+        if "Enter_" in item.name and mybody.pos == item.pos:
             room_number = item.name.replace("Enter_", "")
             self.grid.msg("INFO - Leaving room: {0}".format(self.grid.current_room))
             self.grid.change_room(room_number)
             self.grid.needs_to_change_room = False
-            my_body.move_track = {'center':'', 'track':[]}
-            if not my_body in self.grid.circles:
-                self.grid.circles.append(my_body)
+            mybody.move_track = {'center':'', 'track':[]}
+            if not mybody in self.grid.circles:
+                self.grid.circles.append(mybody)
 
-            my_body.pos = get_mirror_point(item.pos, self.grid.center_tile)
-            self.grid.revealed_tiles[my_body.pos] = []
-            my_body.gen_birth_track()
+            mybody.pos = get_mirror_point(item.pos, self.grid.center_tile)
+            self.grid.revealed_tiles[mybody.pos] = []
+            mybody.gen_birth_track()
             for circle in self.grid.circles:
-                if circle.pos == my_body.pos and 'door' in circle.type:
+                if circle.pos == mybody.pos and 'door' in circle.type:
                     circle.available = True
 
     # --------------------------------------------------------------- #
@@ -95,7 +95,7 @@ class VarUpdater(object):
     def destruction(self, item):
 
         self.grid.messages = self.grid.messages
-        # if item.name in ['my_body']:
+        # if item.name in ['mybody']:
         #     self.grid.msg("SCREEN - you dead")
 
         if not item.birth_track:
@@ -108,7 +108,7 @@ class VarUpdater(object):
             #     del self.grid.panel_circles[item.name]
             if item.name in self.grid.occupado_tiles:
                 del self.grid.occupado_tiles[item.name]
-            if item.name == "my_body":
+            if item.name == "mybody":
                 self.grid.game_over = True
 
     # --------------------------------------------------------------- #
@@ -190,10 +190,10 @@ class VarUpdater(object):
     #                           CHANGE VARS                           #
     #                                                                 #
     # --------------------------------------------------------------- #
-    def update_vars(self, my_body):
+    def update_vars(self, mybody):
         """
         U[darting all variables before next iteration of the main loop
-        :param my_body: my_body instance
+        :param mybody: mybody instance
         """
         all_circles = self.grid.circles + self.grid.panel_circles.values()
         if not self.grid.game_menu:
@@ -204,19 +204,19 @@ class VarUpdater(object):
                 # OCCUPADO
                 # self.update_occupado(item)
 
-                # MY_BODY OVERLAP
-                if not any (otype in circle.type for otype in ["my_body", "option"]):
-                    if circle.pos == my_body.pos and not circle.birth_track:
+                # mybody OVERLAP
+                if not any (otype in circle.type for otype in ["mybody", "option"]):
+                    if circle.pos == mybody.pos and not circle.birth_track:
                         circle.clickable = False
                         circle.radius = circle.default_radius
 
-                    elif circle.pos != my_body.pos and circle not in self.grid.overlap:
+                    elif circle.pos != mybody.pos and circle not in self.grid.overlap:
                         circle.clickable = True
 
                 # ENTER
                 if self.grid.needs_to_change_room:
-                    my_body.vibe_track = {'center': '', 'track': []}
-                    self.enter_room(my_body, circle)
+                    mybody.vibe_track = {'center': '', 'track': []}
+                    self.enter_room(mybody, circle)
 
                 # DESTRUCTION
                 if circle.marked_for_destruction:
@@ -302,18 +302,18 @@ class VarUpdater(object):
 
                     # CONSUME SIGNAL
                     if 'signal' in circle.type:
-                        if self.signal_hit(circle, my_body) and circle != my_body:
-                            self.signal_hit_effect(circle, my_body)
+                        if self.signal_hit(circle, mybody) and circle != mybody:
+                            self.signal_hit_effect(circle, mybody)
 
                     # CLEAN PLACEHOLDERS
                     self.grid.clean_placeholders(circle)
             # for
 
             # FORCE BODY MOVE
-            if my_body.pos in self.grid.door_slots:
-                arrival_point = self.grid.adj_tiles(my_body.pos, playing=True)
-                my_body.move_track = my_body.move_to_tile(self.grid, arrival_point)
-                my_body.direction = None
+            if mybody.pos in self.grid.door_slots:
+                arrival_point = self.grid.adj_tiles(mybody.pos, playing=True)
+                mybody.move_track = mybody.move_to_tile(self.grid, arrival_point)
+                mybody.direction = None
 
         self.grid.sort_circles_by_layer()
 

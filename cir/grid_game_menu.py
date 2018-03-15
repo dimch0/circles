@@ -5,7 +5,7 @@
 #                                                                                                                     #
 #                                                                                                                     #
 # ------------------------------------------------------------------------------------------------------------------- #
-def game_menu(grid, my_body, end_msg=''):
+def game_menu(grid, mybody, end_msg=''):
     """ GAME MENU LOOP """
     while grid.game_menu:
 

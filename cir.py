@@ -20,8 +20,8 @@ def game_loop(game_over, scenario="scenario_01", msg=list()):
     # --------------------------------------------------------------- #
     grid = Grid(pygame, scenario)
     grid.loader = DataLoader(grid)
-    my_body = grid.loader.load_game()
-    grid.updater.my_body = my_body
+    mybody = grid.loader.load_game()
+    grid.updater.mybody = mybody
 
     if game_over:
         grid.messages = msg
@@ -36,7 +36,7 @@ def game_loop(game_over, scenario="scenario_01", msg=list()):
 
         CURRENT_TILE = grid.mouse_in_tile(pygame.mouse.get_pos())
         grid.seconds_in_game_tick()
-        game_menu(grid, my_body)
+        game_menu(grid, mybody)
 
         # --------------------------------------------------------------- #
         #                          PHASE 1: EVENTS                        #
@@ -47,10 +47,10 @@ def game_loop(game_over, scenario="scenario_01", msg=list()):
                 grid.game_exit()
             # KEY EVENTS
             elif event.type in [pygame.KEYDOWN, pygame.KEYUP]:
-                grid.event_effects.execute_key_events(event, my_body)
+                grid.event_effects.execute_key_events(event, mybody)
             # CLICK EVENTS
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                grid.event_effects.execute_click_events(event, my_body, CURRENT_TILE)
+                grid.event_effects.execute_click_events(event, mybody, CURRENT_TILE)
         # --------------------------------------------------------------- #
         #                          PHASE 2: DRAWING                       #
         # --------------------------------------------------------------- #
@@ -58,7 +58,7 @@ def game_loop(game_over, scenario="scenario_01", msg=list()):
         # --------------------------------------------------------------- #
         #                          PHASE 3: CHANGE VARS                   #
         # --------------------------------------------------------------- #
-        grid.updater.update_vars(my_body)
+        grid.updater.update_vars(mybody)
 
     # GAME OVER
     if grid.game_over:

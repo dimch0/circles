@@ -129,7 +129,7 @@ class GameEffects(object):
     #                              MAP                                #
     #                                                                 #
     # --------------------------------------------------------------- #
-    def show_map(self, my_body):
+    def show_map(self, mybody):
         """ Shows the map room 999 """
         if not self.grid.current_room == "map":
             self.grid.previous_room = self.grid.current_room
@@ -140,8 +140,8 @@ class GameEffects(object):
         else:
             self.grid.change_room(self.grid.previous_room)
             self.grid.draw_map = False
-            # if my_body not in self.grid.circles:
-            #     self.grid.circles.append(my_body)
+            # if mybody not in self.grid.circles:
+            #     self.grid.circles.append(mybody)
 
 
     # --------------------------------------------------------------- #
@@ -167,14 +167,14 @@ class GameEffects(object):
     #                           ENTER ROOM                            #
     #                                                                 #
     # --------------------------------------------------------------- #
-    def enter_room(self, my_body, item):
+    def enter_room(self, mybody, item):
         """
         Changes the current room
-        :param my_body: my_body instance
+        :param mybody: mybody instance
         :param item: enter / exit item
         """
-        if my_body.pos in self.grid.adj_tiles(item.pos):
-            my_body.move_track = my_body.move_to_tile(self.grid, item.pos)
+        if mybody.pos in self.grid.adj_tiles(item.pos):
+            mybody.move_track = mybody.move_to_tile(self.grid, item.pos)
             self.grid.needs_to_change_room = True
         else:
             self.grid.msg("SCREEN - no enter")
@@ -184,22 +184,22 @@ class GameEffects(object):
     #                         MOUSE MODES                             #
     #                                                                 #
     # --------------------------------------------------------------- #
-    def signal_mode_click(self, current_tile, my_body):
+    def signal_mode_click(self, current_tile, mybody):
         """ Signal effect """
-        if not grid_util.in_circle(my_body.pos, my_body.radius, current_tile) and not my_body.move_track:
+        if not grid_util.in_circle(mybody.pos, mybody.radius, current_tile) and not mybody.move_track:
             signal = self.produce("signal",
-                                  my_body.pos,
+                                  mybody.pos,
                                   radius=int(self.grid.tile_radius / 3)
                                   )
             if signal:
-                signal.color = my_body.color
+                signal.color = mybody.color
                 signal.direction = signal.get_aiming_direction(self.grid, current_tile)[1]
 
 
     def terminate_mode_click(self, item):
         """ Terminate this shit """
         non_terminates = [
-            "my_body",
+            "mybody",
             "option",
             "trigger",
             "placeholder",
@@ -214,10 +214,10 @@ class GameEffects(object):
     #                         MOUSE MODES                             #
     #                                                                 #
     # --------------------------------------------------------------- #
-    def collect(self, my_body, clicked_item):
+    def collect(self, mybody, clicked_item):
         """ Collect item: add it to inventory options """
         if not any([clicked_item.birth_track, clicked_item.move_track]):
-            inventory = my_body.inventory
+            inventory = mybody.inventory
             # reopen_inventory = False
             if len(inventory.options) < 6:
 
@@ -235,9 +235,9 @@ class GameEffects(object):
                 item_as_option.modable = True
                 item_as_option.consumable = clicked_item.consumable
                 item_as_option.effects = clicked_item.effects
-                item_as_option.color = my_body.inventory.color
+                item_as_option.color = mybody.inventory.color
                 item_as_option.img = clicked_item.img
-                setattr(item_as_option, "ober_item", my_body.inventory)
+                setattr(item_as_option, "ober_item", mybody.inventory)
                 if hasattr(clicked_item, "lifespan"):
                     item_as_option.lifespan = clicked_item.lifespan
 
@@ -251,7 +251,7 @@ class GameEffects(object):
             # self.grid.mouse_mode = backup_mouse_mode
             # self.grid.mouse_img = backup_mouse_img
 
-    def empty_inventory(self, inventory_item, my_body):
+    def empty_inventory(self, inventory_item, mybody):
 
         if self.grid.mouse_mode:
             if grid_util.get_short_name(self.grid.mouse_mode) in inventory_item.name:
@@ -261,10 +261,10 @@ class GameEffects(object):
             del self.grid.panel_circles[inventory_item.name]
         del inventory_item.ober_item.options[inventory_item.name]
 
-        # for iitem in my_body.inventory.options.values():
+        # for iitem in mybody.inventory.options.values():
         #
 
-        my_body.inventory.open_menu(self.grid)
+        mybody.inventory.open_menu(self.grid)
     # --------------------------------------------------------------- #
     #                                                                 #
     #                          CONSUMABLES                            #
@@ -338,10 +338,6 @@ class GameEffects(object):
                             consumator.ego += amount
                             attr_str = 'ego'
 
-                        elif eff_att == 'stress' and hasattr(consumator, 'stress'):
-                            consumator.stress += amount
-                            attr_str = 'stress'
-
                         elif eff_att == 'joy' and hasattr(consumator, 'joy'):
                             consumator.joy += amount
                             attr_str = 'joy'
@@ -370,10 +366,10 @@ class GameEffects(object):
                         eff_msg.append(modifier_str + ' ' + attr_str)
 
                 elif "#fight" in effect and hasattr(consumator, 'muscle') and not consumator.muscle in [None, '']:
-                    if 'my_body' in consumable.type:
+                    if 'mybody' in consumable.type:
                         self.grid.msg('SCREEN - you fight %s' %
                                       grid_util.get_short_name(consumator.name).replace('_', ' '))
-                    if 'my_body' in consumator.type:
+                    if 'mybody' in consumator.type:
                         self.grid.msg('SCREEN - you fight %s' %
                                       grid_util.get_short_name(consumable.name).replace('_', ' '))
                     consumable.muscle_test(consumator, self.grid)
@@ -381,7 +377,7 @@ class GameEffects(object):
 
             if eff_msg:
                 consumed = True
-                if 'my_body' in consumator.type:
+                if 'mybody' in consumator.type:
                     if not isinstance(consumable, str):
                         if 'boost' in consumable.type:
                             self.grid.msg('SCREEN - %s boost over' %
@@ -402,7 +398,7 @@ class GameEffects(object):
             consumable.destroy(self.grid)
         return consumed
 
-    def drop(self, clicked, my_body, force=False):
+    def drop(self, clicked, mybody, force=False):
         """
         Drops item
         """
@@ -410,7 +406,7 @@ class GameEffects(object):
         # Drop item on an empty tile
         if isinstance(clicked, tuple):
             if clicked not in self.grid.occupado_tiles.values() and clicked in self.grid.revealed_tiles.keys():
-                if clicked in self.grid.adj_tiles(my_body.pos):
+                if clicked in self.grid.adj_tiles(mybody.pos):
                     will_drop = True
                 else:
 
@@ -419,20 +415,20 @@ class GameEffects(object):
                 self.grid.msg("SCREEN - no place here1")
 
             if will_drop:
-                for bag_item in my_body.inventory.options.values():
+                for bag_item in mybody.inventory.options.values():
                     if self.grid.mouse_mode in bag_item.name:
                         item_name = grid_util.get_short_name(self.grid.mouse_mode)
                         dropped_item = self.produce(item_name, clicked)
                         if dropped_item:
                             if hasattr(bag_item, "lifespan"):
                                 dropped_item.lifespan = bag_item.lifespan
-                            self.empty_inventory(bag_item, my_body)
+                            self.empty_inventory(bag_item, mybody)
                             break
         # Drop item from inventory to body and consume
         else:
             if clicked:
                 # Drop to adj only or to self (telekinesis)
-                if clicked.pos in self.grid.adj_tiles(my_body.pos) or 'my_body' in clicked.type:
+                if clicked.pos in self.grid.adj_tiles(mybody.pos) or 'mybody' in clicked.type:
                     will_drop = True
                 else:
                     self.grid.msg("SCREEN - no reach")
@@ -440,12 +436,12 @@ class GameEffects(object):
                 self.grid.msg("SCREEN - No place here")
 
             if will_drop:
-                for bag_item in my_body.inventory.options.values():
+                for bag_item in mybody.inventory.options.values():
                     if self.grid.mouse_mode and self.grid.mouse_mode in bag_item.name:
                         if 'vendor' in clicked.type:
                             if clicked.trade(bag_item, self.grid):
-                                self.empty_inventory(bag_item, my_body)
-                        elif bag_item.consumable and not clicked in my_body.inventory.options.values():
+                                self.empty_inventory(bag_item, mybody)
+                        elif bag_item.consumable and not clicked in mybody.inventory.options.values():
                             if self.consume(clicked, bag_item):
-                                self.empty_inventory(bag_item, my_body)
+                                self.empty_inventory(bag_item, mybody)
                                 break

@@ -461,7 +461,7 @@ class Grid(object):
         """ Display messages in terminal """
         will_show_msg = True
         msg_color = bcolors.INFO
-        msg = msg.replace('my_body', 'you')
+        msg = msg.replace('mybody', 'you')
         msg = msg.replace('reach1', 'reach')
         msg = msg.replace('here1', 'here')
 

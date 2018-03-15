@@ -107,7 +107,7 @@ def get_mirror_point(pointA, pointB):
     return (dx, dy)
 
 
-def show_debug_on_click(grid, current_circle, my_body):
+def show_debug_on_click(grid, current_circle, mybody):
     """  Debug on click event  """
     if grid.show_debug:
         grid.msg("CLICK")
@@ -121,14 +121,14 @@ def show_debug_on_click(grid, current_circle, my_body):
         # grid.msg("DEBUG - occupado    : {0}".format( len(grid.occupado_tiles) ))
         # grid.msg("DEBUG - overlap     : {0}".format( [(circle.name, circle.pos) for circle in grid.overlap] ))
         # grid.msg("DEBUG - playing     : {0}".format( len(grid.playing_tiles) ))
-        # grid.msg("DEBUG - move track  : {0}".format( my_body.move_track ))
+        # grid.msg("DEBUG - move track  : {0}".format( mybody.move_track ))
         # grid.msg("DEBUG - all tiles   : {0}".format( len(grid.tiles) ))
         # grid.msg("DEBUG - current room: {0}".format( grid.current_room ))
         # grid.msg("DEBUG - prev room   : {0}".format( grid.previous_room ))
         # grid.msg("DEBUG - revealed    : {0}".format( grid.revealed_tiles ))
         # grid.msg("DEBUG - revealed    : {0}".format( len(grid.revealed_tiles.keys() ) ))
         # grid.msg("DEBUG - game menu   : {0}".format( grid.game_menu ))
-        # grid.msg("DEBUG - my body     : {0} {1} {2}".format( my_body in grid.circles, my_body.available, my_body.color ))
+        # grid.msg("DEBUG - my body     : {0} {1} {2}".format( mybody in grid.circles, mybody.available, mybody.color ))
 
 def get_short_name(name_with_timestamp):
     """ Removes the timestamp from a name """

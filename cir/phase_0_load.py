@@ -27,7 +27,7 @@ class DataLoader(object):
         self.grid = grid
         self.csv_data = self.grid.data_file
         self.data_file = None
-        self.my_body = None
+        self.mybody = None
 
     def set_data_file(self):
         """ Extends the current scenario data file with the all data file """
@@ -376,16 +376,16 @@ class DataLoader(object):
                                 self.grid.rooms[door_room_n]["circles"].append(opposite_door)
 
                             # MY BODY
-                            elif item_name == "my_body":
+                            elif item_name == "mybody":
                                 item.available = True
                                 item.gen_birth_track()
-                                self.my_body = item
+                                self.mybody = item
 
 
     def load_game(self):
         """
         Main loading execution of all items, res and preconditions
-        :return: my_body
+        :return: mybody
         """
         Colors.set_colors(self.grid)
         self.grid.images        = Images(self.grid)
@@ -402,9 +402,9 @@ class DataLoader(object):
         self.set_rooms()
         self.set_buttons()
 
-        self.my_body.inventory = self.grid.panel_circles['bag']
-        self.grid.circles.append(self.my_body)
+        self.mybody.inventory = self.grid.panel_circles['bag']
+        self.grid.circles.append(self.mybody)
 
         self.grid.load_current_room()
 
-        return self.my_body
+        return self.mybody

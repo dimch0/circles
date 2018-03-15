@@ -6,18 +6,20 @@
 #                                                                                                                     #
 # ------------------------------------------------------------------------------------------------------------------- #
 import os
+import csv
 import json
 import random
 
 
 class ItemGenerator(object):
     """ Generating items on each level """
-    def __init__(self, grid, my_body):
+    def __init__(self, grid, mybody):
+        self.grid = grid
+        self.mybody = mybody
         self.gen_file = '%s/../data/%s/gen.json' % (os.path.dirname(__file__), grid.scenario)
+        self.gen_file2 = '%s/../data/%s/gen.csv' % (os.path.dirname(__file__), grid.scenario)
         self.decks = {}
         self.read_gen_schema()
-        self.grid = grid
-        self.my_body = my_body
         self.generated = {}
 
     def read_gen_schema(self):
@@ -25,14 +27,22 @@ class ItemGenerator(object):
         Sets all decks from gen.json as attributes
         and a progress dict for each deck
         """
-        with open(self.gen_file) as jsonfile:
-            decks = json.load(jsonfile)
-            self.decks = decks
-            for deck, deck_data in self.decks.items():
-                progress = {}
-                for cir_to_gen in range(len(deck_data["items"])):
-                    progress[str(cir_to_gen)] = 0
-                self.decks[deck]['progress'] = progress
+        with open(self.gen_file2, 'rb') as csvfile:
+            data = csv.reader(csvfile, delimiter=',')
+            header = next(data)
+            for row in data:
+                if not row == header:
+                    deck_name = row[0]
+                    deck_lvl = int(row[1])
+                    deck_base = int(row[2])
+                    deck_items = row[3].split()
+                    progress = {}
+                    for cir_to_gen in range(len(deck_items)):
+                        progress[str(cir_to_gen)] = 0
+                    self.decks[deck_name] = {'base':deck_base,
+                                             'items':deck_items,
+                                             'lvl':deck_lvl,
+                                             'progress':progress}
 
     def deck_togen(self):
         """ Checks bases for generation

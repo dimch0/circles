@@ -23,7 +23,6 @@ class Body(Mobile):
         self.muscle = 1
         self.ego = 0
         self.hyg = 100
-        self.stress = 0
         self.joy = 0
 
         self.knw_limit = 3

@@ -156,7 +156,7 @@ class GameDrawer(object):
 
     def draw_aim(self, current_tile, circle):
         """ Aim """
-        if self.grid.mouse_mode in ["echo"] and circle.available and "my_body" in circle.type:
+        if self.grid.mouse_mode in ["echo"] and circle.available and "mybody" in circle.type:
             aim_dir_idx = circle.get_aiming_direction(self.grid, current_tile)[1]
             # aim_tile = circle.get_aiming_direction(self.grid, current_tile)[0]
 
@@ -333,7 +333,7 @@ class GameDrawer(object):
             self.draw_mouse_image(current_tile)
 
         # GRID
-        if self.grid.show_grid:
+        if self.grid.show_debug:
             self.draw_grid()
 
         # MSG

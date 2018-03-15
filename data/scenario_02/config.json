@@ -8,7 +8,7 @@
   "reporting": ["seconds_in_game", "total_revealed"],
   "room_items" : [
     {"11_11" : [
-      {"item_name": "my_body",
+      {"item_name": "mybody",
         "item_positions": ["center"]},
       {"item_name": "bag",
         "item_positions": ["center"]},

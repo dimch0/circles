@@ -31,7 +31,7 @@ class Spawn(Body):
 
     def action(self, grid):
         """
-        Action of the spawning quelle
+        Action of the spawning qwelle
         :param grid: grid instance
         """
         effects = self.effects.split()

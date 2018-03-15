@@ -81,10 +81,10 @@ class Bot(Body):
         if legal_moves:
 
             if "#fear" in self.effects:
-                self.target = self.farthest_circle(grid, "my_body")
+                self.target = self.farthest_circle(grid, "mybody")
             # Get target
             # target = self.nearest_unrevealed(grid)
-            # target = self.chase_pos(grid, "my_body")
+            # target = self.chase_pos(grid, "mybody")
             if self.target:
                 target = self.target
                 if "#traffic" in self.effects:
@@ -101,7 +101,7 @@ class Bot(Body):
                                                        consumator=self)
                         target = target.pos
                     else:
-                        target = self.chase_pos(grid, "my_body")
+                        target = self.chase_pos(grid, "mybody")
                 elif "#traffic" in self.effects:
                     if self.target in grid.adj_tiles(self.pos):
                         self.destroy(grid)

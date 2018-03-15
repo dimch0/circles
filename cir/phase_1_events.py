@@ -19,7 +19,7 @@ class GameEvents(GameEffects):
     #                           KEY EVENTS                            #
     #                                                                 #
     # --------------------------------------------------------------- #
-    def execute_key_events(self, event, my_body):
+    def execute_key_events(self, event, mybody):
 
         if event.type == self.grid.pygame.KEYDOWN:
 
@@ -37,22 +37,22 @@ class GameEvents(GameEffects):
                     self.grid.game_menu = True
 
                     if self.grid.current_room in ["map"]:
-                        self.grid.event_effects.show_map(my_body)
+                        self.grid.event_effects.show_map(mybody)
                         self.grid.game_menu = False
             # --------------------------------------------------------------- #
             #                             SPACE                               #
             # --------------------------------------------------------------- #
             # elif event.key == self.grid.pygame.K_SPACE:
             #     # GEN VIBE
-            #     my_body.gen_vibe_track(self.grid)
+            #     mybody.gen_vibe_track(self.grid)
             # --------------------------------------------------------------- #
             #                             NUMBERS                             #
             # --------------------------------------------------------------- #
             elif event.key in numbers:
                 number_pressed = numbers.index(event.key) + 1
                 self.grid.msg("INFO - Key %s pressed" % number_pressed)
-                if len(my_body.inventory.options.values()) >= number_pressed:
-                    self.grid.set_mouse_mode(my_body.inventory.options.values()[number_pressed-1])
+                if len(mybody.inventory.options.values()) >= number_pressed:
+                    self.grid.set_mouse_mode(mybody.inventory.options.values()[number_pressed-1])
                 else:
                     self.grid.clean_mouse()
             # --------------------------------------------------------------- #
@@ -67,17 +67,17 @@ class GameEvents(GameEffects):
             else:
 
                 # GEN DIRECTION
-                my_body.gen_direction(self.grid, event)
+                mybody.gen_direction(self.grid, event)
 
                 # CHECK FOR DOOR
                 doors = {door.pos : door  for door in self.grid.circles if "door" in door.type}
 
                 for doorpos, door in doors.items():
-                    for adj_idx, adj_to_mybod  in enumerate(self.grid.adj_tiles(my_body.pos)):
+                    for adj_idx, adj_to_mybod  in enumerate(self.grid.adj_tiles(mybody.pos)):
 
                         if adj_to_mybod == doorpos:
-                            if my_body.direction == adj_idx:
-                                self.enter_room(my_body, door)
+                            if mybody.direction == adj_idx:
+                                self.enter_room(mybody, door)
 
         # --------------------------------------------------------------- #
         #                            SHIFT                                #
@@ -90,7 +90,7 @@ class GameEvents(GameEffects):
     #                         CLICK EVENTS                            #
     #                                                                 #
     # --------------------------------------------------------------- #
-    def execute_click_events(self, event, my_body, current_tile):
+    def execute_click_events(self, event, mybody, current_tile):
 
         mouse_mode = self.grid.mouse_mode
         all_circles = self.grid.circles + self.grid.panel_circles.values()
@@ -99,11 +99,11 @@ class GameEvents(GameEffects):
         # --------------------------------------------------------------- #
         if not event.button == 3:
             if current_tile not in self.grid.occupado_tiles.values() and current_tile in self.grid.revealed_tiles.keys():
-                if mouse_mode and any(mouse_mode in inventory_item.name for inventory_item in my_body.inventory.options.values()):
-                    self.drop(current_tile, my_body)
+                if mouse_mode and any(mouse_mode in inventory_item.name for inventory_item in mybody.inventory.options.values()):
+                    self.drop(current_tile, mybody)
 
             if mouse_mode == "bow":
-                self.signal_mode_click(current_tile, my_body)
+                self.signal_mode_click(current_tile, mybody)
 
         # --------------------------------------------------------------- #
         #                   CLICK ON ITEMS NO MOUSE MODE                  #
@@ -116,7 +116,6 @@ class GameEvents(GameEffects):
                                                     CLICKED_ITEM.name,
                                                     CLICKED_ITEM.pos,
                                                     CLICKED_ITEM.available))
-
                     # OPTION CLICKED
                     if "option" in CLICKED_ITEM.type:
                         ober_item = CLICKED_ITEM.get_ober_item(self.grid)
@@ -124,22 +123,23 @@ class GameEvents(GameEffects):
 
                             # SLAB
                             if CLICKED_ITEM.name in ["map_app"]:
-                                self.grid.event_effects.show_map(my_body)
+                                self.grid.event_effects.show_map(mybody)
                             elif CLICKED_ITEM.name in ["sat_app"] and not self.grid.current_room in ["map"]:
                                 if mouse_mode and 'battery' in mouse_mode:
                                     self.grid.event_effects.satellite()
-                                    self.grid.event_effects.drop(CLICKED_ITEM, my_body, force=True)
+                                    self.grid.event_effects.drop(CLICKED_ITEM, mybody, force=True)
                                     CLICKED_ITEM.boost = []
                                     CLICKED_ITEM.tok = 0
                                 else:
                                     self.grid.msg("SCREEN - No bat")
+
+                            # DDEBUG
                             elif CLICKED_ITEM.name in ["phone"]:
                                 self.grid.show_debug = not self.grid.show_debug
-                                self.grid.show_grid = not self.grid.show_grid
 
                             # SUICIDE
                             if CLICKED_ITEM.name == "suicide":
-                                my_body.destroy(self.grid)
+                                mybody.destroy(self.grid)
 
                             # MITOSIS
                             elif CLICKED_ITEM.name == "mitosis":
@@ -160,10 +160,10 @@ class GameEvents(GameEffects):
                     # EAT
                     if event.button == 3:
                         if CLICKED_ITEM.consumable and not CLICKED_ITEM.birth_track:
-                            if (CLICKED_ITEM.pos in self.grid.adj_tiles(my_body.pos)) or (CLICKED_ITEM in my_body.inventory.options.values()):
-                                if self.consume(my_body, CLICKED_ITEM):
-                                    if CLICKED_ITEM in my_body.inventory.options.values():
-                                        self.empty_inventory(CLICKED_ITEM, my_body)
+                            if (CLICKED_ITEM.pos in self.grid.adj_tiles(mybody.pos)) or (CLICKED_ITEM in mybody.inventory.options.values()):
+                                if self.consume(mybody, CLICKED_ITEM):
+                                    if CLICKED_ITEM in mybody.inventory.options.values():
+                                        self.empty_inventory(CLICKED_ITEM, mybody)
                                     else:
                                         CLICKED_ITEM.destroy(self.grid)
                                 else:
@@ -174,14 +174,14 @@ class GameEvents(GameEffects):
                             self.grid.msg("SCREEN - no eat %s" % clicked_screen_name)
 
                     # DROP
-                    elif mouse_mode and any(mouse_mode in inventory_item.name for inventory_item in my_body.inventory.options.values()):
-                        self.drop(CLICKED_ITEM, my_body)
+                    elif mouse_mode and any(mouse_mode in inventory_item.name for inventory_item in mybody.inventory.options.values()):
+                        self.drop(CLICKED_ITEM, mybody)
 
                     # COLLECT
                     elif mouse_mode in ["collect", None, ""]:
                         if CLICKED_ITEM.collectible and not 'option' in CLICKED_ITEM.type:
-                            if (CLICKED_ITEM.pos in self.grid.adj_tiles(my_body.pos)):
-                                self.collect(my_body, CLICKED_ITEM)
+                            if (CLICKED_ITEM.pos in self.grid.adj_tiles(mybody.pos)):
+                                self.collect(mybody, CLICKED_ITEM)
                             else:
                                 self.grid.msg("SCREEN - {0} is far".format(clicked_screen_name))
 
@@ -191,4 +191,4 @@ class GameEvents(GameEffects):
                         self.grid.clean_mouse()
 
         # DEBUG
-        grid_util.show_debug_on_click(self.grid, current_tile, my_body)
+        grid_util.show_debug_on_click(self.grid, current_tile, mybody)

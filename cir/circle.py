@@ -144,7 +144,7 @@ class Circle(object):
         if hasattr(self, 'home'):
             self.home.vfreq = self.home_vfreq
             self.home.vfreq.restart()
-        if self.name in ['my_body']:
+        if self.name in ['mybody']:
             grid.msg("SCREEN - you dead")
         self.marked_for_destruction = True
         all_circles = grid.circles + grid.panel_circles.values()

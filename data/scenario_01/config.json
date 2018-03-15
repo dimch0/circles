@@ -27,7 +27,7 @@
        "item_positions": ["11_1"]},
       {"item_name": "Enter_11_13",
        "item_positions": ["11_21"]},
-      {"item_name": "my_body",
+      {"item_name": "mybody",
        "item_positions": ["center"]},
       {"item_name": "bag",
        "item_positions": ["center"]},
