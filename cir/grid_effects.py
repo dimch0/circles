@@ -197,7 +197,7 @@ class GameEffects(object):
 
 
     def terminate_mode_click(self, item):
-        """ Terminate this shit """
+        """ Terminate """
         non_terminates = [
             "mybody",
             "option",
