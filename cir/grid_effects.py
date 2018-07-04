@@ -270,10 +270,10 @@ class GameEffects(object):
     #                          CONSUMABLES                            #
     #                                                                 #
     # --------------------------------------------------------------- #
-    def consume(self, consumator, consumable):
+    def consume(self, consumer, consumable):
         """
         Consume effects
-        :param consumator: item obj, that will consume the consumable effects
+        :param consumer: item obj, that will consume the consumable effects
         :param consumable: item obj, that has consumable effects or the effects as a string
         """
         consumed = False
@@ -283,7 +283,7 @@ class GameEffects(object):
 
         if isinstance(consumable, str):
             effects = consumable.split()
-        elif hasattr(consumator, "effects"):
+        elif hasattr(consumer, "effects"):
             effects = consumable.effects.split()
             if consumable.consumable:
                 exhaust = True
@@ -305,49 +305,49 @@ class GameEffects(object):
                     else:
                         modifier_str = '-{0}'.format(abs(amount))
 
-                    if consumator.type not in protected_types:
-                        if eff_att == 'max' and consumator.lifespan:
-                            consumator.lifespan.limit += amount * self.food_unit
+                    if consumer.type not in protected_types:
+                        if eff_att == 'max' and consumer.lifespan:
+                            consumer.lifespan.limit += amount * self.food_unit
                             attr_str = 'max'
 
-                        elif eff_att == 't' and consumator.lifespan:
-                            consumator.lifespan.update(amount * self.food_unit)
+                        elif eff_att == 't' and consumer.lifespan:
+                            consumer.lifespan.update(amount * self.food_unit)
                             attr_str = 'life'
 
-                        elif eff_att == 'sp' and hasattr(consumator, 'speed'):
-                            consumator.change_speed(amount)
+                        elif eff_att == 'sp' and hasattr(consumer, 'speed'):
+                            consumer.change_speed(amount)
                             attr_str = 'speed'
 
-                        elif eff_att == 'r' and hasattr(consumator, 'range'):
-                            consumator.range += amount
+                        elif eff_att == 'r' and hasattr(consumer, 'range'):
+                            consumer.range += amount
                             attr_str = 'range'
 
-                        elif eff_att == 'vsp' and hasattr(consumator, 'vspeed'):
-                            consumator.vspeed += amount
+                        elif eff_att == 'vsp' and hasattr(consumer, 'vspeed'):
+                            consumer.vspeed += amount
                             attr_str = 'vibe speed'
 
-                        elif eff_att == 'hyg' and hasattr(consumator, 'hyg'):
-                            consumator.hyg += amount
+                        elif eff_att == 'hyg' and hasattr(consumer, 'hyg'):
+                            consumer.hyg += amount
                             attr_str = 'hygiene'
 
-                        elif eff_att == 'mus' and hasattr(consumator, 'muscle'):
-                            consumator.muscle += amount
+                        elif eff_att == 'mus' and hasattr(consumer, 'muscle'):
+                            consumer.muscle += amount
                             attr_str = 'muscle'
 
-                        elif eff_att == 'ego' and hasattr(consumator, 'ego'):
-                            consumator.ego += amount
+                        elif eff_att == 'ego' and hasattr(consumer, 'ego'):
+                            consumer.ego += amount
                             attr_str = 'ego'
 
-                        elif eff_att == 'joy' and hasattr(consumator, 'joy'):
-                            consumator.joy += amount
+                        elif eff_att == 'joy' and hasattr(consumer, 'joy'):
+                            consumer.joy += amount
                             attr_str = 'joy'
 
-                        elif eff_att == 'vfreq' and hasattr(consumator, 'vfreq'):
-                            consumator.vfreq.duration += amount
+                        elif eff_att == 'vfreq' and hasattr(consumer, 'vfreq'):
+                            consumer.vfreq.duration += amount
                             attr_str = 'frequency'
 
-                        elif eff_att == 'tok' and hasattr(consumator, 'tok'):
-                            consumator.tok += amount
+                        elif eff_att == 'tok' and hasattr(consumer, 'tok'):
+                            consumer.tok += amount
                             attr_str = 'electricity'
 
                     if attr_str:
@@ -358,26 +358,39 @@ class GameEffects(object):
                             self.grid.loader.set_boost_timer(
                                 duration = boost_duration,
                                 effect = negative_effect,
-                                boosted_item = consumator,
+                                boosted_item = consumer,
                                 boost_item = consumable)
                             modifier_str += ' boost '
 
                         # add msg
                         eff_msg.append(modifier_str + ' ' + attr_str)
 
-                elif "#fight" in effect and hasattr(consumator, 'muscle') and not consumator.muscle in [None, '']:
-                    if 'mybody' in consumable.type:
-                        self.grid.msg('SCREEN - you fight %s' %
-                                      grid_util.get_short_name(consumator.name).replace('_', ' '))
-                    if 'mybody' in consumator.type:
-                        self.grid.msg('SCREEN - you fight %s' %
-                                      grid_util.get_short_name(consumable.name).replace('_', ' '))
-                    consumable.muscle_test(consumator, self.grid)
+                # hash
+                else:
+                    if "#fight" in effect and hasattr(consumer, 'muscle') and not consumer.muscle in [None, '']:
+                        if 'mybody' in consumable.type:
+                            self.grid.msg('SCREEN - you fight %s' %
+                                          grid_util.get_short_name(consumer.name).replace('_', ' '))
+                        if 'mybody' in consumer.type:
+                            self.grid.msg('SCREEN - you fight %s' %
+                                          grid_util.get_short_name(consumable.name).replace('_', ' '))
+                        consumable.muscle_test(consumer, self.grid)
+
+                    if "#flirt" in effect and "lover" in consumer.type and hasattr(consumable, 'ego'):
+                        if 'mybody' in consumable.type:
+                            self.grid.msg('SCREEN - you flirt %s' %
+                                          grid_util.get_short_name(consumer.name).replace('_', ' '))
+                        if 'mybody' in consumer.type:
+                            self.grid.msg('SCREEN - you flirt %s' %
+                                          grid_util.get_short_name(consumable.name).replace('_', ' '))
+
+                        # consumable.muscle_test(consumer, self.grid)
+                        consumer.love(self.grid)
 
 
             if eff_msg:
                 consumed = True
-                if 'mybody' in consumator.type:
+                if 'mybody' in consumer.type:
                     if not isinstance(consumable, str):
                         if 'boost' in consumable.type:
                             self.grid.msg('SCREEN - %s boost over' %
@@ -389,7 +402,7 @@ class GameEffects(object):
                     for effm in eff_msg:
                         self.grid.msg('SCREEN - {0}'.format(effm))
 
-                consumator.gen_effect_track(effect_color)
+                consumer.gen_effect_track(effect_color)
 
             # except Exception as e:
             #     self.grid.msg("ERROR - invalid effects '{0}' \n {1}".format(effects, e))

@@ -86,3 +86,7 @@ class Body(Mobile):
 
             grid.event_effects.consume(hit_circle, hit_effects)
             grid.event_effects.consume(self, self_effects)
+
+
+    def love(self, grid):
+        self.color = grid.f35d73
