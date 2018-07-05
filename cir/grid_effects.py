@@ -366,7 +366,7 @@ class GameEffects(object):
                         eff_msg.append(modifier_str + ' ' + attr_str)
 
                 # hash
-                else:
+                elif not consumer.birth_track:
                     if "#fight" in effect and hasattr(consumer, 'muscle') and not consumer.muscle in [None, '']:
                         if 'mybody' in consumable.type:
                             self.grid.msg('SCREEN - you fight %s' %
@@ -377,15 +377,15 @@ class GameEffects(object):
                         consumable.muscle_test(consumer, self.grid)
 
                     if "#flirt" in effect and "lover" in consumer.type and hasattr(consumable, 'ego'):
-                        if 'mybody' in consumable.type:
-                            self.grid.msg('SCREEN - you flirt %s' %
-                                          grid_util.get_short_name(consumer.name).replace('_', ' '))
+                        # if 'mybody' in consumable.type:
+                        #    self.grid.msg('SCREEN - %s love +%s' %
+                        #                  grid_util.get_short_name(consumer.name).replace('_', ' '), consumable.ego)
                         if 'mybody' in consumer.type:
-                            self.grid.msg('SCREEN - you flirt %s' %
-                                          grid_util.get_short_name(consumable.name).replace('_', ' '))
+                            self.grid.msg('SCREEN - flirt %s +%s' %
+                                          grid_util.get_short_name(consumable.name).replace('_', ' '), consumable.ego)
 
                         # consumable.muscle_test(consumer, self.grid)
-                        consumer.love(self.grid)
+                        consumer.love(self.grid, amount = consumable.ego)
 
 
             if eff_msg:

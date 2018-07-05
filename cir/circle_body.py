@@ -32,6 +32,8 @@ class Body(Mobile):
                     "spirit" : 0,
                     "geo"    : 0}
 
+        self.loved = 0
+
     # --------------------------------------------------------------- #
     #                                                                 #
     #                             VIBE                                #
@@ -88,5 +90,11 @@ class Body(Mobile):
             grid.event_effects.consume(self, self_effects)
 
 
-    def love(self, grid):
-        self.color = grid.f35d73
+    def love(self, grid, amount):
+        # self.color = grid.f35d73
+        # self.default_color = grid.f35d73
+        self.loved += amount
+
+        if self.loved >= 15:
+            self.color = grid.f35d73
+            self.default_color = grid.f35d73
