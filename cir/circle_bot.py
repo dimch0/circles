@@ -82,6 +82,8 @@ class Bot(Body):
 
             if "#fear" in self.effects:
                 self.target = self.farthest_circle(grid, "mybody")
+            elif "#inlove" in self.effects:
+                self.target = self.chase_pos(grid, "mybody")
             # Get target
             # target = self.nearest_unrevealed(grid)
             # target = self.chase_pos(grid, "mybody")
@@ -93,7 +95,7 @@ class Bot(Body):
             else:
                 target = None
 
-                if self.hungry:
+                if self.hungry or "#inlove" in self.effects:
                     target = self.nearest_item(grid, itype='food')
                     if target:
                         if target.pos in grid.adj_tiles(self.pos):

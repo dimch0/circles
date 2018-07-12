@@ -377,12 +377,12 @@ class GameEffects(object):
                         consumable.muscle_test(consumer, self.grid)
 
                     if "#flirt" in effect and "lover" in consumer.type and hasattr(consumable, 'ego'):
-                        # if 'mybody' in consumable.type:
-                        #    self.grid.msg('SCREEN - %s love +%s' %
-                        #                  grid_util.get_short_name(consumer.name).replace('_', ' '), consumable.ego)
+                        if 'mybody' in consumable.type:
+                           self.grid.msg('SCREEN - flirt %s' %
+                                         grid_util.get_short_name(consumer.name).replace('_', ' '))
                         if 'mybody' in consumer.type:
-                            self.grid.msg('SCREEN - flirt %s +%s' %
-                                          grid_util.get_short_name(consumable.name).replace('_', ' '), consumable.ego)
+                            self.grid.msg('SCREEN - flirt %s' %
+                                          grid_util.get_short_name(consumable.name).replace('_', ' '))
 
                         # consumable.muscle_test(consumer, self.grid)
                         consumer.love(self.grid, amount = consumable.ego)

@@ -98,3 +98,5 @@ class Body(Mobile):
         if self.loved >= 15:
             self.color = grid.f35d73
             self.default_color = grid.f35d73
+            self.effects = self.effects.replace("#fear", "#inlove")
+

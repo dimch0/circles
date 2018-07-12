@@ -14,8 +14,9 @@ class Timer(Circle):
         super(Timer, self).__init__()
 
         # CONSTANTS
-        self.time_step = 0.0157
-        self.steps_per_sec = 63
+        # self.time_step = 0.0157
+        # self.time_step = 63
+        self.time_step = 1
         self.start_degrees = 90
 
         # METRICS
@@ -32,7 +33,7 @@ class Timer(Circle):
 
     @property
     def number_of_steps(self):
-        self._number_of_steps = self.duration * self.steps_per_sec
+        self._number_of_steps = self.duration * self.time_step
         return self._number_of_steps
 
     @property
@@ -78,7 +79,7 @@ class Timer(Circle):
         Updates the timer with delta seconds
         :param delta: change of timer in seconds
         """
-        current_duration = self.duration - (self.step / self.steps_per_sec)
+        current_duration = self.duration - (self.step / self.time_step)
         steps_before = self.number_of_steps
 
         if current_duration + delta > self.limit:
@@ -87,7 +88,7 @@ class Timer(Circle):
         elif current_duration + delta <= 0:
             self._is_over = True
         else:
-            steps_delta  = delta * self.steps_per_sec
+            steps_delta  = delta * self.time_step
             self.duration += delta
             self._filled_degrees = int((self.step * self.number_of_steps) / steps_before) - \
                                   (self.step_degrees * steps_delta)
