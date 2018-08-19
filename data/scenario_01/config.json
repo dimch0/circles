@@ -32,13 +32,7 @@
       {"item_name": "bag",
        "item_positions": ["center"]},
       {"item_name": "slab",
-       "item_positions": ["center"]},
-      {"item_name": "photo",
-        "item_positions": ["10_10"]},
-      {"item_name": "perfume2",
-        "item_positions": ["10_6"]},
-      {"item_name": "bin",
-        "item_positions": ["10_8"]}
+       "item_positions": ["center"]}
     ]},
     {"10_8" : [
       {"item_name": "Enter_9_7",
