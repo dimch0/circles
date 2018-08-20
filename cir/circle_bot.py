@@ -100,7 +100,7 @@ class Bot(Body):
                     if target:
                         if target.pos in grid.adj_tiles(self.pos):
                             grid.event_effects.consume(consumable=target,
-                                                       consumator=self)
+                                                       consumer=self)
                         target = target.pos
                     else:
                         target = self.chase_pos(grid, "mybody")

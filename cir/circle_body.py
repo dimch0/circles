@@ -25,7 +25,7 @@ class Body(Mobile):
         self.hyg = 100
         self.joy = 0
 
-        self.knw_limit = z
+        self.knw_limit = 3
         self.knw = {"maths"  : 1,
                     "art"    : 2,
                     "bio"    : 0,
