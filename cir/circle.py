@@ -49,6 +49,7 @@ class Circle(object):
         #                            ANIMATION                            #
         # --------------------------------------------------------------- #
         self.direction = None
+
         self.move_track = []
         self.vibe_track = {'center': '', 'track':[]}
         self.birth_track = []
@@ -158,3 +159,13 @@ class Circle(object):
             if self.color:
                 self.gen_birth_track()
                 self.birth_track.reverse()
+
+
+    # MOVEMENT
+    def get_legal_moves(self, grid):
+        # Check for legal tiles to move
+        legal_moves = {}
+        for idx, adj_tile in enumerate(grid.adj_tiles(self.pos)):
+            if adj_tile in grid.playing_tiles and adj_tile not in grid.occupado_tiles.values():
+                legal_moves[adj_tile] = idx
+        return legal_moves

@@ -14,12 +14,40 @@ class Mobile(Circle):
     def __init__(self):
         super(Mobile, self).__init__()
         self.speed = 1
+        self.go_to_tile = None
 
     def change_speed(self, modifier):
         self.speed += modifier
         if self.speed < 0:
             self.speed = 0
 
+    # --------------------------------------------------------------- #
+    #                                                                 #
+    #                          MOVEMENT NEW                           #
+    #                                                                 #
+    # --------------------------------------------------------------- #
+    def choose_nearest_legal(self, target, grid):
+
+        legal_moves = self.get_legal_moves(grid)
+
+        # Choose nearest legal
+        if legal_moves:
+            # if target and target not in grid.adj_tiles(self.pos):
+            best_legal = None
+            for move_tile, move_idx in legal_moves.items():
+                if not best_legal:
+                    best_legal = move_tile
+                elif grid_util.dist_between(best_legal, target) > grid_util.dist_between(move_tile, target):
+                    best_legal = move_tile
+            if grid_util.dist_between(self.pos, target) > grid_util.dist_between(best_legal, target):
+                self.direction = legal_moves[best_legal]
+                self.gen_move_track(grid)
+                self.direction = None
+
+
+    def move_to_tile_new(self, grid):
+        if self.go_to_tile:
+            self.choose_nearest_legal(self.go_to_tile, grid)
 
     # --------------------------------------------------------------- #
     #                                                                 #

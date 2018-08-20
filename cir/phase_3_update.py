@@ -234,6 +234,9 @@ class VarUpdater(object):
                     #             circle.gen_fat()
 
                     # ANIMATE MOVEMENT
+                    if hasattr(circle, "go_to_tile") and circle.go_to_tile != None:
+                        circle.move_to_tile_new(self.grid)
+
                     if circle.direction != None:
                         circle.gen_move_track(self.grid)
                     if circle.move_track and not circle.birth_track:
