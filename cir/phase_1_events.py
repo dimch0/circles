@@ -83,7 +83,7 @@ class GameEvents(GameEffects):
         if not event.button == 3:
 
             # MOVEMENT
-            if not mouse_mode and current_tile in self.grid.revealed_tiles.keys():
+            if not mouse_mode and current_tile in self.grid.playing_tiles:
                 mybody.go_to_tile = current_tile
 
             # CHECK FOR DOOR
