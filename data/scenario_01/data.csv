@@ -219,11 +219,11 @@ sax,item,3,consume art,color1,sax,art:+2,,,TRUE,TRUE,,,,,,,,
 kassette,item,4,consume art,color1,kassette,art:+3,,,TRUE,TRUE,,,,,,,,
 photo,item,4,consume art,color1,photo,art:+3,,,TRUE,TRUE,,,,,,,,
 name,klas,lvl,type,color,img,effects,options,modable,collectible,consumable,speed,range,muscle,time_color,lifespan,vspeed,vfreq,layer
-mybody,body,,mybody,fcc21c,galab,#scout #flirt,,,,,2,1,3,fog_color,120,,1,2
-bqlgalab,bot,,bod bot lover,color1,bqlgalab,#fear,,,,,4,1,1,fog_color,180,,0.5,2
-chickin,bot,,bod bot lover,color1,chickin,#fear,,,,,4,1,1,fog_color,180,,0.5,2
-ladybug,bot,,bod bot lover,color1,ladybug,#fear,,,,,4,1,1,fog_color,180,,0.5,2
-gvin,bot,,bod bot lover,color1,gvin,#fear,,,,,4,1,1,fog_color,180,,0.5,2
+mybody,body,,mybody,,galab,#scout #flirt,,,,,2,1,3,fcc21c,120,,1,2
+bqlgalab,bot,,bod bot lover,color1,bqlgalab,#fear #scout,,,,,4,1,1,fog_color,180,,0.5,2
+chickin,bot,,bod bot lover,color1,chickin,#fear #scout,,,,,4,1,1,fog_color,180,,0.5,2
+ladybug,bot,,bod bot lover,color1,ladybug,#fear #scout,,,,,4,1,1,fog_color,180,,0.5,2
+gvin,bot,,bod bot lover,color1,gvin,#fear #scout,,,,,4,1,1,fog_color,180,,0.5,2
 dog,bot,,bod bot,color1,dog,#fight #hunger,,,,,4,1,2,fog_color,30,,0.5,1
 car,bot,,bod bot,color1,car,#traffic,,,,,4,,5,,,,0.5,
 nerd,body,,bod bot,color1,,#scout #fear,,,,,,,,,,,,

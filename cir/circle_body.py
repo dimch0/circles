@@ -48,24 +48,19 @@ class Body(Mobile):
         """
 
         if self.direction is None and not self.vibe_track['track'] and not self.birth_track:
-            vibe_thickness = range(1, (grid.tile_radius / 3) + 1)
-            vibe_thickness.reverse()
+
+            vibe_thickness = 1
             vibe_limit = (grid.tile_radius * 2 * self.range) + grid.tile_radius + 1
             vibe_radius = get_list_drange(grid.tile_radius, vibe_limit, self.vspeed)
-            vibe_delimiter = (vibe_radius[-1] - vibe_radius[0]) / vibe_thickness[0]
-            result = []
 
-            rad_delimiter_list = get_list_drange(1, (vibe_delimiter + 1), 1)
-            for thick in vibe_thickness:
-                for rad_delim in rad_delimiter_list:
-                    result.append(thick)
-            track = zip(vibe_radius, result)
-            track.append((vibe_limit, 1))
+            track = [(v_radius, vibe_thickness) for v_radius in vibe_radius]
+            track.append((vibe_limit, vibe_thickness))
+
             self.vibe_track = {'center': self.pos,
                                'track': track}
-            self.gen_fat()
 
         return self.vibe_track
+
 
     def muscle_test(self, hit_circle, grid):
         """

@@ -28,7 +28,7 @@ class Timer(Circle):
         self._step_degrees = None
         self._filled_degrees = self.start_degrees
         self._is_over = False
-        self.reversed = False
+        self.reversed = True
         self.available = True
 
     @property

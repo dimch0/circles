@@ -141,7 +141,7 @@ class GameDrawer(object):
                 timer = circle.vfreq
 
         if timer:
-            timer_fat = 4
+            timer_fat = 1
 
             if timer.available and circle.time_color:
                 if circle.radius >= timer_fat:
