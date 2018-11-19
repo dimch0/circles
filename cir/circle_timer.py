@@ -6,6 +6,7 @@
 import time
 from circle import Circle
 
+# TODO: REFACTOR TIMER TO USE STEPS TURNBASED
 
 class Timer(Circle):
     """ This is the base class for all timers """
