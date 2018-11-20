@@ -10,7 +10,6 @@ def game_menu(grid, mybody, end_msg=''):
     while grid.game_menu:
 
         current_tile = grid.mouse_in_tile(grid.pygame.mouse.get_pos())
-        grid.seconds_in_game_tick()
 
         for event in grid.pygame.event.get():
             if event.type == grid.pygame.QUIT:
@@ -21,8 +20,7 @@ def game_menu(grid, mybody, end_msg=''):
                 #                             'Escape'                            #
                 # --------------------------------------------------------------- #
                 if event.key == grid.pygame.K_ESCAPE:
-                    if grid.seconds_in_game > 0:
-                        grid.game_menu = False
+                    grid.game_menu = False
 
 
             elif event.type == grid.pygame.MOUSEBUTTONDOWN:
@@ -31,8 +29,7 @@ def game_menu(grid, mybody, end_msg=''):
                         if current_tile == button.pos and button.clickable:
                             if button.name in ["play", "replay"]:
                                 grid.game_menu = False
-                                if grid.seconds_in_game == 0:
-                                    grid.messages = ["SCREEN - start"]
+                                grid.messages = ["SCREEN - play"]
                                 if grid.game_over:
                                     grid.game_over = False
                                 if button.name == "replay":

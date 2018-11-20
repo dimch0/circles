@@ -226,7 +226,7 @@ class VarUpdater(object):
                 if circle.available:
 
                     # TIMERS
-                    # self.timer_effect(circle)
+                    self.timer_effect(circle)
 
                     # KISSING CIRCLES
                     # if circle.type == 'body':

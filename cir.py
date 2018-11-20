@@ -25,8 +25,6 @@ def game_loop(game_over, scenario="scenario_01", msg=list()):
     mybody.gen_vibe_track(grid)
     if game_over:
         grid.messages = msg
-    else:
-        grid.messages = ["SCREEN - start"]
 
 
     # --------------------------------------------------------------- #
@@ -35,7 +33,6 @@ def game_loop(game_over, scenario="scenario_01", msg=list()):
     while not grid.game_over:
 
         CURRENT_TILE = grid.mouse_in_tile(pygame.mouse.get_pos())
-        grid.seconds_in_game_tick()
         game_menu(grid, mybody)
 
         # --------------------------------------------------------------- #

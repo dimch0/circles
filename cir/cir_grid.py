@@ -51,8 +51,7 @@ class Grid(object):
         self.game_over = False
         self.start_time = None
         self.shift = False
-        self.seconds_in_game = 0
-        self.seconds_in_pause = 0
+        self.global_time = 0
         self.clock = pygame.time.Clock()
         self.messages = []
         # -------------------------------------------------- #
@@ -402,22 +401,6 @@ class Grid(object):
         self.current_room = str(room)
         self.load_current_room()
         self.needs_to_change_room = False
-
-    # --------------------------------------------------------------- #
-    #                            SECONDS                              #
-    # --------------------------------------------------------------- #
-    def seconds_in_game_tick(self):
-        """ Counts the seconds in the game """
-
-        if time.time() > self.start_time + self.seconds_in_game + self.seconds_in_pause:
-            if not self.game_menu and not self.current_room in ["map"]:
-                self.seconds_in_game += 1
-                if self.show_seconds:
-                    self.msg("INFO - Game second: {0}".format(self.seconds_in_game))
-            else:
-                self.seconds_in_pause += 1
-                if self.show_seconds:
-                    self.msg("INFO - Pause second: {0}".format(self.seconds_in_pause))
 
     # --------------------------------------------------------------- #
     #                            ITEMS                                #
