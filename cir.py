@@ -22,7 +22,7 @@ def game_loop(game_over, scenario="scenario_01", msg=list()):
     grid.loader = DataLoader(grid)
     mybody = grid.loader.load_game()
     grid.updater.mybody = mybody
-
+    mybody.gen_vibe_track(grid)
     if game_over:
         grid.messages = msg
     else:

@@ -58,7 +58,6 @@ class Body(Mobile):
 
             self.vibe_track = {'center': self.pos,
                                'track': track}
-
         return self.vibe_track
 
 

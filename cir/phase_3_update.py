@@ -119,44 +119,45 @@ class VarUpdater(object):
     def timer_effect(self, item):
         """ Timer effects  """
 
-        # LIFESPAN
-        if item.lifespan and not isinstance(item.lifespan, (float, int)):
-            item.lifespan.tick()
-            if item.lifespan.is_over:
-                item.destroy(self.grid)
-
-        # VIBE TIMER
-        if hasattr(item, "vfreq"):
-            if item.vfreq and not isinstance(item.vfreq, (float, int)):
-                if item.vfreq.duration and not item.move_track:
-                    item.vfreq.tick()
-                    if item.vfreq.is_over:
-                        do_action = False
-                        if not hasattr(item, 'tok'):
-                            do_action = True
-                        elif item.tok > 0:
-                            do_action = True
-
-                        if do_action:
-
-                            if hasattr(item, 'range'):
-                                if item.range and not item.move_track and item.vfreq:
-                                    item.gen_vibe_track(self.grid)
-                                    item.vfreq.restart()
-                            if hasattr(item, 'action'):
-                                item.action(self.grid)
-
-        # BOOST TIMER
-        if hasattr(item, "boost"):
-            for boost_timer in item.boost:
-                if boost_timer and not isinstance(boost_timer, (float, int)):
-                    if boost_timer.duration:
-                        boost_timer.tick()
-                        if boost_timer.is_over:
-                            self.grid.event_effects.consume(item, boost_timer)
-                            item.default_color = boost_timer.store_color
-                            item.boost.remove(boost_timer)
-                            boost_timer.destroy(self.grid)
+        pass
+        # # LIFESPAN
+        # if item.lifespan and not isinstance(item.lifespan, (float, int)):
+        #     item.lifespan.tick()
+        #     if item.lifespan.is_over:
+        #         item.destroy(self.grid)
+        #
+        # # VIBE TIMER
+        # if hasattr(item, "vfreq"):
+        #     if item.vfreq and not isinstance(item.vfreq, (float, int)):
+        #         if item.vfreq.duration and not item.move_track:
+        #             item.vfreq.tick()
+        #             if item.vfreq.is_over:
+        #                 do_action = False
+        #                 if not hasattr(item, 'tok'):
+        #                     do_action = True
+        #                 elif item.tok > 0:
+        #                     do_action = True
+        #
+        #                 if do_action:
+        #
+        #                     if hasattr(item, 'range'):
+        #                         if item.range and not item.move_track and item.vfreq:
+        #                             item.gen_vibe_track(self.grid)
+        #                             item.vfreq.restart()
+        #                     if hasattr(item, 'action'):
+        #                         item.action(self.grid)
+        #
+        # # BOOST TIMER
+        # if hasattr(item, "boost"):
+        #     for boost_timer in item.boost:
+        #         if boost_timer and not isinstance(boost_timer, (float, int)):
+        #             if boost_timer.duration:
+        #                 boost_timer.tick()
+        #                 if boost_timer.is_over:
+        #                     self.grid.event_effects.consume(item, boost_timer)
+        #                     item.default_color = boost_timer.store_color
+        #                     item.boost.remove(boost_timer)
+        #                     boost_timer.destroy(self.grid)
 
 
     # --------------------------------------------------------------- #
@@ -225,7 +226,7 @@ class VarUpdater(object):
                 if circle.available:
 
                     # TIMERS
-                    self.timer_effect(circle)
+                    # self.timer_effect(circle)
 
                     # KISSING CIRCLES
                     # if circle.type == 'body':
@@ -242,6 +243,12 @@ class VarUpdater(object):
                     if circle.move_track and not circle.birth_track:
                         circle.pos = circle.move_track[0]
                         circle.move_track.pop(0)
+                        # TODO: SPENT TIME METHOD
+                        if not circle.move_track:
+                            circle.time = circle.time - (float(1) / float(circle.speed))
+                            print circle.time
+                            # print circle.max
+                            # import pdb; pdb.set_trace()
 
                     # ANIMATE BIRTH
                     if circle.birth_track:

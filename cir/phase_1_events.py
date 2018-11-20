@@ -80,6 +80,10 @@ class GameEvents(GameEffects):
         # --------------------------------------------------------------- #
         #                    MOUSE MODE CLICK NO ITEM                     #
         # --------------------------------------------------------------- #
+        if current_tile == mybody.pos:
+            mybody.gen_vibe_track(self.grid)
+            print mybody.time
+
         if not event.button == 3:
 
             # MOVEMENT

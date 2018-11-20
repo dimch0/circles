@@ -130,29 +130,30 @@ class GameDrawer(object):
 
     def draw_timers(self, circle):
         """ Draws current state of a timer """
-        timer = None
-
-        if hasattr(circle, 'lifespan'):
-            if circle.lifespan not in ['', None]:
-                timer = circle.lifespan
-
-        if not timer and hasattr(circle, 'vfreq'):
-            if circle.vfreq:
-                timer = circle.vfreq
-
-        if timer:
-            timer_fat = 1
-
-            if timer.available and circle.time_color:
-                if circle.radius >= timer_fat:
-                    timer.pos = circle.pos
-                    timer.radius = circle.radius
-                    self.grid.pygame.draw.arc(self.grid.game_display,
-                                              circle.time_color,
-                                              timer.rect,
-                                              math.radians(timer.filled_degrees),
-                                              math.radians(timer.start_degrees),
-                                              timer_fat)
+        pass
+        # timer = None
+        #
+        # if hasattr(circle, 'lifespan'):
+        #     if circle.lifespan not in ['', None]:
+        #         timer = circle.lifespan
+        #
+        # if not timer and hasattr(circle, 'vfreq'):
+        #     if circle.vfreq:
+        #         timer = circle.vfreq
+        #
+        # if timer:
+        #     timer_fat = 1
+        #
+        #     if timer.available and circle.time_color:
+        #         if circle.radius >= timer_fat:
+        #             timer.pos = circle.pos
+        #             timer.radius = circle.radius
+        #             self.grid.pygame.draw.arc(self.grid.game_display,
+        #                                       circle.time_color,
+        #                                       timer.rect,
+        #                                       math.radians(timer.filled_degrees),
+        #                                       math.radians(timer.start_degrees),
+        #                                       timer_fat)
 
     def draw_aim(self, current_tile, circle):
         """ Aim """
@@ -325,7 +326,7 @@ class GameDrawer(object):
                     self.draw_movement(circle)
 
                 # TIMERS
-                self.draw_timers(circle)
+                # self.draw_timers(circle)
 
 
         # MOUSE

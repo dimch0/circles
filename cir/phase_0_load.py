@@ -13,7 +13,7 @@ from circle_body import Body
 from circle_panel import Panel
 from circle_bot import Bot
 from circle_spawn import Spawn
-from circle_timer import Timer
+# from circle_timer import Timer
 
 from grid_cosmetic import Images, Fonts, Colors
 from phase_1_events import GameEvents
@@ -49,9 +49,9 @@ class DataLoader(object):
         try:
             if klas == "body":
                 dummy = Body()
-            elif klas == "timer":
-                dummy = Timer()
-                dummy.timer_tile_radius = self.grid.tile_radius
+            # elif klas == "timer":
+            #     dummy = Timer()
+            #     dummy.timer_tile_radius = self.grid.tile_radius
             elif klas == "item":
                 dummy = Circle()
             elif klas == "bot":
@@ -154,7 +154,7 @@ class DataLoader(object):
                                 "modable"     : bool(row[col_idx["modable"]]),
                                 "collectible" : bool(row[col_idx["collectible"]]),
                                 "consumable"  : bool(row[col_idx["consumable"]]),
-                                "lifespan"    : float(row[col_idx["lifespan"]]) if len(row[col_idx["lifespan"]]) > 0 else None,
+                                "time"        : float(row[col_idx["time"]]) if len(row[col_idx["time"]]) > 0 else None,
                                 "vfreq"       : float(row[col_idx["vfreq"]]) if len(row[col_idx["vfreq"]]) > 0 else None,
                                 "vspeed"      : int(float(row[col_idx["vspeed"]])) if len(row[col_idx["vspeed"]]) > 0 else 1,
                                 "layer"       : int(float(row[col_idx["layer"]])) if len(row[col_idx["layer"]]) > 0 else 1,
@@ -188,6 +188,7 @@ class DataLoader(object):
                         yield result, klas
 
     def set_opts(self, item):
+
         options = item.options.split()
         item.options = {}
         for opt in options:
@@ -207,39 +208,40 @@ class DataLoader(object):
 
     def set_timers(self, item):
         """ Set timers """
-        if item.lifespan and isinstance(item.lifespan, (int, float)):
-            lifespan = Timer()
-            lifespan.radius = item.radius
-            lifespan.default_radius = item.radius
-            lifespan.duration = item.lifespan
-            lifespan.limit = item.lifespan
-            lifespan.color = item.time_color
-            item.lifespan = lifespan
-
-        if hasattr(item, "vfreq"):
-            vibefr = Timer()
-            vibefr.duration = item.vfreq
-            vibefr.radius = item.radius
-            vibefr.default_radius = item.radius
-            if not hasattr(item, 'lifespan') or (hasattr(item, 'lifespan') and not item.lifespan):
-                vibefr.color = item.time_color
-            item.vfreq = vibefr
-            if hasattr(item, 'reversed_timer'):
-                if item.reversed_timer:
-                    item.vfreq.reversed = True
+        pass
+        # if item.lifespan and isinstance(item.lifespan, (int, float)):
+        #     lifespan = Timer()
+        #     lifespan.radius = item.radius
+        #     lifespan.default_radius = item.radius
+        #     lifespan.duration = item.lifespan
+        #     lifespan.limit = item.lifespan
+        #     lifespan.color = item.time_color
+        #     item.lifespan = lifespan
+        #
+        # if hasattr(item, "vfreq"):
+        #     vibefr = Timer()
+        #     vibefr.duration = item.vfreq
+        #     vibefr.radius = item.radius
+        #     vibefr.default_radius = item.radius
+        #     if not hasattr(item, 'lifespan') or (hasattr(item, 'lifespan') and not item.lifespan):
+        #         vibefr.color = item.time_color
+        #     item.vfreq = vibefr
+        #     if hasattr(item, 'reversed_timer'):
+        #         if item.reversed_timer:
+        #             item.vfreq.reversed = True
 
     def set_boost_timer(self, duration, effect, boosted_item, boost_item):
-
-        boost_timer = Timer()
-        boost_timer.name = boost_item.name + ' boost'
-        boost_timer.type = boost_item.type + ' boost'
-        boost_timer.duration = duration
-        boost_timer.effects = effect
-        setattr(boost_timer, 'boost_item', cu.get_short_name(boost_item.name))
-        setattr(boost_timer, 'store_color', boosted_item.default_color)
-        if not hasattr(boosted_item, 'boost'):
-            setattr(boosted_item, 'boost', list())
-        boosted_item.boost.append(boost_timer)
+        pass
+        # boost_timer = Timer()
+        # boost_timer.name = boost_item.name + ' boost'
+        # boost_timer.type = boost_item.type + ' boost'
+        # boost_timer.duration = duration
+        # boost_timer.effects = effect
+        # setattr(boost_timer, 'boost_item', cu.get_short_name(boost_item.name))
+        # setattr(boost_timer, 'store_color', boosted_item.default_color)
+        # if not hasattr(boosted_item, 'boost'):
+        #     setattr(boosted_item, 'boost', list())
+        # boosted_item.boost.append(boost_timer)
 
 
     def load_item(self, item_name):
@@ -279,7 +281,7 @@ class DataLoader(object):
         door.default_radius = item.radius
         door.available = False
 
-        self.set_timers(door)
+        # self.set_timers(door)
         return door, door_room
 
     def set_buttons(self):
@@ -406,5 +408,5 @@ class DataLoader(object):
         self.grid.circles.append(self.mybody)
 
         self.grid.load_current_room()
-
+        self.mybody.gen_vibe_track(self.grid)
         return self.mybody

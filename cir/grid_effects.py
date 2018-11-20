@@ -27,7 +27,7 @@ class GameEffects(object):
                 pos=None,
                 radius=None,
                 vfreq=None,
-                lifespan=None,
+                time=None,
                 add_circle=True,
                 effects=None,
                 panel=False):
@@ -38,7 +38,7 @@ class GameEffects(object):
         :param radius: set new radius (optional)
         :param birth: set new birth timer (optional)
         :param vfreq: set new vibe frequency (optional)
-        :param lifespan: set new lifespan (optional)
+        :param time: set new time (optional)
         :return: the new item object
         """
         new_item = None
@@ -57,12 +57,12 @@ class GameEffects(object):
                     new_item.vfreq.duration = vfreq
                 if effects:
                     new_item.effects = effects
-                if lifespan:
-                    new_item.lifespan = lifespan
+                if time:
+                    new_item.time = time
                 else:
-                    if hasattr(new_item, 'lifespan'):
-                        if new_item.lifespan:
-                            new_item.lifespan.restart()
+                    if hasattr(new_item, 'time'):
+                        if new_item.time:
+                            new_item.time.restart()
 
                 new_item.default_img = new_item.img
                 new_item.available = True
@@ -106,9 +106,9 @@ class GameEffects(object):
             new_copy.name = "new copy-" + str(time.time())
             new_copy.birth_track = []
             new_copy.move_track = new_copy.move_to_tile(self.grid, empty_tile)
-            if new_copy.lifespan:
-                new_copy.lifespan.duration = 10
-                new_copy.lifespan.restart()
+            if new_copy.time:
+                new_copy.time.duration = 10
+                new_copy.time.restart()
 
     def mitosis(self, cir):
         """
@@ -152,7 +152,7 @@ class GameEffects(object):
     def satellite(self, speed=3):
         trigger = self.produce(product_name="trigger",
                                pos=self.grid.center_tile,
-                               lifespan=2)
+                               time=2)
         trigger.range = 4.5
         trigger.vspeed = speed
         trigger.effects = "#scout"
@@ -238,8 +238,8 @@ class GameEffects(object):
                 item_as_option.color = mybody.inventory.color
                 item_as_option.img = clicked_item.img
                 setattr(item_as_option, "ober_item", mybody.inventory)
-                if hasattr(clicked_item, "lifespan"):
-                    item_as_option.lifespan = clicked_item.lifespan
+                if hasattr(clicked_item, "time"):
+                    item_as_option.time = clicked_item.time
 
                 # ADD IN BAG AND REMOVE FROM FIELD
                 inventory.options[item_as_option.name] = item_as_option
@@ -306,12 +306,12 @@ class GameEffects(object):
                         modifier_str = '-{0}'.format(abs(amount))
 
                     if consumer.type not in protected_types:
-                        if eff_att == 'max' and consumer.lifespan:
-                            consumer.lifespan.limit += amount * self.food_unit
+                        if eff_att == 'max' and consumer.time:
+                            consumer.time.limit += amount * self.food_unit
                             attr_str = 'max'
 
-                        elif eff_att == 't' and consumer.lifespan:
-                            consumer.lifespan.update(amount * self.food_unit)
+                        elif eff_att == 't' and consumer.time:
+                            consumer.time.update(amount * self.food_unit)
                             attr_str = 'life'
 
                         elif eff_att == 'sp' and hasattr(consumer, 'speed'):
@@ -433,8 +433,8 @@ class GameEffects(object):
                         item_name = grid_util.get_short_name(self.grid.mouse_mode)
                         dropped_item = self.produce(item_name, clicked)
                         if dropped_item:
-                            if hasattr(bag_item, "lifespan"):
-                                dropped_item.lifespan = bag_item.lifespan
+                            if hasattr(bag_item, "time"):
+                                dropped_item.time = bag_item.time
                             self.empty_inventory(bag_item, mybody)
                             break
         # Drop item from inventory to body and consume

@@ -1,4 +1,4 @@
-name,klas,lvl,type,color,img,effects,options,modable,collectible,consumable,speed,range,muscle,time_color,lifespan,vspeed,vfreq,layer
+name,klas,lvl,type,color,img,effects,options,modable,collectible,consumable,speed,range,muscle,time_color,time,vspeed,vfreq,layer
 placeholder,item,,,black,,,,,,,,,,white,,,,1
 trigger,body,,trigger,,,,,,,,,,,,,,,1
 sat_vibe,body,,trigger,,,#rev,,,,,,6,,,1,5,0.3,1
@@ -15,7 +15,6 @@ suicide,item,,option app,color1,suicide,,,,,,,,,,,,,1
 bow,item,,option app,color1,bow,,,TRUE,,,,,,fog_color,,,,1
 wifi,item,,option app,color1,wifi,,,,TRUE,,,,,,,,,
 basketball,body,,signal,color1,basketball,t:-1,,,,,,,,,,,,
-name,klas,lvl,type,color,img,effects,options,modable,collectible,consumable,speed,range,muscle,time_color,lifespan,vspeed,vfreq,layer
 kenef,body,1,vendor,color1,toilette,#poop hyg:+1 #spritz:,,,,,,,,,,,,
 gascol,item,1,vendor,color1,gas,#lvl3:gas,,,,,,,,,,,,
 phoneven,item,5,vendor,color1,phone,#lvl3:#save,,,,,,,,,,,,
@@ -34,7 +33,6 @@ tattoo,spawn,1,vendor,color1,neon_tattoo,#lvl1:mark1 #lvl2:mark2 #lvl3:mark3,,,,
 pharma,spawn,1,vendor,color1,neon_pharma,#lvl1:bandage #lvl2:pill #lvl3:spritz,,,,,,,,,,,,
 lada,item,5,vehicle,color1,lada,#gas,,,TRUE,,,,,,,,,
 lamp,spawn,1,vendor,color1,,#consume:electricity light,,,,,,,,,,,,
-name,klas,lvl,type,color,img,effects,options,modable,collectible,consumable,speed,range,muscle,time_color,lifespan,vspeed,vfreq,layer
 music_box,spawn,3,qwelle,color1,radio,#receiver #tok t:+1,,,TRUE,,,3,,,,3,1.5,
 dog_house,spawn,1,spawn,color1,dog_house,#home:dog,,,,,,0,,fog_color,,5,10,
 traffic_light,spawn,1,spawn,color1,traffic_light,#spawn:car,,,,,,0,,fog_color,,5,3,
@@ -59,7 +57,6 @@ kofa1,spawn,1,qwelle,color1,kofa1,,,,,,,,,,,,,
 cam,spawn,1,qwelle,color1,,,,,,,,,,,,,,
 waiting line,spawn,1,qwelle,color1,,,,,,,,,,,,,,
 crane,spawn,1,,color1,,,,,,,,,,,,,,
-name,klas,lvl,type,color,img,effects,options,modable,collectible,consumable,speed,range,muscle,time_color,lifespan,vspeed,vfreq,layer
 pistol,item,,wear,color1,pistol,,,,TRUE,,,,,,,,,
 maluk lanec,item,,wear,color1,,,,,TRUE,,,,,,,,,
 rolex,item,,wear,color1,,,,,TRUE,,,,,,,,,
@@ -74,7 +71,6 @@ bike,item,,wear,color1,bike,,,,TRUE,,,,,,,,,
 battery,item,,wear,color1,battery,,,,TRUE,,,,,,,,,
 flashlight,item,,wear,color1,,,,,TRUE,,,,,,,,,
 balkan,item,,wear,color1,,,,,TRUE,,,,,,,,,
-name,klas,lvl,type,color,img,effects,options,modable,collectible,consumable,speed,range,muscle,time_color,lifespan,vspeed,vfreq,layer
 Enter_11_9,item,,door,color1,,,,,,,,,,,,,,
 Enter_11_13,item,,door,color1,,,,,,,,,,,,,,
 Enter_11_7,item,,door_enter,fog_color,neon_bar,,,,,,,,,,,,,
@@ -137,7 +133,6 @@ Enter_12_18,item,,door,color1,,,,,,,,,,,,,,
 Enter_11_19,item,,door,color1,,,,,,,,,,,,,,
 Enter_10_18,item,,door,color1,,,,,,,,,,,,,,
 Enter_9_17,item,,door,color1,,,,,,,,,,,,,,
-name,klas,lvl,type,color,img,effects,options,modable,collectible,consumable,speed,range,muscle,time_color,lifespan,vspeed,vfreq,layer
 key,item,,craft,color1,key,,,,TRUE,,,,,,,,,
 brick,item,,craft,color1,,,,,TRUE,,,,,,,,,
 tailing machine,item,,craft,color1,,,,,TRUE,,,,,,,,,
@@ -148,10 +143,8 @@ matchbox,item,,craft,color1,,smoke,,,TRUE,,,,,,,,,
 leaf,item,,craft,color1,,,,,TRUE,,,,,,,,,
 pencil,item,,craft,color1,pencil,,,,TRUE,,,,,,,,,
 fence,item,,craft,color1,fence,,,,TRUE,,,,,,,,,
-name,klas,lvl,type,color,img,effects,options,modable,collectible,consumable,speed,range,muscle,time_color,lifespan,vspeed,vfreq,layer
 bread,item,1,consume food,color1,bread,t:+1,,,TRUE,TRUE,,,,,,,,
 peanut,item,1,consume food,color1,peanut,t:+1,,,TRUE,TRUE,,,,,,,,
-pretzel,item,1,consume food,color1,pretzel,t:+1,,,TRUE,TRUE,,,,,,,,
 carrot,item,2,consume food,color1,carrot,max:+1 r:+0.1,,,TRUE,TRUE,,,,,,,,
 apple,item,1,consume food,color1,apple,max:+1,,,TRUE,TRUE,,,,,,,,
 banana,item,2,consume food,color1,banana,t:+1 max:+1,,,TRUE,TRUE,,,,,,,,
@@ -190,21 +183,21 @@ bandage,item,1,consume,color1,bandage,max:+1 t:+1,,,TRUE,TRUE,,,,,,,,
 pill,item,2,consume,color1,pill,max:+2 t:+2,,,TRUE,TRUE,,,,,,,,
 spritz,item,3,consume,color1,spritz,max:+3 t:+3,,,TRUE,TRUE,,,,,,,,
 ,,,,,,,,,,,,,,,,,,
-razor,item,1,consume hyg,color1,razor,hyg:+1 ego:+1,,,TRUE,TRUE,,,,,,,,
-brush,item,1,consume hyg,color1,brush,hyg:+1,,,TRUE,TRUE,,,,,,,,
-tampon,item,1,consume hyg,color1,tampon,hyg:+1,,,TRUE,TRUE,,,,,,,,
-toilet_paper,item,2,consume hyg,color1,tp,hyg:+2,,,TRUE,TRUE,,,,,,,,
-socks,item,3,consume hyg,color1,socks,hyg:+3,,,TRUE,TRUE,,,,,,,,
-undies,item,3,consume hyg,color1,undies,hyg:+3,,,TRUE,TRUE,,,,,,,,
-broom,item,3,consume hyg,color1,broom,hyg:+3,,,TRUE,TRUE,,,,,,,,
-moustache,item,3,consume char,color1,moustache,male:+1 hyg:-1 ego:+2,,,TRUE,TRUE,,,,,,,,
-beard,item,2,consume char,color1,beard,male:+3 hyg:-2 ego:+3 kmax:+1,,,TRUE,TRUE,,,,,,,,
-lipstick,item,2,consume char,color1,lipstick,ego:+1,,,TRUE,TRUE,,,,,,,,
+razor,item,1,consume hyg,color1,razor,max:+1 ego:+1,,,TRUE,TRUE,,,,,,,,
+brush,item,1,consume hyg,color1,brush,max:+1,,,TRUE,TRUE,,,,,,,,
+tampon,item,1,consume hyg,color1,tampon,max:+1,,,TRUE,TRUE,,,,,,,,
+toilet_paper,item,2,consume hyg,color1,tp,max:+2,,,TRUE,TRUE,,,,,,,,
+socks,item,3,consume hyg,color1,socks,max:+2,,,TRUE,TRUE,,,,,,,,
+undies,item,3,consume hyg,color1,undies,max:+3,,,TRUE,TRUE,,,,,,,,
+broom,item,3,consume hyg,color1,broom,max:+3,,,TRUE,TRUE,,,,,,,,
+moustache,item,3,consume char,color1,moustache,male:+1 max:-1 ego:+1,,,TRUE,TRUE,,,,,,,,
+beard,item,2,consume char,color1,beard,male:+3 max:-2 ego:+2 kmax:+1,,,TRUE,TRUE,,,,,,,,
+lipstick,item,2,consume char,color1,lipstick,fem: +1 ego:+1,,,TRUE,TRUE,,,,,,,,
 perfume1,item,5,consume char,color1,perfume1,ego:+5:3 lib:+5:3,,,TRUE,TRUE,,,,,,,,
 perfume2,item,5,consume char,color1,perfume2,ego:+5:3 lib:+5:3,,,TRUE,TRUE,,,,,,,,
 ,,,,,,,,,,,,,,,,,,
-boxing,item,3,consume sport,color1,boxing,muscle:+3,,,TRUE,TRUE,,,,,,,,
-lift,item,2,consume sport,color1,lift,muscle:+2,,,TRUE,TRUE,,,,,,,,
+boxing,item,3,consume sport,color1,boxing,bod:+3,,,TRUE,TRUE,,,,,,,,
+lift,item,2,consume sport,color1,lift,bod:+2,,,TRUE,TRUE,,,,,,,,
 pingpong,item,1,consume sport,color1,pingpong,t:-2 bod:+1,,,TRUE,TRUE,,,,,,,,
 soccer,item,1,consume sport,color1,soccer,t:-3 bod:+2,,,TRUE,TRUE,,,,,,,,
 ,,,,,,,,,,,,,,,,,,
@@ -218,14 +211,13 @@ violin,item,3,consume art,color1,violin,art:+2,,,TRUE,TRUE,,,,,,,,
 sax,item,3,consume art,color1,sax,art:+2,,,TRUE,TRUE,,,,,,,,
 kassette,item,4,consume art,color1,kassette,art:+3,,,TRUE,TRUE,,,,,,,,
 photo,item,4,consume art,color1,photo,art:+3,,,TRUE,TRUE,,,,,,,,
-name,klas,lvl,type,color,img,effects,options,modable,collectible,consumable,speed,range,muscle,time_color,lifespan,vspeed,vfreq,layer
-mybody,body,,mybody,,galab,#scout #flirt,,,,,2,1,3,fcc21c,120,,1,2
-bqlgalab,bot,,bod bot lover,color1,bqlgalab,#fear #scout,,,,,4,1,1,fog_color,180,,0.5,2
-chickin,bot,,bod bot lover,color1,chickin,#fear #scout,,,,,4,1,1,fog_color,180,,0.5,2
-ladybug,bot,,bod bot lover,color1,ladybug,#fear #scout,,,,,4,1,1,fog_color,180,,0.5,2
-gvin,bot,,bod bot lover,color1,gvin,#fear #scout,,,,,4,1,1,fog_color,180,,0.5,2
-dog,bot,,bod bot,color1,dog,#fight #hunger,,,,,4,1,2,fog_color,30,,0.5,1
-car,bot,,bod bot,color1,car,#traffic,,,,,4,,5,,,,0.5,
+mybody,body,,mybody,,galab,#scout #flirt,,,,,2,1,1,fcc21c,24,,1,2
+bqlgalab,bot,,bod bot lover,color1,bqlgalab,#fear #scout,,,,,4,1,1,fog_color,30,,0.5,2
+chickin,bot,,bod bot lover,color1,chickin,#fear #scout,,,,,4,1,1,fog_color,30,,0.5,2
+ladybug,bot,,bod bot lover,color1,ladybug,#fear #scout,,,,,4,1,1,fog_color,30,,0.5,2
+gvin,bot,,bod bot lover,color1,gvin,#fear #scout,,,,,4,1,1,fog_color,30,,0.5,2
+dog,bot,,bod bot,color1,dog,#fight #hunger,,,,,4,1,2,fog_color,18,,0.5,1
+car,bot,,bod bot,color1,car,#traffic,,,,,4,,5,fog_color,,,0.5,
 nerd,body,,bod bot,color1,,#scout #fear,,,,,,,,,,,,
 bee,body,,bod bot,color1,bee,#scout,,,,,,,,,,,,
 hooligan,body,,bod bot,color1,ape,#fight,,,,,,,,,,,,
