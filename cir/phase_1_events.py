@@ -39,12 +39,7 @@ class GameEvents(GameEffects):
                     if self.grid.current_room in ["map"]:
                         self.grid.event_effects.show_map(mybody)
                         self.grid.game_menu = False
-            # --------------------------------------------------------------- #
-            #                             SPACE                               #
-            # --------------------------------------------------------------- #
-            # elif event.key == self.grid.pygame.K_SPACE:
-            #     # GEN VIBE
-            #     mybody.gen_vibe_track(self.grid)
+
             # --------------------------------------------------------------- #
             #                             NUMBERS                             #
             # --------------------------------------------------------------- #
@@ -81,6 +76,7 @@ class GameEvents(GameEffects):
         #                    MOUSE MODE CLICK NO ITEM                     #
         # --------------------------------------------------------------- #
         if current_tile == mybody.pos:
+            mybody.time -= 1
             mybody.gen_vibe_track(self.grid)
             print mybody.time
 

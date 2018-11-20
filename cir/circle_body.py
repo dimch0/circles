@@ -25,13 +25,6 @@ class Body(Mobile):
         self.hyg = 100
         self.joy = 0
 
-        self.knw_limit = 3
-        self.knw = {"maths"  : 1,
-                    "art"    : 2,
-                    "bio"    : 0,
-                    "spirit" : 0,
-                    "geo"    : 0}
-
         self.loved = 0
 
     # --------------------------------------------------------------- #

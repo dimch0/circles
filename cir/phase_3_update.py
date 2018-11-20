@@ -245,7 +245,8 @@ class VarUpdater(object):
                         circle.move_track.pop(0)
                         # TODO: SPENT TIME METHOD
                         if not circle.move_track:
-                            circle.time = circle.time - (float(1) / float(circle.speed))
+                            circle.time = circle.time - 1
+                            circle.gen_vibe_track(self.grid)
                             print circle.time
                             # print circle.max
                             # import pdb; pdb.set_trace()
