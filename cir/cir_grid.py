@@ -465,7 +465,7 @@ class Grid(object):
     # --------------------------------------------------------------- #
     #                            LOG MSG                              #
     # --------------------------------------------------------------- #
-    def tick(self):
+    def new_turn(self):
         print "NEW TURN"
         self.global_time += 1
         self.new_turns += 1

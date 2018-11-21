@@ -79,7 +79,7 @@ class GameEvents(GameEffects):
 
             if current_tile == mybody.pos:
                 # TODO: PASS TURN METHOD
-                self.grid.tick()
+                self.grid.new_turn()
                 print mybody.time, "/", mybody.max_time
 
             elif not mouse_mode and current_tile in self.grid.playing_tiles:

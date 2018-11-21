@@ -48,6 +48,8 @@ class Mobile(Circle):
     def move_to_tile_new(self, grid):
         if self.go_to_tile:
             self.choose_nearest_legal(self.go_to_tile, grid)
+        if self.pos == self.go_to_tile:
+            self.go_to_tile = None
 
     # --------------------------------------------------------------- #
     #                                                                 #
@@ -121,28 +123,3 @@ class Mobile(Circle):
                         break
 
         return empty_tile
-
-
-# --------------------------------------------------------------- #
-#                                                                 #
-#                            SIGNAL                               #
-#                                                                 #
-# --------------------------------------------------------------- #
-    def get_aiming_direction(self, grid, current_tile):
-        """  Currently gives the opposite mirror point of the mouse """
-        # MIRROR POINT
-        # aim_point = get_mirror_point(current_tile, self.pos)
-
-        opposite_tile = None
-        aim_dir_idx = None
-
-        if current_tile:
-            for dir_idx, adj_tile in enumerate(grid.adj_tiles(self.pos)):
-                if not opposite_tile:
-                    opposite_tile = adj_tile
-                    aim_dir_idx = dir_idx
-                elif grid_util.dist_between(current_tile, adj_tile) > grid_util.dist_between(current_tile, opposite_tile):
-                    opposite_tile = adj_tile
-                    aim_dir_idx = dir_idx
-
-        return [opposite_tile, aim_dir_idx]

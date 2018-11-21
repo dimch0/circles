@@ -116,26 +116,25 @@ class VarUpdater(object):
     #                             TIMERS                              #
     #                                                                 #
     # --------------------------------------------------------------- #
-    def new_turn_effects(self, item):
+    def circle_turn(self, circle):
         """ Timer effects  """
 
         # TIME
-        if hasattr(item, "time"):
-            item.time -= 1
-            if item.time <= 0:
-                item.destroy(self.grid)
+        if hasattr(circle, "time"):
+            circle.time -= 1
+            if circle.time <= 0:
+                circle.destroy(self.grid)
 
         # VIBE
-        if hasattr(item, "vfreq") and hasattr(item, 'range'):
-            if item.vfreq and item.range and not item.move_track:
-                item.gen_vibe_track(self.grid)
+        if hasattr(circle, "vfreq") and hasattr(circle, 'range'):
+            if circle.vfreq and circle.range and not circle.move_track:
+                circle.gen_vibe_track(self.grid)
 
         # ACTION
-        print "NAME, ", item.name
-        if hasattr(item, 'action'):
-            item.action(self.grid)
+        if hasattr(circle, 'action'):
+            circle.action(self.grid)
 
-        # BOOST TIMER
+        # BOOST TIME
 
 
 
@@ -152,20 +151,13 @@ class VarUpdater(object):
         all_circles = self.grid.circles + self.grid.panel_circles.values()
         if not self.grid.game_menu:
 
+            # TODO: SPENT TIME METHOD
+            if not mybody.move_track and mybody.go_to_tile:
+                self.grid.new_turn()
+                print mybody.time, "/", mybody.max_time
+
             # ITEMS
             for circle in all_circles:
-
-                # OCCUPADO
-                # self.update_occupado(item)
-
-                # mybody OVERLAP
-                # if not any (otype in circle.type for otype in ["mybody", "option"]):
-                #     if circle.pos == mybody.pos and not circle.birth_track:
-                #         circle.clickable = False
-                #         circle.radius = circle.default_radius
-                #
-                #     elif circle.pos != mybody.pos and circle not in self.grid.overlap:
-                #         circle.clickable = True
 
                 # ENTER
                 if self.grid.needs_to_change_room:
@@ -187,10 +179,6 @@ class VarUpdater(object):
                     if circle.move_track and not circle.birth_track:
                         circle.pos = circle.move_track[0]
                         circle.move_track.pop(0)
-                        if circle.name == "mybody" and not circle.move_track:
-                            # TODO: SPENT TIME METHOD
-                            self.grid.tick()
-                            print mybody.time, "/", mybody.max_time
 
                     # ANIMATE BIRTH
                     if circle.birth_track:
@@ -254,7 +242,7 @@ class VarUpdater(object):
 
                     # TIMER
                     if self.grid.new_turns:
-                        self.new_turn_effects(circle)
+                        self.circle_turn(circle)
 
                     # CLEAN PLACEHOLDERS
                     self.grid.clean_placeholders(circle)
