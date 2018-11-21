@@ -116,37 +116,41 @@ class VarUpdater(object):
     #                             TIMERS                              #
     #                                                                 #
     # --------------------------------------------------------------- #
-    def timer_effect(self, item):
+    def new_turn_effects(self, item):
         """ Timer effects  """
 
-        pass
-        # # LIFESPAN
-        # if item.lifespan and not isinstance(item.lifespan, (float, int)):
-        #     item.lifespan.tick()
-        #     if item.lifespan.is_over:
-        #         item.destroy(self.grid)
-        #
-        # # VIBE TIMER
-        # if hasattr(item, "vfreq"):
-        #     if item.vfreq and not isinstance(item.vfreq, (float, int)):
-        #         if item.vfreq.duration and not item.move_track:
-        #             item.vfreq.tick()
-        #             if item.vfreq.is_over:
-        #                 do_action = False
-        #                 if not hasattr(item, 'tok'):
-        #                     do_action = True
-        #                 elif item.tok > 0:
-        #                     do_action = True
-        #
-        #                 if do_action:
-        #
-        #                     if hasattr(item, 'range'):
-        #                         if item.range and not item.move_track and item.vfreq:
-        #                             item.gen_vibe_track(self.grid)
-        #                             item.vfreq.restart()
-        #                     if hasattr(item, 'action'):
-        #                         item.action(self.grid)
-        #
+        # TIME
+        if hasattr(item, "time"):
+            item.time -= 1
+            if item.time <= 0:
+                item.destroy(self.grid)
+
+        # VIBE
+        if hasattr(item, "vfreq") and hasattr(item, 'range'):
+            if item.vfreq and item.range and not item.move_track:
+                item.gen_vibe_track(self.grid)
+
+        # ACTION
+        if hasattr(item, 'action'):
+            item.action(self.grid)
+
+
+                    #     if item.vfreq.is_over:
+                    #         do_action = False
+                    #         if not hasattr(item, 'tok'):
+                    #             do_action = True
+                    #         elif item.tok > 0:
+                    #             do_action = True
+                    #
+                    #         if do_action:
+                    #
+                    #             if hasattr(item, 'range'):
+                    #                 if item.range and not item.move_track and item.vfreq:
+                    #                     item.gen_vibe_track(self.grid)
+                    #                     item.vfreq.restart()
+                    #             if hasattr(item, 'action'):
+                    #                 item.action(self.grid)
+
         # # BOOST TIMER
         # if hasattr(item, "boost"):
         #     for boost_timer in item.boost:
@@ -158,33 +162,9 @@ class VarUpdater(object):
         #                     item.default_color = boost_timer.store_color
         #                     item.boost.remove(boost_timer)
         #                     boost_timer.destroy(self.grid)
+            # END TURN
+            # self.grid.new_turns -= 1
 
-
-    # --------------------------------------------------------------- #
-    #                                                                 #
-    #                            SIGNALS                              #
-    #                                                                 #
-    # --------------------------------------------------------------- #
-    def signal_hit(self, signal, sender):
-        hit = False
-        if "signal" in signal.type:
-            if not signal.marked_for_destruction:
-                if (signal.pos in self.grid.occupado_tiles.values() and not signal.intersects(
-                        sender)) or signal.direction == None:
-                    signal.destroy(self.grid)
-                    hit = True
-        return hit
-
-    def signal_hit_effect(self, signal, sender):
-        for hit_circle in self.grid.circles:
-            if hit_circle.available and not get_short_name(hit_circle.name) == get_short_name(signal.name):
-                if not signal.intersects(sender):
-                    cir1 = (hit_circle.pos, hit_circle.radius)
-                    cir2 = (signal.pos, signal.radius)
-                    if intersecting(cir1, cir2):
-                        if self.grid.event_effects.consume(hit_circle, signal):
-                            self.grid.msg("SCREEN - %s eat %s" % (get_short_name(hit_circle.name),
-                                                                  get_short_name(signal.name)))
 
     # --------------------------------------------------------------- #
     #                                                                 #
@@ -193,7 +173,7 @@ class VarUpdater(object):
     # --------------------------------------------------------------- #
     def update_vars(self, mybody):
         """
-        U[darting all variables before next iteration of the main loop
+        Updarting all variables before next iteration of the main loop
         :param mybody: mybody instance
         """
         all_circles = self.grid.circles + self.grid.panel_circles.values()
@@ -206,13 +186,13 @@ class VarUpdater(object):
                 # self.update_occupado(item)
 
                 # mybody OVERLAP
-                if not any (otype in circle.type for otype in ["mybody", "option"]):
-                    if circle.pos == mybody.pos and not circle.birth_track:
-                        circle.clickable = False
-                        circle.radius = circle.default_radius
-
-                    elif circle.pos != mybody.pos and circle not in self.grid.overlap:
-                        circle.clickable = True
+                # if not any (otype in circle.type for otype in ["mybody", "option"]):
+                #     if circle.pos == mybody.pos and not circle.birth_track:
+                #         circle.clickable = False
+                #         circle.radius = circle.default_radius
+                #
+                #     elif circle.pos != mybody.pos and circle not in self.grid.overlap:
+                #         circle.clickable = True
 
                 # ENTER
                 if self.grid.needs_to_change_room:
@@ -226,13 +206,8 @@ class VarUpdater(object):
                 if circle.available:
 
                     # TIMERS
-                    self.timer_effect(circle)
-
-                    # KISSING CIRCLES
-                    # if circle.type == 'body':
-                    #     for adj_circle in self.grid.circles:
-                    #         if adj_circle.type == 'body' and adj_circle.pos in self.grid.adj_tiles(circle.pos):
-                    #             circle.gen_fat()
+                    if self.grid.new_turns:
+                        self.new_turn_effects(circle)
 
                     # ANIMATE MOVEMENT
                     if hasattr(circle, "go_to_tile") and circle.go_to_tile != None:
@@ -243,13 +218,6 @@ class VarUpdater(object):
                     if circle.move_track and not circle.birth_track:
                         circle.pos = circle.move_track[0]
                         circle.move_track.pop(0)
-                        # TODO: SPENT TIME METHOD
-                        if not circle.move_track:
-                            circle.time = circle.time - 1
-                            circle.gen_vibe_track(self.grid)
-                            print circle.time
-                            # print circle.max
-                            # import pdb; pdb.set_trace()
 
                     # ANIMATE BIRTH
                     if circle.birth_track:
@@ -312,19 +280,24 @@ class VarUpdater(object):
                             circle.hit_tiles = []
 
                     # CONSUME SIGNAL
-                    if 'signal' in circle.type:
-                        if self.signal_hit(circle, mybody) and circle != mybody:
-                            self.signal_hit_effect(circle, mybody)
+                    # if 'signal' in circle.type:
+                    #     if self.signal_hit(circle, mybody) and circle != mybody:
+                    #         self.signal_hit_effect(circle, mybody)
 
                     # CLEAN PLACEHOLDERS
                     self.grid.clean_placeholders(circle)
             # for
+
 
             # FORCE BODY MOVE
             if mybody.pos in self.grid.door_slots:
                 arrival_point = self.grid.adj_tiles(mybody.pos, playing=True)
                 mybody.move_track = mybody.move_to_tile(self.grid, arrival_point)
                 mybody.direction = None
+
+            # END OF TURN
+            if self.grid.new_turns:
+                self.grid.new_turns -= 1
 
         self.grid.sort_circles_by_layer()
 

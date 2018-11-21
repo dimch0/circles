@@ -6,7 +6,6 @@
 #                                                                                                                     #
 # ------------------------------------------------------------------------------------------------------------------- #
 import os
-import time
 import json
 from math import sqrt
 
@@ -52,6 +51,7 @@ class Grid(object):
         self.start_time = None
         self.shift = False
         self.global_time = 0
+        self.new_turns = 0
         self.clock = pygame.time.Clock()
         self.messages = []
         # -------------------------------------------------- #
@@ -461,3 +461,11 @@ class Grid(object):
 
         if will_show_msg:
             print(msg_color + msg + bcolors.ENDC)
+
+    # --------------------------------------------------------------- #
+    #                            LOG MSG                              #
+    # --------------------------------------------------------------- #
+    def tick(self):
+        print "NEW TURN"
+        self.global_time += 1
+        self.new_turns += 1

@@ -6,7 +6,6 @@
 #                                                                                                                     #
 #                                                                                                                     #
 # ------------------------------------------------------------------------------------------------------------------- #
-import time
 import grid_util
 
 
@@ -59,10 +58,10 @@ class GameEffects(object):
                     new_item.effects = effects
                 if time:
                     new_item.time = time
-                else:
-                    if hasattr(new_item, 'time'):
-                        if new_item.time:
-                            new_item.time.restart()
+                # else:
+                #     if hasattr(new_item, 'time'):
+                #         if new_item.time:
+                #             new_item.time.restart()
 
                 new_item.default_img = new_item.img
                 new_item.available = True
@@ -81,48 +80,6 @@ class GameEffects(object):
             self.grid.msg('ERROR - Failed to produce item %s' % product_name)
             self.grid.msg('ERROR - %s' % e)
         return new_item
-
-    # --------------------------------------------------------------- #
-    #                                                                 #
-    #                             MITOSIS                             #
-    #                                                                 #
-    # --------------------------------------------------------------- #
-    def cell_division(self, item):
-        """
-        Creates a placeholder in the empty tile.
-        Than creates a copy of the item and moves it into the placeholder
-        They're being cleaned with the clean_placeholder function
-        """
-        empty_tile = item.check_for_empty_adj_tile(self.grid)
-        if empty_tile:
-            placeholder = self.produce("placeholder", empty_tile)
-            placeholder.name = "placeholder-" + str(time.time())
-            searched_name = item.name.split()[0]
-            new_copy = self.produce(searched_name, item.pos)
-            new_copy.color = item.color
-            new_copy.img = item.img
-            new_copy.speed = item.speed
-            new_copy.radius = item.radius
-            new_copy.name = "new copy-" + str(time.time())
-            new_copy.birth_track = []
-            new_copy.move_track = new_copy.move_to_tile(self.grid, empty_tile)
-            if new_copy.time:
-                new_copy.time.duration = 10
-                new_copy.time.restart()
-
-    def mitosis(self, cir):
-        """
-        :param cir: cir to copy
-        """
-        for other_cir in self.grid.circles:
-            if "new copy" in other_cir.name:
-                other_cir.name = str(cir.name + " - copy-" + str(time.time()))
-
-            if cir.name in other_cir.name or other_cir.name in str(cir.name + " - copy"):
-                empty_tile = other_cir.check_for_empty_adj_tile(self.grid)
-                if empty_tile:
-                    if other_cir.speed and not other_cir.birth_track and not other_cir.move_track:
-                        self.cell_division(other_cir)
 
     # --------------------------------------------------------------- #
     #                                                                 #
@@ -307,11 +264,11 @@ class GameEffects(object):
 
                     if consumer.type not in protected_types:
                         if eff_att == 'max' and consumer.time:
-                            consumer.time.limit += amount * self.food_unit
+                            # consumer.time.limit += amount * self.food_unit
                             attr_str = 'max'
 
                         elif eff_att == 't' and consumer.time:
-                            consumer.time.update(amount * self.food_unit)
+                            # consumer.time.update(amount * self.food_unit)
                             attr_str = 'life'
 
                         elif eff_att == 'sp' and hasattr(consumer, 'speed'):

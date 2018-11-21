@@ -75,16 +75,21 @@ class GameEvents(GameEffects):
         # --------------------------------------------------------------- #
         #                    MOUSE MODE CLICK NO ITEM                     #
         # --------------------------------------------------------------- #
-        if current_tile == mybody.pos:
-            mybody.time -= 1
-            mybody.gen_vibe_track(self.grid)
-            print mybody.time
-
         if not event.button == 3:
 
-            # MOVEMENT
-            if not mouse_mode and current_tile in self.grid.playing_tiles:
+            if current_tile == mybody.pos:
+                # TODO: PASS TURN METHOD
+                self.grid.tick()
+                print mybody.time, "/", mybody.max_time
+
+            elif not mouse_mode and current_tile in self.grid.playing_tiles:
+
                 mybody.go_to_tile = current_tile
+                # TODO: SPENT TIME METHOD
+                # TODO: GRID TICK NEW TURN
+                self.grid.tick()
+                print mybody.time, "/", mybody.max_time
+
 
             # CHECK FOR DOOR
             doors = {door.pos: door for door in self.grid.circles if "door" in door.type}

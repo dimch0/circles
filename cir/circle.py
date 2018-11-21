@@ -41,8 +41,6 @@ class Circle(object):
         # --------------------------------------------------------------- #
         #                              STATS                              #
         # --------------------------------------------------------------- #
-        self.time = None
-        self.time_color = None
         self.lvl = None
         self.marked_for_destruction = False
         # --------------------------------------------------------------- #
@@ -150,8 +148,6 @@ class Circle(object):
         self.marked_for_destruction = True
         all_circles = grid.circles + grid.panel_circles.values()
         if self in all_circles and not self.birth_track:
-            if hasattr(self, "lifespan"):
-                self.time = None
             if hasattr(self, "vfreq"):
                 self.vfreq = None
             if hasattr(self, "move_track"):

@@ -27,6 +27,10 @@ class Body(Mobile):
 
         self.loved = 0
 
+        # TIME
+        self.time = 0
+        self.max_time = 0
+        self.time_color = None
     # --------------------------------------------------------------- #
     #                                                                 #
     #                             VIBE                                #

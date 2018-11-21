@@ -54,12 +54,11 @@ class Mobile(Circle):
     #                             MOVEMENT                            #
     #                                                                 #
     # --------------------------------------------------------------- #
-    def move_to_tile(self, grid, target_tile):
+    def gen_steps(self, grid, target_tile):
         """
         This method generates steps from the item pos to target_tile.
         :param target_tile: coordinates of destination point B (x, y)
         :return: a list of steps from point A to point B
-        number of steps depends on the speed and the distance
         """
         result = []
         if self.speed > 0:
@@ -87,8 +86,8 @@ class Mobile(Circle):
         if self.direction != None and not self.move_track: # and not self.vibe_track['track']:
             target_tile = grid.adj_tiles(self.pos)[self.direction]
             if self.speed > 0:
-                if target_tile in grid.revealed_tiles.keys() and (("signal" not in self.type and target_tile not in grid.occupado_tiles.values()) or 'signal' in self.type):
-                        self.move_track = self.move_to_tile(grid, target_tile)
+                if target_tile in grid.revealed_tiles.keys() and target_tile not in grid.occupado_tiles.values():
+                        self.move_track = self.gen_steps(grid, target_tile)
                 else:
                     self.direction = None
             else:

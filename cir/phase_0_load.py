@@ -281,7 +281,6 @@ class DataLoader(object):
         door.default_radius = item.radius
         door.available = False
 
-        # self.set_timers(door)
         return door, door_room
 
     def set_buttons(self):
