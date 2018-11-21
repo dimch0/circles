@@ -171,14 +171,15 @@ class VarUpdater(object):
                 if circle.available:
 
                     # ANIMATE MOVEMENT
-                    if hasattr(circle, "go_to_tile") and circle.go_to_tile != None:
-                        circle.move_to_tile_new(self.grid)
-
-                    if circle.direction != None:
-                        circle.gen_move_track(self.grid)
-                    if circle.move_track and not circle.birth_track:
-                        circle.pos = circle.move_track[0]
-                        circle.move_track.pop(0)
+                    # import pdb; pdb.set_trace()
+                    if "circle_body.Body" in str(circle.__class__):
+                        if circle.go_to_tile != None:
+                            circle.move_to_tile_new(self.grid)
+                        if circle.direction != None:
+                            circle.gen_move_track(self.grid)
+                        if hasattr(circle, "move_track") and circle.move_track and not circle.birth_track:
+                            circle.pos = circle.move_track[0]
+                            circle.move_track.pop(0)
 
                     # ANIMATE BIRTH
                     if circle.birth_track:

@@ -15,6 +15,7 @@ class Mobile(Circle):
         super(Mobile, self).__init__()
         self.speed = 1
         self.go_to_tile = None
+        self.move_track = []
 
     def change_speed(self, modifier):
         self.speed += modifier

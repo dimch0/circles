@@ -48,7 +48,7 @@ class Circle(object):
         # --------------------------------------------------------------- #
         self.direction = None
 
-        self.move_track = []
+
         self.vibe_track = {'center': '', 'track':[]}
         self.birth_track = []
         self.fat_track = []
