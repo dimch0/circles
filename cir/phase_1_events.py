@@ -83,12 +83,8 @@ class GameEvents(GameEffects):
                 print mybody.time, "/", mybody.max_time
 
             elif not mouse_mode and current_tile in self.grid.playing_tiles:
-
                 mybody.go_to_tile = current_tile
-                # TODO: SPENT TIME METHOD
-                # TODO: GRID TICK NEW TURN
-                self.grid.tick()
-                print mybody.time, "/", mybody.max_time
+
 
 
             # CHECK FOR DOOR

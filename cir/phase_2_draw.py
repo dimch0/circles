@@ -229,7 +229,7 @@ class GameDrawer(object):
         """ DEBUG: Shows the movement in cyan and the correct track in red """
         for move_step in circle.move_track:
             self.grid.pygame.draw.circle(self.grid.game_display,
-                               self.grid.cyan01,
+                               self.grid.white,
                                move_step,
                                2,
                                1)

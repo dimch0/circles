@@ -131,39 +131,12 @@ class VarUpdater(object):
                 item.gen_vibe_track(self.grid)
 
         # ACTION
+        print "NAME, ", item.name
         if hasattr(item, 'action'):
             item.action(self.grid)
 
+        # BOOST TIMER
 
-                    #     if item.vfreq.is_over:
-                    #         do_action = False
-                    #         if not hasattr(item, 'tok'):
-                    #             do_action = True
-                    #         elif item.tok > 0:
-                    #             do_action = True
-                    #
-                    #         if do_action:
-                    #
-                    #             if hasattr(item, 'range'):
-                    #                 if item.range and not item.move_track and item.vfreq:
-                    #                     item.gen_vibe_track(self.grid)
-                    #                     item.vfreq.restart()
-                    #             if hasattr(item, 'action'):
-                    #                 item.action(self.grid)
-
-        # # BOOST TIMER
-        # if hasattr(item, "boost"):
-        #     for boost_timer in item.boost:
-        #         if boost_timer and not isinstance(boost_timer, (float, int)):
-        #             if boost_timer.duration:
-        #                 boost_timer.tick()
-        #                 if boost_timer.is_over:
-        #                     self.grid.event_effects.consume(item, boost_timer)
-        #                     item.default_color = boost_timer.store_color
-        #                     item.boost.remove(boost_timer)
-        #                     boost_timer.destroy(self.grid)
-            # END TURN
-            # self.grid.new_turns -= 1
 
 
     # --------------------------------------------------------------- #
@@ -205,10 +178,6 @@ class VarUpdater(object):
 
                 if circle.available:
 
-                    # TIMERS
-                    if self.grid.new_turns:
-                        self.new_turn_effects(circle)
-
                     # ANIMATE MOVEMENT
                     if hasattr(circle, "go_to_tile") and circle.go_to_tile != None:
                         circle.move_to_tile_new(self.grid)
@@ -218,6 +187,10 @@ class VarUpdater(object):
                     if circle.move_track and not circle.birth_track:
                         circle.pos = circle.move_track[0]
                         circle.move_track.pop(0)
+                        if circle.name == "mybody" and not circle.move_track:
+                            # TODO: SPENT TIME METHOD
+                            self.grid.tick()
+                            print mybody.time, "/", mybody.max_time
 
                     # ANIMATE BIRTH
                     if circle.birth_track:
@@ -279,10 +252,9 @@ class VarUpdater(object):
                             circle.hit_circles = []
                             circle.hit_tiles = []
 
-                    # CONSUME SIGNAL
-                    # if 'signal' in circle.type:
-                    #     if self.signal_hit(circle, mybody) and circle != mybody:
-                    #         self.signal_hit_effect(circle, mybody)
+                    # TIMER
+                    if self.grid.new_turns:
+                        self.new_turn_effects(circle)
 
                     # CLEAN PLACEHOLDERS
                     self.grid.clean_placeholders(circle)
