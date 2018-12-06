@@ -71,7 +71,7 @@ class Bot(Body):
 
 
     def action(self, grid):
-        print "IN ACTION"
+        print "in action"
         legal_moves= self.get_legal_moves(grid)
 
         # Move

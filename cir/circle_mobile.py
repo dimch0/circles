@@ -14,7 +14,7 @@ class Mobile(Circle):
     def __init__(self):
         super(Mobile, self).__init__()
         self.speed = 1
-        self.go_to_tile = None
+        self.target_tile = None
         self.move_track = []
 
     def change_speed(self, modifier):
@@ -47,20 +47,20 @@ class Mobile(Circle):
 
 
     def move_to_tile_new(self, grid):
-        if self.go_to_tile:
-            self.choose_nearest_legal(self.go_to_tile, grid)
-        if self.pos == self.go_to_tile:
-            self.go_to_tile = None
+        if self.target_tile:
+            self.choose_nearest_legal(self.target_tile, grid)
+        if self.pos == self.target_tile:
+            self.target_tile = None
 
     # --------------------------------------------------------------- #
     #                                                                 #
     #                             MOVEMENT                            #
     #                                                                 #
     # --------------------------------------------------------------- #
-    def gen_steps(self, grid, target_tile):
+    def gen_steps(self, grid, to_tile):
         """
-        This method generates steps from the item pos to target_tile.
-        :param target_tile: coordinates of destination point B (x, y)
+        This method generates steps from the item pos to to_tile.
+        :param to_tile: coordinates of destination point B (x, y)
         :return: a list of steps from point A to point B
         """
         result = []
@@ -69,16 +69,16 @@ class Mobile(Circle):
             steps = int(distance / self.speed)
             from_tile_x = self.pos[0]
             from_tile_y = self.pos[1]
-            target_tile_x = target_tile[0]
-            target_tile_y = target_tile[1]
+            to_tile_x = to_tile[0]
+            to_tile_y = to_tile[1]
 
             for step in range(1, steps):
                 a = float(step) / steps
-                step_x = int((1 - a) * from_tile_x + a * target_tile_x)
-                step_y = int((1 - a) * from_tile_y + a * target_tile_y)
+                step_x = int((1 - a) * from_tile_x + a * to_tile_x)
+                step_y = int((1 - a) * from_tile_y + a * to_tile_y)
                 new_step = (step_x, step_y)
                 result.append(new_step)
-            result.append(target_tile)
+            result.append(to_tile)
 
         return result
 
@@ -87,10 +87,10 @@ class Mobile(Circle):
         Generates a legal move track in the current direction
         """
         if self.direction != None and not self.move_track: # and not self.vibe_track['track']:
-            target_tile = grid.adj_tiles(self.pos)[self.direction]
+            to_tile = grid.adj_tiles(self.pos)[self.direction]
             if self.speed > 0:
-                if target_tile in grid.revealed_tiles.keys() and target_tile not in grid.occupado_tiles.values():
-                        self.move_track = self.gen_steps(grid, target_tile)
+                if to_tile in grid.revealed_tiles.keys() and to_tile not in grid.occupado_tiles.values():
+                        self.move_track = self.gen_steps(grid, to_tile)
                 else:
                     self.direction = None
             else:

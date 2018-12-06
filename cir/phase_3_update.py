@@ -152,7 +152,7 @@ class VarUpdater(object):
         if not self.grid.game_menu:
 
             # TODO: SPENT TIME METHOD
-            if not mybody.move_track and mybody.go_to_tile:
+            if not mybody.move_track and mybody.target_tile:
                 self.grid.new_turn()
                 print mybody.time, "/", mybody.max_time
 
@@ -171,9 +171,8 @@ class VarUpdater(object):
                 if circle.available:
 
                     # ANIMATE MOVEMENT
-                    # import pdb; pdb.set_trace()
-                    if "circle_body.Body" in str(circle.__class__):
-                        if circle.go_to_tile != None:
+                    if hasattr(circle, "target_tile"):
+                        if circle.target_tile:
                             circle.move_to_tile_new(self.grid)
                         if circle.direction != None:
                             circle.gen_move_track(self.grid)
