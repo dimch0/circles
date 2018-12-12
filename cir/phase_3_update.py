@@ -174,8 +174,6 @@ class VarUpdater(object):
                     if hasattr(circle, "target_tile"):
                         if circle.target_tile:
                             circle.move_to_tile_new(self.grid)
-                        if circle.direction != None:
-                            circle.gen_move_track(self.grid)
                         if hasattr(circle, "move_track") and circle.move_track and not circle.birth_track:
                             circle.pos = circle.move_track[0]
                             circle.move_track.pop(0)
@@ -251,9 +249,8 @@ class VarUpdater(object):
 
             # FORCE BODY MOVE
             if mybody.pos in self.grid.door_slots:
-                arrival_point = self.grid.adj_tiles(mybody.pos, playing=True)
-                mybody.move_track = mybody.move_to_tile(self.grid, arrival_point)
-                mybody.direction = None
+                to_tile = self.grid.adj_tiles(mybody.pos, playing=True)
+                mybody.move_track = mybody.move_to_tile(self.grid, to_tile)
 
             # END OF TURN
             if self.grid.new_turns:

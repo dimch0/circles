@@ -141,18 +141,6 @@ class GameEffects(object):
     #                         MOUSE MODES                             #
     #                                                                 #
     # --------------------------------------------------------------- #
-    def signal_mode_click(self, current_tile, mybody):
-        """ Signal effect """
-        if not grid_util.in_circle(mybody.pos, mybody.radius, current_tile) and not mybody.move_track:
-            signal = self.produce("signal",
-                                  mybody.pos,
-                                  radius=int(self.grid.tile_radius / 3)
-                                  )
-            if signal:
-                signal.color = mybody.color
-                signal.direction = signal.get_aiming_direction(self.grid, current_tile)[1]
-
-
     def terminate_mode_click(self, item):
         """ Terminate """
         non_terminates = [

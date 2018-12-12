@@ -107,15 +107,5 @@ class Bot(Body):
                     if not self.target:
                         self.target = self.farthest_exit(grid)
 
-            # Choose nearest legal
             if target and target not in grid.adj_tiles(self.pos):
-                best_legal = None
-                for move_tile, move_idx in legal_moves.items():
-                    if not best_legal:
-                        best_legal = move_tile
-                    elif cu.dist_between(best_legal, target) > cu.dist_between(move_tile, target):
-                        best_legal = move_tile
-                if cu.dist_between(self.pos, target) > cu.dist_between(best_legal, target):
-                    self.direction = legal_moves[best_legal]
-                    self.gen_move_track(grid)
-                    self.direction = None
+                self.target_tile = target

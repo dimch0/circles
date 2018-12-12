@@ -44,7 +44,7 @@ class Body(Mobile):
         (31, 10), (32, 10), (33, 10)
         """
 
-        if self.direction is None and not self.vibe_track['track'] and not self.birth_track:
+        if not self.move_track and not self.vibe_track['track'] and not self.birth_track:
 
             vibe_thickness = 1
             vibe_limit = (grid.tile_radius * 2 * self.range) + grid.tile_radius + 1

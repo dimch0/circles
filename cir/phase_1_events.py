@@ -85,8 +85,6 @@ class GameEvents(GameEffects):
             elif not mouse_mode and current_tile in self.grid.playing_tiles:
                 mybody.target_tile = current_tile
 
-
-
             # CHECK FOR DOOR
             doors = {door.pos: door for door in self.grid.circles if "door" in door.type}
 
@@ -98,9 +96,6 @@ class GameEvents(GameEffects):
             if current_tile not in self.grid.occupado_tiles.values() and current_tile in self.grid.revealed_tiles.keys():
                 if mouse_mode and any(mouse_mode in inventory_item.name for inventory_item in mybody.inventory.options.values()):
                     self.drop(current_tile, mybody)
-
-            if mouse_mode == "bow":
-                self.signal_mode_click(current_tile, mybody)
 
         # --------------------------------------------------------------- #
         #                   CLICK ON ITEMS NO MOUSE MODE                  #

@@ -46,9 +46,6 @@ class Circle(object):
         # --------------------------------------------------------------- #
         #                            ANIMATION                            #
         # --------------------------------------------------------------- #
-        self.direction = None
-
-
         self.vibe_track = {'center': '', 'track':[]}
         self.birth_track = []
         self.fat_track = []
@@ -70,10 +67,7 @@ class Circle(object):
         return self._rect
 
     def gen_birth_track(self):
-        if "signal" in self.type:
-            self.birth_track = range(1, self.radius)
-        else:
-            self.birth_track = range(1, self.radius + 1)
+        self.birth_track = range(1, self.radius + 1)
 
     def gen_fat(self):
         if not self.fat_track:

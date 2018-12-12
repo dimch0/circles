@@ -125,7 +125,6 @@ class GameDrawer(object):
                                                  circle.pos,
                                                  eff_cir["radius"])
             self.draw_img(circle)
-            self.draw_aim(current_tile, circle)
             self.draw_hover(current_tile, circle)
 
     def draw_timers(self, circle):
@@ -154,45 +153,6 @@ class GameDrawer(object):
                                               math.radians(timer.filled_degrees),
                                               math.radians(timer.start_degrees),
                                               timer_fat)
-
-    def draw_aim(self, current_tile, circle):
-        """ Aim """
-        if self.grid.mouse_mode in ["echo"] and circle.available and "mybody" in circle.type:
-            aim_dir_idx = circle.get_aiming_direction(self.grid, current_tile)[1]
-            # aim_tile = circle.get_aiming_direction(self.grid, current_tile)[0]
-
-            aim_fat  = 2
-            aim_dist = aim_fat * 3
-            aim_rect = [circle.rect[0] - aim_dist,
-                        circle.rect[1] - aim_dist,
-                        circle.rect[2] + aim_dist * 2,
-                        circle.rect[3] + aim_dist * 2]
-            if circle.color:
-                aim_color = circle.color
-            else:
-                aim_color = self.grid.white
-
-            angle1, angle2 = None, None
-            if aim_dir_idx == 0:
-                angle1, angle2 = 60, 120
-            elif aim_dir_idx == 1:
-                angle1, angle2 = 360, 60
-            elif aim_dir_idx == 2:
-                angle1, angle2 = 300, 360
-            elif aim_dir_idx == 3:
-                angle1, angle2 = 240, 300
-            elif aim_dir_idx == 4:
-                angle1, angle2 = 180, 240
-            elif aim_dir_idx == 5:
-                angle1, angle2 = 120, 180
-
-            if angle1 and angle2 and circle.radius >= aim_fat:
-                self.grid.pygame.draw.arc(self.grid.game_display,
-                                aim_color,
-                                aim_rect,
-                                math.radians(angle1),
-                                math.radians(angle2),
-                                aim_fat)
 
     def draw_grid(self):
         """ Shows the grid tiles in white """
