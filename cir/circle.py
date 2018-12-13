@@ -19,6 +19,7 @@ class BasicCircle(object):
         self.border_color = None
         self.border_width = None
 
+        self.birth_track = []
     @property
     def rect(self):
         """ This defines the rect argument for the arch drawing """
@@ -30,6 +31,11 @@ class BasicCircle(object):
         else:
             self._rect = []
         return self._rect
+
+
+    def gen_birth_track(self):
+        self.birth_track = range(1, self.radius + 1)
+
 
 
 class Circle(BasicCircle):
@@ -56,13 +62,10 @@ class Circle(BasicCircle):
         #                            ANIMATION                            #
         # --------------------------------------------------------------- #
         self.vibe_track = {'center': '', 'track':[]}
-        self.birth_track = []
         self.effect_track = []
         self.hit_circles = []
         self.hit_tiles = []
 
-    def gen_birth_track(self):
-        self.birth_track = range(1, self.radius + 1)
 
     def gen_effect_track(self, effect_color):
         # TODO:

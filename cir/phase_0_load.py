@@ -68,8 +68,6 @@ class DataLoader(object):
 
                     # TODO: Move to behaviour list in bot class
                     elif attribute == "effects":
-                        if "#hunger" in value:
-                            dummy.hungry = True
                         if "#tok" in value:
                             setattr(dummy, 'tok', 0)
 

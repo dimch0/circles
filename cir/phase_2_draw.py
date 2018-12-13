@@ -272,15 +272,6 @@ class GameDrawer(object):
                 # CIRCLES
                 self.draw_body(current_tile, circle)
 
-
-                # SHOW MOVEMENT
-                if self.grid.show_debug and len(circle.move_track) > 1:
-                    self.draw_movement(circle)
-
-                # TIMERS
-                # self.draw_timers(circle)
-
-
         # MOUSE
         if self.grid.mouse_mode:
             self.draw_mouse_image(current_tile)

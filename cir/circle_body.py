@@ -63,16 +63,16 @@ class Body(Mobile):
         if hasattr(hit_circle, 'muscle'):
             amount = self.muscle - hit_circle.muscle
             if amount > 0:
-                hit_effects = 't:-%s joy:-1' % amount
-                self_effects = 'joy:+1'
+                hit_effects = 't:-%s keff:-1' % amount
+                self_effects = 'keff:+1'
 
             elif amount < 0:
-                hit_effects = 'joy:+1'
-                self_effects = 't:%s joy:-1' % amount
+                hit_effects = 'keff:+1'
+                self_effects = 't:%s keff:-1' % amount
 
             else:
-                hit_effects = 'joy:-1'
-                self_effects = 'joy:-1'
+                hit_effects = 'keff:-1'
+                self_effects = 'keff:-1'
 
             grid.event_effects.consume(hit_circle, hit_effects)
             grid.event_effects.consume(self, self_effects)

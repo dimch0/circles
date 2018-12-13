@@ -8,12 +8,11 @@ import grid_util as cu
 
 
 class Bot(Body):
+    """ Contains general bot behaviour for programmed bodies (bots) """
 
     def __init__(self):
         super(Bot, self).__init__()
         self.target = None
-        self.muscle = 2
-        self.hungry = False
         self.behaviour = []
 
     def nearest_unrevealed(self, grid):
@@ -94,7 +93,7 @@ class Bot(Body):
             else:
                 target = None
 
-                if self.hungry or "#inlove" in self.effects:
+                if "#hunger" in self.effects or "#inlove" in self.effects:
                     target = self.nearest_item(grid, itype='food')
                     if target:
                         if target.pos in grid.adj_tiles(self.pos):
