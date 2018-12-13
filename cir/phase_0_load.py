@@ -49,9 +49,6 @@ class DataLoader(object):
         try:
             if klas == "body":
                 dummy = Body()
-            # elif klas == "timer":
-            #     dummy = Timer()
-            #     dummy.timer_tile_radius = self.grid.tile_radius
             elif klas == "item":
                 dummy = Circle()
             elif klas == "bot":
@@ -69,14 +66,7 @@ class DataLoader(object):
                     if hasattr(dummy, attribute):
                         setattr(dummy, attribute, value)
 
-                    if attribute == "img":
-                        if hasattr(dummy, "default_img"):
-                            setattr(dummy, "default_img", value)
-
-                    elif attribute == "color":
-                        if hasattr(dummy, "default_color"):
-                            setattr(dummy, "default_color", value)
-
+                    # TODO: Move to behaviour list in bot class
                     elif attribute == "effects":
                         if "#hunger" in value:
                             dummy.hungry = True
@@ -88,7 +78,6 @@ class DataLoader(object):
 
         try:
             dummy.radius = self.grid.tile_radius
-            dummy.default_radius = dummy.radius
         except Exception as e:
             self.grid.msg("ERROR - Could not set radius: %s" % e)
             self.grid.msg("ERROR - dummy: %s" % dummy)
@@ -156,7 +145,6 @@ class DataLoader(object):
                                 "consumable"  : bool(row[col_idx["consumable"]]),
                                 "time"        : float(row[col_idx["time"]]) if len(row[col_idx["time"]]) > 0 else None,
                                 "vfreq"       : float(row[col_idx["vfreq"]]) if len(row[col_idx["vfreq"]]) > 0 else None,
-                                "vspeed"      : int(float(row[col_idx["vspeed"]])) if len(row[col_idx["vspeed"]]) > 0 else 1,
                                 "layer"       : int(float(row[col_idx["layer"]])) if len(row[col_idx["layer"]]) > 0 else 1,
                                 "effects"     : str(row[col_idx["effects"]])
                             }
@@ -200,7 +188,6 @@ class DataLoader(object):
                     opt_item.available = True
                     if not opt_item.color:
                         opt_item.color = item.color
-                    opt_item.default_color = item.color
                     setattr(opt_item, 'ober_item', item)
 
         if self.grid.show_debug:
@@ -208,40 +195,12 @@ class DataLoader(object):
 
     def set_timers(self, item):
         """ Set timers """
+        # TODO:
         pass
-        # if item.lifespan and isinstance(item.lifespan, (int, float)):
-        #     lifespan = Timer()
-        #     lifespan.radius = item.radius
-        #     lifespan.default_radius = item.radius
-        #     lifespan.duration = item.lifespan
-        #     lifespan.limit = item.lifespan
-        #     lifespan.color = item.time_color
-        #     item.lifespan = lifespan
-        #
-        # if hasattr(item, "vfreq"):
-        #     vibefr = Timer()
-        #     vibefr.duration = item.vfreq
-        #     vibefr.radius = item.radius
-        #     vibefr.default_radius = item.radius
-        #     if not hasattr(item, 'lifespan') or (hasattr(item, 'lifespan') and not item.lifespan):
-        #         vibefr.color = item.time_color
-        #     item.vfreq = vibefr
-        #     if hasattr(item, 'reversed_timer'):
-        #         if item.reversed_timer:
-        #             item.vfreq.reversed = True
 
     def set_boost_timer(self, duration, effect, boosted_item, boost_item):
         pass
-        # boost_timer = Timer()
-        # boost_timer.name = boost_item.name + ' boost'
-        # boost_timer.type = boost_item.type + ' boost'
-        # boost_timer.duration = duration
-        # boost_timer.effects = effect
-        # setattr(boost_timer, 'boost_item', cu.get_short_name(boost_item.name))
-        # setattr(boost_timer, 'store_color', boosted_item.default_color)
-        # if not hasattr(boosted_item, 'boost'):
-        #     setattr(boosted_item, 'boost', list())
-        # boosted_item.boost.append(boost_timer)
+        # TODO:
 
 
     def load_item(self, item_name):
@@ -275,10 +234,7 @@ class DataLoader(object):
             door.img = self.grid.images.neon_exit
         else:
             door.img = item.img
-        door.default_img = item.default_img
-        door.default_color = item.color
         door.radius = item.radius
-        door.default_radius = item.radius
         door.available = False
 
         return door, door_room
@@ -287,17 +243,9 @@ class DataLoader(object):
         """ Assign all items to the grid object """
         center = self.grid.find_center_tile()
         for name in ["play", "quit"]:
-            # butt = ButtonItem()
-            # butt.name = name
-            # # butt.color = self.grid.color1
-            # butt.font = getattr(self.grid.fonts, 'small')
-            # butt.text_color = self.grid.white
-
             butt = Circle()
             butt.name = name
             butt.type = 'button'
-            # butt.color = self.grid.color1
-
             if name == "play":
                 butt.available = True
                 butt.pos = self.grid.adj_tiles(center)[0]
@@ -306,7 +254,6 @@ class DataLoader(object):
                 butt.available = True
                 butt.pos = self.grid.adj_tiles(center)[3]
                 butt.img = self.grid.images.power
-
 
             self.grid.buttons.append(butt)
 

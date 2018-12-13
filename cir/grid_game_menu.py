@@ -26,7 +26,7 @@ def game_menu(grid, mybody, end_msg=''):
             elif event.type == grid.pygame.MOUSEBUTTONDOWN:
                 if current_tile:
                     for button in grid.buttons:
-                        if current_tile == button.pos and button.clickable:
+                        if current_tile == button.pos:
                             if button.name in ["play", "replay"]:
                                 grid.game_menu = False
                                 grid.messages = ["SCREEN - play"]

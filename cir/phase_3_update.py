@@ -126,8 +126,8 @@ class VarUpdater(object):
                 circle.destroy(self.grid)
 
         # VIBE
-        if hasattr(circle, "vfreq") and hasattr(circle, 'range'):
-            if circle.vfreq and circle.range and not circle.move_track:
+        if hasattr(circle, 'range'):
+            if circle.range and not circle.move_track:
                 circle.gen_vibe_track(self.grid)
 
         # ACTION
@@ -173,7 +173,7 @@ class VarUpdater(object):
                     # ANIMATE MOVEMENT
                     if hasattr(circle, "target_tile"):
                         if circle.target_tile:
-                            circle.move_to_tile_new(self.grid)
+                            circle.move(self.grid)
                         if hasattr(circle, "move_track") and circle.move_track and not circle.birth_track:
                             circle.pos = circle.move_track[0]
                             circle.move_track.pop(0)
@@ -183,16 +183,8 @@ class VarUpdater(object):
                         circle.radius = circle.birth_track[0]
                         circle.birth_track.pop(0)
 
-                    # ANIMATE FAT
-                    elif not circle.birth_track and circle.fat_track:
-                        circle.radius = circle.fat_track[0]
-                        circle.fat_track.pop(0)
-
                     # ANIMATE EFFECT
-                    if circle.effect_track:
-                        circle.effect_track.pop(0)
-                        if not circle.effect_track:
-                            circle.color = circle.default_color
+                    # TODO
 
                     # ANIMATE VIBE
                     if circle.vibe_track['track']:
@@ -250,7 +242,7 @@ class VarUpdater(object):
             # FORCE BODY MOVE
             if mybody.pos in self.grid.door_slots:
                 to_tile = self.grid.adj_tiles(mybody.pos, playing=True)
-                mybody.move_track = mybody.move_to_tile(self.grid, to_tile)
+                mybody.move_track = mybody.move(self.grid, to_tile)
 
             # END OF TURN
             if self.grid.new_turns:

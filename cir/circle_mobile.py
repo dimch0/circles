@@ -9,7 +9,7 @@ import grid_util
 
 class Mobile(Circle):
     """
-    This is the base class for all mobile cirlces
+    A class for all circles that move
     """
     def __init__(self):
         super(Mobile, self).__init__()
@@ -24,11 +24,25 @@ class Mobile(Circle):
 
     # --------------------------------------------------------------- #
     #                                                                 #
-    #                          MOVEMENT NEW                           #
+    #                        GET STEP TILE                            #
     #                                                                 #
     # --------------------------------------------------------------- #
+    # TODO: PATHFINDING
+
+    def get_legal_moves(self, grid):
+        # Check for legal tiles to move
+        legal_moves = {}
+        for idx, adj_tile in enumerate(grid.adj_tiles(self.pos)):
+            if adj_tile in grid.playing_tiles and adj_tile not in grid.occupado_tiles.values():
+                legal_moves[adj_tile] = idx
+        return legal_moves
+
     def get_nearest_step_tile(self, target, grid):
-        "Return nearest tile"
+        """
+        :param target: target to go to
+        :param grid: global grid
+        :return: nearest tile to target
+        """
         legal_moves = self.get_legal_moves(grid)
         result = None
         # Choose nearest legal
@@ -46,7 +60,10 @@ class Mobile(Circle):
         return result
 
 
-    def move_to_tile_new(self, grid):
+    def move(self, grid):
+        """
+        Generates move track for the next step
+        """
         if self.target_tile:
             step_tile = self.get_nearest_step_tile(self.target_tile, grid)
             self.gen_move_track(grid, step_tile)
@@ -56,10 +73,10 @@ class Mobile(Circle):
 
     # --------------------------------------------------------------- #
     #                                                                 #
-    #                             MOVEMENT                            #
+    #                           MOVE TRACK                            #
     #                                                                 #
     # --------------------------------------------------------------- #
-    def gen_steps(self, grid, to_tile):
+    def get_steps(self, grid, to_tile):
         """
         This method generates steps from the item pos to to_tile.
         :param to_tile: coordinates of destination point B (x, y)
@@ -90,4 +107,4 @@ class Mobile(Circle):
         """
         if not self.move_track and self.speed: # and not self.vibe_track['track']:
             if to_tile in grid.revealed_tiles.keys() and to_tile not in grid.occupado_tiles.values():
-                    self.move_track = self.gen_steps(grid, to_tile)
+                    self.move_track = self.get_steps(grid, to_tile)

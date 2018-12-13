@@ -13,6 +13,8 @@ class Bot(Body):
         super(Bot, self).__init__()
         self.target = None
         self.muscle = 2
+        self.hungry = False
+        self.behaviour = []
 
     def nearest_unrevealed(self, grid):
         result = None

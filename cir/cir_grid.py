@@ -405,11 +405,6 @@ class Grid(object):
     # --------------------------------------------------------------- #
     #                            ITEMS                                #
     # --------------------------------------------------------------- #
-    def rename_button(self, old_name, new_name):
-        for button in self.buttons:
-            if button.name == old_name:
-                button.name = new_name
-
     def sort_circles_by_layer(self):
         self.circles.sort(key=lambda x: x.layer, reverse=False)
 

@@ -9,28 +9,25 @@ from grid_util import get_list_drange
 
 class Body(Mobile):
     """
-    This class holds all attributes and metrics of your body
+    This class holds all attributes and metrics of a body
     """
     def __init__(self):
         super(Body, self).__init__()
-        self.hungry = False
-
-        self.range = 1
-        # VIBE SPEED CAN NOT BE < 1!
-        self.vspeed = 1
-        self.vfreq = None
-        self.inventory = None
-        self.muscle = 1
-        self.ego = 0
-        self.hyg = 100
-        self.joy = 0
-
-        self.loved = 0
-
         # TIME
         self.time = 0
         self.max_time = 0
         self.time_color = None
+
+        self.range = 1
+        self.vspeed = 2 # VIBE SPEED CAN NOT BE < 1 !!!
+        # self.vfreq = None # TODO
+        self.inventory = None
+        self.muscle = 1
+        self.ego = 0
+        self.keff = 0
+        self.loved = 0
+
+
     # --------------------------------------------------------------- #
     #                                                                 #
     #                             VIBE                                #
@@ -82,11 +79,8 @@ class Body(Mobile):
 
 
     def love(self, grid, amount):
-        # self.color = grid.f35d73
-        # self.default_color = grid.f35d73
         self.loved += amount
 
         if self.loved >= 15:
             self.color = grid.f35d73
-            self.default_color = grid.f35d73
             self.effects = self.effects.replace("#fear", "#inlove")

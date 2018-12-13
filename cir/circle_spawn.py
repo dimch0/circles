@@ -41,12 +41,7 @@ class Spawn(Body):
                 spawn = self.spawn(product, grid)
                 if spawn:
                     if "#home" in eff:
-                        setattr(spawn, 'home_vfreq', self.vfreq)
                         setattr(spawn, 'home', self)
-                        self.vfreq = None
-                    # break
-        if self.vfreq:
-            self.vfreq.restart()
 
     def trade(self, take_item, grid):
         payment_lvl = take_item.lvl

@@ -25,7 +25,6 @@ class GameEffects(object):
                 product_name,
                 pos=None,
                 radius=None,
-                vfreq=None,
                 time=None,
                 add_circle=True,
                 effects=None,
@@ -36,7 +35,6 @@ class GameEffects(object):
         :param pos: set new position (optional)
         :param radius: set new radius (optional)
         :param birth: set new birth timer (optional)
-        :param vfreq: set new vibe frequency (optional)
         :param time: set new time (optional)
         :return: the new item object
         """
@@ -51,19 +49,11 @@ class GameEffects(object):
                     new_item.pos = pos
                 if radius:
                     new_item.radius = radius
-                    new_item.default_radius = radius
-                if vfreq:
-                    new_item.vfreq.duration = vfreq
                 if effects:
                     new_item.effects = effects
                 if time:
                     new_item.time = time
-                # else:
-                #     if hasattr(new_item, 'time'):
-                #         if new_item.time:
-                #             new_item.time.restart()
 
-                new_item.default_img = new_item.img
                 new_item.available = True
                 new_item.gen_birth_track()
 
@@ -115,7 +105,6 @@ class GameEffects(object):
         trigger.effects = "#scout"
 
         self.grid.loader.set_timers(trigger)
-        trigger.vfreq = None
         trigger.birth_track = []
         trigger.gen_vibe_track(self.grid)
 
@@ -131,7 +120,7 @@ class GameEffects(object):
         :param item: enter / exit item
         """
         if mybody.pos in self.grid.adj_tiles(item.pos):
-            mybody.move_track = mybody.move_to_tile(self.grid, item.pos)
+            mybody.move_track = mybody.move(self.grid, item.pos)
             self.grid.needs_to_change_room = True
         else:
             self.grid.msg("SCREEN - no enter")
@@ -163,12 +152,7 @@ class GameEffects(object):
         """ Collect item: add it to inventory options """
         if not any([clicked_item.birth_track, clicked_item.move_track]):
             inventory = mybody.inventory
-            # reopen_inventory = False
             if len(inventory.options) < 6:
-
-                # backup_mouse_mode = self.grid.mouse_mode
-                # backup_mouse_img = self.grid.mouse_img
-
 
                 # PRODUCE MODABLE ITEM AS OPTION
                 item_as_option = self.produce(product_name='placeholder',
@@ -193,8 +177,7 @@ class GameEffects(object):
                 self.grid.msg("SCREEN - no space")
 
             inventory.open_menu(self.grid)
-            # self.grid.mouse_mode = backup_mouse_mode
-            # self.grid.mouse_img = backup_mouse_img
+
 
     def empty_inventory(self, inventory_item, mybody):
 
@@ -206,10 +189,7 @@ class GameEffects(object):
             del self.grid.panel_circles[inventory_item.name]
         del inventory_item.ober_item.options[inventory_item.name]
 
-        # for iitem in mybody.inventory.options.values():
-        #
-
-        mybody.inventory.open_menu(self.grid)
+        # mybody.inventory.open_menu(self.grid)
     # --------------------------------------------------------------- #
     #                                                                 #
     #                          CONSUMABLES                            #
@@ -271,10 +251,6 @@ class GameEffects(object):
                             consumer.vspeed += amount
                             attr_str = 'vibe speed'
 
-                        elif eff_att == 'hyg' and hasattr(consumer, 'hyg'):
-                            consumer.hyg += amount
-                            attr_str = 'hygiene'
-
                         elif eff_att == 'mus' and hasattr(consumer, 'muscle'):
                             consumer.muscle += amount
                             attr_str = 'muscle'
@@ -283,9 +259,9 @@ class GameEffects(object):
                             consumer.ego += amount
                             attr_str = 'ego'
 
-                        elif eff_att == 'joy' and hasattr(consumer, 'joy'):
-                            consumer.joy += amount
-                            attr_str = 'joy'
+                        elif eff_att == 'keff' and hasattr(consumer, 'keff'):
+                            consumer.keff += amount
+                            attr_str = 'keff'
 
                         elif eff_att == 'vfreq' and hasattr(consumer, 'vfreq'):
                             consumer.vfreq.duration += amount

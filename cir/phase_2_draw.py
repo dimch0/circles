@@ -117,28 +117,20 @@ class GameDrawer(object):
 
             # DRAW EFFECT ACTIVATION
             if circle.effect_track:
-                if circle.default_color:
-                    eff_cir = circle.effect_track[0]
-                    circle.color = eff_cir["color"]
-                    self.grid.pygame.draw.circle(self.grid.game_display,
-                                                 circle.default_color,
-                                                 circle.pos,
-                                                 eff_cir["radius"])
+                # TODO:
+                circle.effect_track = []
+
             self.draw_img(circle)
             self.draw_hover(current_tile, circle)
 
     def draw_timers(self, circle):
         """ Draws current state of a timer """
-        pass
+        pass # TODO:
         timer = None
 
         if hasattr(circle, 'lifespan'):
             if circle.lifespan not in ['', None]:
                 timer = circle.lifespan
-
-        if not timer and hasattr(circle, 'vfreq'):
-            if circle.vfreq:
-                timer = circle.vfreq
 
         if timer:
             timer_fat = 1

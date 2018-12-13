@@ -102,7 +102,7 @@ class GameEvents(GameEffects):
         # --------------------------------------------------------------- #
         for CLICKED_ITEM in all_circles:
             clicked_screen_name = grid_util.get_short_name(CLICKED_ITEM.name).replace('_', ' ')
-            if CLICKED_ITEM.clickable and CLICKED_ITEM.available and CLICKED_ITEM.type not in ["trigger"]:
+            if CLICKED_ITEM.available and CLICKED_ITEM.type not in ["trigger"]:
                 if current_tile == CLICKED_ITEM.pos:
                     self.grid.msg("INFO - clicked item: {0} {1} {2}".format(
                                                     CLICKED_ITEM.name,
@@ -110,37 +110,25 @@ class GameEvents(GameEffects):
                                                     CLICKED_ITEM.available))
                     # OPTION CLICKED
                     if "option" in CLICKED_ITEM.type:
-                        ober_item = CLICKED_ITEM.get_ober_item(self.grid)
-                        if ober_item:
+                        # SLAB
+                        if CLICKED_ITEM.name in ["map_app"]:
+                            self.grid.event_effects.show_map(mybody)
+                        elif CLICKED_ITEM.name in ["sat_app"] and not self.grid.current_room in ["map"]:
+                            if mouse_mode and 'battery' in mouse_mode:
+                                self.grid.event_effects.satellite()
+                                self.grid.event_effects.drop(CLICKED_ITEM, mybody, force=True)
+                                CLICKED_ITEM.boost = []
+                                CLICKED_ITEM.tok = 0
+                            else:
+                                self.grid.msg("SCREEN - No bat")
 
-                            # SLAB
-                            if CLICKED_ITEM.name in ["map_app"]:
-                                self.grid.event_effects.show_map(mybody)
-                            elif CLICKED_ITEM.name in ["sat_app"] and not self.grid.current_room in ["map"]:
-                                if mouse_mode and 'battery' in mouse_mode:
-                                    self.grid.event_effects.satellite()
-                                    self.grid.event_effects.drop(CLICKED_ITEM, mybody, force=True)
-                                    CLICKED_ITEM.boost = []
-                                    CLICKED_ITEM.tok = 0
-                                else:
-                                    self.grid.msg("SCREEN - No bat")
+                        # DDEBUG
+                        elif CLICKED_ITEM.name in ["phone"]:
+                            self.grid.show_debug = not self.grid.show_debug
 
-                            # DDEBUG
-                            elif CLICKED_ITEM.name in ["phone"]:
-                                self.grid.show_debug = not self.grid.show_debug
-
-                            # SUICIDE
-                            if CLICKED_ITEM.name == "suicide":
-                                mybody.destroy(self.grid)
-
-                            # MITOSIS
-                            elif CLICKED_ITEM.name == "mitosis":
-                                self.mitosis(ober_item)
-
-                            # SMEL
-                            elif CLICKED_ITEM.name == "smel":
-                                self.grid.msg("SCREEN - Sniff hair")
-
+                        # SUICIDE
+                        if CLICKED_ITEM.name == "suicide":
+                            mybody.destroy(self.grid)
 
                     # SET MOUSE MODE
                     if CLICKED_ITEM.modable:
