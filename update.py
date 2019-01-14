@@ -1,11 +1,14 @@
 import os
 import requests
 
+
 GLINK = "https://docs.google.com/spreadsheet/ccc?"
+MAIN_KEY = "1X6q2XiXfTcm81bSpwo9Y4WgBPsaVaSBOBcd94qBmpnM"
+
 data_sheets = [
     {
     "filename":os.path.dirname(__file__) + '/data/scenario_01/data.csv',
-    "key":"1X6q2XiXfTcm81bSpwo9Y4WgBPsaVaSBOBcd94qBmpnM",
+    "key":MAIN_KEY,
     "gids":
         {
         "consumable":"571804146",
@@ -19,19 +22,19 @@ data_sheets = [
     },
     {
     "filename":os.path.dirname(__file__) + '/data/scenario_01/gen.csv',
-    "key":"1X6q2XiXfTcm81bSpwo9Y4WgBPsaVaSBOBcd94qBmpnM",
+    "key":MAIN_KEY,
     "gids":
         {
         "deck":"2103241586"
         }
     },
     {
-        "filename": os.path.dirname(__file__) + '/res/colors/colors.txt',
-        "key": "1Lp_vts7git-I4Z-UadgfUEo537NyBI9FT2sr71GQy8g",
-        "gids":
-            {
-                "deck": "1371863014"
-            }
+    "filename": os.path.dirname(__file__) + '/res/colors/colors.txt',
+    "key":MAIN_KEY,
+    "gids":
+        {
+        "color": "893570609"
+        }
     },
 ]
 
