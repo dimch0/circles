@@ -1,12 +1,4 @@
 name,lvl,base,items
-hyg1,1,25,cigara bandage brush tampon
-hyg2,2,45,pill toilet_paper book2 battery lipstick pingpong soccer
-hyg3,3,75,spritz socks undies broom gascan jonka perfume1 perfume2
-food1,1,20,bread peanut apple coffee wassa
-food2,2,40,carrot banana pineapple can egg tomato beer
-food3,3,70,chili lemon kibabchi icecream cheese donut shrimp honey fresh
-food4,4,110,spoget hotdog pizza meat steak shroom
-binn,1,100,bin
-qwl1,1,120,dog_house traffic_light
-ven1,1,150,fruits bar pizzeria barber skola pharma
-lov1,1,500,gvin chickin bqlgalab
+food1,1,60,bread
+love1,1,182,chickin
+upg1,3,181,bag

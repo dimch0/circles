@@ -20,6 +20,7 @@ class BasicCircle(object):
         self.border_width = None
 
         self.birth_track = []
+
     @property
     def rect(self):
         """ This defines the rect argument for the arch drawing """
@@ -79,7 +80,7 @@ class Circle(BasicCircle):
 
     def destroy(self, grid):
         if self.name in ['mybody']:
-            grid.msg("SCREEN - you dead")
+            grid.msg("SCREEN - game over")
         self.marked_for_destruction = True
         all_circles = grid.circles + grid.panel_circles.values()
         if self in all_circles and not self.birth_track:

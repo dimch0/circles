@@ -10,10 +10,7 @@ import grid_util as cu
 
 from circle import Circle
 from circle_body import Body
-from circle_panel import Panel
-from circle_bot import Bot
-from circle_spawn import Spawn
-# from circle_timer import Timer
+
 
 from grid_cosmetic import Images, Fonts, Colors
 from phase_1_events import GameEvents
@@ -45,49 +42,41 @@ class DataLoader(object):
         :param attributes_dict: generated dict
         :return: a new instance of an item object
         """
-        dummy = None
+        new_item = None
         try:
             if klas == "body":
-                dummy = Body()
+                new_item = Body()
             elif klas == "item":
-                dummy = Circle()
-            elif klas == "bot":
-                dummy = Bot()
-            elif klas == "spawn":
-                dummy = Spawn()
-            elif klas == "panel":
-                dummy = Panel()
+                new_item = Circle()
         except Exception as e:
             self.grid.msg("ERROR - {0}, could not create item of klas: {1}".format(e, klas))
 
         try:
             for attribute, value in attributes_dict.items():
-                if dummy and attribute:
-                    if hasattr(dummy, attribute):
-                        setattr(dummy, attribute, value)
+                if new_item and attribute:
+                    if hasattr(new_item, attribute):
+                        setattr(new_item, attribute, value)
+                        if attribute == "time":
+                            setattr(new_item, "max_time", value)
 
-                    # TODO: Move to behaviour list in bot class
-                    elif attribute == "effects":
-                        if "#tok" in value:
-                            setattr(dummy, 'tok', 0)
 
         except Exception as e:
             self.grid.msg("ERROR - Could not set attribute: {0}".format(e))
 
         try:
-            dummy.radius = self.grid.tile_radius
+            new_item.radius = self.grid.tile_radius
         except Exception as e:
             self.grid.msg("ERROR - Could not set radius: %s" % e)
-            self.grid.msg("ERROR - dummy: %s" % dummy)
+            self.grid.msg("ERROR - new_item: %s" % new_item)
             self.grid.msg("ERROR - klas: %s" % klas)
             self.grid.msg("ERROR - attributes: %s" % attributes_dict)
 
         # DEBUG
         if self.grid.show_debug:
-           self.grid.msg("DEBUG - Loaded {0}".format(dummy.name))
-           self.grid.msg("DEBUG - attributes_dict {0}".format(attributes_dict))
+           self.grid.msg("INFO - Loaded {0}".format(new_item.name))
+           self.grid.msg("INFO - attributes_dict {0}".format(attributes_dict))
 
-        return dummy
+        return new_item
 
     def set_col_idx(self, header):
         """ Returns a dict with all columns as keys
@@ -129,20 +118,15 @@ class DataLoader(object):
                         try:
                             attributes_dict = {
                                 "type"        : str(row[col_idx["type"]]) if len(row[col_idx["type"]]) > 0 else 'notype',
-                                "options"     : str(row[col_idx["options"]]),
                                 "name"        : str(row[col_idx["name"]]),
                                 "lvl"         : str(row[col_idx["lvl"]]),
                                 "color"       : self.set_color(row[col_idx["color"]]),
                                 "img"         : self.set_img(row[col_idx["img"]]),
-                                "speed"       : int(float(row[col_idx["speed"]])) if len(row[col_idx["speed"]]) > 0 else None,
-                                "range"       : int(float(row[col_idx["range"]])) if len(row[col_idx["range"]]) > 0 else None,
-                                "muscle"      : int(float(row[col_idx["muscle"]])) if len(row[col_idx["muscle"]]) > 0 else None,
                                 "time_color"  : self.set_color(row[col_idx["time_color"]]),
                                 "modable"     : bool(row[col_idx["modable"]]),
                                 "collectible" : bool(row[col_idx["collectible"]]),
                                 "consumable"  : bool(row[col_idx["consumable"]]),
-                                "time"        : float(row[col_idx["time"]]) if len(row[col_idx["time"]]) > 0 else None,
-                                "vfreq"       : float(row[col_idx["vfreq"]]) if len(row[col_idx["vfreq"]]) > 0 else None,
+                                "time"        : int(row[col_idx["time"]]) if len(row[col_idx["time"]]) > 0 else None,
                                 "layer"       : int(float(row[col_idx["layer"]])) if len(row[col_idx["layer"]]) > 0 else 1,
                                 "effects"     : str(row[col_idx["effects"]])
                             }
@@ -173,19 +157,6 @@ class DataLoader(object):
 
                         yield result, klas
 
-    def set_opts(self, item):
-        pass
-
-    def set_timers(self, item):
-        """ Set timers """
-        # TODO:
-        pass
-
-    def set_boost_timer(self, duration, effect, boosted_item, boost_item):
-        pass
-        # TODO:
-
-
     def load_item(self, item_name):
 
         new_item = None
@@ -196,14 +167,11 @@ class DataLoader(object):
                 item.available = True
             if item.name == item_name:
                 new_item = item
-                self.set_timers(new_item)
                 break
 
-        if new_item:
-            if hasattr(new_item, 'options'):
-                self.set_opts(new_item)
-        else:
+        if not new_item:
             self.grid.msg('ERROR - Failed to load item: %s' % item_name)
+
         return new_item
 
     def set_door(self, item, room):
@@ -267,9 +235,6 @@ class DataLoader(object):
                             if item.name in [xitem.name for xitem in self.grid.rooms[room_n]["circles"]]:
                                 item.name = item.name + '-' + str(time.time())
                                 time.sleep(0.01)
-
-                            if 'panel' in item.type:
-                                item.available = True
 
                             else:
                                 self.grid.rooms[room_n]["circles"].append(item)

@@ -4,7 +4,9 @@
 #                                                                                                                     #
 # ------------------------------------------------------------------------------------------------------------------- #
 import grid_util
-from grid_effects import GameEffects
+from grid_effects import GameEffects                #     self.grid.set_mouse_mode(mybody.inventory.options.values()[number_pressed-1])
+                # else:
+                #     self.grid.clean_mouse()
 
 
 class GameEvents(GameEffects):
@@ -44,8 +46,9 @@ class GameEvents(GameEffects):
             #                             NUMBERS                             #
             # --------------------------------------------------------------- #
             elif event.key in numbers:
-                number_pressed = numbers.index(event.key) + 1
-                self.grid.msg("INFO - Key %s pressed" % number_pressed)
+                pass
+                # number_pressed = numbers.index(event.key) + 1
+                # self.grid.msg("INFO - Key %s pressed" % number_pressed)
                 # if len(mybody.inventory.options.values()) >= number_pressed:
                 #     self.grid.set_mouse_mode(mybody.inventory.options.values()[number_pressed-1])
                 # else:
@@ -78,24 +81,11 @@ class GameEvents(GameEffects):
         if not event.button == 3:
 
             if current_tile == mybody.pos:
-                # TODO: PASS TURN METHOD
-                self.grid.new_turn()
-                print mybody.time, "/", mybody.max_time
+                mybody.turn(self.grid)
+
             # MOVE
             elif not mouse_mode and current_tile in self.grid.revealed_tiles and current_tile in self.grid.adj_tiles(mybody.pos):
                 mybody.target_tile = current_tile
-
-            # CHECK FOR DOOR
-            doors = {door.pos: door for door in self.grid.circles if "door" in door.type}
-
-            for doorpos, door in doors.items():
-                if doorpos in self.grid.adj_tiles(mybody.pos) and current_tile == doorpos:
-                    self.enter_room(mybody, door)
-
-
-            if current_tile not in self.grid.occupado_tiles.values() and current_tile in self.grid.revealed_tiles.keys():
-                # drop item conditions?
-                self.drop(current_tile, mybody)
 
         # --------------------------------------------------------------- #
         #                   CLICK ON ITEMS NO MOUSE MODE                  #

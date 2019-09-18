@@ -90,13 +90,12 @@ class ItemGenerator(object):
 
 
     def generate_item(self, last_revealed):
-        pass
         """ Produce a random item from a deck """
-        # gen_pos = self.get_gen_pos(last_revealed)
-        # deck = self.deck_togen()
-        # if gen_pos and deck:
-        #     items = self.decks[deck]['items']
-        #     if items:
-        #         idx = int(self.min_progress(deck))
-        #         self.grid.event_effects.produce(items[idx], gen_pos)
-        #         self.generated[deck] += 1
+        gen_pos = self.get_gen_pos(last_revealed)
+        deck = self.deck_togen()
+        if gen_pos and deck:
+            items = self.decks[deck]['items']
+            if items:
+                idx = int(self.min_progress(deck))
+                self.grid.event_effects.produce(items[idx], gen_pos)
+                self.generated[deck] += 1

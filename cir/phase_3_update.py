@@ -95,8 +95,6 @@ class VarUpdater(object):
     def destruction(self, item):
 
         self.grid.messages = self.grid.messages
-        # if item.name in ['mybody']:
-        #     self.grid.msg("SCREEN - you dead")
 
         if not item.birth_track:
 
@@ -117,13 +115,13 @@ class VarUpdater(object):
     #                                                                 #
     # --------------------------------------------------------------- #
     def circle_turn(self, circle):
-        """ Timer effects  """
+        """ Timer effects """
 
         # TIME
-        if hasattr(circle, "time"):
-            circle.time -= 1
-            if circle.time <= 0:
-                circle.destroy(self.grid)
+        # if hasattr(circle, "time"):
+        #     circle.time -= 1
+        #     if circle.time <= 0:
+        #         circle.destroy(self.grid)
 
         # VIBE
         if hasattr(circle, 'range'):
@@ -150,11 +148,6 @@ class VarUpdater(object):
         """
         all_circles = self.grid.circles + self.grid.panel_circles.values()
         if not self.grid.game_menu:
-
-            # TODO: SPENT TIME METHOD
-            if mybody.target_tile:
-                self.grid.new_turn()
-                print mybody.time, "/", mybody.max_time
 
             # ITEMS
             for circle in all_circles:
@@ -193,7 +186,7 @@ class VarUpdater(object):
                                         circle.hit_tiles.append(rtile)
                                     if "#scout" in circle.effects:
                                         if not rtile in self.grid.revealed_tiles.keys():
-                                            self.grid.revealed_tiles[rtile] = range(1, self.grid.tile_radius + 1)
+                                            self.grid.revealed_tiles[rtile] = range(1,self.grid.tile_radius + 1,3)
                                             self.grid.total_revealed += 1
                                             self.igen.generate_item(rtile)
                                             # REVEAL ADJ DOORS
@@ -211,15 +204,6 @@ class VarUpdater(object):
                                     if not hit_circle.available and not hit_circle in self.grid.overlap:
                                         hit_circle.available = True
                                         hit_circle.gen_birth_track()
-
-                            # CONSUME VIBE
-                            if circle.effects:
-                                if hit_circle.available and not get_short_name(hit_circle.name) == get_short_name(circle.name):
-                                    cir1 = (hit_circle.pos, hit_circle.radius - (hit_circle.radius / self.radius_buffer))
-                                    if intersecting(cir1, vibe_area):
-                                        if not hit_circle in circle.hit_circles:
-                                            self.grid.event_effects.consume(hit_circle, circle)
-                                            circle.hit_circles.append(hit_circle)
 
                         circle.vibe_track['track'].pop(0)
                         if not circle.vibe_track['track']:

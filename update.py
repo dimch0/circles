@@ -7,13 +7,13 @@ MAIN_KEY = "1X6q2XiXfTcm81bSpwo9Y4WgBPsaVaSBOBcd94qBmpnM"
 
 data_sheets = [
     {
-    "filename":os.path.dirname(__file__) + '/data/scenario_01/data.csv',
+    "filename": './data/scenario_01/data.csv',
     "key":MAIN_KEY,
     "gids":
         {
         "consumable":"571804146",
         "bodies":"1847185351",
-        "doors":"533409778",
+        # "doors":"533409778",
         "vendors":"1710936085",
         "qwellen":"1032854683",
         "wear":"628076905",
@@ -21,7 +21,7 @@ data_sheets = [
         }
     },
     {
-    "filename":os.path.dirname(__file__) + '/data/scenario_01/gen.csv',
+    "filename": './data/scenario_01/gen.csv',
     "key":MAIN_KEY,
     "gids":
         {
@@ -29,7 +29,7 @@ data_sheets = [
         }
     },
     {
-    "filename": os.path.dirname(__file__) + '/res/colors/colors.txt',
+    "filename": './res/colors/colors.txt',
     "key":MAIN_KEY,
     "gids":
         {

@@ -408,15 +408,6 @@ class Grid(object):
     def sort_circles_by_layer(self):
         self.circles.sort(key=lambda x: x.layer, reverse=False)
 
-    # --------------------------------------------------------------- #
-    #                            GAME EXIT                            #
-    # --------------------------------------------------------------- #
-    # def clean_tmp_dir(self):
-    #     for file in os.listdir(self.tmp_dir):
-    #         file = os.path.join(self.tmp_dir, file)
-    #         os.remove(file)
-    #         self.msg("INFO - Removed: {0}".format(file))
-
     def game_exit(self):
         # self.clean_tmp_dir()
         self.pygame.quit()
@@ -458,9 +449,8 @@ class Grid(object):
             print(msg_color + msg + bcolors.ENDC)
 
     # --------------------------------------------------------------- #
-    #                            LOG MSG                              #
+    #                            TURN                                 #
     # --------------------------------------------------------------- #
     def new_turn(self):
-        print "NEW TURN"
         self.global_time += 1
         self.new_turns += 1

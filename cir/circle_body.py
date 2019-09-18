@@ -16,17 +16,30 @@ class Body(Mobile):
         # TIME
         self.time = 0
         self.max_time = 0
+        self.set_max_time()
         self.time_color = None
+        self.fat = 0
 
         self.range = 1
-        self.vspeed = 2 # VIBE SPEED CAN NOT BE < 1 !!!
-        # self.vfreq = None # TODO
-        self.muscle = 1
-        self.ego = 0
-        self.keff = 0
+        self.vspeed = 4 # VIBE SPEED CAN NOT BE < 1 !!!
+        # self.muscle = 1
+        # self.ego = 0
+        # self.keff = 0
         self.loved = 0
 
+    # --------------------------------------------------------------- #
+    #                                                                 #
+    #                             TIME                                #
+    #                                                                 #
+    # --------------------------------------------------------------- #
+    def set_max_time(self):
+        self.max_time = self.time
 
+    def add_time(self, amount):
+        self.time += amount
+        if self.time > self.max_time:
+            self.fat = self.max_time - self.time
+            self.time = self.max_time
     # --------------------------------------------------------------- #
     #                                                                 #
     #                             VIBE                                #
@@ -53,33 +66,57 @@ class Body(Mobile):
                                'track': track}
         return self.vibe_track
 
+    # --------------------------------------------------------------- #
+    #                                                                 #
+    #                             TURN                                #
+    #                                                                 #
+    # --------------------------------------------------------------- #
+    def turn(self, grid):
+        """ Timer effects  """
 
-    def muscle_test(self, hit_circle, grid):
+        # TIME
+        self.time -= 1
+
+        # DEATH TIME
+        if self.time <= 0:
+            self.destroy(grid)
+
+        grid.new_turn()
+        grid.msg("SCREEN - time %s/%s" % (self.time, self.max_time))
+
+    # --------------------------------------------------------------- #
+    #                                                                 #
+    #                             MOVE                                #
+    #                                                                 #
+    # --------------------------------------------------------------- #
+    # TODO: PATHFINDING
+
+    def move(self, grid):
         """
-        Compare the muscle attribute
-        :return: muscle diff
+        Generates move track for the next step
         """
-        if hasattr(hit_circle, 'muscle'):
-            amount = self.muscle - hit_circle.muscle
-            if amount > 0:
-                hit_effects = 't:-%s keff:-1' % amount
-                self_effects = 'keff:+1'
+        if self.target_tile:
+            self.pos = self.target_tile
+        if self.pos == self.target_tile:
+            self.target_tile = None
+        self.turn(grid)
+        # grid.new_turn(self)
 
-            elif amount < 0:
-                hit_effects = 'keff:+1'
-                self_effects = 't:%s keff:-1' % amount
-
-            else:
-                hit_effects = 'keff:-1'
-                self_effects = 'keff:-1'
-
-            grid.event_effects.consume(hit_circle, hit_effects)
-            grid.event_effects.consume(self, self_effects)
-
-
+    # --------------------------------------------------------------- #
+    #                                                                 #
+    #                             OTHER                               #
+    #                                                                 #
+    # --------------------------------------------------------------- #
     def love(self, grid, amount):
         self.loved += amount
 
         if self.loved >= 15:
             self.color = grid.f35d73
             self.effects = self.effects.replace("#fear", "#inlove")
+
+    def muscle_test(self, hit_circle, grid):
+        """
+        Compare the muscle attribute
+        :return: muscle diff
+        """
+        pass
