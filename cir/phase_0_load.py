@@ -174,21 +174,6 @@ class DataLoader(object):
 
         return new_item
 
-    def set_door(self, item, room):
-        door = Circle()
-        door.type = item.type
-        door.name = "Enter_" + room
-        door_room = item.name.replace("Enter_", "")
-        door.pos = cu.get_mirror_point(item.pos, self.grid.center_tile)
-        door.color = item.color
-        if "door_enter" in item.type:
-            door.img = self.grid.images.neon_exit
-        else:
-            door.img = item.img
-        door.radius = item.radius
-        door.available = False
-
-        return door, door_room
 
     def set_buttons(self):
         """ Assign all items to the grid object """
@@ -238,18 +223,9 @@ class DataLoader(object):
 
                             else:
                                 self.grid.rooms[room_n]["circles"].append(item)
-                            # DOORS
-                            if 'door' in item.type:
-                                opposite_door, door_room_n = self.set_door(item, room_n)
-                                if door_room_n not in self.grid.rooms.keys():
-                                    self.grid.rooms[door_room_n] = {
-                                        "circles": [],
-                                        "revealed_tiles": {}
-                                    }
-                                self.grid.rooms[door_room_n]["circles"].append(opposite_door)
 
                             # MY BODY
-                            elif item_name == "mybody":
+                            if item_name == "mybody":
                                 item.available = True
                                 item.gen_birth_track()
                                 self.mybody = item

@@ -38,8 +38,6 @@ class Grid(object):
         self.game_display = None
         self.fog_color = None
         self.color1 = None
-        self.door_slots = []
-        self.doors_adj = []
         self.set_config()
         self.data_file = os.path.join(
             self.data_dir,
@@ -227,12 +225,6 @@ class Grid(object):
                             inside_tiles.append(tile)
             self.playing_tiles.extend(inside_tiles)
 
-        if self.door_slots:
-            self.door_slots = self.names_to_pos(self.door_slots)
-            for door_slot in self.door_slots:
-                self.doors_adj += self.adj_tiles(door_slot)
-
-
 
     def adj_tiles(self, center, empty=False, playing=False):
         """
@@ -277,7 +269,7 @@ class Grid(object):
         nonoccupado = ["signal",
                        "trigger",
                        "option"]
-        tiles_to_check = set(self.playing_tiles + self.door_slots)
+        tiles_to_check = self.playing_tiles
         for circle in self.circles:
             if not any(nonocc in circle.type for nonocc in nonoccupado):
                 for tile in tiles_to_check:

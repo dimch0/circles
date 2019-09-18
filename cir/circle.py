@@ -35,8 +35,7 @@ class BasicCircle(object):
 
 
     def gen_birth_track(self):
-        self.birth_track = range(1, self.radius + 1)
-
+        self.birth_track = range(1, self.radius + 1, 4)
 
 
 class Circle(BasicCircle):

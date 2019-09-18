@@ -221,6 +221,8 @@ class VarUpdater(object):
 
             # END OF TURN
             if self.grid.new_turns:
+                self.grid.drawer.time_vs_max = [self.mybody.time, self.mybody.max_time]
+
                 self.grid.new_turns -= 1
 
         self.grid.sort_circles_by_layer()

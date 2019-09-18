@@ -12,6 +12,7 @@ class GameDrawer(object):
 
     def __init__(self, grid=None):
         self.grid = grid
+        self.time_vs_max = ()
         # self.grid.pygame = pygame
 
 
@@ -123,29 +124,6 @@ class GameDrawer(object):
             self.draw_img(circle)
             self.draw_hover(current_tile, circle)
 
-    def draw_timers(self, circle):
-        """ Draws current state of a timer """
-        pass # TODO:
-        timer = None
-
-        if hasattr(circle, 'lifespan'):
-            if circle.lifespan not in ['', None]:
-                timer = circle.lifespan
-
-        if timer:
-            timer_fat = 1
-
-            if timer.available and circle.time_color:
-                if circle.radius >= timer_fat:
-                    timer.pos = circle.pos
-                    timer.radius = circle.radius
-                    self.grid.pygame.draw.arc(self.grid.game_display,
-                                              circle.time_color,
-                                              timer.rect,
-                                              math.radians(timer.filled_degrees),
-                                              math.radians(timer.start_degrees),
-                                              timer_fat)
-
     def draw_grid(self):
         """ Shows the grid tiles in white """
         for tile_name, tile_centre in self.grid.tile_dict.items():
@@ -186,6 +164,16 @@ class GameDrawer(object):
                                      1)
 
 
+    def draw_time(self):
+        if self.time_vs_max:
+            msg = "%s/%s" % (self.time_vs_max[0], self.time_vs_max[1])
+            font = getattr(self.grid.fonts, 'small')
+            color = self.grid.white
+            txt = font.render(msg, True, color)
+            txt_rect = self.grid.pygame.Rect(20, 20, 20, 20)
+            txt_rect.center = (self.grid.tile_dict["21_1"][0], self.grid.tile_dict["21_1"][1])
+            self.grid.game_display.blit(txt, txt_rect)
+
     def draw_msg(self):
         red_msg = [rep_msg.replace("_", ' ') for rep_msg in self.grid.reporting]
         red_msg.extend(['you dead'])
@@ -203,11 +191,6 @@ class GameDrawer(object):
                     color = self.grid.fcc21c
                 else:
                     color = self.grid.white
-
-                # if idx == 0:
-                #     color = self.grid.white
-                # else:
-                #     color = self.grid.color1
 
                 msg = msg.lower()
                 # msg = u"黒澤 明 €"
@@ -282,6 +265,7 @@ class GameDrawer(object):
 
         # MSG
         self.draw_msg()
+        self.draw_time()
 
     def draw(self, current_tile):
         """

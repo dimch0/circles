@@ -1,8 +1,7 @@
-import os
 import requests
 
 
-GLINK = "https://docs.google.com/spreadsheet/ccc?"
+GLINK    = "https://docs.google.com/spreadsheet/ccc?"
 MAIN_KEY = "1X6q2XiXfTcm81bSpwo9Y4WgBPsaVaSBOBcd94qBmpnM"
 
 data_sheets = [
@@ -17,7 +16,7 @@ data_sheets = [
         "vendors":"1710936085",
         "qwellen":"1032854683",
         "wear":"628076905",
-        "control":"2023181623"
+        # "control":"2023181623"
         }
     },
     {

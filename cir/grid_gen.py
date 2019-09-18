@@ -64,7 +64,7 @@ class ItemGenerator(object):
         and returns the pos of that tile or None"""
         result = None
 
-        illegal = self.grid.occupado_tiles.values() + self.grid.doors_adj
+        illegal = self.grid.occupado_tiles.values()
         if last_revealed not in illegal:
             result = last_revealed
         return result

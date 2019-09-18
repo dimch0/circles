@@ -82,7 +82,7 @@ class Body(Mobile):
             self.destroy(grid)
 
         grid.new_turn()
-        grid.msg("SCREEN - time %s/%s" % (self.time, self.max_time))
+        # grid.drawer.time_vs_max = [self.time, self.max_time]
 
     # --------------------------------------------------------------- #
     #                                                                 #
@@ -100,7 +100,6 @@ class Body(Mobile):
         if self.pos == self.target_tile:
             self.target_tile = None
         self.turn(grid)
-        # grid.new_turn(self)
 
     # --------------------------------------------------------------- #
     #                                                                 #
