@@ -10,7 +10,9 @@ import grid_util as cu
 
 from circle import Circle
 from circle_body import Body
+from circle_door import Door
 from cir_room import Room
+
 
 from grid_cosmetic import Images, Fonts, Colors
 from phase_1_events import GameEvents
@@ -48,6 +50,8 @@ class DataLoader(object):
                 new_item = Body()
             elif klas == "item":
                 new_item = Circle()
+            elif klas == "door":
+                new_item = Door()
         except Exception as e:
             self.grid.msg("ERROR - {0}, could not create item of klas: {1}".format(e, klas))
 

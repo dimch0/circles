@@ -99,26 +99,26 @@ class GameEvents(GameEffects):
                                                     CLICKED_ITEM.pos,
                                                     CLICKED_ITEM.available))
                     # OPTION CLICKED
-                    if "option" in CLICKED_ITEM.type:
-                        # SLAB
-                        if CLICKED_ITEM.name in ["map_app"]:
-                            self.grid.event_effects.show_map(mybody)
-                        elif CLICKED_ITEM.name in ["sat_app"] and not self.grid.current_room in ["map"]:
-                            if mouse_mode and 'battery' in mouse_mode:
-                                self.grid.event_effects.satellite()
-                                self.grid.event_effects.drop(CLICKED_ITEM, mybody, force=True)
-                                CLICKED_ITEM.boost = []
-                                CLICKED_ITEM.tok = 0
-                            else:
-                                self.grid.msg("SCREEN - No bat")
-
-                        # DDEBUG
-                        elif CLICKED_ITEM.name in ["phone"]:
-                            self.grid.show_debug = not self.grid.show_debug
-
-                        # SUICIDE
-                        if CLICKED_ITEM.name == "suicide":
-                            mybody.destroy(self.grid)
+                    # if "option" in CLICKED_ITEM.type:
+                    #     # SLAB
+                    #     if CLICKED_ITEM.name in ["map_app"]:
+                    #         self.grid.event_effects.show_map(mybody)
+                    #     elif CLICKED_ITEM.name in ["sat_app"] and not self.grid.current_room in ["map"]:
+                    #         if mouse_mode and 'battery' in mouse_mode:
+                    #             self.grid.event_effects.satellite()
+                    #             self.grid.event_effects.drop(CLICKED_ITEM, mybody, force=True)
+                    #             CLICKED_ITEM.boost = []
+                    #             CLICKED_ITEM.tok = 0
+                    #         else:
+                    #             self.grid.msg("SCREEN - No bat")
+                    #
+                    #     # DDEBUG
+                    #     elif CLICKED_ITEM.name in ["phone"]:
+                    #         self.grid.show_debug = not self.grid.show_debug
+                    #
+                    #     # SUICIDE
+                    #     if CLICKED_ITEM.name == "suicide":
+                    #         mybody.destroy(self.grid)
 
                     # SET MOUSE MODE
                     if CLICKED_ITEM.modable:

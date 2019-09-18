@@ -1,5 +1,5 @@
 name,klas,lvl,type,color,img,effects,modable,collectible,consumable,time_color,time,layer
-exit,item,,door,color1,neon_exit,,,,,,,
+exit,door,,door,color1,neon_exit,,,,,,,
 ,,,,,,,,,,,,
 ,,,,,,,,,,,,
 ,,,,,,,,,,,,

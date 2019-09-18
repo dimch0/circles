@@ -4,7 +4,7 @@
 #                                                                                                                     #
 # ------------------------------------------------------------------------------------------------------------------- #
 from grid_util import get_mirror_point, intersecting, get_short_name, in_circle
-from grid_gen import ItemGenerator
+from item_generator import ItemGenerator
 
 
 class VarUpdater(object):
@@ -61,31 +61,33 @@ class VarUpdater(object):
             self.grid.game_over = True
 
 
-
-
-
-
     # --------------------------------------------------------------- #
     #                                                                 #
     #                        ENTER ROOM EFFECTS                       #
     #                                                                 #
     # --------------------------------------------------------------- #
-    def enter_room(self, mybody, item):
-        if "Enter_" in item.name and mybody.pos == item.pos:
-            room_number = item.name.replace("Enter_", "")
-            self.grid.msg("INFO - Leaving room: {0}".format(self.grid.current_room))
-            self.grid.change_room(room_number)
-            self.grid.should_change_room = False
-            mybody.target_tile = {'center':'', 'track':[]}
-            if not mybody in self.grid.circles:
-                self.grid.circles.append(mybody)
+    def enter_room(self, mybody, door):
 
-            mybody.pos = get_mirror_point(item.pos, self.grid.center_tile)
-            self.grid.revealed_tiles[mybody.pos] = []
-            mybody.gen_birth_track()
-            for circle in self.grid.circles:
-                if circle.pos == mybody.pos and 'door' in circle.type:
-                    circle.available = True
+        if door.side_1 == self.grid.current_room:
+            leaving_room  = door.side_1
+            entering_room = door.side_2
+        else:
+            leaving_room  = door.side_2
+            entering_room = door.side_1
+
+        self.grid.msg("INFO - Leaving room: {0}".format(leaving_room))
+        self.grid.change_room(entering_room)
+        self.grid.should_change_room = False
+
+        if not mybody in self.grid.circles:
+            self.grid.circles.append(mybody)
+
+        mybody.pos = get_mirror_point(door.pos, self.grid.center_tile)
+        self.grid.revealed_tiles[mybody.pos] = []
+        mybody.gen_birth_track()
+        for circle in self.grid.circles:
+            if circle.pos == mybody.pos and 'door' in circle.type:
+                circle.available = True
 
     # --------------------------------------------------------------- #
     #                                                                 #
@@ -150,10 +152,12 @@ class VarUpdater(object):
             # ITEMS
             for circle in all_circles:
 
-                # ENTER
-                if self.grid.should_change_room:
-                    mybody.vibe_track = {'center': '', 'track': []}
-                    self.enter_room(mybody, circle)
+                # ENTER ROOM DOOR
+                if 'door' in circle.type:
+                    if circle.pos == mybody.pos:
+                        mybody.vibe_track = {'center': '', 'track': []}
+                        self.grid.should_change_room = True
+                        self.enter_room(mybody, circle)
 
                 # DESTRUCTION
                 if circle.marked_for_destruction:

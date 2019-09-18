@@ -22,7 +22,7 @@ class GameEffects(object):
     #                                                                 #
     # --------------------------------------------------------------- #
     def produce(self,
-                product_name,
+                name,
                 pos=None,
                 radius=None,
                 time=None,
@@ -30,7 +30,7 @@ class GameEffects(object):
                 effects=None):
         """
         Produces an item from the everything dict
-        :param product_name: name of the item from the everything dict
+        :param name: name of the item from the everything dict
         :param pos: set new position (optional)
         :param radius: set new radius (optional)
         :param birth: set new birth timer (optional)
@@ -39,8 +39,8 @@ class GameEffects(object):
         """
         new_item = None
         try:
-            product_name = grid_util.get_short_name(product_name)
-            new_item = self.grid.loader.load_item(product_name)
+            name = grid_util.get_short_name(name)
+            new_item = self.grid.loader.load_item(name)
             new_item.name = new_item.name + '-' + str(time_stamp.time())
             if new_item:
 
@@ -56,15 +56,16 @@ class GameEffects(object):
                 new_item.available = True
                 new_item.gen_birth_track()
 
-
+                if "door" in new_item.type:
+                    new_item.connect(self.grid)
                 if add_circle:
                     self.grid.circles.append(new_item)
 
             else:
                 self.grid.msg('ERROR - Could not produce item {0}'.format(
-                    grid_util.get_short_name(product_name)))
+                    grid_util.get_short_name(name)))
         except Exception as e:
-            self.grid.msg('ERROR - Failed to produce item %s' % product_name)
+            self.grid.msg('ERROR - Failed to produce item %s' % name)
             self.grid.msg('ERROR - %s' % e)
 
         return new_item
