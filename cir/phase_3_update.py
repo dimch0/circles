@@ -75,7 +75,7 @@ class VarUpdater(object):
             room_number = item.name.replace("Enter_", "")
             self.grid.msg("INFO - Leaving room: {0}".format(self.grid.current_room))
             self.grid.change_room(room_number)
-            self.grid.needs_to_change_room = False
+            self.grid.should_change_room = False
             mybody.target_tile = {'center':'', 'track':[]}
             if not mybody in self.grid.circles:
                 self.grid.circles.append(mybody)
@@ -102,8 +102,6 @@ class VarUpdater(object):
             self.grid.msg("DEBUG - Destroying: {0}".format(item.name))
             if item in self.grid.circles:
                 self.grid.circles.remove(item)
-            # if item in self.grid.panel_circles.values():
-            #     del self.grid.panel_circles[item.name]
             if item.name in self.grid.occupado_tiles:
                 del self.grid.occupado_tiles[item.name]
             if item.name == "mybody":
@@ -146,14 +144,14 @@ class VarUpdater(object):
         Updarting all variables before next iteration of the main loop
         :param mybody: mybody instance
         """
-        all_circles = self.grid.circles + self.grid.panel_circles.values()
+        all_circles = self.grid.circles
         if not self.grid.game_menu:
 
             # ITEMS
             for circle in all_circles:
 
                 # ENTER
-                if self.grid.needs_to_change_room:
+                if self.grid.should_change_room:
                     mybody.vibe_track = {'center': '', 'track': []}
                     self.enter_room(mybody, circle)
 
@@ -189,13 +187,6 @@ class VarUpdater(object):
                                             self.grid.revealed_tiles[rtile] = range(1,self.grid.tile_radius + 1,3)
                                             self.grid.total_revealed += 1
                                             self.igen.generate_item(rtile)
-                                            # REVEAL ADJ DOORS
-                                            for adj_rtile in self.grid.adj_tiles(rtile):
-                                                for ditem in self.grid.circles:
-                                                    if "door" in ditem.type and ditem.pos == adj_rtile:
-                                                        if not ditem.available:
-                                                            ditem.available = True
-                                                            ditem.gen_birth_track()
 
                         for hit_circle in self.grid.circles:
                             # REVEALED / AVAILABLE
@@ -221,9 +212,9 @@ class VarUpdater(object):
 
             # END OF TURN
             if self.grid.new_turns:
-                self.grid.drawer.time_vs_max = [self.mybody.time, self.mybody.max_time]
-
                 self.grid.new_turns -= 1
+
+        self.grid.drawer.time_vs_max = [self.mybody.time, self.mybody.max_time]
 
         self.grid.sort_circles_by_layer()
 

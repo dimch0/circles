@@ -6,7 +6,7 @@
 
   "VISIBILITY": {
     "show_debug"   : 0,
-    "show_grid"    : 0,
+    "show_grid"    : 1,
     "show_seconds" : 0
   },
 

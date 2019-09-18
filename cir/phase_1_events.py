@@ -74,7 +74,7 @@ class GameEvents(GameEffects):
     def execute_click_events(self, event, mybody, current_tile):
 
         mouse_mode = self.grid.mouse_mode
-        all_circles = self.grid.circles + self.grid.panel_circles.values()
+        all_circles = self.grid.circles
         # --------------------------------------------------------------- #
         #                    MOUSE MODE CLICK NO ITEM                     #
         # --------------------------------------------------------------- #

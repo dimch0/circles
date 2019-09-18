@@ -10,6 +10,7 @@ import json
 from math import sqrt
 
 from grid_util import in_circle, inside_polygon, bcolors, get_short_name, intersecting
+from cir_room import Room
 
 CONFIG_JSON_FILE = "config.json"
 
@@ -76,14 +77,13 @@ class Grid(object):
         self.rooms = {}
         self.current_room = "11_11"
         self.previous_room = None
-        self.needs_to_change_room = False
+        self.should_change_room = False
         # -------------------------------------------------- #
         #                        ITEMS                       #
         # -------------------------------------------------- #
         self.circles = []
         self.overlap = []
         self.buttons = []
-        self.panel_circles = {}
         # -------------------------------------------------- #
         #                        MOUSE                       #
         # -------------------------------------------------- #
@@ -321,10 +321,10 @@ class Grid(object):
                 if self.names_to_pos([room_name]):
                     room_pos = self.names_to_pos([room_name])[0]
 
-                    for tile in room['revealed_tiles']:
+                    for tile in room.revealed_tiles:
                         map_dots.update(self.get_map_dot(tile, room_pos, self.color1, self.tile_radius))
 
-                    for circle in room['circles']:
+                    for circle in room.circles:
                         if circle.color and circle.available:
                             if not any (ign in circle.type for ign in ignoredots):
                                 map_dots.update(self.get_map_dot(circle.pos, room_pos, circle.color, circle.radius))
@@ -366,10 +366,10 @@ class Grid(object):
     # --------------------------------------------------------------- #
     def save_current_room(self):
         """ Saves the current room to self.rooms """
-        self.rooms[self.current_room] = {
-            "circles": self.circles,
-            "revealed_tiles": self.revealed_tiles
-        }
+        if not self.current_room in self.rooms:
+            self.rooms[self.current_room] = Room(object)
+        self.rooms[self.current_room].circles        = self.circles
+        self.rooms[self.current_room].revealed_tiles = self.revealed_tiles
 
     def load_current_room(self):
         """ loads the current room from self.rooms
@@ -379,20 +379,17 @@ class Grid(object):
 
         # NEW ROOM
         if not self.current_room in self.rooms.keys():
-            self.rooms[self.current_room] = {
-            "circles"       : [],
-            "revealed_tiles": {},
-            }
-        self.circles = self.rooms[self.current_room]["circles"]
+            self.rooms[self.current_room] = Room()
+        self.circles = self.rooms[self.current_room].circles
         self.circles = list(set(self.circles))
-        self.revealed_tiles = self.rooms[self.current_room]["revealed_tiles"]
+        self.revealed_tiles = self.rooms[self.current_room].revealed_tiles
 
     def change_room(self, room):
         """ Saves the current room and loads a new room """
         self.save_current_room()
         self.current_room = str(room)
         self.load_current_room()
-        self.needs_to_change_room = False
+        self.should_change_room = False
 
     # --------------------------------------------------------------- #
     #                            ITEMS                                #

@@ -10,7 +10,7 @@ import grid_util as cu
 
 from circle import Circle
 from circle_body import Body
-
+from cir_room import Room
 
 from grid_cosmetic import Images, Fonts, Colors
 from phase_1_events import GameEvents
@@ -158,13 +158,10 @@ class DataLoader(object):
                         yield result, klas
 
     def load_item(self, item_name):
-
         new_item = None
         for data, klas in self.load_data(item_name):
             item = self.create_new_item(klas=klas,
                                         attributes_dict=data)
-            if item.name == 'sat_vibe':
-                item.available = True
             if item.name == item_name:
                 new_item = item
                 break
@@ -202,10 +199,8 @@ class DataLoader(object):
             for room in self.grid.room_items:
                 for room_n, room_i in room.items():
                     if room_n not in self.grid.rooms.keys():
-                        self.grid.rooms[room_n] = {
-                            "circles": [],
-                            "revealed_tiles": {}
-                        }
+                        self.grid.rooms[room_n] = Room()
+
                     for candidate_item in room_i:
                         item_name = candidate_item["item_name"]
                         for pos in candidate_item["item_positions"]:
@@ -217,12 +212,11 @@ class DataLoader(object):
                                 self.grid.msg(
                                     "ERROR - Set item: {0} \nin room: {1} \n{2} \n candidate: {3}".format(
                                         item, room_n, e, candidate_item))
-                            if item.name in [xitem.name for xitem in self.grid.rooms[room_n]["circles"]]:
+                            if item.name in [xitem.name for xitem in self.grid.rooms[room_n].circles]:
                                 item.name = item.name + '-' + str(time.time())
                                 time.sleep(0.01)
-
                             else:
-                                self.grid.rooms[room_n]["circles"].append(item)
+                                self.grid.rooms[room_n].circles.append(item)
 
                             # MY BODY
                             if item_name == "mybody":

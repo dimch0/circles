@@ -81,7 +81,7 @@ class Circle(BasicCircle):
         if self.name in ['mybody']:
             grid.msg("SCREEN - game over")
         self.marked_for_destruction = True
-        all_circles = grid.circles + grid.panel_circles.values()
+        all_circles = grid.circles
         if self in all_circles and not self.birth_track:
             if self.color:
                 self.gen_birth_track()

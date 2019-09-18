@@ -243,7 +243,7 @@ class GameDrawer(object):
     def draw_animations(self, current_tile):
         """ Main drawing function """
 
-        all_circles =  self.grid.circles + self.grid.panel_circles.values()
+        all_circles =  self.grid.circles
 
         for circle in all_circles:
             if circle.available:

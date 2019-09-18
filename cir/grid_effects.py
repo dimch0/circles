@@ -27,8 +27,7 @@ class GameEffects(object):
                 radius=None,
                 time=None,
                 add_circle=True,
-                effects=None,
-                panel=False):
+                effects=None):
         """
         Produces an item from the everything dict
         :param product_name: name of the item from the everything dict
@@ -60,8 +59,6 @@ class GameEffects(object):
 
                 if add_circle:
                     self.grid.circles.append(new_item)
-                if panel:
-                    self.grid.panel_circles[new_item.name] = new_item
 
             else:
                 self.grid.msg('ERROR - Could not produce item {0}'.format(
