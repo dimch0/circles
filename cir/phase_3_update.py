@@ -76,7 +76,7 @@ class VarUpdater(object):
             self.grid.msg("INFO - Leaving room: {0}".format(self.grid.current_room))
             self.grid.change_room(room_number)
             self.grid.needs_to_change_room = False
-            mybody.move_track = {'center':'', 'track':[]}
+            mybody.target_tile = {'center':'', 'track':[]}
             if not mybody in self.grid.circles:
                 self.grid.circles.append(mybody)
 
@@ -127,7 +127,7 @@ class VarUpdater(object):
 
         # VIBE
         if hasattr(circle, 'range'):
-            if circle.range and not circle.move_track:
+            if circle.range:
                 circle.gen_vibe_track(self.grid)
 
         # ACTION
@@ -152,7 +152,7 @@ class VarUpdater(object):
         if not self.grid.game_menu:
 
             # TODO: SPENT TIME METHOD
-            if not mybody.move_track and mybody.target_tile:
+            if mybody.target_tile:
                 self.grid.new_turn()
                 print mybody.time, "/", mybody.max_time
 
@@ -171,12 +171,8 @@ class VarUpdater(object):
                 if circle.available:
 
                     # ANIMATE MOVEMENT
-                    if hasattr(circle, "target_tile"):
-                        if circle.target_tile:
-                            circle.move(self.grid)
-                        if hasattr(circle, "move_track") and circle.move_track and not circle.birth_track:
-                            circle.pos = circle.move_track[0]
-                            circle.move_track.pop(0)
+                    if hasattr(circle, "target_tile") and circle.target_tile:
+                        circle.move(self.grid)
 
                     # ANIMATE BIRTH
                     if circle.birth_track:
@@ -238,11 +234,6 @@ class VarUpdater(object):
                     self.grid.clean_placeholders(circle)
             # for
 
-
-            # FORCE BODY MOVE
-            if mybody.pos in self.grid.door_slots:
-                to_tile = self.grid.adj_tiles(mybody.pos, playing=True)
-                mybody.move_track = mybody.move(self.grid, to_tile)
 
             # END OF TURN
             if self.grid.new_turns:

@@ -179,12 +179,12 @@ class GameDrawer(object):
 
     def draw_movement(self, circle):
         """ DEBUG: Shows the movement in cyan and the correct track in red """
-        for move_step in circle.move_track:
-            self.grid.pygame.draw.circle(self.grid.game_display,
-                               self.grid.white,
-                               move_step,
-                               2,
-                               1)
+        self.grid.pygame.draw.circle(self.grid.game_display,
+                                     self.grid.white,
+                                     circle.target_tile,
+                                     2,
+                                     1)
+
 
     def draw_msg(self):
         red_msg = [rep_msg.replace("_", ' ') for rep_msg in self.grid.reporting]

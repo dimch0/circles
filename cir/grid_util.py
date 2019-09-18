@@ -121,7 +121,6 @@ def show_debug_on_click(grid, current_circle, mybody):
         # grid.msg("DEBUG - occupado    : {0}".format( len(grid.occupado_tiles) ))
         # grid.msg("DEBUG - overlap     : {0}".format( [(circle.name, circle.pos) for circle in grid.overlap] ))
         # grid.msg("DEBUG - playing     : {0}".format( len(grid.playing_tiles) ))
-        # grid.msg("DEBUG - move track  : {0}".format( mybody.move_track ))
         # grid.msg("DEBUG - all tiles   : {0}".format( len(grid.tiles) ))
         # grid.msg("DEBUG - current room: {0}".format( grid.current_room ))
         # grid.msg("DEBUG - prev room   : {0}".format( grid.previous_room ))

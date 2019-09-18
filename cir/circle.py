@@ -78,16 +78,11 @@ class Circle(BasicCircle):
         return grid_util.intersecting(cir1, cir2)
 
     def destroy(self, grid):
-        if hasattr(self, 'home'):
-            # TODO: move restart to home parent item
-            pass
         if self.name in ['mybody']:
             grid.msg("SCREEN - you dead")
         self.marked_for_destruction = True
         all_circles = grid.circles + grid.panel_circles.values()
         if self in all_circles and not self.birth_track:
-            if hasattr(self, "move_track"):
-                self.move_track = []
             if self.color:
                 self.gen_birth_track()
                 self.birth_track.reverse()

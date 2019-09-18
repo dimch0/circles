@@ -120,7 +120,7 @@ class GameEffects(object):
         :param item: enter / exit item
         """
         if mybody.pos in self.grid.adj_tiles(item.pos):
-            mybody.move_track = mybody.move(self.grid, item.pos)
+            mybody.target_tile = item.pos
             self.grid.needs_to_change_room = True
         else:
             self.grid.msg("SCREEN - no enter")
@@ -149,47 +149,11 @@ class GameEffects(object):
     #                                                                 #
     # --------------------------------------------------------------- #
     def collect(self, mybody, clicked_item):
-        """ Collect item: add it to inventory options """
-        if not any([clicked_item.birth_track, clicked_item.move_track]):
-            inventory = mybody.inventory
-            if len(inventory.options) < 6:
-
-                # PRODUCE MODABLE ITEM AS OPTION
-                item_as_option = self.produce(product_name='placeholder',
-                                              pos=(),
-                                              add_circle=False)
-                item_as_option.name = clicked_item.name # + '-' + str(time.time())
-                item_as_option.type = clicked_item.type + ' option'
-                item_as_option.lvl = clicked_item.lvl
-                item_as_option.modable = True
-                item_as_option.consumable = clicked_item.consumable
-                item_as_option.effects = clicked_item.effects
-                item_as_option.color = mybody.inventory.color
-                item_as_option.img = clicked_item.img
-                setattr(item_as_option, "ober_item", mybody.inventory)
-                if hasattr(clicked_item, "time"):
-                    item_as_option.time = clicked_item.time
-
-                # ADD IN BAG AND REMOVE FROM FIELD
-                inventory.options[item_as_option.name] = item_as_option
-                clicked_item.destroy(self.grid)
-            else:
-                self.grid.msg("SCREEN - no space")
-
-            inventory.open_menu(self.grid)
+        pass
 
 
     def empty_inventory(self, inventory_item, mybody):
-
-        if self.grid.mouse_mode:
-            if grid_util.get_short_name(self.grid.mouse_mode) in inventory_item.name:
-                self.grid.clean_mouse()
-
-        if inventory_item.name in self.grid.panel_circles.keys():
-            del self.grid.panel_circles[inventory_item.name]
-        del inventory_item.ober_item.options[inventory_item.name]
-
-        # mybody.inventory.open_menu(self.grid)
+        pass
     # --------------------------------------------------------------- #
     #                                                                 #
     #                          CONSUMABLES                            #
@@ -333,49 +297,4 @@ class GameEffects(object):
         return consumed
 
     def drop(self, clicked, mybody, force=False):
-        """
-        Drops item
-        """
-        will_drop = force
-        # Drop item on an empty tile
-        if isinstance(clicked, tuple):
-            if clicked not in self.grid.occupado_tiles.values() and clicked in self.grid.revealed_tiles.keys():
-                if clicked in self.grid.adj_tiles(mybody.pos):
-                    will_drop = True
-                else:
-
-                    self.grid.msg("SCREEN - no reach1")
-            else:
-                self.grid.msg("SCREEN - no place here1")
-
-            if will_drop:
-                for bag_item in mybody.inventory.options.values():
-                    if self.grid.mouse_mode in bag_item.name:
-                        item_name = grid_util.get_short_name(self.grid.mouse_mode)
-                        dropped_item = self.produce(item_name, clicked)
-                        if dropped_item:
-                            if hasattr(bag_item, "time"):
-                                dropped_item.time = bag_item.time
-                            self.empty_inventory(bag_item, mybody)
-                            break
-        # Drop item from inventory to body and consume
-        else:
-            if clicked:
-                # Drop to adj only or to self (telekinesis)
-                if clicked.pos in self.grid.adj_tiles(mybody.pos) or 'mybody' in clicked.type:
-                    will_drop = True
-                else:
-                    self.grid.msg("SCREEN - no reach")
-            else:
-                self.grid.msg("SCREEN - No place here")
-
-            if will_drop:
-                for bag_item in mybody.inventory.options.values():
-                    if self.grid.mouse_mode and self.grid.mouse_mode in bag_item.name:
-                        if 'vendor' in clicked.type:
-                            if clicked.trade(bag_item, self.grid):
-                                self.empty_inventory(bag_item, mybody)
-                        elif bag_item.consumable and not clicked in mybody.inventory.options.values():
-                            if self.consume(clicked, bag_item):
-                                self.empty_inventory(bag_item, mybody)
-                                break
+        pass

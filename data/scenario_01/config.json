@@ -11,17 +11,9 @@
   "win_msg" : [],
   "lose_msg": [],
   "room_items" : [
-
     {"11_11" : [
       {"item_name": "mybody",
-       "item_positions": ["center"]},
-      {"item_name": "dog",
-       "item_positions": ["9_7"]},
-      {"item_name": "bag",
-       "item_positions": ["center"]},
-      {"item_name": "slab",
        "item_positions": ["center"]}
     ]}
   ]
 }
-

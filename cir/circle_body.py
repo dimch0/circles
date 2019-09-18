@@ -21,7 +21,6 @@ class Body(Mobile):
         self.range = 1
         self.vspeed = 2 # VIBE SPEED CAN NOT BE < 1 !!!
         # self.vfreq = None # TODO
-        self.inventory = None
         self.muscle = 1
         self.ego = 0
         self.keff = 0
@@ -41,7 +40,7 @@ class Body(Mobile):
         (31, 10), (32, 10), (33, 10)
         """
 
-        if not self.move_track and not self.vibe_track['track'] and not self.birth_track:
+        if not self.vibe_track['track'] and not self.birth_track:
 
             vibe_thickness = 1
             vibe_limit = (grid.tile_radius * 2 * self.range) + grid.tile_radius + 1

@@ -46,10 +46,10 @@ class GameEvents(GameEffects):
             elif event.key in numbers:
                 number_pressed = numbers.index(event.key) + 1
                 self.grid.msg("INFO - Key %s pressed" % number_pressed)
-                if len(mybody.inventory.options.values()) >= number_pressed:
-                    self.grid.set_mouse_mode(mybody.inventory.options.values()[number_pressed-1])
-                else:
-                    self.grid.clean_mouse()
+                # if len(mybody.inventory.options.values()) >= number_pressed:
+                #     self.grid.set_mouse_mode(mybody.inventory.options.values()[number_pressed-1])
+                # else:
+                #     self.grid.clean_mouse()
             # --------------------------------------------------------------- #
             #                            SHIFT                                #
             # --------------------------------------------------------------- #
@@ -81,8 +81,8 @@ class GameEvents(GameEffects):
                 # TODO: PASS TURN METHOD
                 self.grid.new_turn()
                 print mybody.time, "/", mybody.max_time
-
-            elif not mouse_mode and current_tile in self.grid.playing_tiles:
+            # MOVE
+            elif not mouse_mode and current_tile in self.grid.revealed_tiles and current_tile in self.grid.adj_tiles(mybody.pos):
                 mybody.target_tile = current_tile
 
             # CHECK FOR DOOR
@@ -94,8 +94,8 @@ class GameEvents(GameEffects):
 
 
             if current_tile not in self.grid.occupado_tiles.values() and current_tile in self.grid.revealed_tiles.keys():
-                if mouse_mode and any(mouse_mode in inventory_item.name for inventory_item in mybody.inventory.options.values()):
-                    self.drop(current_tile, mybody)
+                # drop item conditions?
+                self.drop(current_tile, mybody)
 
         # --------------------------------------------------------------- #
         #                   CLICK ON ITEMS NO MOUSE MODE                  #
@@ -140,12 +140,9 @@ class GameEvents(GameEffects):
                     # EAT
                     if event.button == 3:
                         if CLICKED_ITEM.consumable and not CLICKED_ITEM.birth_track:
-                            if (CLICKED_ITEM.pos in self.grid.adj_tiles(mybody.pos)) or (CLICKED_ITEM in mybody.inventory.options.values()):
+                            if (CLICKED_ITEM.pos in self.grid.adj_tiles(mybody.pos)):
                                 if self.consume(mybody, CLICKED_ITEM):
-                                    if CLICKED_ITEM in mybody.inventory.options.values():
-                                        self.empty_inventory(CLICKED_ITEM, mybody)
-                                    else:
-                                        CLICKED_ITEM.destroy(self.grid)
+                                    CLICKED_ITEM.destroy(self.grid)
                                 else:
                                     self.grid.msg("SCREEN - no eat %s" % clicked_screen_name)
                             else:
@@ -154,16 +151,16 @@ class GameEvents(GameEffects):
                             self.grid.msg("SCREEN - no eat %s" % clicked_screen_name)
 
                     # DROP
-                    elif mouse_mode and any(mouse_mode in inventory_item.name for inventory_item in mybody.inventory.options.values()):
-                        self.drop(CLICKED_ITEM, mybody)
+                    # elif mouse_mode and any(mouse_mode in inventory_item.name for inventory_item in mybody.inventory.options.values()):
+                    #     self.drop(CLICKED_ITEM, mybody)
 
                     # COLLECT
-                    elif mouse_mode in ["collect", None, ""]:
-                        if CLICKED_ITEM.collectible and not 'option' in CLICKED_ITEM.type:
-                            if (CLICKED_ITEM.pos in self.grid.adj_tiles(mybody.pos)):
-                                self.collect(mybody, CLICKED_ITEM)
-                            else:
-                                self.grid.msg("SCREEN - {0} is far".format(clicked_screen_name))
+                    # elif mouse_mode in ["collect", None, ""]:
+                    #     if CLICKED_ITEM.collectible and not 'option' in CLICKED_ITEM.type:
+                    #        if (CLICKED_ITEM.pos in self.grid.adj_tiles(mybody.pos)):
+                    #             self.collect(mybody, CLICKED_ITEM)
+                    #         else:
+                    #            self.grid.msg("SCREEN - {0} is far".format(clicked_screen_name))
 
                 # CLEAN MOUSE IF OUTSIDE ADJ ITEMS
                 elif CLICKED_ITEM.pos and current_tile not in self.grid.adj_tiles(CLICKED_ITEM.pos):

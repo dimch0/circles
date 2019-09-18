@@ -174,22 +174,7 @@ class DataLoader(object):
                         yield result, klas
 
     def set_opts(self, item):
-
-        options = item.options.split()
-        item.options = {}
-        for opt in options:
-            for data, klas in self.load_data():
-                if opt == data['name']:
-                    opt_item = self.create_new_item(klas=klas,
-                                                    attributes_dict=data)
-                    item.options[opt_item.name] = opt_item
-                    opt_item.available = True
-                    if not opt_item.color:
-                        opt_item.color = item.color
-                    setattr(opt_item, 'ober_item', item)
-
-        if self.grid.show_debug:
-            self.grid.msg("DEBUG - {0} options are: {1}".format(item.name, item.options))
+        pass
 
     def set_timers(self, item):
         """ Set timers """
@@ -284,30 +269,7 @@ class DataLoader(object):
                                 time.sleep(0.01)
 
                             if 'panel' in item.type:
-
                                 item.available = True
-
-                                # INVENTORY
-                                if item.name == "bag":
-                                    pos_x = self.grid.cols - 1
-                                    pos_y = 1
-                                    pos = str(pos_x) + "_" + str(pos_y)
-                                    item.pos = self.grid.names_to_pos(pos)
-
-                                    self.grid.panel_circles['bag'] = item
-
-                                # SLAB
-                                elif item.name == 'slab':
-                                    pos_x = self.grid.cols
-                                    pos_y = 2
-                                    pos = str(pos_x) + "_" + str(pos_y)
-                                    item.pos = self.grid.names_to_pos(pos)
-
-                                    setattr(self.grid, 'slab', item)
-                                    self.grid.panel_circles['slab'] = item
-
-                                if hasattr(item, 'options'):
-                                    item.open_menu(self.grid)
 
                             else:
                                 self.grid.rooms[room_n]["circles"].append(item)
@@ -348,7 +310,6 @@ class DataLoader(object):
         self.set_rooms()
         self.set_buttons()
 
-        self.mybody.inventory = self.grid.panel_circles['bag']
         self.grid.circles.append(self.mybody)
 
         self.grid.load_current_room()
