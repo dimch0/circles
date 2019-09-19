@@ -77,7 +77,7 @@ class VarUpdater(object):
 
         self.grid.msg("INFO - Leaving room: {0}".format(leaving_room))
         self.grid.change_room(entering_room)
-        self.grid.should_change_room = False
+
 
         if not mybody in self.grid.circles:
             self.grid.circles.append(mybody)
@@ -88,6 +88,9 @@ class VarUpdater(object):
         for circle in self.grid.circles:
             if circle.pos == mybody.pos and 'door' in circle.type:
                 circle.available = True
+        # Create mirror door
+        door.create_mirror_door(self.grid)
+
 
     # --------------------------------------------------------------- #
     #                                                                 #
@@ -154,9 +157,8 @@ class VarUpdater(object):
 
                 # ENTER ROOM DOOR
                 if 'door' in circle.type:
-                    if circle.pos == mybody.pos:
+                    if circle.pos == mybody.pos and self.grid.should_change_room:
                         mybody.vibe_track = {'center': '', 'track': []}
-                        self.grid.should_change_room = True
                         self.enter_room(mybody, circle)
 
                 # DESTRUCTION

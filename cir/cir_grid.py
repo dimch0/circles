@@ -254,6 +254,10 @@ class Grid(object):
             return adj_tiles
 
 
+    def are_adj(self, circle1, circle2):
+        return circle1.pos in self.adj_tiles(circle2.pos)
+
+
     def clean_placeholders(self, item):
         """ Cleans the placeholders (eg for mitosis) """
         if "placeholder" in item.name and 'option' not in item.type:
@@ -389,7 +393,6 @@ class Grid(object):
         self.save_current_room()
         self.current_room = str(room)
         self.load_current_room()
-        self.should_change_room = False
 
     # --------------------------------------------------------------- #
     #                            ITEMS                                #

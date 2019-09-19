@@ -56,7 +56,7 @@ class GameEffects(object):
                 new_item.available = True
                 new_item.gen_birth_track()
 
-                if "door" in new_item.type:
+                if "door" in new_item.type and not all([new_item.side_1, new_item.side_2]):
                     new_item.connect(self.grid)
                 if add_circle:
                     self.grid.circles.append(new_item)

@@ -80,6 +80,7 @@ class GameEvents(GameEffects):
         # --------------------------------------------------------------- #
         if not event.button == 3:
 
+            # PASS TURN
             if current_tile == mybody.pos:
                 mybody.turn(self.grid)
 
@@ -124,13 +125,17 @@ class GameEvents(GameEffects):
                     if CLICKED_ITEM.modable:
                         self.grid.set_mouse_mode(CLICKED_ITEM)
 
+                    # DOOR ROOM CHANGE
+                    if "door" in CLICKED_ITEM.type and self.grid.are_adj(CLICKED_ITEM, mybody):
+                        self.grid.should_change_room = True
+
                     # --------------------------------------------------------------- #
                     #                 MOUSE MODE CLICK CONSUME ON ITEM                #
                     # --------------------------------------------------------------- #
                     # EAT
                     if event.button == 3:
                         if CLICKED_ITEM.consumable and not CLICKED_ITEM.birth_track:
-                            if (CLICKED_ITEM.pos in self.grid.adj_tiles(mybody.pos)):
+                            if self.grid.are_adj(CLICKED_ITEM, mybody):
                                 if self.consume(mybody, CLICKED_ITEM):
                                     CLICKED_ITEM.destroy(self.grid)
                                 else:
