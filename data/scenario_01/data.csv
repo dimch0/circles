@@ -196,7 +196,7 @@ sax,item,3,consume art,color1,sax,art:+2,,TRUE,TRUE,,,
 kassette,item,4,consume art,color1,kassette,art:+3,,TRUE,TRUE,,,
 photo,item,4,consume art,color1,photo,art:+3,,TRUE,TRUE,,,
 name,klas,lvl,type,color,img,effects,modable,collectible,consumable,time_color,time,layer
-mybody,body,,mybody,color1,galab,#scout #flirt,,,,fcc21c,21,2
+mybody,mybody,,mybody,color1,galab,#scout #flirt,,,,fcc21c,21,2
 bqlgalab,body,,bod bot bae,color1,bqlgalab,#fear #scout,,,,fog_color,21,2
 chickin,body,,bod bot bae,color1,chickin,#fear #scout #hungry,,,,fog_color,21,2
 ladybug,body,,bod bot bae,color1,ladybug,#fear #scout,,,,fog_color,21,2

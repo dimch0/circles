@@ -4,9 +4,8 @@
 #                                                                                                                     #
 # ------------------------------------------------------------------------------------------------------------------- #
 import grid_util
-from grid_effects import GameEffects                #     self.grid.set_mouse_mode(mybody.inventory.options.values()[number_pressed-1])
-                # else:
-                #     self.grid.clean_mouse()
+from grid_effects import GameEffects
+from cir_room import BodyRoom
 
 
 class GameEvents(GameEffects):
@@ -88,12 +87,6 @@ class GameEvents(GameEffects):
             elif not mouse_mode and current_tile in self.grid.revealed_tiles and current_tile in self.grid.adj_tiles(mybody.pos):
                 mybody.target_tile = current_tile
 
-        # elif current_tile == mybody.pos:
-        #     pass
-        #     print "OPEN BODY ROOM"
-        #     # TODO: Open body room
-
-
         # --------------------------------------------------------------- #
         #                   CLICK ON ITEMS NO MOUSE MODE                  #
         # --------------------------------------------------------------- #
@@ -149,7 +142,11 @@ class GameEvents(GameEffects):
                             else:
                                 self.grid.msg("SCREEN - %s is far" % clicked_screen_name)
                         elif CLICKED_ITEM == mybody:
-                            self.grid.msg("SCREEN - body room")
+                            self.grid.msg("SCREEN - entering body room")
+                            if not mybody.body_room:
+                                mybody.body_room = BodyRoom()
+                                mybody.body_room.set_body_room(self.grid, mybody)
+                                mybody.body_room.enter(self.grid)
                         else:
                             self.grid.msg("SCREEN - no eat %s" % clicked_screen_name)
 

@@ -12,6 +12,7 @@ from circle import Circle
 from circle_body import Body
 from circle_door import Door
 from circle_button import Button
+from circle_mybody import MyBody
 from cir_room import Room
 
 
@@ -53,6 +54,8 @@ class DataLoader(object):
                 new_item = Circle()
             elif klas == "door":
                 new_item = Door()
+            elif klas == "mybody":
+                new_item = MyBody()
         except Exception as e:
             self.grid.msg("ERROR - {0}, could not create item of klas: {1}".format(e, klas))
 

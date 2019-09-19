@@ -114,7 +114,7 @@ def show_debug_on_click(grid, current_circle, mybody):
         grid.msg("DEBUG - click tile  : {0}, {1}".format( grid.pos_to_name(current_circle), current_circle ))
         grid.msg("DEBUG - mouse mode  : {0}".format( grid.mouse_mode ))
         # grid.msg("DEBUG - grid circles  : {0}".format( len(grid.circles) ))
-        # grid.msg("DEBUG - grid circles  : {0}".format( [(cir.name, cir.pos) for cir in grid.circles] ))
+        grid.msg("DEBUG - grid circles  : {0}".format( [(cir.name, cir.pos) for cir in grid.circles] ))
         # grid.msg("DEBUG - occupado    : {0}".format( [(occ, occpos, grid.pos_to_name(occpos)) for occ, occpos in grid.occupado_tiles.items()] ))
         # grid.msg("DEBUG - occupado    : {0}".format( len(grid.occupado_tiles) ))
         # grid.msg("DEBUG - overlap     : {0}".format( [(circle.name, circle.pos) for circle in grid.overlap] ))
