@@ -88,6 +88,12 @@ class GameEvents(GameEffects):
             elif not mouse_mode and current_tile in self.grid.revealed_tiles and current_tile in self.grid.adj_tiles(mybody.pos):
                 mybody.target_tile = current_tile
 
+        # elif current_tile == mybody.pos:
+        #     pass
+        #     print "OPEN BODY ROOM"
+        #     # TODO: Open body room
+
+
         # --------------------------------------------------------------- #
         #                   CLICK ON ITEMS NO MOUSE MODE                  #
         # --------------------------------------------------------------- #
@@ -142,6 +148,8 @@ class GameEvents(GameEffects):
                                     self.grid.msg("SCREEN - no eat %s" % clicked_screen_name)
                             else:
                                 self.grid.msg("SCREEN - %s is far" % clicked_screen_name)
+                        elif CLICKED_ITEM == mybody:
+                            self.grid.msg("SCREEN - body room")
                         else:
                             self.grid.msg("SCREEN - no eat %s" % clicked_screen_name)
 

@@ -110,7 +110,7 @@ cam,spawn,1,qwelle,color1,,,,,,,,
 waiting line,spawn,1,qwelle,color1,,,,,,,,
 crane,spawn,1,,color1,,,,,,,,
 name,klas,lvl,type,color,img,effects,modable,collectible,consumable,time_color,time,layer
-bag,item,,waer,color1,bago,,,TRUE,,,,
+bag,item,,waer,color1,bago,#bag,,TRUE,TRUE,,,
 ,,,,,,,,,,,,
 pistol,item,,wear,color1,pistol,,,TRUE,,,,
 maluk lanec,item,,wear,color1,,,,TRUE,,,,
@@ -196,11 +196,11 @@ sax,item,3,consume art,color1,sax,art:+2,,TRUE,TRUE,,,
 kassette,item,4,consume art,color1,kassette,art:+3,,TRUE,TRUE,,,
 photo,item,4,consume art,color1,photo,art:+3,,TRUE,TRUE,,,
 name,klas,lvl,type,color,img,effects,modable,collectible,consumable,time_color,time,layer
-mybody,body,,mybody,,galab,#scout #flirt,,,,fcc21c,21,2
-bqlgalab,body,,bod bot lover,color1,bqlgalab,#fear #scout,,,,fog_color,21,2
-chickin,body,,bod bot lover,color1,chickin,#fear #scout #hungry,,,,fog_color,21,2
-ladybug,body,,bod bot lover,color1,ladybug,#fear #scout,,,,fog_color,21,2
-gvin,body,,bod bot lover,color1,gvin,#fear #scout,,,,fog_color,21,2
+mybody,body,,mybody,color1,galab,#scout #flirt,,,,fcc21c,21,2
+bqlgalab,body,,bod bot bae,color1,bqlgalab,#fear #scout,,,,fog_color,21,2
+chickin,body,,bod bot bae,color1,chickin,#fear #scout #hungry,,,,fog_color,21,2
+ladybug,body,,bod bot bae,color1,ladybug,#fear #scout,,,,fog_color,21,2
+gvin,body,,bod bot bae,color1,gvin,#fear #scout,,,,fog_color,21,2
 dog,body,,bod bot,color1,dog,#fight #hunger,,,,fog_color,21,1
 car,body,,bod bot,color1,car,#traffic,,,,fog_color,,
 nerd,body,,bod bot,color1,,#scout #fear,,,,,,

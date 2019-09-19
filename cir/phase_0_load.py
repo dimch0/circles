@@ -11,6 +11,7 @@ import grid_util as cu
 from circle import Circle
 from circle_body import Body
 from circle_door import Door
+from circle_button import Button
 from cir_room import Room
 
 
@@ -157,8 +158,6 @@ class DataLoader(object):
                         else:
                             result = attributes_dict
 
-
-
                         yield result, klas
 
     def load_item(self, item_name):
@@ -180,7 +179,7 @@ class DataLoader(object):
         """ Assign all items to the grid object """
         center = self.grid.find_center_tile()
         for name in ["play", "quit"]:
-            butt = Circle()
+            butt = Button()
             butt.name = name
             butt.type = 'button'
             if name == "play":
