@@ -95,9 +95,6 @@ class GameEffects(object):
     #                           MOUSE MODES                           #
     #                                                                 #
     # --------------------------------------------------------------- #
-    def enter_room(self, mybody, item):
-        pass
-
     def collect(self, mybody, clicked_item):
         pass
 
@@ -162,7 +159,7 @@ class GameEffects(object):
                                           grid_util.get_short_name(consumable.name).replace('_', ' '))
                         consumable.muscle_test(consumer, self.grid)
 
-                    if "#flirt" in effect and "lover" in consumer.type and hasattr(consumable, 'ego'):
+                    if "#flirt" in effect and "bae" in consumer.type and hasattr(consumable, 'ego'):
                         if 'mybody' in consumable.type:
                            self.grid.msg('SCREEN - flirt %s' %
                                          grid_util.get_short_name(consumer.name).replace('_', ' '))
@@ -173,6 +170,10 @@ class GameEffects(object):
                         # consumable.muscle_test(consumer, self.grid)
                         consumer.love(self.grid, amount = consumable.ego)
 
+                    if "#bag" in effect and "mybody" in consumer.type:
+                        self.grid.msg('SCREEN - you found %s' %
+                                      grid_util.get_short_name(consumable.name).replace('_', ' '))
+                        # TODO: Produce bag in body room
 
             if eff_msg:
                 consumed = True

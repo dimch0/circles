@@ -128,7 +128,7 @@ flashlight,item,,wear,color1,,,,TRUE,,,,
 balkan,item,,wear,color1,,,,TRUE,,,,
 name,klas,lvl,type,color,img,effects,modable,collectible,consumable,time_color,time,layer
 bread,item,1,consume food,color1,bread,t:+20,,TRUE,TRUE,,,
-peanut,item,1,consume food,color1,peanut,t:+10,,TRUE,TRUE,,,
+peanut,item,1,consume food,color1,peanut,t:+5,,TRUE,TRUE,,,
 carrot,item,2,consume food,color1,carrot,max:+1 r:+0.1,,TRUE,TRUE,,,
 apple,item,1,consume food,color1,apple,max:+1,,TRUE,TRUE,,,
 banana,item,2,consume food,color1,banana,t:+1 max:+1,,TRUE,TRUE,,,
@@ -198,7 +198,7 @@ photo,item,4,consume art,color1,photo,art:+3,,TRUE,TRUE,,,
 name,klas,lvl,type,color,img,effects,modable,collectible,consumable,time_color,time,layer
 mybody,body,,mybody,,galab,#scout #flirt,,,,fcc21c,21,2
 bqlgalab,body,,bod bot lover,color1,bqlgalab,#fear #scout,,,,fog_color,21,2
-chickin,body,,bod bot lover,color1,chickin,#fear #scout,,,,fog_color,21,2
+chickin,body,,bod bot lover,color1,chickin,#fear #scout #hungry,,,,fog_color,21,2
 ladybug,body,,bod bot lover,color1,ladybug,#fear #scout,,,,fog_color,21,2
 gvin,body,,bod bot lover,color1,gvin,#fear #scout,,,,fog_color,21,2
 dog,body,,bod bot,color1,dog,#fight #hunger,,,,fog_color,21,1
