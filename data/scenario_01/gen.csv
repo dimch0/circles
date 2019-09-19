@@ -1,5 +1,6 @@
 name,lvl,base,items
 food,1,57,bread
-bae,1,175,chickin
-upg,1,130,bag
+food2,1,130,peanut
+bae,1,170,chickin
+upg,1,90,bag
 exit,1,60,exit

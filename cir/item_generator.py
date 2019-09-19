@@ -7,7 +7,6 @@
 # ------------------------------------------------------------------------------------------------------------------- #
 import os
 import csv
-import json
 import random
 
 
@@ -44,10 +43,10 @@ class ItemGenerator(object):
                                              'lvl':deck_lvl,
                                              'progress':progress}
 
-    def deck_togen(self):
+    def decks_togen(self):
         """ Checks bases for generation
          returns str """
-        result = 0
+        result = []
         for deck, deck_data in self.decks.items():
             base = deck_data['base']
             count = len([n for n in range(base,
@@ -56,7 +55,7 @@ class ItemGenerator(object):
             if not deck in self.generated:
                 self.generated[deck] = 0
             if self.generated[deck] < count:
-                result = deck
+                result.append(deck)
         return result
 
     def get_gen_pos(self, last_revealed):
@@ -92,10 +91,12 @@ class ItemGenerator(object):
     def generate_item(self, last_revealed):
         """ Produce a random item from a deck """
         gen_pos = self.get_gen_pos(last_revealed)
-        deck = self.deck_togen()
-        if gen_pos and deck:
-            items = self.decks[deck]['items']
-            if items:
-                idx = int(self.min_progress(deck))
-                self.grid.event_effects.produce(items[idx], gen_pos)
-                self.generated[deck] += 1
+        decks2gen = self.decks_togen()
+
+        for deck in decks2gen:
+            if gen_pos and deck:
+                items = self.decks[deck]['items']
+                if items:
+                    idx = int(self.min_progress(deck))
+                    self.grid.event_effects.produce(items[idx], gen_pos)
+                    self.generated[deck] += 1
